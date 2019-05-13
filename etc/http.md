@@ -4,7 +4,6 @@
 ## 1.정의
 - Hyper Text Transfer Protocol
 - 인터넷에서 데이터를 주고받는 통신규약
-- 통신에서 정규화된 포맷을 약속한것이 HTTP이다.
 
 
 ## 2. HTTP 메시지
