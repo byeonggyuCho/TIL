@@ -13,29 +13,35 @@
  - 헤더
  - 본문
 
-### 2.1 시작줄
 
-[REQUEST]
-- 메서드  
-    - GET, HEAD, POST, PUT, TRACE, DELETE
-- URL
-    - /login.do
-- HTTP 버전 
-    - 1.1
+### 2.1 Request
+![alt text](../resource/img/http_request.png "http")
 
-[RESPONCE]
-- 버전
-    - HTTP 1.1
-- 상태코드
-    - 200
-- 사유 구절
+#### 2.1.1 요청라인
+
+    메서드 : GET, HEAD, POST, PUT, TRACE, DELETE
+    URL : /login.do
+    버전 : 1.1
+
+#### 2.1.2 헤더
 
 
 
 
-### 2.2 헤더
 
-### 2.3 본문
+
+### 3.1 Response
+![alt text](../resource/img/http_response.png "http")
+
+#### 3.1.1 요청라인
+
+    메서드 : GET, HEAD, POST, PUT, TRACE, DELETE
+    URL : /login.do
+    버전 : 1.1
+
+#### 3.1.2 헤더
+
+#### 3.1.3 본문
 
     
 
