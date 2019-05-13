@@ -11,3 +11,4 @@
 - AWS
 - Mysql
 - 함수형프로그래밍
+- TCP/IP
