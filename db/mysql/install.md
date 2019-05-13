@@ -1,5 +1,5 @@
 # Getting Start with MySQL Community Server ZIP Archive on Windows
-It's always easy to use a zip archive than installing a software on your machine. Recently I've got to use MySQL Community Server ZIP Archive (mysql-5.7.17) and faced some problem when setting up the server. I will give you few step by step guidelines for a successful set up so that you won't face the same problems.
+    It's always easy to use a zip archive than installing a software on your machine. Recently I've got to use MySQL Community Server ZIP Archive (mysql-5.7.17) and faced some problem when setting up the server. I will give you few step by step guidelines for a successful set up so that you won't face the same problems.
 
 ## **Step 1**: Extract the zip archive.
 Lets say the base directory path is D:\mysql-server
