@@ -1,0 +1,45 @@
+# mySql to Oracle
+      마이그레이션을 위한 치트시트
+
+
+## 1.Data Type
+값 | mySql | Oracle
+---|:---:|---:
+`NUMERIC` | BIGINT | NUMBER(19,0)
+`NUMERIC` | DECIMAL | FLOAT(24)
+`NUMERIC` | DOUBLE | FLOAT(24)
+`NUMERIC` | DOUBLE_PRECISION | FLOAT(24)
+`NUMERIC` | ENUM | VARCHAR2
+`NUMERIC` | FLOAT | FLOAT
+`NUMERIC` | INT | NUMBER(10,0)
+`NUMERIC` | MEDIUMINT | NUMBER(7,0)
+`NUMERIC` | INTEGER | NUMBER(10,0)
+`NUMERIC` | NUMERIC | NUMBER
+`NUMERIC` | REAL | FLOAT(24)
+`NUMERIC` | SMALLINT | NUMBER(5,0)
+`NUMERIC` | TINYINT | NUMBER(3,0)
+`NUMERIC` | BIT | RAW
+`STRING` | CHAR | CHAR
+`STRING` | BLOB | BLOB,RAW
+`STRING` | LONGBLOB | BLOB,RAW
+`STRING` | LONGTEXT | CLOB,RAW
+`STRING` | MEDIUMBLOB | BLOB,RAW
+`STRING` | TEXT | VARCHAR2,CLOB
+`STRING` | MEDIUMTEXT | CLOB,RAW
+`STRING` | TINYBLOB | RAW
+`STRING` | TINYTEXT | VARCHAR2
+`STRING` | VARCHAR | VARCHAR2,CLOB
+`STRING` | SET | VARCHAR2
+`DATA` | DATE | DATE
+`DATA` | DATETIME | DATE
+`DATA` | TIME | DATE
+`DATA` | TIMESTAMP | DATE
+`DATA` | YEAR | NUMBER
+
+## 2.Function / Stataements
+
+Oracle | mySql | Example(Oracle) | Example(mySql)
+---|:---:|:---:| ---
+`NVL` |  `IFNULL` | SELECT **NVL( MAX( logging_time ) , SYSDATE )** last_time FROM xapm_server_time | SELECT **IFNULL( MAX( logging_time ), now() )** last_time FROM mjlee9.xapm_server_time
+`SYSDATE` | `NOW()` |  SELECT SYSDATE FROM DUAL; | SELECT now();
+
