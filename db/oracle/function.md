@@ -56,7 +56,7 @@
 
  - 2_4 DBTIMEZONE 
 
- - 2_5 EXTRACT(datetime 
+ - 2_5 EXTRACT(datetime )
 
  - 2_6 FROM_TZ 
 
@@ -74,7 +74,7 @@
 
  - 2_13 NUMTOYMINTERVAL 
 
- - 2_14 ROUND(date 
+ - 2_14 ROUND(date )
 
  - 2_15 SESSIONTIMEZONE 
 
@@ -126,7 +126,7 @@
 
  - 3_13 ROWIDTONCHAR 
 
- - 3_14 TO_CHAR(character 
+ - 3_14 TO_CHAR(character )
 
  - 3_15 TO_CLOB 
 
@@ -136,11 +136,11 @@
 
  - 3_18 TO_MULTI_BYTE 
 
- - 3_19 TO_NCHAR(character 
+ - 3_19 TO_NCHAR(character )
 
- - 3_20 TO_NCHAR(datetime 
+ - 3_20 TO_NCHAR(datetime )
 
- - 3_21 TO_NCHAR(number 
+ - 3_21 TO_NCHAR(number )
 
  - 3_22 TO_NCLOB 
 
