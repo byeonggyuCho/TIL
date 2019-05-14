@@ -42,7 +42,7 @@ Oracle | mySql | Example(Oracle) | Example(mySql)
 ---|:---:|:---:| ---
 `NVL` |  `IFNULL` | SELECT **NVL( MAX( logging_time ) , SYSDATE )** last_time FROM xapm_server_time | SELECT **IFNULL( MAX( logging_time ), now() )** last_time FROM mjlee9.xapm_server_time
 `SYSDATE` | `NOW()` |  SELECT SYSDATE FROM DUAL; | SELECT now();
-`||` | `CONCAT()` | A\|\|B | CONCAT(A,  B)
+`\|\|` | `CONCAT()` |  A\|\|B | CONCAT(A, B)
 `TO_DATE` | `STR_TO_DATE` | SELECT  TO_DATE('2013-02-11',  'YYYY- MM-DD')  FROM  dual; | SELECT  STR_TO_DATE('2013-02-11', '%Y-%m-%d');
 `TO_CHAR` | `DATE_FORMAT` | SELECT  TO_CHAR(SYSDATE,‘YYYY-MM-DD') credate  FROM  DUAL | SELECT  DATE_FORMAT(NOW(),'%Y-%m-%d')"
 `TO_CHAR()` | `CAST` | select  to_char(1111)  from  dual |select  cast(1111  as  char)
