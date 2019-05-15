@@ -37,15 +37,14 @@
 		-Not null 이란 기능이 있다.
 
 	2) ND(NOT Duplicate) 속성
-		-중복 불가.
-		-Primary Key
-		-Unique
-
+		- 중복 불가.
+		- Primary Key
+		- Unique
 		
 	3) NC(NO Change) 속성
-		-수정 불가.
-		-참조 당하는상황 (부모테이블일 경우) 
-		-Foreign Key
+		- 수정 불가.
+		- 참조 당하는상황 (부모테이블일 경우) 
+		- Foreign Key
 		
 
 3) Primary Key(기본키) 
@@ -91,10 +90,10 @@
 			name 	varchar2(10) 	null
 		) ;
 
-			-중복된 데이터 불가 확인
-			-not null 확인.			//insert into tblExam(name)  VALUES('임꺽정') ;
-			-하지만 이런식으로 생성된 테이블은 문제가 있다.
-			-직접 이름을 줘는것이 좋다.(직관적으로 제약을 확인 할 수 있도록) 
+			- 중복된 데이터 불가 확인
+			- not null 확인.			//insert into tblExam(name)  VALUES('임꺽정') ;
+			- 하지만 이런식으로 생성된 테이블은 문제가 있다.
+			- 직접 이름을 줘는것이 좋다.(직관적으로 제약을 확인 할 수 있도록) 
 		
 		삭제 : DROP TABLE tblExam;
 
@@ -109,10 +108,10 @@
 
 ------------------------------------------------------------
 ### 가장 좋은 방식.	
-	- 뭐가 다를까?
-	- 하나의 필드에 여러가지를 묶을수 있다.
+- 뭐가 다를까?
+- 하나의 필드에 여러가지를 묶을수 있다.
 
-
+~~~
 	Create TABLE tblExam(
 		id	number(3) ,
 		name 	varchar2(10) 	null,
@@ -129,16 +128,22 @@
 	alter table tblExam
 		drop column gender;
 
+//기본키는 NN속성과 ND속성을 확실하게 지켜준다.
+~~~ 
 
-	~~~ 기본키는 NN속성과 ND속성을 확실하게 지켜준다.) 
+### 기본키 제거하기.
+1. 제약 삭제하기
 
-     # 기본키 제거하기.
-	제약 삭제하기
-	ALTER TABLE tblExam
-		DROP CONSTRAINT pk_id;
+~~~
+ALTER TABLE tblExam
+	DROP CONSTRAINT pk_id;
+~~~
 
-	-추가할떄는 add
-
+2. 제약 추가하기
+~~~
+ALTER TABLE tblExam
+	add CONSTRAINT pk_id;
+~~~
 	
     # 컬럼 추가하기.
 	- 데이터가 이미 들어가있으면 테이블을 함부로 지울수가 없다!
@@ -309,70 +314,71 @@ insert into tblExam(city)  VALUES('수원') ;		//이렇게 하면 초기 조건�
 
 
 8)  Foreign Key (참조키) 
-	
-	CREATE TABLE tblDept(
-		deptno	char(3) ,
-		dname	varchar2(10) 
-	) ;
+~~~
+CREATE TABLE tblDept(
+	deptno	char(3) ,
+	dname	varchar2(10) 
+) ;
 
-	Insert into tblDept VALUES('100','영업부') ;
-	Insert into tblDept VALUES('100','마케팅부') ;
+Insert into tblDept VALUES('100','영업부') ;
+Insert into tblDept VALUES('100','마케팅부') ;
 
 
 
-	CREATE TABLE tblEmp(
-		empno	number,
-		ename	varchar2(10) ,
-		hiredate	date,
-		deptno	char(3) 
-	) ;
+CREATE TABLE tblEmp(
+	empno	number,
+	ename	varchar2(10) ,
+	hiredate	date,
+	deptno	char(3) 
+) ;
+~~~
 	-------------------------------------------------------------
+~~~
+INSERT INTO tblEmp VALUES(seq_id.nextVal, '홍길동',sysdate, '100') ;
+INSERT INTO tblEmp VALUES(seq_id.nextVal, '임꺽정',sysdate, '120') ;
+//아직 방어장치가 없어서 됨. 100하고 110만 입력받아야함 ㅠ
+//deptno에서 확인해야한다. 즉 참조를 해야한다는뜻.
+//참조키는 자식에 달아줘야한다.
+//이때 deptno의 형식이 똑같아야한다. 다르면 달수 없다.
+//그런데 이미 잘못된 데이터가 있으면 참조키를 달 수 없다다.
 
-	INSERT INTO tblEmp VALUES(seq_id.nextVal, '홍길동',sysdate, '100') ;
-	INSERT INTO tblEmp VALUES(seq_id.nextVal, '임꺽정',sysdate, '120') ;
-	//아직 방어장치가 없어서 됨. 100하고 110만 입력받아야함 ㅠ
-	//deptno에서 확인해야한다. 즉 참조를 해야한다는뜻.
-	//참조키는 자식에 달아줘야한다.
-	//이때 deptno의 형식이 똑같아야한다. 다르면 달수 없다.
-	//그런데 이미 잘못된 데이터가 있으면 참조키를 달 수 없다다.
+
+
+//이름이 길어지더라도 참조키에 대한 정보를 이름으로 써줘야 편함.
+ALTER TABLE tblEmp
+	add Constraint fk_deptno_emp_deptno_emp_dept FOREIGN KEY(deptno) 
+	REFERENCES tblDept(deptno) ;
+//tblEmp테이블에 depto라는 컬럼은 tblDept테이블의 deptno컬럼의 참조한다.
+//부모테이블: tblDept	키:deptno
+//자식테이블: tblEmp	참조키:deptno
+
+
+- 참조해줄 수 있는 키의 조건
+	-유니크 조건이 달려있다.
+	-기본키다.
+
+ALTER TABLE tblDept
+	add Constraint pk_deptno PRIMARY KEY(deptno) ;
+
+
+
+//나중에 참조를 할때 애먹을 수 있다.
+//옳은 데이터를 넣어야만하기때문..
+//참조키가 컬럼의 NC속성을 지켜준다. 참조당하는 값은 변경할 수 없다.
+
+
+### 업데이트를 이용해서 부모의 참조필드를 변경시도 해보자.
+
+UPDATE  tblDept
+Set deptno='300'
+where deptno='100';
+~~~ 0행이 갱신되었습니다.~~~ -  안바뀜 ㅋㅋ
+
+--부모테이블의 참조당하는 컬럼값이 변하지 않는다-
+--심지어 삭제도안된다.--
 
 	
-
-	//이름이 길어지더라도 참조키에 대한 정보를 이름으로 써줘야 편함.
-	ALTER TABLE tblEmp
-		add Constraint fk_deptno_emp_deptno_emp_dept FOREIGN KEY(deptno) 
-		REFERENCES tblDept(deptno) ;
-	//tblEmp테이블에 depto라는 컬럼은 tblDept테이블의 deptno컬럼의 참조한다.
-	//부모테이블: tblDept	키:deptno
-	//자식테이블: tblEmp	참조키:deptno
-
- 
-	- 참조해줄 수 있는 키의 조건
-		-유니크 조건이 달려있다.
-		-기본키다.
-
-	ALTER TABLE tblDept
-		add Constraint pk_deptno PRIMARY KEY(deptno) ;
-
-
-
-	//나중에 참조를 할때 애먹을 수 있다.
-	//옳은 데이터를 넣어야만하기때문..
-	//참조키가 컬럼의 NC속성을 지켜준다. 참조당하는 값은 변경할 수 없다.
-	
-
-	### 업데이트를 이용해서 부모의 참조필드를 변경시도 해보자.
-	
-	UPDATE  tblDept
-	Set deptno='300'
-	where deptno='100';
-	~~~ 0행이 갱신되었습니다.~~~ -  안바뀜 ㅋㅋ
-	
-	--부모테이블의 참조당하는 컬럼값이 변하지 않는다-
-	--심지어 삭제도안된다.--
-
-	
-
+~~~
 	### 컬럼값 삭제하기
 	- drop table tblDeptno;
 	- 캐스케이드로는 삭제가 될수는 있지만 위험함.
