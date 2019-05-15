@@ -325,7 +325,6 @@
  
 
 ## 8. PseudoColumn을 의미하는 것
-
  - 8_1 ROWID 컬럼
  - 8_2 ROWNUM 컬럼
 
@@ -333,7 +332,7 @@
 
 
 
-2)  functions
+#  functions
   1) single row functions
   -하나의 레코드에 대해서만 적용되는 함수.
 
@@ -442,32 +441,42 @@ ex)  문자열의 재배치
 
 
   # 숫자함수
-	소숫점 처리 : round() , trunc() ,floor() ,ceil() 
-	mod() 
-	power() 
-	sign() 
+	- round() 
+    - trunc() 
+    - floor() 
+    - ceil() 
+	- mod() 
+	- power() 
+	- sign() 
 	
 	-------------------------------------------------------------
-	- .소숫점 자리수
+	- 소숫점 자리수
 	 round() 
 	~~~
 	 select round(4567.678,0)  from dual;
 	~~~
 	- 자릿수(두번째 인자) 를 생략하면 소숫점 첫번째 자리를 반올림한다.
 ~~~
-	ex)  select round(4567.678,2)  from dual;		- 세번째 자리에서 반올림하겠다는것.
-	ex)  select round(4567.678,-2)  from dual;		- 정수방향 반올림.
-	ex)  select trunc(4567.678)  from dual;			//버림!
-	ex)  select trunc(4567.678,2)  from dual;
-	ex)  select floor(4567.678)  from dual;			//무조건 내림
-	ex)  select cell(4567.678)  from dual;			//무조건 올린다.
+//세번째 자리에서 반올림하겠다는것.
+select round(4567.678,2)  from dual;		-
+//정수방향 반올림.  
+select round(4567.678,-2)  from dual;
+//버림!
+select trunc(4567.678)  from dual;			
+select trunc(4567.678,2)  from dual;
+//무조건 내림
+select floor(4567.678)  from dual;			
+//무조건 올린다.
+select cell(4567.678)  from dual;			
 ~~~
 
-	----------------------------------------------------------------------
 ~~~
-	select mod(10,3)  from dual;		//나머지 연산
-	select power(2,10)  from dual;		//2^10;
-	select sign(100) ,sign(-15)  from dual;	//양수1 음수-1 영 0
+//나머지 연산
+select mod(10,3)  from dual;		
+//2^10;
+select power(2,10)  from dual;		
+//양수1 음수-1 영 0
+select sign(100) ,sign(-15)  from dual;	
 ~~~
 
 
@@ -476,13 +485,13 @@ ex)  문자열의 재배치
 
   ### 날짜함수
 		- sysdate			//현재 시간을 알려준다.
-		- months_between() 	//
+		- months_between() 	
 		- add_months() 		
 		- next_day() 
 		- last_day() 
 		- round() 
 		- trunc() 
-------------------------------------------------------------------
+----------------------------------
 ~~~
 //현재날짜
 select sysdate From dual;				
@@ -550,16 +559,19 @@ select to_char(sysdate,'YYYY MM DD HH"시" MI"분" SS"초"')  from dual;
 ~~~  
 select ename, sal, comm, (sal+comm)  as Total from emp;
 ~~~ 
-	널값을 피하려면 어떻게 해야할까?
+널값을 피하려면 어떻게 해야할까?
 ~~~
 select ename, sal, comm, (sal+nvl(comm,0) )  as Total from emp;
 ~~~
--  nvl(변수,0)  해당변수값이 null일때 두번째 인자값으로 대치해라.
+-  nvl(변수,0) 
+    - 해당변수값이 null일때 두번째 인자값으로 대치해라.
 
-	 //decode()  자바의 스위치문과 비슷하다.
-	 - 무조건 '같다'라는 조건만 가능하다.
+- decode()  
+    - 자바의 스위치문과 비슷하다.
+	- 무조건 '같다'라는 조건만 가능하다.
  
-	ex) 현재 업무가 salesman 이면 영업이라고 출력하고 그렇지 않으면 일반이라고 출력.
+
+    ex) 현재 업무가 salesman 이면 영업이라고 출력하고 그렇지 않으면 일반이라고 출력.
 ~~~  
 select ename, decode(job,'SALESMAN','영업','일반')   from emp;	
 ~~~ 
@@ -587,9 +599,8 @@ having 조건식
 ~~~
 
 
-	------------------------------------------------
-	ex) 업무가 세일즈맨인 직원들의 급여평균, 최고액, 최저액, 합계를 조회하라.
-	
+    ex) 업무가 세일즈맨인 직원들의 급여평균, 최고액, 최저액, 합계를 조회하라.
+
 ~~~  
 select avg(sal) , max(sal) , min(sal)  from emp where job='SALESMAN';
 ~~~ 
@@ -673,40 +684,4 @@ select job, sum(sal)  from emp where sum(sal)  >5000 group by job;
 
 ex) 전체 급여의 합계가 5000을 초과하는 업무에 대해 급여 합계를 조회
     (단 세일즈맨은 제외하시오) 
-
-
-# 직계함수?
-<>
-
--매치가 되어야 한다.
--where절은 하나하나 집어서 순서대로 처리한다.
--where절과 함께 사용할수 없다. 
--사용하는 타이밍의 순서가 맞아야한다.
--얘는 묶어서 처리한다.
--여러개의 레코드를 한번에 묶어서 사용한다.
--조건이 처리된다음에 실행되어야한다.
-
-
-# 순서.
-1.데이터가지고온다.
-2,조건식을 비교한다.
-3.그룹처리한다.
-4.그룹처리후 조건식
-5.오더바이 정렬
-6.select에 의해 조회. 출력.
-
-
-~~~ 
-select job, sum(sal)  from emp group by job having sum(sal) >5000 and job!='SALESMAN';
-~~~ 
-- 데이터를 다들고온뒤 솎아낸다..
-- 일반적으로 효율이 떨어진다.
-
-~~~ 
-select job, sum(sal)  from emp where job<>'SALESEMAN' group by job having sum(sal) >5000;
-~~~ 
-- 필터링을해서 들고온다, 성능차이가 발생한다.
-- 미리 걸러버린다음에 그룹으로 묶어버린다.
-
-
 
