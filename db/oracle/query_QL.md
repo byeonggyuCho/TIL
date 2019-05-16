@@ -245,3 +245,25 @@ select job, sum(sal)  from emp where job<>'SALESEMAN' group by job having sum(sa
 ~~~ 
 - 필터링을해서 들고온다, 성능차이가 발생한다.
 - 미리 걸러버린다음에 그룹으로 묶어버린다.
+
+
+
+
+### 계층쿼리
+
+- START WITH 절 : 계층 구조의 데이터를 읽어나가는데 있어 시작점을 지정합니다.
+- CONNECT BY 절은 다음에 읽을 자식 데이터를 지정한다. 즉 CONNECT BY 절의 조건을 만족하는 데이터를 읽어나갑니다.
+- CONNECT BY 절의 조건식에 'PRIOR 자식컬럼 = 부모컬럼' 형태의 조건을 사용하면 계층 구조의 데이터를 부모 -> 자식 방향으로 내려가는 순방향 조회를 합니다.
+- CONNECT BY 절의 조건식에 'PRIOR 부모컬럼 = 자식컬럼' 형태의 조건을 사용하면 계층 구조의 데이터를 자식 -> 부모 방향으로 올라가는 역방향 조회를 합니다.
+- NOCYCLE : 데이터를 읽어가면서 이미 조회했던 동일한 데이터를 다시 읽게 될 경우 CYCLE(사이클)이 형성되었다고 하는데 NOCYCLE 을 명시할 경우 사이클이 발생한 이후의 데이터는 읽지 않습니다.
+- ORDER SIBLINGS BY 절 : ORDER BY 와 다르게 형제(SIBLINGS) 노드 즉, 동일한 LEVEL의 데이터 사이에서 정렬을 합니다.
+
+
+~~~ 
+SELECT 컬럼명, ......
+FROM 테이블
+WHERE ......
+START WITH condition
+CONNECT BY [NOCYCLE] condition AND condition
+[ORDER SIBLINGS BY 컬럼명, ......]
+~~~
