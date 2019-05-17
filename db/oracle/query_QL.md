@@ -267,3 +267,13 @@ START WITH condition
 CONNECT BY [NOCYCLE] condition AND condition
 [ORDER SIBLINGS BY 컬럼명, ......]
 ~~~
+
+
+## LISTAGG
+- 다건 조회 결과를 한 줄로 표현하고 싶을때.
+
+~~~
+SELETE st_food, LISTAGG(st_kind,',') WITHIN GROUP(ORDER BY st_key) AS st_kind
+FROM sample_table
+GROUP BY st_food;
+~~~
