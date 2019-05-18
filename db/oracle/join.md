@@ -179,13 +179,12 @@ Ex)  uesr1에 테이블 생성하기
         --결과값이 많을경우 셈플링을 해서 검증절차를 밟는다.--
 
 
-        --------------------------------------------------------------------
         ex)  a,b,c 테이블을 inner조인하면 어떤결과가 나올까?
         - 1,2만 나올듯
         
 
 
-        # # 3개의 테이블 조인하기
+        ## 3개의 테이블 조인하기
 
 
         1) 표준방법
@@ -210,38 +209,47 @@ Ex)  uesr1에 테이블 생성하기
 
     ## LEFT
     1) 표준		
+    ~~~
     SELECT tblA.id, tblB.value
     FROM tblA LEFT OUTER JOIN tblB
     ON tblA.id=tblB.id;
+    ~~~
 
 
-    2) 비표준	(오라클st 레프트 아웃터) 
+    2) 비표준	(오라클st 레프트 아웃터)
+    ~~~ 
     SELECT tblA.id, tblB.value
     FROM tblA, tblB
     where tblA.id=tblB.id(+) ;
-
+    ~~~
 
 
     ## RIGHT
 
     1) 표준		
+    ~~~
     SELECT tblA.id, tblB.value
     FROM tblA RIGHT OUTER JOIN tblB
     ON tblA.id=tblB.id;
+    ~~~
 
 
     2) 비표준	(오라클st right 아웃터) 
+    ~~~
     SELECT tblA.id, tblB.value
     FROM tblA, tblB
     where tblA.id(+) =tblB.id;
+    ~~~
     
 
     # # FULL
 
     1) 표준		
+    ~~~
     SELECT tblA.id, tblB.value
     FROM tblA full OUTER JOIN tblB
     ON tblA.id=tblB.id;
+    ~~~
 
 
     2) 비표준	(오라클st ) 
@@ -250,11 +258,11 @@ Ex)  uesr1에 테이블 생성하기
 
     ex) 이름, 급여, 부서명,근무지를 조회하시오
     단, 부서명과 근무지는 모두 출력할 수 있도록 하시오.
-    
+    ~~~
     select ename, sal, dname,loc
     from emp right outer join dept
     on emp.deptno = dept.deptno;
-
+    ~~~
     
     
     ----
@@ -262,9 +270,11 @@ Ex)  uesr1에 테이블 생성하기
 3. non-eqi join	(공통된 필드가 없는상태에서 join하는 방법) 
 
     ex)  직원의 사번, 이름, 급여, 급여등급을 조회.
+    ~~~
     select empno, ename, sal, grade,losal,hisal
     from emp INNER JOIN salgrade
     ON sal>=losal AND sal <= hisal;
+    ~~~
 
     -----------
 4. self join	(같은테이블을 조인한다) 
@@ -272,9 +282,11 @@ Ex)  uesr1에 테이블 생성하기
     - 셀프조인은 이름의 구분해줘야하기때문에 별명을 준다.
     
     ex)  직원의 사번, 이름, 업무, 직속상사 사번, 직속상사 이름을 조회
+    ~~~
     select e1.empno, e1.ename, e1.job, e1.mgr, e2.ename
     from emp e1 INNER JOIN emp e2
     ON e1.mgr = e2.empno;
+    ~~~
     
     -----------------------------------------------------------------
 

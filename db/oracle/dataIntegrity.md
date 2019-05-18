@@ -60,12 +60,12 @@ Data integrity(데이터 무결성)
 ## 예제
 
 ### 1.PRIMARY KEY
-1) 관례 'pk_'로 기본키라는걸 알려준다.
-2) CONSTRAINT pk_name PRIMARY KEY
-3) 프라이머리키는 테이블에서 딱 한번만 사용가능하다
+- 관례 'pk_'로 기본키라는걸 알려준다.
+- CONSTRAINT pk_name PRIMARY KEY
+- 프라이머리키는 테이블에서 딱 한번만 사용가능하다
 
 
- ### 1. CREATE : 테이블 생성
+테이블생성
 ~~~
 CREATE table TABLE(
 	id	number			not null,
@@ -73,8 +73,7 @@ CREATE table TABLE(
 ) ;	
 ~~~
 
-----
-### 3. INSERT : 행삽입
+행 추가
 ~~~
 INSERT INTO TABLE(name)  VALUES('홍길동') ;		
 /*false : 'ID' is not null*/
@@ -84,8 +83,7 @@ INSERT INTO TABLE(id,name)  VALUES(1,'홍길동') ;
 /*false : 'ID' is unique column*/
 ~~~
 
-### 4. ALTER 테이블 수정
-
+속성변경
 ~~~		
 /* PRIMARYKEY 속성 삽입 '*/
 /* 관례 'pk_, id(컬럼이름) '*/
@@ -116,6 +114,7 @@ CREATE TABLE TABLE(
 	
 
 #### 속성한번에 지정하기.
+- alter로 변경하지말고 한번에 지정하자.
 
 ~~~
 CREATE TABLE TABLE(
@@ -141,7 +140,7 @@ number(3,2) 	: 정수자리 3자리, 소수자리 2자리.
 ~~~
 이렇게 한번에 조건을 부여.
 
----
+
 #### 기본키 제거하기.
 1. 제약 삭제하기
 
@@ -188,7 +187,7 @@ VARCHAR(N)
 - 가변길이  (메모리의 길이가 저장되는 데이터에 따라서 정해진다) 
 - 시스템에게 추가작업을 요청하면서 성능적 차이가 발생한다.			
 
--------
+--------------------------------------------------------
 
 ### 2. UNIQUE
 1)  중복 방지.
@@ -241,7 +240,6 @@ SELECT * FROM TABLE;
 - null이 될수 없다 DEFAULT값이 존재하니까.
 - 정정.. DEFAULT값으로 지정하면 수정이 안된다.
 - null값으로 insert하면 되긴하다.
-
 - 최종정정
 - DEFAULT를 삭제할순없다.
 - DEFAULT를 null로 바꾸면됨...

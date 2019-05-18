@@ -52,13 +52,15 @@ ORACLE의 DBA권한에서 실행가능함.
 - 원인 : PrimaryKey 중복으로 인한 무결성오류
 - 조치 : Query에서 PK를 확인한다.
 
+### ORA-0002
+- session references process's private memory; cannot detach session
+- 원인 : XA library를 사용하는데 Oracle이 dedicator server로 설치된 경우 발생
+- 조치 : XA library를 사용할려면 Oracle을 MTS mode로 설치되어야 한다. 
+
+
 ### ORA-0020
 - 원인 : 프로세스 수를 프로세스를 초과한 경우. 
 - 조치 : 프로세스 수를 들여줌. 
-
-### ORA-00023: session references process's private memory; cannot detach session
-- 원인 : XA library를 사용하는데 Oracle이 dedicator server로 설치된 경우 발생
-- 조치 : XA library를 사용할려면 Oracle을 MTS mode로 설치되어야 한다. 
 
 ###  ORA-0054 resource busy and acquire with NOWAIT specified
 ###  ORA-0054 WHEN DROP A TABLE(SESSION KILL)

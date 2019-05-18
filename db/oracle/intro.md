@@ -166,9 +166,9 @@
 ### 1.7 SqlPlus 사용법
 1) 접속방법
 ~~~  database
-	$ sqlplus root
-	$ sqlplus root/password
-	$ sqlplus root/password@hostname
+$ sqlplus root
+$ sqlplus root/password
+$ sqlplus root/password@hostname
 ~~~ 
 - 여기서 호스트란 접속하고자 하는 서버다.
 - 다른서버에 원격으로 접속을 시도할때 호스트명을 반드시 써준다.

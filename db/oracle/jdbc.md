@@ -31,28 +31,28 @@
 
 
 
-(1) JDBC 표준문법 : java.sql
-	-Connection : 연결정보
+1) JDBC 표준문법 : java.sql
+	- Connection : 연결정보
 		DB와의 연결 정보를 제공하는 클래스.
 
-	-Statement : 명령어(sql)  전달, 실행.
+	- Statement : 명령어(sql)  전달, 실행.
 
-	-ResultSet : 결과값(select) 을 임시로 저장한다.
+	- ResultSet : 결과값(select) 을 임시로 저장한다.
 
-(2)  ResultSet
+2)  ResultSet
 	1) DB로부터 가져온 결과값을 임시로 저장한다.
 	2) 하나의 테이블을 저장할수 있는구조.
 	3) 연결 지향적.(DB와 연결이 되어있는 동안만 존재한다) 
 	4) 반드시 처음에는 next() 사용해야한다. (다음 레코드로 이동) 
 	
 
-(3)  Satement
+3)  Satement
 	1) executeQuery()  : select 일때
 	2) executeUpdate()  :insert, update, delete 일때.
 	
 
 
-(4) PreparredStatement
+4) PreparredStatement
 - 이제 Statement 쓰지마라.
 - 이걸 대신해서 써라.
 - 변하지 않는 문자열들을 DB에 보내서 미리 컴파일을 해서 준비한다.
@@ -61,17 +61,17 @@
 	1) 쿼리의 복잡함을 단순화 시킨다.
 	2) 보안 : 쿼리문과 데이터를 섞어쓰면 보안에 취약함.
 
-	### 단 like 연산자를 사용할때는 statement를 사용해야한다.
+- 단 like 연산자를 사용할때는 statement를 사용해야한다.
 
 
-
-
-(5) CallableStatement
+5) CallableStatement
 - DB에 미리 만들어 놓은 프로시져를 호출할때.
 
 	1) 프로시저 호출
 	2) 문법
-		{call 프로시져명}
-		{call 프로시저명(?,?,...) }
-		{?=call 프로시져명(?,?,...) }	//리턴값이 있을경우.
+	~~~
+	{call 프로시져명}
+	{call 프로시저명(?,?,...) }
+	{?=call 프로시져명(?,?,...) }	//리턴값이 있을경우.
+	~~~
 
