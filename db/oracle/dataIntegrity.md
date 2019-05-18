@@ -110,7 +110,9 @@ CREATE TABLE TABLE(
 	
 
 ------------------------------------------------------------
-### PRIMARY KEY
+## 예제
+
+### 1.PRIMARY KEY
 1) 관례 'pk_'로 기본키라는걸 알려준다.
 2) CONSTRAINT pk_name PRIMARY KEY
 3) 프라이머리키는 테이블에서 딱 한번만 사용가능하다
@@ -188,9 +190,8 @@ VARCHAR(N)
 - 시스템에게 추가작업을 요청하면서 성능적 차이가 발생한다.			
 
 ----
-### 예제2
 
-### UNIQUE
+### 2. UNIQUE
 1)  중복 방지.
 2)  하나의 테이블에 여러개를 설정 가능.
 3) ND(no duplicate) 속성지원.
@@ -217,7 +218,7 @@ INSERT INTO TABLE(id,name)  VALUES(NULL,'홍길동') ;
 ~~~
 
 
-#### DEFAULT 기본값 설정
+### 3. DEFAULT 
 - INSERT로 입력받지 않은 값은 기본값으로 자동셋팅
 ~~~
 drop table TABLE;
@@ -247,8 +248,7 @@ SELECT * FROM TABLE;
 - DEFAULT를 null로 바꾸면됨...
 
 -----
-###  3.예제
-## Sequence(시퀀스) 	
+### 4. SEQUENCE(시퀀스) 	
 
 - 관례 : seq
 - 일련번호 매기기
@@ -299,8 +299,7 @@ CREATE sequence seq_id
 
 
 ------
-## 4. 예제 : 
-## Check
+## 5. Check
 - 컬럼에 입력가능한 데이터를 미리 지정한다.
 - 지정한 범위에서 벗어나면 무결성 오류가 난다.
 - 관례어 : ck
@@ -335,9 +334,7 @@ CONSTRAINT ck_age CHECK( age BETWEEN 10 AND 40) ;
 
 ----
 
-## 5.예제 
-
-##  Foreign Key (참조키) 
+## 6. Foreign Key (참조키) 
 - 참조해줄 수 있는 키의 조건
 - 유니크 조건이 달려있다.
 - 기본키다.
