@@ -5,13 +5,12 @@ Data integrity(데이터 무결성)
 결점없이 데이터를 보관하겠다.<br>
 	
 
-## 1. WHAT
-뭘지킬것인가.	
+## 1. 종류
 
 1. 실체 무결성 (entity)  	
 	- 실체란 실제 데이터를 보관하는객체 즉, 테이블(테이블에 데이터가 들어오는것을 지킨다) 
 	- 중복된 데이터 방지	(수정,삭제시 문제발생) 
-	- Primary Key, Unique 필드에 이런 속성을 추가한다.
+	- PRIMARY Key, Unique 필드에 이런 속성을 추가한다.
 
 
 1. 영역 무결성 (domain) 	
@@ -31,15 +30,13 @@ Data integrity(데이터 무결성)
 	
 
 
-## 2. HOW
-
-### 컬럼의 속성
+## 2. 컬럼의 무결성 속성 부여
 
 1) NN(NOT NULL) 속성 
-	-  필수입력.
-	-	~~~ Primary Key~~~ 
+	- 필수입력.
+	- PRIMARY Key 
 	- 자체적인 해결방법이 있다.
-	- Not null 이란 기능이 있다.
+	- Not null 속성
 
 2) ND(NOT Duplicate) 속성
 	- 중복 불가.
@@ -50,15 +47,13 @@ Data integrity(데이터 무결성)
 	- 수정 불가.
 	- 참조 당하는상황 (부모테이블일 경우) 
 	- Foreign Key
-	
 
-3) Primary Key(기본키) 
-- 거의 모든테이블에서 모든 테이블에서 기본키를 반드시 가진다.
-- 개인적이고 중복이 되지 않는 정보 (민증번호, 라이센스넘버) 		
-- 2개이상의 필드를 묶어서설정가능.(성별과 이름과 전화가 같은사람.) 
-
-	1)  하나의 테이블에는 단 한개만 설정 가능하다.
-	2)  여러 개의 필드를 묶어서 설정가능하다.
+3) PRIMARY Key(기본키) 
+	- 거의 모든테이블에서 모든 테이블에서 기본키를 반드시 가진다.
+	- 개인적이고 중복이 되지 않는 정보 (민증번호, 라이센스넘버) 		
+	- 2개이상의 필드를 묶어서설정가능.(성별과 이름과 전화가 같은사람.) 
+		1)  하나의 테이블에는 단 한개만 설정 가능하다.
+		2)  여러 개의 필드를 묶어서 설정가능하다.
 -----------------------------------------------------------
 
 
@@ -115,9 +110,10 @@ CREATE TABLE TABLE(
 	
 
 ------------------------------------------------------------
-### 제약조건에 이름을 붙이기
-- 관례 'pk_'로 기본키라는걸 알려준다.
-- CONSTRAINT pk_name PRIMARY KEY
+### PRIMARY KEY
+1) 관례 'pk_'로 기본키라는걸 알려준다.
+2) CONSTRAINT pk_name PRIMARY KEY
+3) 프라이머리키는 테이블에서 딱 한번만 사용가능하다
 
 
 ~~~
@@ -138,8 +134,8 @@ CREATE TABLE TABLE(
 
 
 /*
-number(3)  	: 정확하게 쓰고자 하는 자릿수를 지정할 수 있다.
-number(3,2) 	: 실수표현가능 정수자리 3자리, 소수자리 2자리.
+number(3)  	: 정확하게 쓰고자 하는 자릿수를 지정
+number(3,2) 	: 정수자리 3자리, 소수자리 2자리.
 */
 ~~~
 이렇게 한번에 조건을 부여.
@@ -180,16 +176,16 @@ ALTER TABLE TABLE
 
 
 #### CHAR와 VARCHAR의 차이
-char(N)
+CHAR(N)
 - 고정문자열 (초기 선언을 할때 정한 데이터 크기가 고정) 
 - 고정이 확실히다면 char() 을 쓴다.
 - 무조건 길이가 N이어야한다.
 - ex) 주민등록번호, 전화번호
 
-varchar(N) 	
+VARCHAR(N) 	
+- 0~N 입력가능.
 - 가변길이  (메모리의 길이가 저장되는 데이터에 따라서 정해진다) 
 - 시스템에게 추가작업을 요청하면서 성능적 차이가 발생한다.			
-- 0~N 입력가능.
 
 ----
 ### 예제2
@@ -197,6 +193,8 @@ varchar(N)
 ### UNIQUE
 1)  중복 방지.
 2)  하나의 테이블에 여러개를 설정 가능.
+3) ND(no duplicate) 속성지원.
+
 ~~~
 /* 유니크의 관례어 uk */
 Drop table TABLE;
@@ -207,27 +205,26 @@ CREATE TABLE TABLE(
 	CONSTRAINT uk_id UNIQUE(id) 
 ) ;
 INSERT INTO TABLE(id,name)  VALUES(1,'홍길동') ;	
-INSERT INTO TABLE(id,name)  VALUES(1,'홍길동') ;		//무결성 제약 조건(USER1.UK_ID) 에 위배됩니다.
+INSERT INTO TABLE(id,name)  VALUES(1,'홍길동') ;	
+//무결성 제약 조건(USER1.UK_ID) 에 위배됩니다.
 
 /* 못막음  */
-INSERT INTO TABLE(id,name)  VALUES(NULL,'홍길동') ;	
-//중복도 못막음. 이건 제품마다 다름. 
 //오라클에선 null은 값이 아님
+//중복도 못막음. 이건 제품마다 다름. 
+INSERT INTO TABLE(id,name)  VALUES(NULL,'홍길동') ;	
 INSERT INTO TABLE(id,name)  VALUES(NULL,'홍길동') ;	
 					
-						
-//유니크는 nd(no duplicate) 속성을 	지원한다.
-//프라이머리키는 테이블에서 딱 한번만 사용가능하다
 ~~~
 
 
 #### DEFAULT 기본값 설정
+- INSERT로 입력받지 않은 값은 기본값으로 자동셋팅
 ~~~
 drop table TABLE;
 	
 CREATE TABLE TABLE(
-	id	number(3) 		default 0,
-	name	varchar2(10) 	default '무명씨'
+	id	number(3) 		DEFAULT 0,
+	name	varchar2(10) 	DEFAULT '홍길동'
 ) ;
 
 
@@ -237,23 +234,24 @@ SELECT * FROM TABLE;
 ~~~
 
 
-- default 삭제하기.
+- DEFAULT 삭제하기.
 - 그냥 컬럼수정하면된다.
-- 똑같이 써주고 default를 빼주고 써준다.
+- 똑같이 써주고 DEFAULT를 빼주고 써준다.
 - 그리고 제약 검색에서 안나온다.
-- null이 될수 없다 default값이 존재하니까.
-- 정정.. default값으로 지정하면 수정이 안된다.
+- null이 될수 없다 DEFAULT값이 존재하니까.
+- 정정.. DEFAULT값으로 지정하면 수정이 안된다.
 - null값으로 insert하면 되긴하다.
 
 - 최종정정
--default를 삭제할순없다.
--default를 null로 바꾸면됨...
+- DEFAULT를 삭제할순없다.
+- DEFAULT를 null로 바꾸면됨...
 
 -----
 ###  3.예제
 ## Sequence(시퀀스) 	
 
-- 일련번호 매기기-
+- 관례 : seq
+- 일련번호 매기기
 - 중복을 예방해주는 도구!
 - 테이블에 종속이되는게 아니라 자기만의 독립적인 메모리에 만들어진다.
 - 메모리에서 카운팅을 한다.
@@ -388,7 +386,6 @@ ALTER TABLE tblDept
 add CONSTRAINT pk_deptno PRIMARY KEY(deptno) ;
 
 
-
 //나중에 참조를 할때 애먹을 수 있다.
 //옳은 데이터를 넣어야만하기때문..
 //참조키가 컬럼의 NC속성을 지켜준다. 참조당하는 값은 변경할 수 없다.
@@ -399,13 +396,11 @@ add CONSTRAINT pk_deptno PRIMARY KEY(deptno) ;
 UPDATE  tblDept
 Set deptno='300'
 where deptno='100';
-~~~ 0행이 갱신되었습니다.~~~ -  안바뀜 ㅋㅋ
+~~~~
 
---부모테이블의 참조당하는 컬럼값이 변하지 않는다-
---심지어 삭제도안된다.--
-
-
-~~~
+- update가 안됐다.
+- 부모테이블의 참조당하는 컬럼값이 변하지 않는다
+- 심지어 삭제도안된다.
 
 
 ### 컬럼값 삭제하기
