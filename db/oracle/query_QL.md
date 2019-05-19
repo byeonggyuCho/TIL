@@ -5,7 +5,6 @@
 1) 기능
     - 검색, 조회를 위한 기능.
 2) 기본 문법
-
     1. 조회 권한부여
     ~~~
     select 필드명, from[소유자].테이블명
@@ -247,7 +246,7 @@ select job, sum(sal)  from emp where job<>'SALESEMAN' group by job having sum(sa
 - ORDER SIBLINGS BY 절 : ORDER BY 와 다르게 형제(SIBLINGS) 노드 즉, 동일한 LEVEL의 데이터 사이에서 정렬을 합니다.
 
 
-~~~ 
+~~~ SQL
 SELECT 컬럼명, ......
 FROM 테이블
 WHERE ......
@@ -260,8 +259,8 @@ CONNECT BY [NOCYCLE] condition AND condition
 ## LISTAGG
 - 다건 조회 결과를 한 줄로 표현하고 싶을때.
 
-~~~
-SELETE st_food, LISTAGG(st_kind,',') WITHIN GROUP(ORDER BY st_key) AS st_kind
+~~~ SQL
+SELECT st_food, LISTAGG(st_kind,',') WITHIN GROUP(ORDER BY st_key) AS st_kind
 FROM sample_table
 GROUP BY st_food;
 ~~~

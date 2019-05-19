@@ -99,6 +99,7 @@ GRANT create view TO scott;
 	as
 	select ename, deptno, sal+nvl(comm,0)  as total
 		from emp where deptno =30;
+~~~
 	-----생성
 
 	//의미없이 껍데기(뷰) 만 바꾼다. 원본데이터의 정보는 수정되지 않는다.

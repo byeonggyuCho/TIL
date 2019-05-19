@@ -1,5 +1,17 @@
 # database
 
+# File Map
+
+
+<details>
+<summary>목차</summary>
+
+- [데이터무결성](./dataIntegrity.md)
+
+</details>
+
+
+
 
 
 # 오라클
@@ -176,18 +188,18 @@ $ sqlplus root/password@hostname
 2) 접속 해제 및 다른 접속 연결
 
 ~~~ 
-	 $ DB> exit
-	 $ DB> quit
+	$ DB> exit
+	$ DB> quit
 ~~~ 
 
 *연결을 끊지않고 다른 사용자로 재연결하려고 할때
 ~~~ 
-	$ DB> connect USER_ID
+$ DB> connect USER_ID
 ~~~ 
 
 *어떤아이디로 접속했는지 알고싶을때
 ~~~ 
-	$ DB>  show user
+$ DB>  show user	
 ~~~ 
 	
 
