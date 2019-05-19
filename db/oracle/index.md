@@ -1,19 +1,5 @@
 # database
 
-# File Map
-
-
-<details>
-<summary>목차</summary>
-
-- [데이터무결성](./dataIntegrity.md)
-
-</details>
-
-
-
-
-
 # 오라클
 오랜만에 DB를 하려다 멘붕이 와서... 적어봄.
 
