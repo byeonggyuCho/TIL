@@ -6,32 +6,31 @@ Mybatis
 
 마이바티스는 레코드에 원시타입과 Map 인터페이스 그리고 자바를 설정해서 매핑하기 위해 XMl과 애노테이션을 사용할 수 있다.
 
-마이바티스의 응용 팁이나, 시행착오를 기록하자.
 
 
 ![이미지](../../resource/img/mybatis.png "book")
 
 ## 1. MyBatis 주요 API
-1. [MyBatis 주요컴포넌트]
-    - 설정파일 (Config)
+1. MyBatis 주요컴포넌트
+    - 설정파일 (MyBatis-Config.xml)
         - 마이바티스 동작설정을 지정
-    - Mapper Interface
+    - **Mapper Interface**
         - 매핑 파일이나 애너테이션에 정의한 SQL에 대응하는 자바 인터페이스
-    Mapping XML
-    - SQL과 객체의 매핑 정의를 기술하는 XML파일, SQL을 애너테이션에 지정하는 경우는 사용하지 않음
-    - org.apache.ibatis.session.SqlSession
+    - **Mapping XML**
+        - SQL과 객체의 매핑 정의를 기술하는 XML파일, SQL을 애너테이션에 지정하는 경우는 사용하지 않음
+    - **org.apache.ibatis.session.SqlSession**
         - SQL 발행이나 트랜잭션 제어용 API 제공 컴포넌트
         - 스프링 프레임워크에서 사용하는 경우에는 마이바티스의 트랜잭션 제어  API는 사용하지 않음
-    - org.apache.ibatis.session.SqlSessionFactory
+    - **org.apache.ibatis.session.SqlSessionFactory**
         - SqlSession 생성하기 위한 컴포넌트
-    - org.apache.ibatis.session.SqlSessionFactoryBuilder
+    - **org.apache.ibatis.session.SqlSessionFactoryBuilder**
         - 마이바티스 설정파일을 읽어들여 SqlSessionFactory를 생성하기 위한 컴포넌트
-2. [MyBatis-Spring 주요컴포넌트]
-    - org.mybatis.spring.SqlSessionFactoryBean
+2. MyBatis-Spring 주요컴포넌트
+    - **org.mybatis.spring.SqlSessionFactoryBean**
         - SqlSessionFactory를 구축하고 스프링 DI 컨테이너에 객체를 저장
-    - org.mybatis.spring.SqlSessionTemplate
+    - **org.mybatis.spring.SqlSessionTemplate**
         - 스프링 트랜잭션 관리하에 마이바티스 표준의 SqlSession을 취급하기 위한 컴포넌트 (스레드안전)
-    - org.mybatis.spring.mapper.MapperFactoryBean
+    - **org.mybatis.spring.mapper.MapperFactoryBean**
         - 스프링 트랜잭션 관리하에 SQL을 실행하는 Mapper객체를 빈으로 생성하기 위한 컴포넌트
 
 

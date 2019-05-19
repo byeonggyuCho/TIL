@@ -1,46 +1,46 @@
+SELECT 
+=======
 
-
-
-### SELECT 
-1) 기능
-    - 검색, 조회를 위한 기능.
+1) 기능<br>
+    검색, 조회를 위한 기능.
 2) 기본 문법
     1. 조회 권한부여
-    ~~~
-    select 필드명, from[소유자].테이블명
-    select empno, ename, mgr,comm FROM emp;
+
+    ~~~ SQL
+    SELECT 필드명, FROM[소유자].테이블명
+    SELECT empno, ename, mgr,comm FROM emp;
     //조회 권한 부여
     ///관리자 계정으로  scott의 테이블조회 권한 부여
-    grant select on scott.emp to hr;
+    GRANT SELECT on scott.emp to hr;
     ~~~ 
         
-    ~~~
-    select*from 테이블명
+    ~~~ SQL
+    SELECT * FROM 테이블명
     ~~~
 
     - 필드의 가공처리가 가능하다.
     - 필드가 있는그대로 검색만 하는게 아니라 변형해서 사용할 수 있다.
   
-    ex)  사원의 사번, 이름, 급여를 조회하세요
+    ex)  사원의 사번, 이름, 급여를 조회하세요.<br>
     단, 급여는 현재 급여에 100$를 추가하여 조회하시오.
-    ~~~
+    ~~~ sql
     //기존 셀러리에서 100추가한 값을 함께 조회함.
-    SELECT empno, ename, sal,sal+100 FROM emp;
+    SELECT empno, ename, sal, sal+100 FROM emp;
     ~~~
 
     2. ALIAS : 별명
     - 필드에 alias(별명)  부여 가능.
     - 별명에 공백이나 특수문자가 있으면 ""로 묶자.
-    - 필드명 별명   or   필드명 "별명"
+    - 필드명 별명 or 필드명 "별명"
     - 필드명 as 별명  or 필드명 as "별명"  
 
     ~~~
     SELECT empno 사번, ename 이름, sal,sal+100 as"100$인상된 급여" FROM emp;
     ~~~
 
-    3. DISTINCT : 중복된 값 제거
+    3. DISTINCT : 중복값 제거
 
-    ~~~ 
+    ~~~ SQL
     /* 이렇게 필드 앞에 쓰세요 */
     SELECT DISTINCT JON FROM EMP;
     ~~~ 	
@@ -50,99 +50,108 @@
 3) 확장 문법
 
     1. 정렬 : **ORDER BY** 
-        ~~~
-        ORDER BY 필드명[, 필드명] [ASC|DESC]
-        //필드명 여러개 입력가능. ASC:오름(기본값) ,DESC :내림]
+        <br>
+        필드명 여러개 입력가능.<br>
+        **ASC**  오름(기본값)<br>
+        **DESC** 내림 <br>
+        쿼리조회가 끝난뒤에 최종적으로 정렬이 된다.
+            
+        2차정렬 3차정렬 가능.<br>
+        (급여가 같은사람중에서 이름을 알파벳순서로 정렬 등등..) 
+
+        ~~~ sql
+        ORDER BY 필드명, 필드명 [ASC|DESC]
         ~~~
         EX)  급여가 많은 순으로 사번, 이름, 급여를 조회하시오.
+        ~~~ SQL
+        SELECT empno, ename, sal FROM emp ORDER BY sal DESC;
         ~~~ 
-         SELECT empno, ename, sal FROM emp ORDER BY sal DESC;
 
-         /*   
-        2차정렬 3차정렬 가능.
-        (급여가 같은사람중에서 이름을 알파벳순서로 정렬 등등..) 
-        */
-        ~~~ 
-    
-  
+
         EX)  부서별로 급여가 적은 순으로 이름, 급여, 부서코드를 조회
-            
-        - 1차기준: 부서
-        - 2차기준: 급여
+        - 1차기준: 부서(deptno)
+        - 2차기준: 급여(sql)
 
-        ~~~ 
-         SELECT ename, sal, deptno 
-         FROM emp 
-         ORDER BY deptno ASC, sal ASC;
+        ~~~ sql
+        SELECT ename, sal, deptno 
+        FROM emp 
+        ORDER BY deptno ASC, sal ASC;
         ~~~ 
 
 
 
     2. 조건 : **WHERE**
 
-        WHERE 조건식(필드명 연산자 값)  //필드명이 왼쪽에 와야함.
+        ~~~ sql
+        WHERE 조건식 (필드명 연산자 값)
+        ~~~
+        - 필드명이 왼쪽에 온다.
         - 기본 연산자 : >, <, >=, <=, =,(!=,<>,^=) 
-        - 논리 연산자 : and, or, not
-        - SQL 연산자. : between A and B, in, is null, like
+        - 논리 연산자 : AND, or, not
+        - SQL 연산자 : between A AND B, in, is NULL, like
 
-        like wild card
-        - %: 0개 이상의 문자를 대체
-        - _: 1개의 문자를 대체
-        - ex)  beau% : beau, beaut, beauti, beautif...
+        - like wild card
+            - % : 0개 이상의 문자를 대체
+            - _ : 1개의 문자를 대체
+            - _의 자리에 반드시 글자가 와야한다.
+            - ex)  beau% : beau, beaut, beauti, beautif...
             be_u_: beaut, bebub, ...
-        - (_의 자리에 반드시 글자가 와야한다.) 
 
-        - %L  : 앞은 모르겠고 뒤는 L로 끝난다
-        - L%  :	앞은 L로 시작하지만 뒤는 모른다
-        - %L% : 앞뒤에 뭐가 있는지는 모르지만 L이 들어간다
-
+            - %L  : L로 끝난다
+            - L%  :	L로 시작한다
+            - %L% : L이 들어간다.
     --------
-        EX1)  급여가 3000$이상인 직원의 사번, 이름, 급여를 조회하시오
-            (단 급여가 많은순으로 정렬) 
+    EX1)  급여가 3000$이상인 직원의 사번, 이름, 급여를 조회하시오<br>
+    (단 급여가 많은순으로 정렬) 
     
-    ~~~ 
-    select empno, ename, sal FROM emp 
+    ~~~ sql
+    SELECT empno, ename, sal FROM emp 
     WHERE sal>= 3000 
     ORDER BY sal ASC;
     ~~~ 
 
-        Q) 조건먼저? 정렬먼저?
-        - 가장 마지막에 작성되는건 언제나 정렬.
-        
-        EX2)  업무가 메니져인 사원의 이름, 부서, 업무, 급여를 조회.
-
+    EX2)  업무가 메니져인 사원의 이름, 부서, 업무, 급여를 조회.
+    ~~~ sql
+    SELECT EMPNO, DEPTNO, JON, SAL 
+    FROM EMP 
+    WHERE JOB = 'MANAGER';
     ~~~ 
-    SELECT EMPNO, DEPTNO, JON, SAL FROM EMP WHERE JOB = 'MANAGER';
-    ~~~ 
-    - 저장된값은 대소문자를 가린다.
-    - SQL은 쌍따옴표를 쓰지 않고 홑따옴표만사용한다.
-
+    - 저장된값은 대소문자를 구분한다.
+    - SQL은 쌍따옴표를 쓰지 않고 홑따옴표만 사용한다.
 
     EX3)  1982년 1월 1일 이후에 입사한 직원의 이름, 부서 , 입사일자 조회.
-    ~~~ 
-    select ename,deptno,hiredate from emp where hiredate>'1982/1/1';
+    ~~~ sql
+    SELECT ename,deptno,hiredate 
+    FROM emp 
+    WHERE hiredate>'1982/1/1'
     ~~~ 
     -  SQL에서 날짜는 문자로 캐스팅된다.
     
 
     EX4)  부서가 20이고 업무가 analyst인 직원의 이름, 부서, 입사일자 조회
 
-    ~~~  
-    select ename, deptno, hiredate from emp where deptno=20 and job='ANALYST'; 
+    ~~~ sql
+    SELECT ename, deptno, hiredate 
+    FROM emp 
+    WHERE deptno=20 
+        AND job='ANALYST'
     ~~~ 
 
 
     3. **BEWEEN**
 
-    and 조건이 이상 이하 일때만 사용가능.
+        AND 조건이 이상 이하 일때만 사용가능하다
 
     Ex) 급여가 1500이상 2500이하를 받는 직원의 이름, 부서 업무 급여를 조회하라.
-    ~~~ 
-    select ename, deptno, job, sal, from emp 
-    where sal>='1500' and sal<='2500'; 
+    ~~~ sql
+    SELECT ename, deptno, job, sal, 
+    FROM emp 
+    WHERE sal>='1500' 
+        AND sal<='2500'; 
 
-    select ename, deptno, job, sal from emp
-    where sal between 1500 and 2500;
+    SELECT ename, deptno, job, sal 
+    FROM emp
+    WHERE sal between 1500 AND 2500;
     ~~~ 
 
 
@@ -152,98 +161,125 @@
 
     'or 조건'과 '같다'라는 조건에서만 사용가능하다.
 
-        Ex) 업무가 clerk, salesman, analyst인 직원의 이름, 부서, 업무를 조회.
+    Ex) 업무가 clerk, salesman, analyst인 직원의 이름, 부서, 업무를 조회.
         
-    ~~~ 
-    select ename, deptno, job from emp 
-    where job='CLERK' or job='SALESMAN' or job = 'ANALYST'; 
+    ~~~ sql
+    SELECT ename, deptno, job FROM emp 
+    WHERE job ='CLERK' 
+        OR job ='SALESMAN' 
+        OR job = 'ANALYST'; 
 
-    select ename, deptno, job from emp 
-    where job in('CLERK','SALESMAN','ANALYST') ;
+    SELECT ename, deptno, job FROM emp 
+    WHERE job IN('CLERK','SALESMAN','ANALYST');
     ~~~ 
 
 
-        Ex)  직원의 사번, 이름, 부서, 업무, 급여, 보너스를 조회하라.
-    ~~~ 
-    select empno, ename, deptno, job, sal, comm from emp;  
+    Ex)  직원의 사번, 이름, 부서, 업무, 급여, 보너스를 조회하라.
+    ~~~ sql
+    SELECT empno, ename, deptno, job, sal, comm 
+    FROM emp;  
     ~~~ 
 
     - 같은 데이터로 많은 생각이라.. 데이터 마이닝?-
+    - DB에서의 NULL : 값이 없다는걸 표시하는값.
+<br>
+<br>
+<br>
 
-    - DB에서의 Null : 값이 없다는걸 표시하는값. - 
+    5.  **IS NULL**
 
+        - NULL은 값이 아니기때문에 =연산자로 사용할 수 없다.
 
-    5.   **IS NULL**
-
+        -----
         Ex)  보너스를 받지 못하는 직원의 이름, 부서, 업무 급여 보너스 조회
-    - null값을 조회하자.
 
-    ~~~  
-    select ename, deptno, job, sal, comm from emp  
-    where comm is null; 
-    ~~~ 
-    - null은 값이 아니기때문에 =연산자로 사용할 수 없다.
-    ~~~ 
-    select ename, deptno, job, sal, comm from emp  
-    where job != 'SALESMAN';
+        ~~~ sql
+        SELECT ename, deptno, job, sal, comm 
+        FROM emp  
+        WHERE comm IS NULL; 
+        ~~~ 
+        ~~~ sql
+        SELECT ename, deptno, job, sal, comm 
+        FROM emp  
+        WHERE job != 'SALESMAN';
 
-    select ename, deptno, job, sal, comm from emp 
-        where not(job = 'SALESMAN');
+        SELECT ename, deptno, job, sal, comm 
+        FROM emp 
+        WHERE NOT (job = 'SALESMAN');
 
-    select ename, deptno, job, sal, comm from emp  
-    where comm is not null;
-    ~~~ 
-
-    -  반대로 커미션을 받는사람만..
-
-        
-    Ex)  이름이 s로 시작되는 직원의 이름, 업무, 급여를 조회해라.
-    ~~~ 
-    select ename, job, sal from emp where ename like 'S%';  
-    ~~~ 
-    - like는 문자만 사용가능하다.
+        SELECT ename, deptno, job, sal, comm 
+        FROM emp  
+        WHERE comm IS NOT NULL;
+        ~~~ 
 
 
-
-    #### 순서에서 정렬은 항상 마지막에 들어간다.
-
+            
+        Ex)  이름이 S로 시작되는 직원의 이름, 업무, 급여를 조회해라.
+        ~~~ sql
+        /* like는 문자만 사용가능하다.*/
+        SELECT ename, job, sal 
+        FROM emp 
+        WHERE ename like 'S%';  
+        ~~~ 
 
 
 ### 직계함수?
 
--매치가 되어야 한다.
--where절은 하나하나 집어서 순서대로 처리한다.
--where절과 함께 사용할수 없다. 
--사용하는 타이밍의 순서가 맞아야한다.
--얘는 묶어서 처리한다.
--여러개의 레코드를 한번에 묶어서 사용한다.
--조건이 처리된다음에 실행되어야한다.
+- 매치가 되어야 한다.
+- WHERE절은 하나하나 집어서 순서대로 처리한다.
+- WHERE절과 함께 사용할수 없다. 
+- 사용하는 타이밍의 순서가 맞아야한다.
+- 얘는 묶어서 처리한다.
+- 여러개의 레코드를 한번에 묶어서 사용한다.
+- 조건이 처리된다음에 실행되어야한다.
 
 
-~~~ 
-select job, sum(sal)  from emp group by job having sum(sal) >5000 and job!='SALESMAN';
-~~~ 
-- 데이터를 다들고온뒤 솎아낸다..
-- 일반적으로 효율이 떨어진다.
+### GROUP BY 시점
+시점에 따른 성능차이를 비교해보자.
 
+~~~ sql
+SELECT job, sum(sal)  
+FROM emp 
+GROUP BY job 
+HAVING sum(sal) >5000 
+    AND job!='SALESMAN';
 ~~~ 
-select job, sum(sal)  from emp where job<>'SALESEMAN' group by job having sum(sal) >5000;
+- 데이터를 다들고온뒤 솎아내는 방식으로 효율이 떨어진다.
+
+~~~ sql
+SELECT job, sum(sal) 
+FROM emp 
+WHERE job<>'SALESEMAN' 
+GROUP BY job 
+HAVING sum(sal) > 5000;
 ~~~ 
 - 필터링을해서 들고온다, 성능차이가 발생한다.
-- 미리 걸러버린다음에 그룹으로 묶어버린다.
+- 미리 걸러버린 다음에 그룹으로 묶어버린다.
 
 
 
 
 ### 계층쿼리
 
-- START WITH 절 
-    : 계층 구조의 데이터를 읽어나가는데 있어 시작점을 지정합니다.
-- CONNECT BY 절은 다음에 읽을 자식 데이터를 지정한다. 즉 CONNECT BY 절의 조건을 만족하는 데이터를 읽어나갑니다.
-- CONNECT BY 절의 조건식에 'PRIOR 자식컬럼 = 부모컬럼' 형태의 조건을 사용하면 계층 구조의 데이터를 부모 -> 자식 방향으로 내려가는 순방향 조회를 합니다.
-- CONNECT BY 절의 조건식에 'PRIOR 부모컬럼 = 자식컬럼' 형태의 조건을 사용하면 계층 구조의 데이터를 자식 -> 부모 방향으로 올라가는 역방향 조회를 합니다.
-- NOCYCLE : 데이터를 읽어가면서 이미 조회했던 동일한 데이터를 다시 읽게 될 경우 CYCLE(사이클)이 형성되었다고 하는데 NOCYCLE 을 명시할 경우 사이클이 발생한 이후의 데이터는 읽지 않습니다.
-- ORDER SIBLINGS BY 절 : ORDER BY 와 다르게 형제(SIBLINGS) 노드 즉, 동일한 LEVEL의 데이터 사이에서 정렬을 합니다.
+1. START WITH 절 <br>
+    계층 구조의 데이터를 읽어나가는데 있어 시작점을 지정합니다.
+
+2. CONNECT BY <br>
+CONNECT BY 절은 다음에 읽을 자식 데이터를 지정한다. <br>
+즉 CONNECT BY 절의 조건을 만족하는 데이터를 읽어나갑니다.
+
+    - CONNECT BY  **'PRIOR 자식컬럼 = 부모컬럼'** 형태 <br>
+    계층 구조의 데이터를 **부모->자식** 방향으로 내려가는 순방향 조회를 합니다.
+
+    - CONNECT BY 절의 조건식에 **'PRIOR 부모컬럼 = 자식컬럼'** 형태<br>
+    계층 구조의 데이터를 **자식->부모** 방향으로 올라가는 역방향 조회를 합니다.
+
+3. NOCYCLE <br>
+데이터를 읽어가면서 이미 조회했던 동일한 데이터를 다시 읽게 될 경우 CYCLE(사이클)이 형성되었다고 하는데 NOCYCLE 을 명시할 경우 사이클이 발생한 이후의 데이터는 읽지 않습니다.
+
+4. ORDER SIBLINGS BY <br>
+ ORDER BY 와 다르게 형제(SIBLINGS) 노드 <br>
+ 즉, 동일한 LEVEL의 데이터 사이에서 정렬을 합니다.
 
 
 ~~~ SQL
