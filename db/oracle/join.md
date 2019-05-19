@@ -17,9 +17,9 @@ JOIN
 - **NON Equi JOIN**
     - 공통필드가 없을 경우,공통되지 않은 레코드를 가져오는 방법	
     - OUTER JOIN
-    - Inner JOIN의 확장이다.
-    - Inner JOIN+공통되지 않은 레코드도 가져온다.
-    - 종류
+        - Inner JOIN의 확장이다.
+        - Inner JOIN+공통되지 않은 레코드도 가져온다.
+    - OUTER JOIN의 종류
         - Left OUTER JOIN	
             - (공통되는것일단가지고옴, 나머지 공통안된것 왼쪽걸 가지고옴) 
         - RIGHT OUTER JOIN

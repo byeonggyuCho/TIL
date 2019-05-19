@@ -10,23 +10,23 @@
 - <details>
     <summary>1.1 Oracle</summary>
 
-    - [dataBasePlanning](./db/Oracle/dataBasePlanning.md)
-    - [dataIntegrity](./db/Oracle/dataIntegrity.md)
-    - [errorCode](./db/Oracle/errorCode.md)
-    - [function](./db/Oracle/function.md)
-    - [jdbc](./db/Oracle/jdbc.md)
-    - [join](./db/Oracle/join.md)
-    - [paginaion](./db/Oracle/paginaion.md)
-    - [procedure](./db/Oracle/procedure.md)
-    - [query_DCL](./db/Oracle/query_DCL.md)
-    - [query_DLL](./db/Oracle/query_DLL.md)
-    - [query_DML](./db/Oracle/query_DML.md)
-    - [query_QL](./db/Oracle/query_QL.md)
-    - [queryOptimizaion](./db/Oracle/queryOptimizaion.md)
-    - [seqence](./db/Oracle/seqence.md)
-    - [transaction](./db/Oracle/transaction.md)
-    - [trigger](./db/Oracle/trigger.md)
-    - [view](./db/Oracle/view.md)
+    - [dataBasePlanning](./db/oracle/dataBasePlanning.md)
+    - [dataIntegrity](./db/oracle/dataIntegrity.md)
+    - [errorCode](./db/oracle/errorCode.md)
+    - [function](./db/oracle/function.md)
+    - [jdbc](./db/oracle/jdbc.md)
+    - [join](./db/oracle/join.md)
+    - [paginaion](./db/oracle/paginaion.md)
+    - [procedure](./db/oracle/procedure.md)
+    - [query_DCL](./db/oracle/query_DCL.md)
+    - [query_DLL](./db/oracle/query_DLL.md)
+    - [query_DML](./db/oracle/query_DML.md)
+    - [query_QL](./db/oracle/query_QL.md)
+    - [queryOptimizaion](./db/oracle/queryOptimizaion.md)
+    - [seqence](./db/oracle/seqence.md)
+    - [transaction](./db/oracle/transaction.md)
+    - [trigger](./db/oracle/trigger.md)
+    - [view](./db/oracle/view.md)
     </details>
 - <details>
     <summary>1.2 Mysql</summary>
@@ -69,6 +69,6 @@
 - 브라우저 동작 원리
 - Build Tool : [Maven, Gradle]
 - AWS
-- Oracle, Mysql
+- oracle, Mysql
 - 함수형프로그래밍
 - TCP/IP
