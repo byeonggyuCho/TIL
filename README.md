@@ -7,8 +7,8 @@
 <details>
 <summary>1. DB</summary>
 
-- <details>
-    <summary>1.1 Oracle</summary>
+1.  <details>
+    <summary> Oracle</summary>
 
     - [dataBasePlanning](./db/oracle/dataBasePlanning.md)
     - [dataIntegrity](./db/oracle/dataIntegrity.md)
@@ -28,8 +28,8 @@
     - [trigger](./db/oracle/trigger.md)
     - [view](./db/oracle/view.md)
     </details>
-- <details>
-    <summary>1.2 Mysql</summary>
+2. <details>
+    <summary> Mysql</summary>
 
     - [install](./db/mysql/install.md)
   </details>
@@ -37,7 +37,7 @@
 
 
 <details>
-<summary>2.Java</summary>
+<summary>2. Java</summary>
 
 - [ClassPart1](./java/class_part_1.md)
 - [ClassPart2](./java/class_part_2.md)
@@ -45,21 +45,30 @@
 </details>
 
 <details>
-<summary>3.JavaScript</summary>
+<summary>3. JavaScript</summary>
 
 - [Array](./javascript/array.md)
 - [Json](./javascript/json.md)
-- [StricMode](./javascript/stricMode.md)
+- [StrictMode](./javascript/strictMode.md)
+</details>
+
+<details>
+<summary>4. Network</summary>
+
+- [HTTP](./network/http.md)
+- [REST](./network/REST.md)
+- [CORS](./network/CORS.md)
 </details>
 
 
 <details>
-<summary>4.Network</summary>
+<summary>5. React</summary>
 
-- [HTTP](./network/http.md)
-- [REST](./network/REST.md)
-- [StricMode](./network/stricMode.md)
+- [react_redux](./react/react_redux.md)
+- [redux_action](./react/redux_action.md)
+- [redux_thunk](./react/redux_thunk.md)
 </details>
+
 
 
 ### 다뤄보고 싶은 주제
@@ -69,6 +78,5 @@
 - 브라우저 동작 원리
 - Build Tool : [Maven, Gradle]
 - AWS
-- oracle, Mysql
 - 함수형프로그래밍
 - TCP/IP
