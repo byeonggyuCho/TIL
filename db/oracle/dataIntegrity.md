@@ -1,5 +1,5 @@
 
-Data integrity(데이터 무결성) 
+Data integrity (데이터 무결성) 
 ============================
 	
 결점없이 데이터를 보관하겠다.<br>
@@ -36,7 +36,7 @@ Data integrity(데이터 무결성)
 	- 필수입력.
 	- PRIMARY Key 
 	- 자체적인 해결방법이 있다.
-	- Not null 속성
+	- NOT NULL 속성
 
 2) ND(NOT Duplicate) 속성
 	- 중복 불가.
@@ -66,17 +66,17 @@ Data integrity(데이터 무결성)
 
 
 테이블생성
-~~~
-CREATE table TABLE(
-	id	number			not null,
-	name	varchar2(10)  		null
+~~~ sql
+CREATE TABLE TABLE (
+	id	NUMBER			NOT NULL,
+	name	VARCHAR2(10)  		NULL
 ) ;	
 ~~~
 
 행 추가
-~~~
+~~~ sql
 INSERT INTO TABLE(name)  VALUES('홍길동') ;		
-/*false : 'ID' is not null*/
+/* false : 'ID' is NOT NULL*/
 INSERT INTO TABLE(id,name)  VALUES(1,'홍길동') ;	
 /*done*/
 INSERT INTO TABLE(id,name)  VALUES(1,'홍길동') ;		
@@ -84,12 +84,12 @@ INSERT INTO TABLE(id,name)  VALUES(1,'홍길동') ;
 ~~~
 
 속성변경
-~~~		
+~~~		sql
 /* PRIMARYKEY 속성 삽입 '*/
 /* 관례 'pk_, id(컬럼이름) '*/
 //이미 중복된 데이터가 있으면 안된다.
 
-ALTER table TABLE  
+ALTER TABLE TABLE  
 	ADD CONSTRAINT		pk_id	 PRIMARY KEY(id) ;
 
 
@@ -98,13 +98,13 @@ DELETE FROM TABLE;
 
 /* 생성시점에 속성 지정하기 */
 CREATE TABLE TABLE(
-	id	 number 		PRIMARY KEY,
-	name 	varchar2(10) 			
+	id	 NUMBER 		PRIMARY KEY,
+	name 	VARCHAR2(10) 			
 ) ;
 ~~~	
 
 - 중복된 데이터 입력 시도
-- not null 확인.	
+- NOT NULL 확인.	
 - INSERT INTO TABLE(name)  VALUES('임꺽정') ;
 - 하지만 이런식으로 생성된 테이블은 문제가 있다.
 - 직접 이름을 주는것이 좋다.
@@ -114,28 +114,28 @@ CREATE TABLE TABLE(
 	
 
 #### 속성한번에 지정하기.
-- alter로 변경하지말고 한번에 지정하자.
+- ALTER로 변경하지말고 한번에 지정하자.
 
-~~~
+~~~ sql
 CREATE TABLE TABLE(
-	id	number 		CONSTRAINT pk_id PRIMARY KEY,
-	name 	varchar2(10) 	null
+	id	NUMBER 		CONSTRAINT pk_id PRIMARY KEY,
+	name 	VARCHAR2(10) 	NULL
 ) ;
 ~~~
 이렇게 보단
 
 
-~~~
+~~~ sql
 CREATE TABLE TABLE(
-	id	number(3) ,
-	name 	varchar2(10) 	null,
+	id	NUMBER(3) ,
+	name 	VARCHAR2(10) 	NULL,
 	CONSTRAINT pk_id PRIMARY KEY(id,name) 
 ) ;
 
 
 /*
-number(3)  	: 정확하게 쓰고자 하는 자릿수를 지정
-number(3,2) 	: 정수자리 3자리, 소수자리 2자리.
+NUMBER(3)  	: 정확하게 쓰고자 하는 자릿수를 지정
+NUMBER(3,2) 	: 정수자리 3자리, 소수자리 2자리.
 */
 ~~~
 이렇게 한번에 조건을 부여.
@@ -144,13 +144,13 @@ number(3,2) 	: 정수자리 3자리, 소수자리 2자리.
 #### 기본키 제거하기.
 1. 제약 삭제하기
 
-~~~
+~~~ sql
 ALTER TABLE TABLE
 	DROP CONSTRAINT pk_id;
 ~~~
 
 2. 제약 추가하기
-~~~
+~~~ sql
 ALTER TABLE TABLE
 	ADD CONSTRAINT pk_id;
 ~~~
@@ -160,18 +160,18 @@ ALTER TABLE TABLE
 - 데이터가 이미 들어가있으면 테이블을 함부로 지울수가 없다!
 - 확인하기 : DESC TABLE;
 
-~~~
+~~~ sql
 ALTER TABLE TABLE
-	ADD gender char(4)  not null;
+	ADD gender char(4)  NOT NULL;
 ~~~
 
 
 
 4. NOT NULL 조건 추가.
-~~~
+~~~ sql
 /* desc로 확인해보세요.*/
 ALTER TABLE TABLE
-	MODIFY gender char(4)  not null;
+	MODIFY gender char(4)  NOT NULL;
 ~~~
 
 
@@ -194,13 +194,13 @@ VARCHAR(N)
 2)  하나의 테이블에 여러개를 설정 가능.
 3) ND(no duplicate) 속성지원.
 
-~~~
+~~~ sql
 /* 유니크의 관례어 uk */
-Drop table TABLE;
+DROP TABLE TABLE;
 
 CREATE TABLE TABLE(
-	id	number(3) ,
-	name	varchar2(10) ,
+	id	NUMBER(3) ,
+	name	VARCHAR2(10) ,
 	CONSTRAINT uk_id UNIQUE(id) 
 ) ;
 INSERT INTO TABLE(id,name)  VALUES(1,'홍길동') ;	
@@ -208,7 +208,7 @@ INSERT INTO TABLE(id,name)  VALUES(1,'홍길동') ;
 //무결성 제약 조건(USER1.UK_ID) 에 위배됩니다.
 
 /* 못막음  */
-//오라클에선 null은 값이 아님
+//오라클에선 NULL은 값이 아님
 //중복도 못막음. 이건 제품마다 다름. 
 INSERT INTO TABLE(id,name)  VALUES(NULL,'홍길동') ;	
 INSERT INTO TABLE(id,name)  VALUES(NULL,'홍길동') ;	
@@ -218,12 +218,12 @@ INSERT INTO TABLE(id,name)  VALUES(NULL,'홍길동') ;
 
 ### 3. DEFAULT 
 - INSERT로 입력받지 않은 값은 기본값으로 자동셋팅
-~~~
-drop table TABLE;
+~~~ sql
+DROP TABLE TABLE;
 	
 CREATE TABLE TABLE(
-	id	number(3) 		DEFAULT 0,
-	name	varchar2(10) 	DEFAULT '홍길동'
+	id	NUMBER(3) 		DEFAULT 0,
+	name	VARCHAR2(10) 	DEFAULT '홍길동'
 ) ;
 
 
@@ -237,12 +237,12 @@ SELECT * FROM TABLE;
 - 그냥 컬럼수정하면된다.
 - 똑같이 써주고 DEFAULT를 빼주고 써준다.
 - 그리고 제약 검색에서 안나온다.
-- null이 될수 없다 DEFAULT값이 존재하니까.
+- NULL이 될수 없다 DEFAULT값이 존재하니까.
 - 정정.. DEFAULT값으로 지정하면 수정이 안된다.
-- null값으로 insert하면 되긴하다.
+- NULL값으로 insert하면 되긴하다.
 - 최종정정
 - DEFAULT를 삭제할순없다.
-- DEFAULT를 null로 바꾸면됨...
+- DEFAULT를 NULL로 바꾸면됨...
 
 -----
 ### 4. SEQUENCE(시퀀스) 	
@@ -254,21 +254,21 @@ SELECT * FROM TABLE;
 - 메모리에서 카운팅을 한다.
 - 데이터 베이스 안에서 작업이 일어날때 마다 카운팅을 하고 불러다쓴다.
 
-~~~
+~~~ sql
 CREATE SEQUENCE seq_id;
 ~~~
 
 - 숫자를 1부터 시작하던지 100부터 시작하던지
 - 따로지정하지 않으면 1씩 증가한다.
 
-~~~
-alter table TABLE
-	Modify id number(3) ;
+~~~ sql
+ALTER TABLE TABLE
+	Modify id NUMBER(3) ;
 ~~~
 
 - 확인..	
-~~~~
-select * from TABLE;
+~~~~ sql
+SELECT * FROM TABLE;
 
 /*시퀸스를 쓰려면 처음부터 시퀸스를 써야지 중복이 발생하지 않는다.*/
 INSERT INTO TABLE(id)  VALUES(seq_id.nextVal) ;
@@ -284,14 +284,14 @@ SELECT object_name, object_type FROM user_objects;
 
 
 ### 지우기
-~~~
-drop sequence seq_mem_id;
+~~~ sql
+DROP SEQUENCE seq_mem_id;
 ~~~
 ### 조건넣기.
-~~~
-CREATE sequence seq_id
+~~~ sql
+CREATE SEQUENCE seq_id
 	increment by 10			//10씩 증기 하게 하기.
-	start with 100			//시작값을 100부터.
+	START with 100			//시작값을 100부터.
 ~~~
 
 
@@ -301,12 +301,12 @@ CREATE sequence seq_id
 - 지정한 범위에서 벗어나면 무결성 오류가 난다.
 - 관례어 : ck
 
-~~~
+~~~ sql
 /* 서울,경기,인천만 입력이 가능하다.*/
 CREATE TABLE TABLE(
-	id	number(3),
-	name	varchar2(10) ,
-	city	varchar2(10) 
+	id	NUMBER(3),
+	name	VARCHAR2(10) ,
+	city	VARCHAR2(10) 
 CONSTRAINT ck_city CHECK(city='서울'or city='경기'or city='인천' ) 
 );
 
@@ -322,7 +322,7 @@ INSERT INTO TABLE(city)  VALUES('수원') ;
 ex)  age라는 필드를 추가하여 나이를 10~40세까지만 입력받을 수 있게 하라.
 
 - 필드 추가방법...
-~~~
+~~~ sql
 INSERT INTO TABLE(age)  VALUES(NULL) ;
 
 //BETWEEN으로 범위지정
@@ -336,10 +336,10 @@ CONSTRAINT ck_age CHECK( age BETWEEN 10 AND 40) ;
 - 유니크 조건이 달려있다.
 - 기본키다.
 
-~~~
+~~~ sql
 CREATE TABLE tblDept(
 deptno	char(3) ,
-dname	varchar2(10) 
+dname	VARCHAR2(10) 
 ) ;
 
 INSERT INTO tblDept VALUES('100','영업부') ;
@@ -348,8 +348,8 @@ INSERT INTO tblDept VALUES('100','마케팅부') ;
 
 
 CREATE TABLE tblEmp(
-empno	number,
-ename	varchar2(10) ,
+empno	NUMBER,
+ename	VARCHAR2(10) ,
 hiredate	date,
 deptno	char(3) 
 ) ;
@@ -363,10 +363,10 @@ INSERT INTO tblEmp VALUES(seq_id.nextVal, '임꺽정',sysdate, '120') ;
 - 이때 deptno의 형식이 똑같아야한다. 다르면 달수 없다.
 - 그런데 이미 잘못된 데이터가 있으면 참조키를 달 수 없다다.
 
-~~~
-//이름이 길어지더라도 참조키에 대한 정보를 이름으로 써줘야 편함.
+~~~ sql
+/*이름이 길어지더라도 참조키에 대한 정보를 이름으로 써줘야 편함.*/
 ALTER TABLE tblEmp
-add CONSTRAINT fk_deptno_emp_deptno_emp_dept FOREIGN KEY(deptno) 
+ADD CONSTRAINT fk_deptno_emp_deptno_emp_dept FOREIGN KEY(deptno)
 REFERENCES tblDept(deptno) ;
 ~~~~
 
@@ -375,17 +375,17 @@ REFERENCES tblDept(deptno) ;
 - 자식테이블: tblEmp	참조키:deptno
 
 
-~~~~
+~~~~ sql
 ALTER TABLE tblDept
 add CONSTRAINT pk_deptno PRIMARY KEY(deptno) ;
 
 
-//나중에 참조를 할때 애먹을 수 있다.
-//옳은 데이터를 넣어야만하기때문..
-//참조키가 컬럼의 NC속성을 지켜준다. 참조당하는 값은 변경할 수 없다.
+/*나중에 참조를 할때 애먹을 수 있다.*/
+/*옳은 데이터를 넣어야만하기때문..*/
+/*참조키가 컬럼의 NC속성을 지켜준다. 참조당하는 값은 변경할 수 없다.*/
 
 
-// 업데이트를 이용해서 부모의 참조필드를 변경시도 해보자.
+/* 업데이트를 이용해서 부모의 참조필드를 변경시도 해보자.*/
 
 UPDATE  tblDept
 Set deptno='300'
@@ -398,13 +398,13 @@ where deptno='100';
 
 
 ### 컬럼값 삭제하기
-- drop table tblDeptno;
+- DROP TABLE tblDeptno;
 - 캐스케이드로는 삭제가 될수는 있지만 위험함.
 - 검색해주는 기능.
 - desc 테이블 조회.
 - uesc user_contraints;
 
-~~~
-select CONSTRAINT_name, table_name
-from user_CONSTRAINTs;
+~~~ sql
+SELECT CONSTRAINT_name, TABLE_name
+FROM user_CONSTRAINTs;
 ~~~
