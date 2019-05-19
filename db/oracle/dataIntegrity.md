@@ -67,7 +67,7 @@ Data integrity (데이터 무결성)
 
 테이블생성
 ~~~ sql
-CREATE TABLE TABLE (
+CREATE TABLE tblEmp (
 	id	NUMBER			NOT NULL,
 	name	VARCHAR2(10)  		NULL
 ) ;	
@@ -75,11 +75,11 @@ CREATE TABLE TABLE (
 
 행 추가
 ~~~ sql
-INSERT INTO TABLE(name)  VALUES('홍길동') ;		
+INSERT INTO tblEmp(name)  VALUES('홍길동') ;		
 /* false : 'ID' is NOT NULL*/
-INSERT INTO TABLE(id,name)  VALUES(1,'홍길동') ;	
+INSERT INTO tblEmp(id,name)  VALUES(1,'홍길동') ;	
 /*done*/
-INSERT INTO TABLE(id,name)  VALUES(1,'홍길동') ;		
+INSERT INTO tblEmp(id,name)  VALUES(1,'홍길동') ;		
 /*false : 'ID' is unique column*/
 ~~~
 
@@ -89,15 +89,15 @@ INSERT INTO TABLE(id,name)  VALUES(1,'홍길동') ;
 /* 관례 'pk_, id(컬럼이름) '*/
 //이미 중복된 데이터가 있으면 안된다.
 
-ALTER TABLE TABLE  
+ALTER TABLE tblEmp  
 	ADD CONSTRAINT		pk_id	 PRIMARY KEY(id) ;
 
 
 /*중복된 데이터 지우기.*/
-DELETE FROM TABLE;
+DELETE FROM tblEmp;
 
 /* 생성시점에 속성 지정하기 */
-CREATE TABLE TABLE(
+CREATE TABLE tblEmp(
 	id	 NUMBER 		PRIMARY KEY,
 	name 	VARCHAR2(10) 			
 ) ;
@@ -105,7 +105,7 @@ CREATE TABLE TABLE(
 
 - 중복된 데이터 입력 시도
 - NOT NULL 확인.	
-- INSERT INTO TABLE(name)  VALUES('임꺽정') ;
+- INSERT INTO tblEmp(name)  VALUES('임꺽정') ;
 - 하지만 이런식으로 생성된 테이블은 문제가 있다.
 - 직접 이름을 주는것이 좋다.
 - (직관적으로 제약을 확인 할 수 있도록) 
@@ -117,7 +117,7 @@ CREATE TABLE TABLE(
 - ALTER로 변경하지말고 한번에 지정하자.
 
 ~~~ sql
-CREATE TABLE TABLE(
+CREATE TABLE tblEmp(
 	id	NUMBER 		CONSTRAINT pk_id PRIMARY KEY,
 	name 	VARCHAR2(10) 	NULL
 ) ;
@@ -126,7 +126,7 @@ CREATE TABLE TABLE(
 
 
 ~~~ sql
-CREATE TABLE TABLE(
+CREATE TABLE tblEmp(
 	id	NUMBER(3) ,
 	name 	VARCHAR2(10) 	NULL,
 	CONSTRAINT pk_id PRIMARY KEY(id,name) 
@@ -145,23 +145,23 @@ NUMBER(3,2) 	: 정수자리 3자리, 소수자리 2자리.
 1. 제약 삭제하기
 
 ~~~ sql
-ALTER TABLE TABLE
+ALTER TABLE tblEmp
 	DROP CONSTRAINT pk_id;
 ~~~
 
 2. 제약 추가하기
 ~~~ sql
-ALTER TABLE TABLE
+ALTER TABLE tblEmp
 	ADD CONSTRAINT pk_id;
 ~~~
 
 
 3. 컬럼 추가하기.
 - 데이터가 이미 들어가있으면 테이블을 함부로 지울수가 없다!
-- 확인하기 : DESC TABLE;
+- 확인하기 : DESC tblEmp;
 
 ~~~ sql
-ALTER TABLE TABLE
+ALTER TABLE tblEmp
 	ADD gender char(4)  NOT NULL;
 ~~~
 
@@ -170,7 +170,7 @@ ALTER TABLE TABLE
 4. NOT NULL 조건 추가.
 ~~~ sql
 /* desc로 확인해보세요.*/
-ALTER TABLE TABLE
+ALTER TABLE tblEmp
 	MODIFY gender char(4)  NOT NULL;
 ~~~
 
@@ -196,22 +196,22 @@ VARCHAR(N)
 
 ~~~ sql
 /* 유니크의 관례어 uk */
-DROP TABLE TABLE;
+DROP TABLE tblEmp;
 
-CREATE TABLE TABLE(
+CREATE TABLE tblEmp(
 	id	NUMBER(3) ,
 	name	VARCHAR2(10) ,
 	CONSTRAINT uk_id UNIQUE(id) 
 ) ;
-INSERT INTO TABLE(id,name)  VALUES(1,'홍길동') ;	
-INSERT INTO TABLE(id,name)  VALUES(1,'홍길동') ;	
+INSERT INTO tblEmp(id,name)  VALUES(1,'홍길동') ;	
+INSERT INTO tblEmp(id,name)  VALUES(1,'홍길동') ;	
 //무결성 제약 조건(USER1.UK_ID) 에 위배됩니다.
 
 /* 못막음  */
 //오라클에선 NULL은 값이 아님
 //중복도 못막음. 이건 제품마다 다름. 
-INSERT INTO TABLE(id,name)  VALUES(NULL,'홍길동') ;	
-INSERT INTO TABLE(id,name)  VALUES(NULL,'홍길동') ;	
+INSERT INTO tblEmp(id,name)  VALUES(NULL,'홍길동') ;	
+INSERT INTO tblEmp(id,name)  VALUES(NULL,'홍길동') ;	
 					
 ~~~
 
@@ -219,17 +219,17 @@ INSERT INTO TABLE(id,name)  VALUES(NULL,'홍길동') ;
 ### 3. DEFAULT 
 - INSERT로 입력받지 않은 값은 기본값으로 자동셋팅
 ~~~ sql
-DROP TABLE TABLE;
+DROP TABLE tblEmp;
 	
-CREATE TABLE TABLE(
+CREATE TABLE tblEmp(
 	id	NUMBER(3) 		DEFAULT 0,
 	name	VARCHAR2(10) 	DEFAULT '홍길동'
 ) ;
 
 
-INSERT INTO TABLE(id)  VALUES(1) ;
-INSERT INTO TABLE(name)  VALUES('홍길동') ;
-SELECT * FROM TABLE;
+INSERT INTO tblEmp(id)  VALUES(1) ;
+INSERT INTO tblEmp(name)  VALUES('홍길동') ;
+SELECT * FROM tblEmp;
 ~~~
 
 
@@ -262,16 +262,16 @@ CREATE SEQUENCE seq_id;
 - 따로지정하지 않으면 1씩 증가한다.
 
 ~~~ sql
-ALTER TABLE TABLE
+ALTER TABLE tblEmp
 	Modify id NUMBER(3) ;
 ~~~
 
 - 확인..	
 ~~~~ sql
-SELECT * FROM TABLE;
+SELECT * FROM tblEmp;
 
 /*시퀸스를 쓰려면 처음부터 시퀸스를 써야지 중복이 발생하지 않는다.*/
-INSERT INTO TABLE(id)  VALUES(seq_id.nextVal) ;
+INSERT INTO tblEmp(id)  VALUES(seq_id.nextVal) ;
 
 
 
@@ -303,7 +303,7 @@ CREATE SEQUENCE seq_id
 
 ~~~ sql
 /* 서울,경기,인천만 입력이 가능하다.*/
-CREATE TABLE TABLE(
+CREATE TABLE tblEmp(
 	id	NUMBER(3),
 	name	VARCHAR2(10) ,
 	city	VARCHAR2(10) 
@@ -313,9 +313,9 @@ CONSTRAINT ck_city CHECK(city='서울'or city='경기'or city='인천' )
 
 
 /*done */		
-INSERT INTO TABLE(city)  VALUES('서울') ;
+INSERT INTO tblEmp(city)  VALUES('서울') ;
 /*fail : 무결성 ck_city에 위배*/		
-INSERT INTO TABLE(city)  VALUES('수원') ;		
+INSERT INTO tblEmp(city)  VALUES('수원') ;		
 ~~~~
 
 
@@ -323,7 +323,7 @@ ex)  age라는 필드를 추가하여 나이를 10~40세까지만 입력받을 �
 
 - 필드 추가방법...
 ~~~ sql
-INSERT INTO TABLE(age)  VALUES(NULL) ;
+INSERT INTO tblEmp(age)  VALUES(NULL) ;
 
 //BETWEEN으로 범위지정
 CONSTRAINT ck_age CHECK( age BETWEEN 10 AND 40) ;	
