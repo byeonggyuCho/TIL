@@ -87,7 +87,7 @@ INSERT INTO tblEmp(id,name)  VALUES(1,'홍길동') ;
 ~~~		sql
 /* PRIMARYKEY 속성 삽입 '*/
 /* 관례 'pk_, id(컬럼이름) '*/
-//이미 중복된 데이터가 있으면 안된다.
+/*이미 중복된 데이터가 있으면 안된다.
 
 ALTER TABLE tblEmp  
 	ADD CONSTRAINT		pk_id	 PRIMARY KEY(id) ;
@@ -205,11 +205,11 @@ CREATE TABLE tblEmp(
 ) ;
 INSERT INTO tblEmp(id,name)  VALUES(1,'홍길동') ;	
 INSERT INTO tblEmp(id,name)  VALUES(1,'홍길동') ;	
-//무결성 제약 조건(USER1.UK_ID) 에 위배됩니다.
+/*무결성 제약 조건(USER1.UK_ID) 에 위배됩니다.*/
 
 /* 못막음  */
-//오라클에선 NULL은 값이 아님
-//중복도 못막음. 이건 제품마다 다름. 
+/*오라클에선 NULL은 값이 아님*/
+/*중복도 못막음. 이건 제품마다 다름. */
 INSERT INTO tblEmp(id,name)  VALUES(NULL,'홍길동') ;	
 INSERT INTO tblEmp(id,name)  VALUES(NULL,'홍길동') ;	
 					
@@ -276,7 +276,7 @@ INSERT INTO tblEmp(id)  VALUES(seq_id.nextVal) ;
 
 
 /*제약조건 조회 : 사용자가 만든 모든 객체 확인*/
-//내가 만든 모든객체를 볼 수 있다.
+/*내가 만든 모든객체를 볼 수 있다.*/
 DESC USER_OBJECTS;		
 SELECT object_name, object_type FROM user_objects;
 ~~~~
@@ -290,8 +290,8 @@ DROP SEQUENCE seq_mem_id;
 ### 조건넣기.
 ~~~ sql
 CREATE SEQUENCE seq_id
-	increment by 10			//10씩 증기 하게 하기.
-	START with 100			//시작값을 100부터.
+	increment by 10			/*10씩 증기 하게 하기.*/
+	START with 100			/*시작값을 100부터.*/
 ~~~
 
 
@@ -325,7 +325,7 @@ ex)  age라는 필드를 추가하여 나이를 10~40세까지만 입력받을 �
 ~~~ sql
 INSERT INTO tblEmp(age)  VALUES(NULL) ;
 
-//BETWEEN으로 범위지정
+/*BETWEEN으로 범위지정*/
 CONSTRAINT ck_age CHECK( age BETWEEN 10 AND 40) ;	
 ~~~
 
