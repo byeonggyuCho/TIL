@@ -1,8 +1,19 @@
 
 
 # Transaction
-#### 컴퓨터가 처리하는 작업의 단위.	
-- thread와 구분
+- 컴퓨터가 처리하는 작업의 단위.	
+- DB에 데이터를 저장하거나 삭제, 갱신할때 일어나는 변경의 단위
+- API의 ACID 속성
+- 트랜잭션의 범위를 설정하여 Rollback이 발생하는 시점을 정할 수 있다.
+
+### ACID
+- A(atomicity) : 원자성
+- C(Consistency) : 일관성
+- I(Isolation) : 고립성
+- D(Durabiliy) : 내구성
+
+
+
 
 
 1) All or Nothing!

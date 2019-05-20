@@ -18,19 +18,32 @@ Mybatis
         - 매핑 파일이나 애너테이션에 정의한 SQL에 대응하는 자바 인터페이스
     - **Mapping XML**
         - SQL과 객체의 매핑 정의를 기술하는 XML파일, SQL을 애너테이션에 지정하는 경우는 사용하지 않음
-    - **org.apache.ibatis.session.SqlSession**
+    - 경로
+        - org.apache.ibatis.session
+    - **SqlSession**
+        - 하나의 SqlSession객체가 생성되고 트랜잭션이 동작하는 동안 지속적으로 사용
         - SQL 발행이나 트랜잭션 제어용 API 제공 컴포넌트
         - 스프링 프레임워크에서 사용하는 경우에는 마이바티스의 트랜잭션 제어  API는 사용하지 않음
-    - **org.apache.ibatis.session.SqlSessionFactory**
-        - SqlSession 생성하기 위한 컴포넌트
-    - **org.apache.ibatis.session.SqlSessionFactoryBuilder**
-        - 마이바티스 설정파일을 읽어들여 SqlSessionFactory를 생성하기 위한 컴포넌트
-2. MyBatis-Spring 주요컴포넌트
-    - **org.mybatis.spring.SqlSessionFactoryBean**
+        - 세션이 종료되면 Rollback되거나 Commit된다.
+    - **SqlSessionFactory**
+        - SqlSessionTemplate을 찍어내는 공장(factory)
+        - 트랜잭션당 하나의 SqlSession을 생성한다.
+        - 세션을 한번 생성하면 매핑구문을 실행하거나 커밋 또는 롤백을 하기 위해 세션을 사용할수 있다. 마지막으로 더 이상 필요하지 않은 상태가 되면 세션을 닫는다. (재활용)
+    - **SqlSessionFactoryBuilder**
+        - SqlSessionFactory를 생성하는 컴포넌트
+        - 마이바티스 설정파일을 참조한다.
+
+2. MyBatis-Spring 연동모듈 주요컴포넌트
+    - 경로
+        - org.mybatis.spring
+    - **SqlSessionFactoryBean**
+        - SqlSessionFactoryBuilder역할.
         - SqlSessionFactory를 구축하고 스프링 DI 컨테이너에 객체를 저장
-    - **org.mybatis.spring.SqlSessionTemplate**
-        - 스프링 트랜잭션 관리하에 마이바티스 표준의 SqlSession을 취급하기 위한 컴포넌트 (스레드안전)
-    - **org.mybatis.spring.mapper.MapperFactoryBean**
+        - 쉽게 말해 DAO의 구현체 객체가 저장된다.
+    - **SqlSessionTemplate**
+        - SqlSessionTemplate은 SqlSession을 구현하고 코드에서 SqlSession를 대체하는 역할을 한다.
+        - SqlSessionTemplate은 필요한 시점에 세션을 닫고, 커밋하거나 롤백하는 것을 포함한 세션의 생명주기를 관리.
+    - **mapper.MapperFactoryBean**
         - 스프링 트랜잭션 관리하에 SQL을 실행하는 Mapper객체를 빈으로 생성하기 위한 컴포넌트
 
 
@@ -55,10 +68,25 @@ Mybatis
         - SessionTemplate 생성 & SQL을 실행하는 Mapper 객체 생성
         - 스프링의 트랜잭션 관리하에 마이바티스 표준의 SqlSession을 취급
 2. 실행흐름
-    - Client 요청
-    - Mapper 객체
+    1. Client 요청
+    2. Mapper 객체
         - Mapper 객체는 호출된 메서드에 대응하는 SqlSession(구현클래스 SqlSessionTemplate)의 메서드를 호출
         - SqlSessionTemplate
             - SqlSessionFactory를 통해서 MyBatis 표준 SqlSession 취득 (SQL을 같은 트랜잭션에서 조작하는 경우 같은 SqlSession 공유)
-            - SqlSessionFactory를 통해서 취득한 SqlSession을 실행중인 트랜잭션에 할당함으로 같은 트랜잭션에서 같은 SqlSession이 사용되도록 제어(JDK동적프락시구조이용)
+            - SqlSessionFactory를 통해서 취득한 SqlSession을 실행중인 트랜잭션에 할당함으로 같은 트랜잭션에서 같은 SqlSession이 사용되도록 제어 (JDK 동적프락시구조 이용)
             - 프락시화 된 SqlSession을 통해 MyBatis 표준 SqlSession 메서드를 호출해서 애플리케이션에서 호출된 Mapper 객체의 메서드에 대응하는 SQL 실행을 의뢰 
+
+
+## 용어정리
+    - 트랜잭션
+    - 프릭시
+    - sqlSession
+    - DataSourceTransactionManager
+
+## 참조
+- [마이바티스](http://www.mybatis.org/)
+
+
+## DataSourceTransactionManager
+    * 마이바티스 스프링 연동모듈
+    

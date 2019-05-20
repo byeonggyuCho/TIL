@@ -74,7 +74,15 @@
 ### 다뤄보고 싶은 주제
 - 프레임 설계를 위한 기반지식
 - 이용중인 툴의 소개 및 응용방법
-- 기술의 변천사
+  - mybatis
+  - jUnit
+  - esLint
+  - webpack
+  - babel
+  - git
+  - maven
+- 기술의 변천사 
+    - 데이터베이스 연동모듈
 - 브라우저 동작 원리
 - Build Tool : [Maven, Gradle]
 - AWS
