@@ -71,20 +71,40 @@
 
 
 
-### 다뤄보고 싶은 주제
-- 프레임 설계를 위한 기반지식
-- 이용중인 툴의 소개 및 응용방법
-  - mybatis
-  - jUnit
-  - esLint
-  - webpack
-  - babel
-  - git
-  - maven
-- 기술의 변천사 
+
+
+## 컨텐츠 컨테이터
+ 기획중인 아이템
+
+1.  Practice Series
+    - 기본기를 다루면서 예제화 한다.
+    - contents
+        - spring
+        - design pattern
+
+2. For Architecture Series
+    - 브라우저 동작 원리
+    - 함수형프로그래밍
+    - TCP/IP
+
+3. Tool Series
+
+  - 이용중인 툴의 소개 및 응용방법
+  - contents
+    - mybatis
+    - jUnit
+    - esLint
+    - webpack
+    - babel
+    - git
+    - maven
+
+4. 기술의 변천사 특집
+  - contents
     - 데이터베이스 연동모듈
-- 브라우저 동작 원리
-- Build Tool : [Maven, Gradle]
-- AWS
-- 함수형프로그래밍
-- TCP/IP
+    - Build Tool[Maven, Gradle]
+
+5. etc
+    - AWS
+
+
