@@ -303,3 +303,8 @@ select*From table;
 ### 서버용 DB, 로컬용 DB
 로컬용DB(Access) 
 
+
+
+
+## 참조
+- http://www.gurubee.net/oracle/sql

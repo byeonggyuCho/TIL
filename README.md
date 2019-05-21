@@ -88,21 +88,20 @@
     - TCP/IP
 
 3. Tool Series
-
-  - 이용중인 툴의 소개 및 응용방법
-  - contents
-    - mybatis
-    - jUnit
-    - esLint
-    - webpack
-    - babel
-    - git
-    - maven
+    - 이용중인 툴의 소개 및 응용방법
+    - contents
+      - mybatis
+      - jUnit
+      - esLint
+      - webpack
+      - babel
+      - git
+      - maven
 
 4. 기술의 변천사 특집
-  - contents
-    - 데이터베이스 연동모듈
-    - Build Tool[Maven, Gradle]
+    - contents
+      - 데이터베이스 연동모듈
+      - Build Tool[Maven, Gradle]
 
 5. etc
     - AWS

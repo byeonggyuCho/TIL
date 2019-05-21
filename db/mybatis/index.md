@@ -18,8 +18,7 @@ Mybatis
         - 매핑 파일이나 애너테이션에 정의한 SQL에 대응하는 자바 인터페이스
     - **Mapping XML**
         - SQL과 객체의 매핑 정의를 기술하는 XML파일, SQL을 애너테이션에 지정하는 경우는 사용하지 않음
-    - 경로
-        - org.apache.ibatis.session
+    - 경로 : org.apache.ibatis.session
     - **SqlSession**
         - 하나의 SqlSession객체가 생성되고 트랜잭션이 동작하는 동안 지속적으로 사용
         - SQL 발행이나 트랜잭션 제어용 API 제공 컴포넌트
@@ -34,12 +33,10 @@ Mybatis
         - 마이바티스 설정파일을 참조한다.
 
 2. MyBatis-Spring 연동모듈 주요컴포넌트
-    - 경로
-        - org.mybatis.spring
+    - 경로:org.mybatis.spring
     - **SqlSessionFactoryBean**
         - SqlSessionFactoryBuilder역할.
         - SqlSessionFactory를 구축하고 스프링 DI 컨테이너에 객체를 저장
-        - 쉽게 말해 DAO의 구현체 객체가 저장된다.
     - **SqlSessionTemplate**
         - SqlSessionTemplate은 SqlSession을 구현하고 코드에서 SqlSession를 대체하는 역할을 한다.
         - SqlSessionTemplate은 필요한 시점에 세션을 닫고, 커밋하거나 롤백하는 것을 포함한 세션의 생명주기를 관리.
@@ -78,15 +75,15 @@ Mybatis
 
 
 ## 용어정리
-    - 트랜잭션
-    - 프릭시
-    - sqlSession
-    - DataSourceTransactionManager
+- 트랜잭션
+- 프릭시
+- sqlSession
+- DataSourceTransactionManager
 
 ## 참조
 - [마이바티스](http://www.mybatis.org/)
 
 
 ## DataSourceTransactionManager
-    * 마이바티스 스프링 연동모듈
+* 마이바티스 스프링 연동모듈
     

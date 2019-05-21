@@ -49,7 +49,7 @@ SELECT
 
 3) 확장 문법
 
-    1. 정렬 : **ORDER BY** 
+    1.  **ORDER BY** 
         <br>
         필드명 여러개 입력가능.<br>
         **ASC**  오름(기본값)<br>
@@ -80,7 +80,7 @@ SELECT
 
 
 
-    2. 조건 : **WHERE**
+    2. **WHERE**
 
         ~~~ sql
         WHERE 조건식 (필드명 연산자 값)
@@ -100,7 +100,7 @@ SELECT
             - %L  : L로 끝난다
             - L%  :	L로 시작한다
             - %L% : L이 들어간다.
-    --------
+    -----------------------------
     EX1)  급여가 3000$이상인 직원의 사번, 이름, 급여를 조회하시오<br>
     (단 급여가 많은순으로 정렬) 
     
@@ -125,7 +125,7 @@ SELECT
     FROM emp 
     WHERE hiredate>'1982/1/1'
     ~~~ 
-    -  SQL에서 날짜는 문자로 캐스팅된다.
+    SQL에서 날짜는 문자로 캐스팅된다.
     
 
     EX4)  부서가 20이고 업무가 analyst인 직원의 이름, 부서, 입사일자 조회
@@ -137,11 +137,15 @@ SELECT
         AND job='ANALYST'
     ~~~ 
 
+    
+    <br>
+
 
     3. **BEWEEN**
 
-        AND 조건이 이상 이하 일때만 사용가능하다
+    AND 조건이 이상 이하 일때만 사용가능하다
 
+    --------------------------------------------------
     Ex) 급여가 1500이상 2500이하를 받는 직원의 이름, 부서 업무 급여를 조회하라.
     ~~~ sql
     SELECT ename, deptno, job, sal, 
@@ -154,13 +158,15 @@ SELECT
     WHERE sal between 1500 AND 2500;
     ~~~ 
 
-
+    <br>
+    <br>
     
 
     4. **IN**
 
     'or 조건'과 '같다'라는 조건에서만 사용가능하다.
 
+    -------------------------------------------------
     Ex) 업무가 clerk, salesman, analyst인 직원의 이름, 부서, 업무를 조회.
         
     ~~~ sql
@@ -175,52 +181,62 @@ SELECT
 
 
     Ex)  직원의 사번, 이름, 부서, 업무, 급여, 보너스를 조회하라.
+
     ~~~ sql
     SELECT empno, ename, deptno, job, sal, comm 
     FROM emp;  
     ~~~ 
-
-    - 같은 데이터로 많은 생각이라.. 데이터 마이닝?-
-    - DB에서의 NULL : 값이 없다는걸 표시하는값.
-<br>
-<br>
-<br>
+    <br>
+    <br>
 
     5.  **IS NULL**
 
-        - NULL은 값이 아니기때문에 =연산자로 사용할 수 없다.
+    - NULL은 값이 아니기때문에 =연산자로 사용할 수 없다.
 
-        -----
-        Ex)  보너스를 받지 못하는 직원의 이름, 부서, 업무 급여 보너스 조회
+    -----
+    Ex)  보너스를 받지 못하는 직원의 이름, 부서, 업무 급여 보너스 조회
 
-        ~~~ sql
-        SELECT ename, deptno, job, sal, comm 
-        FROM emp  
-        WHERE comm IS NULL; 
-        ~~~ 
-        ~~~ sql
-        SELECT ename, deptno, job, sal, comm 
-        FROM emp  
-        WHERE job != 'SALESMAN';
+    ~~~ sql
+    SELECT ename, deptno, job, sal, comm 
+    FROM emp  
+    WHERE comm IS NULL; 
+    ~~~ 
+    ~~~ sql
+    SELECT ename, deptno, job, sal, comm 
+    FROM emp  
+    WHERE job != 'SALESMAN';
 
-        SELECT ename, deptno, job, sal, comm 
-        FROM emp 
-        WHERE NOT (job = 'SALESMAN');
+    SELECT ename, deptno, job, sal, comm 
+    FROM emp 
+    WHERE NOT (job = 'SALESMAN');
 
-        SELECT ename, deptno, job, sal, comm 
-        FROM emp  
-        WHERE comm IS NOT NULL;
-        ~~~ 
+    SELECT ename, deptno, job, sal, comm 
+    FROM emp  
+    WHERE comm IS NOT NULL;
+    ~~~ 
+        
+    Ex)  이름이 S로 시작되는 직원의 이름, 업무, 급여를 조회해라.
+    
+    ~~~ sql
+    /* like는 문자만 사용가능하다.*/
+    SELECT ename, job, sal
+    FROM emp 
+    WHERE ename like 'S%';  
+    ~~~ 
 
+    6. **WHEN**
 
-            
-        Ex)  이름이 S로 시작되는 직원의 이름, 업무, 급여를 조회해라.
-        ~~~ sql
-        /* like는 문자만 사용가능하다.*/
-        SELECT ename, job, sal 
-        FROM emp 
-        WHERE ename like 'S%';  
-        ~~~ 
+    조건문이라고 생각하면 쉬움.
+
+    Ex) 봉급이 3000만원 미만이면 가입가능한 금융상품 대상자.
+    ~~~ sql
+    SELECT 
+    CASE 
+        WHEN sal < 3000 TEHN '가능'         
+        WEHN sal > 3000 THEN '불가능' 
+    END 'JOIN_YN'
+    FROM EMP
+    ~~~
 
 
 ### 직계함수?
@@ -367,5 +383,9 @@ HAVING 절은 GROUP BY절로 정렬이 된 데이터를 대상으로 조건을 �
  
 
  
+# 데이터 마이닝
 
+- 같은데이터로 많이 생각할 것
+- 데이터 마이닝(data mining)은 대규모로 저장된 데이터 안에서 체계적이고 자동적으로 통계적 규칙이나 패턴을 찾아 내는 것이다
  
+
