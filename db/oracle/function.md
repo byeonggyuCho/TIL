@@ -589,10 +589,13 @@ ex) 전체 급여의 합계가 5000을 초과하는 업무에 대해 급여 합�
 - 업무별로..
 
 ~~~ sql
-select job, sum(sal)  from emp where sum(sal)  >5000 group by job;
+select job, sum(sal)  
+from emp 
+where sum(sal)  >5000 
+group by job;
 ~~~ 
 - 처리순서때문에 오류남.
-- 먼저 그룹별로 묶은다음에 조건을 걸어야하는데.. where는 다되지만 group by 뒤에는 올수없다.
+- 먼저 그룹별로 묶은다음에 조건을 걸어야하는데.. where는 다 되지만 group by 뒤에는 올수없다.
 - 대신 having이 와야한다.
 
 ~~~ sql

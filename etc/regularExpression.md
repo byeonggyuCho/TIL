@@ -1,7 +1,7 @@
 
 # 정규표현식(regular expression)
 - 내가 임의로 형식을 만들 수있다.
-- 'abc_ _zz_ _110'과 같은 폼으로 검색등이 가능해진다.
+- 'abc__zz__110'과 같은 폼으로 검색등이 가능해진다.
 - java.lang.string 클래스가 정규표현식의 표현법을 빌려다 사용할수 있다.
 	- 내가 원하는 패턴을 만들 수 있다.
 - java.util.regex.Match/java.util.regex.Pattern.

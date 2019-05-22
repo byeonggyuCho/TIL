@@ -87,66 +87,65 @@ WHERE id=2;
             =,<, >, >=, <=, -, <>,...
         - 다중행
         ~~~ SQL
-        IN	        -- =
-        ANY	        -- or의미 , <=,>,< 등 적용가능
-        ALL
-        EXISTS	        -- 해당연산자가 존재하는지 확인한다.
-        NOT
+        IN	        -- N개중 하나
+        ANY	        -- 조회값중 하나라도 참일경우 ( <=,>,< )
+        ALL             -- 모든 조회값과 비교하여 참.
+        EXISTS	        -- 해당쿼리 조회값이 있으면 TRUE
+        NOT             -- NOT IN, NOT EXISTS 등..
         ~~~
 --------------------------------------------------------------
   ex) Scott의 급여보다 더 많이 받는 직원의 이름,업무, 급여를 조회.
 1. 스캇이 얼마 받는지?
 ~~~ SQL
-SELECT SAL FROM emp WHERE ename='Scott';
- -- 3000	   
+SELECT SAL FROM emp 
+WHERE ename='Scott';
+ -- Scott의 연봉: 3000	   
 ~~~
    
-2. 3000보다 많이 받는사람은?
+2. 급여가 3000이상인 사람은?
 ~~~ SQL
-SELECT ename SAL FROM emp WHERE SAL>3000;
+SELECT ename SAL FROM emp 
+WHERE SAL > 3000;
 ~~~
 
-#### 이렇게 중첩된 쿼리를 '서브쿼리' 라한다.
 ~~~ SQL
-SELECT ename SAL 
-FROM emp 
+SELECT ename SAL FROM emp 
 WHERE 
     SAL > (SELECT SAL FROM emp WHERE ename='Scott');	
 ~~~
-- 서브쿼리가 먼저실행된다.
-- 결과값을 리턴받아 다른 쿼리가 실행된다.
+- 서브쿼리가 먼저 실행된다.
+- 결과값을 리턴받고 다른 쿼리가 실행된다.
 
 
 ----------------------------------------------------------
-ex)  사번이 7521의 업무와 같고, 급여가 7934보다 많은직원의 사번, 이름 업무, 급여를 조회
+ex)  사번 7521와 업무가 같고, <br>
+급여가 7934보다 많은 직원의 사번, 이름 업무, 급여를 조회
 ~~~ SQL
-SELECT empno, ename, job,SAL 
-FROM emp 
+SELECT empno, ename, job, SAL FROM emp 
 WHERE empno=7521;
--- SALesman;
+-- SALESMAN;
 
-SELECT empno, ename, job,SAL 
-FROM emp 
+SELECT empno, ename, job,SAL FROM emp 
 WHERE empno=7934	
 -- SAL 1300;
 
-SELECT empno, ename, job,SAL 
-FROM emp 
+SELECT empno, ename, job,SAL FROM emp 
 WHERE job='SALESMAN'
     AND SAL>1300;
 
 SELECT empno, ename, job,SAL 
 FROM emp 
-WHERE job=(SELECT  job FROM emp WHERE empno=7521) 	
-    AND SAL>(SELECT SAL FROM emp WHERE empno=7934) ;
+WHERE job = (SELECT  job FROM emp WHERE empno=7521) 	
+    AND SAL > (SELECT SAL FROM emp WHERE empno=7934);
 ~~~
 
 
-    
-
-서브쿼리만 실행했을때 결과값으로 나오는 레코드의 갯수
-- 이게 유형으로 정리된다.
+#### 서브쿼리의 종류
+결과값으로 나오는 레코드의 갯수에 따라 종류가 나뉜다.
 - 단일행.
+- 다중행
+- 단일열
+- 다중열
 
 
 
@@ -155,8 +154,7 @@ ex) 업부별로 최소급여를 받는 직원의 사번, 이름, 급여, 부서
 ~~~ SQL
 -- 업무별 최소급여를 받는사람을 뽑고 그중에서 가장 적은 급여를 받는사람을 뽑아라.
 
-SELECT empno, ename, SAL, deptno 
-FROM emp 
+SELECT empno, ename, SAL, deptno FROM emp 
 GROUP BY job 
 ORDER BY SAL DESC;
 
@@ -168,7 +166,7 @@ SELECT job, SAL FROM emp ORDER BY SAL;
 ~~~ SQL
 SELECT job, min(SAL)  FROM emp GROUP BY job;
 
-----------------------
+------------------------
 800,1250,5000,2450,3000
 ~~~
 
@@ -183,23 +181,21 @@ WHERE  SAL = 800
     or SAL = 2450 
     or SAL = 3000;
 
-SELECT empno, ename, SAL, deptno, 
-FROM emp
-WHERE SAL IN(800,1250,5000, 2450,3000);
+SELECT empno, ename, SAL, deptno FROM emp
+WHERE SAL IN (800,1250,5000, 2450,3000);
 ~~~
 ~~~ SQL
-SELECT empno, ename, SAL, deptno, 
-FROM emp 
-WHERE SAL= (SELECT job, min(SAL)  FROM emp GROUP BY job) ;
+SELECT empno, ename, SAL, deptno FROM emp 
+WHERE SAL = (SELECT job, min(SAL)  FROM emp GROUP BY job) ;
 ~~~
-- 이 결과가 5개가 나온다. 따라서 다중행이된다.	(800, 1250, 5000, 2450, 3000) 
--  '='이건 단행 연산자다 1:1
--  'in' 이건 다중행 연산자.
+- 조회결과가 5개가 나온다.(다중행)
+- '=' : 단행 연산자 1:1 
+- 'IN' 다중행 연산자.
 
 ~~~ SQL
 SELECT empno, ename, SAL, deptno FROM emp 	
 
-WHERE SAL in(SELECT  min(SAL)  FROM emp GROUP BY job) ;
+WHERE SAL IN (SELECT  min(SAL)  FROM emp GROUP BY job) ;
 ~~~
 ----------------------------------------------
 ### 업무별 최저급여 보다 많이 받는사람.
@@ -207,42 +203,40 @@ WHERE SAL in(SELECT  min(SAL)  FROM emp GROUP BY job) ;
 SELECT job, min(SAL)  FROM emp GROUP BY job;
 
 SELECT empno, ename, SAL, deptno, FROM emp 
-WHERE SAL>800 
-or SAL>1250 
-or SAL>5000 
-or SAL>2450 
-or SAL> 3000;
+WHERE SAL > 800 
+    or SAL > 1250 
+    or SAL > 5000 
+    or SAL > 2450 
+    or SAL > 3000;
 
 -- sub 적용
 SELECT empno, ename, SAL, deptno FROM emp 
-WHERE SAL >ANY(SELECT min(SAL)  FROM emp GROUP BY job) ;
+WHERE SAL > ANY(SELECT min(SAL)  FROM emp GROUP BY job) ;
 ~~~
 
------------------------------------------------------------------------
+----------------------------------------------------------------
 ### 업무별 최대급여 보다 많거나 똑같이 받는사람.
 
 ~~~ SQL
 SELECT job, max(SAL)  FROM emp GROUP BY job;
 
-SELECT empno, ename, SAL, deptno 
-FROM emp 
+SELECT empno, ename, SAL, deptno FROM emp 
 WHERE SAL>=1300 
     or SAL>1600 
     or SAL>5000 
     or SAL>2975 
     or SAL> 3000;
 
-SELECT empno, ename, SAL, deptno 
-FROM emp 
-WHERE SAL>= all( SELECT  max(SAL)  FROM emp GROUP BY job ) ;
+SELECT empno, ename, SAL, deptno FROM emp 
+WHERE SAL >= ALL( SELECT  max(SAL) FROM emp GROUP BY job ) ;
 -- SELECT에서 job을 빼야...
 ~~~
------------------------------------------------------------------------------
+----------------------------------------------------------------
 
 
 
 
-## 다중열!!	(다중열을 기준으로) 
+### 다중열 서브쿼리
 
 
 ex) 밀러의 데이터를 수정한다.
@@ -255,13 +249,14 @@ WHERE ename='MILLER';
 ~~~
 
 
--------------------------------------------------------------------------------------
+----------------------------------------------------------------
 ex)  급여와 보너스가 30번 부서에 있는 직원의 
 급여와 보너스가 같은 직원에 대해 사번, 이름, 부서번호, 급여,보너스 조회
 
 #### 30번부서 사람
 ~~~ SQL
-SELECT empno, ename, deptno, SAL, comm FROM emp WHERE deptno=30;
+SELECT empno, ename, deptno, SAL, comm FROM emp 
+WHERE deptno=30;
 ~~~
 
 #### '30번부서의 급여'와 급여가 같은 사람들.
@@ -301,8 +296,7 @@ ex) 적어도 한명의 직원으로부터 보고를 받을 수 있는 직원의
 
 
 ~~~ SQL
-SELECT MGR 
-FROM emp 
+SELECT MGR FROM emp 
 GROUP BY MGR;
 
 SELECT distinct mgr FROM emp;	
@@ -322,8 +316,7 @@ SELECT ename, job, hiredate, SAL, MGR
 FROM emp
 WHERE empno in(7839,7782,7698,7902,7566,7788) ;
 
-SELECT ename, job, hiredate, SAL, MGR 
-FROM emp e
+SELECT ename, job, hiredate, SAL, MGR FROM emp e
 WHERE EXISTS ( SELECT * FROM emp WHERE e.empno=mgr) ;
 -- 이런선택도 가능하다.
 -- 불필요하게 어렵다.
