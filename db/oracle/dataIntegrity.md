@@ -294,6 +294,27 @@ CREATE SEQUENCE seq_id
 	START with 100			/*시작값을 100부터.*/
 ~~~
 
+~~~ sql
+CREATE SEQUENCE [스키마 명].[시퀀스 명]
+
+INCREMENT BY [증감 숫자]
+
+START WITH [시작 숫자]
+
+NOMINVALUE 혹은 MINVALUE [최소값]
+
+NOMAXVALUE 혹은 MAXVALUE [최대값]
+
+NOCYCLE 혹은 CYCLE
+
+NOCACHE 혹은 CACHE; 
+
+~~~
+
+
+
+
+
 
 ------
 ## 5. Check

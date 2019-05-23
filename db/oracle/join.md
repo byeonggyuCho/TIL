@@ -8,13 +8,13 @@ JOIN
 
 1) 종류 
 - **Cartesian Product JOIN** (데카르트 곱 조인) 
-- **Equi JOIN**
+- **EQUI JOIN**
     - 공통 필드의 레코드를 가져오는 방법.	
     - (중복된것을 가져오는것) 
     - Inner JOIN(Natural JOIN)  			
     - (중복된것을 빼고 가지고온다.) 
 
-- **NON Equi JOIN**
+- **NON EQUI JOIN**
     - 공통필드가 없을 경우,공통되지 않은 레코드를 가져오는 방법	
     - OUTER JOIN
         - Inner JOIN의 확장이다.

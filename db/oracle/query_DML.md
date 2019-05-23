@@ -1,6 +1,7 @@
-#  DML
+DML
+====
 
-1) INSERT
+### 1.INSERT
 ~~~ SQL
 INSERT into 테이블명(필드명, ...)  Values(값,...)  
 -- 필드에 값을 넣는다.
@@ -8,7 +9,7 @@ INSERT into 테이블명 values(값,...)
 -- 필드생성 순서대로 값을 대입된다.
 ~~~
 
-2) UPDATE
+### 2.UPDATE
 ~~~ SQL
 UPDATE 테이블명
 set 필드명 =값,필드명=값, ...
@@ -16,7 +17,7 @@ WHERE 조건식
 ~~~
 
     
-3) DELETE
+### 3.DELETE
 ~~~ SQL
 DELETE FROM 테이블명 (WHERE 조건식) ;	
 -- 테이블에 있는 데이터가 통으로 삭제된다.
@@ -27,30 +28,26 @@ DELETE FROM 테이블명 (WHERE 조건식) ;
 
 
 ### 예제
-- 사용자 추가 : 
 ~~~ SQL
+-- 사용자 추가 
 user (connect, resource 권한 부여) 
-~~~
-- 테이블 작성 : 
-~~~ SQL
+
+-- 테이블 작성 : 
 CREATE TABLE tbltest(
     id		number,
-    name		varchar2(10),
+    name	varchar2(10),
     hiredate	date
     ) ;
-~~~
 
 
-- 데이터
-~~~ SQL
+-- 데이터
 INSERT into tbltest(id, name, hiredate)  values(1, '홍길동',SYSDATE) ;
 INSERT into tbltest(id, name)  values(2,'임꺽정') ;
 INSERT into tbltest(id, name, hiredate)  values(3, '김유신',null) ;
 INSERT into tbltest values(4, '신돌석','2017/2/5') ;
-~~~
 
-- UPDATE
-~~~ SQL
+
+-- UPDATE
 UPDATE tbltest
 set hiredate=SYSDATE
 WHERE id=2;
@@ -59,49 +56,48 @@ WHERE id=2;
 ----
 
 
-4) SubQuery (서브쿼리)
+### 4.SubQuery (서브쿼리)
 
-     ORDER BY는 맨 마지막에 실행되어야하기 때문에..
-    1) 다른 query문에 포함된 query
-    2) 반드시 ()를 사용해야한다.
-    3) 연산자의 오른쪽에 와야한다.
-    4) ORDER BY를 사용할 수 없다.
-    5) 종류
+1) 다른 query문에 포함된 query
+2) 반드시 ()를 사용해야한다.
+3) 연산자의 오른쪽에 와야한다.
+4) ORDER BY를 사용할 수 없다.
+5) 종류
+
+    - 상관 SubQuery <br>
+    외부쿼리가 먼저 실행되어 결과값을 리턴해서 안쪽에 있는 쿼리가 실행되고 
+    그 결과를 다시 리턴받아서 외부쿼리가 실행된다, 즉 3번의 실행
+
+    - 서브쿼리를 복사해서 실행했을때 안되면 상관서브쿼리다. <br> 연결되어있기때문에 독립적 사용못함
+
+6) 유형
+    - 단일행 (Single-Row Subquery )
+    - 다중행 (Multiple-Row Subquery)
+    - 다중열 (Multiple-Column Subquery)
+    - Inline View (FROM절 Subquery)  
+    - Scalar Subquery  
+
+7) 연산자
+    - 단일행
     
-        - 상관 SubQuery <br>
-        외부쿼리가 먼저 실행되어 결과값을 리턴해서 안쪽에 있는 쿼리가 실행되고 
-        그 결과를 다시 리턴받아서 외부쿼리가 실행된다, 즉 3번의 실행
-
-        - 서브쿼리를 복사해서 실행했을때 안되면 상관서브쿼리다. <br> 연결되어있기때문에 독립적 사용못함
-
-    6) 유형
-        - 단일행 (Single-Row Subquery )
-        - 다중행 (Multiple-Row Subquery)
-        - 다중열 (Multiple-Column Subquery)
-        - Inline View (FROM절 Subquery)  
-        - Scalar Subquery  
-
-    7) 연산자
-        - 단일행
-        
-            =,<, >, >=, <=, -, <>,...
-        - 다중행
-        ~~~ SQL
-        IN	        -- N개중 하나
-        ANY	        -- 조회값중 하나라도 참일경우 ( <=,>,< )
-        ALL             -- 모든 조회값과 비교하여 참.
-        EXISTS	        -- 해당쿼리 조회값이 있으면 TRUE
-        NOT             -- NOT IN, NOT EXISTS 등..
-        ~~~
+        =,<, >, >=, <=, -, <>,...
+    - 다중행
+    ~~~ SQL
+    IN	      -- N개중 하나
+    ANY	      -- 조회값중 하나라도 참일경우 ( <=,>,< )
+    ALL           -- 모든 조회값과 비교하여 참.
+    EXISTS	      -- 해당쿼리 조회값이 있으면 TRUE
+    NOT           -- NOT IN, NOT EXISTS 등..
+    ~~~
 --------------------------------------------------------------
-  ex) Scott의 급여보다 더 많이 받는 직원의 이름,업무, 급여를 조회.
+ex) Scott의 급여보다 더 많이 받는 직원의 이름,업무, 급여를 조회.
 1. 스캇이 얼마 받는지?
 ~~~ SQL
+-- Scott의 연봉: 3000	   
 SELECT SAL FROM emp 
-WHERE ename='Scott';
- -- Scott의 연봉: 3000	   
+WHERE ename = 'Scott';
 ~~~
-   
+
 2. 급여가 3000이상인 사람은?
 ~~~ SQL
 SELECT ename SAL FROM emp 
@@ -111,7 +107,7 @@ WHERE SAL > 3000;
 ~~~ SQL
 SELECT ename SAL FROM emp 
 WHERE 
-    SAL > (SELECT SAL FROM emp WHERE ename='Scott');	
+SAL > (SELECT SAL FROM emp WHERE ename='Scott');	
 ~~~
 - 서브쿼리가 먼저 실행된다.
 - 결과값을 리턴받고 다른 쿼리가 실행된다.
@@ -131,25 +127,16 @@ WHERE empno=7934
 
 SELECT empno, ename, job,SAL FROM emp 
 WHERE job='SALESMAN'
-    AND SAL>1300;
+AND SAL>1300;
 
 SELECT empno, ename, job,SAL 
 FROM emp 
-WHERE job = (SELECT  job FROM emp WHERE empno=7521) 	
+WHERE   job = (SELECT  job FROM emp WHERE empno=7521) 	
     AND SAL > (SELECT SAL FROM emp WHERE empno=7934);
 ~~~
 
 
-#### 서브쿼리의 종류
-결과값으로 나오는 레코드의 갯수에 따라 종류가 나뉜다.
-- 단일행.
-- 다중행
-- 단일열
-- 다중열
-
-
-
-------------------------------------------------------------------------------
+----------------------------------------------------------------
 ex) 업부별로 최소급여를 받는 직원의 사번, 이름, 급여, 부서번호 조회
 ~~~ SQL
 -- 업무별 최소급여를 받는사람을 뽑고 그중에서 가장 적은 급여를 받는사람을 뽑아라.
@@ -173,6 +160,7 @@ SELECT job, min(SAL)  FROM emp GROUP BY job;
 
 2) 해당 리스트의 금액과 같은 금액을 받고있는 사람들의 리스트 출력.
 ~~~ SQL
+-- [BEFORE]
 SELECT empno, ename, SAL, deptno, 
 FROM emp 
 WHERE  SAL = 800 
@@ -180,27 +168,31 @@ WHERE  SAL = 800
     or SAL = 5000 
     or SAL = 2450 
     or SAL = 3000;
-
+    
+-- [AFTER] IN 연산자 사용
 SELECT empno, ename, SAL, deptno FROM emp
 WHERE SAL IN (800,1250,5000, 2450,3000);
-~~~
-~~~ SQL
-SELECT empno, ename, SAL, deptno FROM emp 
-WHERE SAL = (SELECT job, min(SAL)  FROM emp GROUP BY job) ;
 ~~~
 - 조회결과가 5개가 나온다.(다중행)
 - '=' : 단행 연산자 1:1 
 - 'IN' 다중행 연산자.
 
 ~~~ SQL
-SELECT empno, ename, SAL, deptno FROM emp 	
+--[BEFORE] = 연산자 사용, 다중행이 조회되면 오류가 난다.
+SELECT empno, ename, SAL, deptno FROM emp 
+WHERE SAL = (SELECT job, min(SAL)  FROM emp GROUP BY job) ;
 
-WHERE SAL IN (SELECT  min(SAL)  FROM emp GROUP BY job) ;
+--[AFTER] 'IN' 연산자 사용, 다중행 연산자를 사용하자.
+SELECT empno, ename, SAL, deptno FROM emp 	
+WHERE SAL IN 
+    (SELECT  min(SAL)  FROM emp GROUP BY job) ;
 ~~~
 ----------------------------------------------
 ### 업무별 최저급여 보다 많이 받는사람.
 ~~~ SQL
-SELECT job, min(SAL)  FROM emp GROUP BY job;
+--[BEFORE] 업무별 최저급여 조회, 일일이 비교.
+SELECT job, min(SAL)  FROM emp 
+GROUP BY job;
 
 SELECT empno, ename, SAL, deptno, FROM emp 
 WHERE SAL > 800 
@@ -209,7 +201,7 @@ WHERE SAL > 800
     or SAL > 2450 
     or SAL > 3000;
 
--- sub 적용
+--[AFTER] ANY 연산자를 사용하여 한번에 비교
 SELECT empno, ename, SAL, deptno FROM emp 
 WHERE SAL > ANY(SELECT min(SAL)  FROM emp GROUP BY job) ;
 ~~~
@@ -218,6 +210,7 @@ WHERE SAL > ANY(SELECT min(SAL)  FROM emp GROUP BY job) ;
 ### 업무별 최대급여 보다 많거나 똑같이 받는사람.
 
 ~~~ SQL
+--[BEFORE] 직업별 최대값을 구해서 하나씩 비교.
 SELECT job, max(SAL)  FROM emp GROUP BY job;
 
 SELECT empno, ename, SAL, deptno FROM emp 
@@ -227,9 +220,9 @@ WHERE SAL>=1300
     or SAL>2975 
     or SAL> 3000;
 
+--[AFTER]  ALL 연산자 사용
 SELECT empno, ename, SAL, deptno FROM emp 
 WHERE SAL >= ALL( SELECT  max(SAL) FROM emp GROUP BY job ) ;
--- SELECT에서 job을 빼야...
 ~~~
 ----------------------------------------------------------------
 
@@ -241,11 +234,17 @@ WHERE SAL >= ALL( SELECT  max(SAL) FROM emp GROUP BY job ) ;
 
 ex) 밀러의 데이터를 수정한다.
 ~~~ SQL
-UPDATE emp set SAL=1500, comm=300
-WHERE ename='MILLER';
+UPDATE emp 
+    set 
+        SAL=1500, 
+        comm=300
+WHERE ename = 'MILLER';
 
-UPDATE emp set SAL=1300, comm = null
-WHERE ename='MILLER';
+UPDATE emp 
+    SET 
+        SAL  = 1300, 
+        comm = null
+WHERE ename = 'MILLER';
 ~~~
 
 
@@ -259,7 +258,7 @@ SELECT empno, ename, deptno, SAL, comm FROM emp
 WHERE deptno=30;
 ~~~
 
-#### '30번부서의 급여'와 급여가 같은 사람들.
+#### 30번부서의 급여'와 급여가 같은 사람들.
 ~~~ SQL
 SELECT empno, ename, deptno, SAL, comm FROM emp 
 WHERE SAL in(SELECT SAL FROM emp WHERE deptno=30) ;
@@ -269,8 +268,8 @@ WHERE SAL in(SELECT SAL FROM emp WHERE deptno=30) ;
 ### SELECT 
 ~~~ SQL
 SELECT empno, ename, deptno, SAL, comm FROM emp 
-WHERE  SAL in(SELECT SAL FROM emp WHERE deptno=30)  
-AND comm in (SELECT comm FROM emp WHERE deptno=30) ;
+WHERE    SAL in (SELECT SAL FROM emp WHERE deptno=30)  
+    AND comm in (SELECT comm FROM emp WHERE deptno=30);
 ~~~
 - 밀러가 나오면 안된다.
 - 그리고 30번부서 6명이 모두 나와야한다.
@@ -280,7 +279,7 @@ AND comm in (SELECT comm FROM emp WHERE deptno=30) ;
 
 ~~~ SQL
 SELECT empno, ename, deptno, SAL, comm FROM emp 
-WHERE  (SAL,comm)  in (SELECT SAL, comm FROM emp WHERE deptno=30) ;
+WHERE  (SAL, comm) in (SELECT SAL, comm FROM emp WHERE deptno=30) ;
 
 -- 이렇게 묶고 싶은 열을 괄호로 묶어주면 끝..
 -- 2마리 빠졌는데 얘들은 comm이 null 값이기 때문, is null 을 통해서 null을 0로 만들어주고 계산하자.
@@ -301,19 +300,18 @@ GROUP BY MGR;
 
 SELECT distinct mgr FROM emp;	
 
-        MGR
+    MGR
 -----------------
-        7839
-        7782
-        7698
-        7902
-        7566
-        7788
+    7839
+    7782
+    7698
+    7902
+    7566
+    7788
 ~~~
 
 ~~~ SQL
-SELECT ename, job, hiredate, SAL, MGR 
-FROM emp
+SELECT ename, job, hiredate, SAL, MGR FROM emp
 WHERE empno in(7839,7782,7698,7902,7566,7788) ;
 
 SELECT ename, job, hiredate, SAL, MGR FROM emp e
@@ -323,4 +321,3 @@ WHERE EXISTS ( SELECT * FROM emp WHERE e.empno=mgr) ;
 -- 외부커리와 내부커리에 별개의 emp가 생기기때문에 별명으로 구분해준다.
 -- 될수있으면 상관서브커리는 사용하지 않는편이 좋다.
 ~~~
-
