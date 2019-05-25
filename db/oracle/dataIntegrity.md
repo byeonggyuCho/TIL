@@ -274,7 +274,6 @@ SELECT * FROM tblEmp;
 INSERT INTO tblEmp(id)  VALUES(seq_id.nextVal) ;
 
 
-
 /*제약조건 조회 : 사용자가 만든 모든 객체 확인*/
 /*내가 만든 모든객체를 볼 수 있다.*/
 DESC USER_OBJECTS;		
@@ -287,6 +286,7 @@ SELECT object_name, object_type FROM user_objects;
 ~~~ sql
 DROP SEQUENCE seq_mem_id;
 ~~~
+
 ### 조건넣기.
 ~~~ sql
 CREATE SEQUENCE seq_id

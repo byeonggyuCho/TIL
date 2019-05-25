@@ -25,6 +25,7 @@ git Hub는 git을 공유하는 원격저장소를 의미한다.
 ## 1.시작하기
 
 1. INIT
+
 소스코드가 있는 경로로 이동하여 local repository를 생성한다.<br>
 .git폴더가 생성되는것을 확인한다.
 ~~~ 
@@ -112,7 +113,7 @@ $ git reset
 
 
 
-## 2. 브런치 등록하기.
+## 2. 브런치
 
 1. 브런치 생성
 ~~~
@@ -135,7 +136,7 @@ $ git branch
 $ git branch -d testing
 ~~~
 
-5. merge
+5. MERGE
 ~~~
 $ git merge feature
 ~~~
@@ -170,7 +171,7 @@ $ git log
 ~~~
 
 
-2. amend
+2. AMEND
 ~~~
 $ git commit -- amend
 ~~~
@@ -217,11 +218,12 @@ $ git commit -- amend
     - 해당 이슈 관계자들이 상의하여 수동으로 충돌을 해결해줘야 합니다.
 
 
+4. fetch 
+    - 서버에서 가지고오는것. 가지고와서 저장만한다.
 
 
 
 # 다뤄볼 주제
-- fetch : 서버에서 가지고오는것. 가지고와서 저장만한다.
 - 깃 플로우
 - gitIgnore
 - 롤백.
@@ -230,17 +232,5 @@ $ git commit -- amend
 ~~~ 
 $ git config -- global user.name "CaterJo"
 $ git config -- global user.email kin7729@gamil.com
-~~~
-
-
-### 삭제하기
-관리만 안할건지
-~~~
-$ git rm -- cached README
-~~~
-
-파일까지 삭제 할것인지
-~~~
-$ rm git.gemspec		
 ~~~
 

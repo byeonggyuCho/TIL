@@ -32,13 +32,13 @@
 
 
 ### 3.명령어
-	EDIT			        //내가 적었던것을 수정할 수 있다.
-	rollback;			//명령어를 취소 ctrl+Z와 비슷함.
-	select * from tab;		//해당 아이디에 테이블 보기
-	select * from emp;		//emp의 모든것을 조회한다.
-	distinct() 			//중복제거
-	subst(name,1,1) 		//name에서 1인덱스부터 1길이 만큼 추출
-	decode				//?
+	EDIT			       -- 내가 적었던것을 수정할 수 있다.
+	rollback;			-- 명령어를 취소 ctrl+Z와 비슷함.
+	select * from tab;		-- 해당 아이디에 테이블 보기
+	select * from emp;		-- emp의 모든것을 조회한다.
+	distinct() 			-- 중복제거
+	subst(name,1,1) 		-- name에서 1인덱스부터 1길이 만큼 추출
+	decode				-- ?
 
 
 
@@ -87,30 +87,30 @@
 
 ## 1.4 발전 단계
 1)  파일 처리
-- 접근이 복잡하다...
+	- 접근이 복잡하다...
 
 2)  계층형 DB(HierarchyDB) 
-- 특정형식을 갖추어서 저장한다.(데이터 연산이 편리해졌다) 
-- 트리형태. 
-- 쉽게 사용할 수 있다.
-- 조회가 쉬워야하는데 그런면에서 좀 힘들다. (데이터가 많아질수록 비효율적임.) 
+	- 특정형식을 갖추어서 저장한다.(데이터 연산이 편리해졌다) 
+	- 트리형태. 
+	- 쉽게 사용할 수 있다.
+	- 조회가 쉬워야하는데 그런면에서 좀 힘들다. (데이터가 많아질수록 비효율적임.) 
 
 
 3) 네트워크 DB (NDB : Network data base) 
--graph 형식으로 이어져있다. (그물구조 net) 
--실제로 거의 상용화되지 못했다
--사용이 어렵고 유지보수가 힘들다...
+	- graph 형식으로 이어져있다. (그물구조 net) 
+	- 실제로 거의 상용화되지 못했다
+	- 사용이 어렵고 유지보수가 힘들다...
 
 
 4) 관계형 DB (RDB :relational DB) 
-- 테이블 형식.
-- 지금까지 사용된다.
+	- 테이블 형식.
+	- 지금까지 사용된다.
 
 5) 객체형 DB (ODB : object DataBase) : 어려워서 잘 못쓰는편 
 
 
 6) 객체관계형 DB
-- 객체형 DB의 사용어려움을 보완하여 나왔다.
+	- 객체형 DB의 사용어려움을 보완하여 나왔다.
 
 
 
@@ -163,7 +163,7 @@
 
 ### 1.7 SqlPlus 사용법
 1) 접속방법
-~~~  database
+~~~ SQL
 $ sqlplus root
 $ sqlplus root/password
 $ sqlplus root/password@hostname
@@ -179,12 +179,12 @@ $ sqlplus root/password@hostname
 ~~~ 
 
 *연결을 끊지않고 다른 사용자로 재연결하려고 할때
-~~~ 
+~~~ sql
 $ DB> connect USER_ID
 ~~~ 
 
 *어떤아이디로 접속했는지 알고싶을때
-~~~ 
+~~~ sql
 $ DB>  show user	
 ~~~ 
 	
@@ -194,36 +194,36 @@ $ DB>  show user
 
 	1) system으로접속
 		기존 사용자 조회
-	~~~ 
-		DESC DBA_USERS; (현제 이 테이블의 구조를 확인한다) 
+	~~~ sql
+	DESC DBA_USERS; (현제 이 테이블의 구조를 확인한다) 
 	~~~ 
 	cf. DESC : DESCRIBE(서술하다)
-	~~~ 
+	~~~ sql
 		SELECT username,password FROM dba_user
 	~~~ 
-	~~~ 
+	~~~ sql
 		CREATE USER 사용자id IDENTIFIED BY 페스워드
 	~~~ 
 	사용자 추가
-	~~~ 	
+	~~~ 	sql
 		GRANT connect TO hong
 	~~~ 
 	테이블 접속권한부여
-	~~~ 
+	~~~ sql
 		SELECT * FROM tab;
 	~~~ 		
 
 	**리소스 작업권한 부여 행 추가 권한 등
-	~~~ 
+	~~~ sql
 	GRANT resource TO hong;
 	~~~ 
 
 	**접속, 리소스권한 동시에 부여하기
-	~~~ 
+	~~~ sql
 	GRANT connect, resource TO 사용자id;
 	~~~ 
 	- 사용자 삭제 drop! (create로 만든건 drop) 
-	~~~ 
+	~~~ sql
 	DROP USER 사용자id;
 	~~~ 
 
@@ -232,7 +232,7 @@ $ DB>  show user
 	
 	- 방법1)  hong에 들어가서 테이블을 싹 다지운뒤 계정삭제
 	- 방법2)  CASCADE 
-	~~~ 
+	~~~ sql
 	DROP USER 사용자id[CASCADE];
 	~~~ 
 
@@ -243,15 +243,15 @@ $ DB>  show user
 
 
 	## 계정잠그기 lock, unlock
-	~~~ 
-	  alt user ROOT account lock
+	~~~ sql
+	alt user ROOT account lock
 	~~~ 
 
 	## 관리자 비번 분실
 	- 직접 서버에 접속이 가능할 경우에만...
 	- 로컬에서만 가능하다.
 	- **system as sysdba[/no log]**
-	~~~ 
+	~~~ sql
 	sqlplus system as sysdba nolog.
 	select empno
 	~~~ 
@@ -282,7 +282,7 @@ edit c:\netsong\test.sql (이런식의 경로설정도 가능하다)
 - 관리하고 있는 기능.
 
 관리가능할걸 검색한다.
-~~~ 
+~~~ sql
 select*From table;
 ~~~ 
 - 사용자가 사용가능한 테이블의 종류
@@ -307,4 +307,4 @@ select*From table;
 
 
 ## 참조
-- http://www.gurubee.net/oracle/sql
+- http:-- www.gurubee.net/oracle/sql

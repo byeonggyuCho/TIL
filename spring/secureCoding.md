@@ -16,7 +16,7 @@ Statement 대신 prepareStatement 사용하는것도 보안코딩
 - 해당 데이터가 위조된것인지 확인이 가능하다.
 
 ~~~ html
-	<input name="_csrf" type="hidden" value="5a8094a2-fca5-4716-88da-b877c78de5ac" />
+<input name="_csrf" type="hidden" value="5a8094a2-fca5-4716-88da-b877c78de5ac" />
 ~~~
 
 access="permitAll"

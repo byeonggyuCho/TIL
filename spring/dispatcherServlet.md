@@ -1,7 +1,3 @@
-
-
-
-
 # Dispatcher Servlet
 	- 이게 Spring에서 제공하는 프론트 컨트롤러
 	- 이걸 생성하는게 처음이다. 
