@@ -87,8 +87,7 @@ INSERT INTO tblEmp(id,name)  VALUES(1,'홍길동') ;
 ~~~		sql
 /* PRIMARYKEY 속성 삽입 '*/
 /* 관례 'pk_, id(컬럼이름) '*/
-/*이미 중복된 데이터가 있으면 안된다.
-
+/*이미 중복된 데이터가 있으면 안된다.*/
 ALTER TABLE tblEmp  
 	ADD CONSTRAINT		pk_id	 PRIMARY KEY(id) ;
 
