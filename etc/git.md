@@ -117,28 +117,28 @@ $ git reset
 
 1. 브런치 생성
 ~~~
-$ git branch feature1   
+$ git branch <브런치명>
 ~~~
+
 2. 브랜치 이동
 ~~~
-$ git branch checkout
+$ git checkout <브런치명>
 ~~~
-헤드가 바뀐게 뭘 의미?<br>
-현재 작업중인것을 나타낸다.
 
 3. 브런치 관리.
 ~~~
 $ git branch
 ~~~
+브런치 목록 보기.
 
 4. 브런치 삭제
 ~~~
-$ git branch -d testing
+$ git branch -d <브런치명>
 ~~~
 
 5. MERGE
 ~~~
-$ git merge feature
+$ git merge <브런치명>
 ~~~
 
 
@@ -148,8 +148,8 @@ $ git merge feature
 
 1. CLONE
 ~~~
-$ git clone 주소
-$ git remote - v 	:확인하기
+$ git clone <레포지토리 주소>
+$ git remote - v 
 ~~~
 .git을 포함한 remote repository의 파일들을 local repository에 복사합니다.
 
