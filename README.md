@@ -81,6 +81,8 @@
     - contents
         - spring
         - design pattern
+        - react
+        - javaScript
 
 2. For Architecture Series
     - 브라우저 동작 원리
@@ -90,12 +92,11 @@
 3. Tool Series
     - 이용중인 툴의 소개 및 응용방법
     - contents
+      - webpack
+      - babel
       - mybatis
       - jUnit
       - esLint
-      - webpack
-      - babel
-      - git
       - maven
 
 4. 기술의 변천사 특집
@@ -105,5 +106,3 @@
 
 5. etc
     - AWS
-
-
