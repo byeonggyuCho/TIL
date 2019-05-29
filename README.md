@@ -1,7 +1,7 @@
-# guideBook
+# GuideBook
+- TLI (Today Learn Information)
 - 개인자료 수집 및 정리.
 - 1일 1커밋.
-- TLI (Today Learn Information)
 
 ## &#128204; 목차
 <details>
@@ -74,7 +74,6 @@
 
 
 ## 컨텐츠 컨테이터
- 기획중인 아이템
 
 1.  Practice Series
     - 기본기를 다루면서 예제화 한다.
@@ -104,5 +103,10 @@
       - 데이터베이스 연동모듈
       - Build Tool[Maven, Gradle]
 
-5. etc
-    - AWS
+
+# 하고싶은것
+- 개인블로그 만들기.
+- 사이드프로젝트 3개이상 완성하기.
+- 오픈소스 기여하기.
+- 협업 습관 익히기.(이슈관리, zira, 프로젝트 보드)
+- 프로그래머들과 소통하기.
