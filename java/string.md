@@ -1,39 +1,4 @@
 
-##레포팅( Spring매서드에서...)
-- (DOC)[http:- docs.oracle.com/javase/8/docs/api/index.html]
-- charAt(int index) 
-- compareTo(String anotherString)  
-- compareToIgnoreCase(String str) 
-- concat(String str) 
-- contains(CharSequence s)  
-- endsWith(String suffix)  
-- startsWith(String prefix)  
-- startsWith(String prefix, int toffset) 
-- equals(Object anObject)  
-- equalsIgnoreCase(String anotherString) 
-- getBytes(Charset charset) 
-- getBytes(int srcBegin, int srcEnd, byte[] dst, int dstBegin) 
-- Deprecated.  (더이상쓰지말라는 얘기다.)
-- indexOf(int ch) 
-- indexOf(int ch, int fromIndex)   
-- lastIndexOf(int ch)  
-- isEmpty()  
-- length()  
-- matches(String regex)  
-- replace(char oldChar, char newChar) 
-- split(String regex) 
-- substring(int beginIndex) 
-- toLowerCase() 
-- toUpperCase()  
-- valueOf(boolean b) 
-
-	Returns the string representation of the boolean argument. 
-
-- trim() 
-
-	Returns a string whose value is this string, with any leading and trailing whitespace removed. 
-
-
 
 
 # String
@@ -120,3 +85,40 @@
 	- equals는 값을 비교한다(String)
 	-  '=='도 주소를 비교한다. StringBuffer
 
+
+
+## String Method
+- charAt(int index) 
+- compareTo(String anotherString)  
+- compareToIgnoreCase(String str) 
+- concat(String str) 
+- contains(CharSequence s)  
+- endsWith(String suffix)  
+- startsWith(String prefix)  
+- startsWith(String prefix, int toffset) 
+- equals(Object anObject)  
+- equalsIgnoreCase(String anotherString) 
+- getBytes(Charset charset) 
+- getBytes(int srcBegin, int srcEnd, byte[] dst, int dstBegin) 
+- Deprecated.  (더이상쓰지말라는 얘기다.)
+- indexOf(int ch) 
+- indexOf(int ch, int fromIndex)   
+- lastIndexOf(int ch)  
+- isEmpty()  
+- length()  
+- matches(String regex)  
+- replace(char oldChar, char newChar) 
+- split(String regex) 
+- substring(int beginIndex) 
+- toLowerCase() 
+- toUpperCase()  
+- valueOf(boolean b) 
+
+	Returns the string representation of the boolean argument. 
+
+- trim() 
+
+	Returns a string whose value is this string, with any leading and trailing whitespace removed. 
+
+### 참고
+- (DOC)[http:- docs.oracle.com/javase/8/docs/api/index.html]
