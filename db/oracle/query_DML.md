@@ -3,16 +3,29 @@ DML
 
 ### 1.INSERT
 ~~~ SQL
-INSERT into 테이블명(필드명, ...)  Values(값,...)  
+INSERT INTO 테이블명(field, ...)  Values('data',...)  
 -- 필드에 값을 넣는다.
-INSERT into 테이블명 values(값,...) 		
+INSERT INTO 테이블명 values('data',...) 		
 -- 필드생성 순서대로 값을 대입된다.
 ~~~
 
+조회 결과 INSERT 하기 
+~~~ SQL
+INSERT INTO MEMBER
+SELECT * FROM APPLICANT;
+-- MEMBER와 APPLICANT의 필드명과 갯수 순서가 경우
+
+INSERT INTO MEMBER
+(MEM_NM, MEM_AGE, RMK)
+SELECT APP_NM, APP_AGE, RMK FROM APPLICANT;
+-- 필드가 다른 경우
+-- SELECT문의 결과가 다건을 경우 다건이 삽인된다.
+
+~~~
 ### 2.UPDATE
 ~~~ SQL
 UPDATE 테이블명
-set 필드명 =값,필드명=값, ...
+SET 필드명=값,필드명=값, ...
 WHERE 조건식
 ~~~
 
@@ -41,15 +54,15 @@ CREATE TABLE tbltest(
 
 
 -- 데이터
-INSERT into tbltest(id, name, hiredate)  values(1, '홍길동',SYSDATE) ;
-INSERT into tbltest(id, name)  values(2,'임꺽정') ;
-INSERT into tbltest(id, name, hiredate)  values(3, '김유신',null) ;
-INSERT into tbltest values(4, '신돌석','2017/2/5') ;
+INSERT INTO tbltest(id, name, hiredate)  values(1, '홍길동',SYSDATE) ;
+INSERT INTO tbltest(id, name)  values(2,'임꺽정') ;
+INSERT INTO tbltest(id, name, hiredate)  values(3, '김유신',NULL) ;
+INSERT INTO tbltest values(4, '신돌석','2017/2/5') ;
 
 
 -- UPDATE
 UPDATE tbltest
-set hiredate=SYSDATE
+SET hiredate=SYSDATE
 WHERE id=2;
 ~~~
 
@@ -235,7 +248,7 @@ WHERE SAL >= ALL( SELECT  max(SAL) FROM emp GROUP BY job ) ;
 ex) 밀러의 데이터를 수정한다.
 ~~~ SQL
 UPDATE emp 
-    set 
+    SET 
         SAL=1500, 
         comm=300
 WHERE ename = 'MILLER';
@@ -243,7 +256,7 @@ WHERE ename = 'MILLER';
 UPDATE emp 
     SET 
         SAL  = 1300, 
-        comm = null
+        comm = NULL
 WHERE ename = 'MILLER';
 ~~~
 
@@ -279,10 +292,10 @@ WHERE    SAL in (SELECT SAL FROM emp WHERE deptno=30)
 
 ~~~ SQL
 SELECT empno, ename, deptno, SAL, comm FROM emp 
-WHERE  (SAL, comm) in (SELECT SAL, comm FROM emp WHERE deptno=30) ;
+WHERE  (SAL, comm) in (SELECT SAL, comm FROM emp WHERE deptno=30);
 
 -- 이렇게 묶고 싶은 열을 괄호로 묶어주면 끝..
--- 2마리 빠졌는데 얘들은 comm이 null 값이기 때문, is null 을 통해서 null을 0로 만들어주고 계산하자.
+-- 2마리 빠졌는데 얘들은 comm이 NULL 값이기 때문, is NULL 을 통해서 NULL을 0로 만들어주고 계산하자.
 
 ~~~
 

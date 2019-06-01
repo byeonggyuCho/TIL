@@ -52,7 +52,7 @@ while(memIterator.hasNext()){
 
 
 
-### while loop
+### While loop
 
 ~~~ java
 
