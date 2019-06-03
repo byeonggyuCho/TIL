@@ -51,7 +51,7 @@
 	- 이 객체를 생성해야지 스프링이 돌아갈수 있는 공간이 생긴다.
 
 
-4) bean의 Lifecycle
+4) bean Lifecycle
 	1) BeanNameAware
 		void 	setBeanName(String name)
 			//Bean의 이름이 정해졌을때 쯤 호출된다.
