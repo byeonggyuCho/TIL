@@ -19,6 +19,7 @@ basePackage에 mapper interface경로 추가.<br>
 - 스프링 빈 생성 순서
 - 스프링 의존성 주입 과정
 - sqlSessionFactroy빈 생성 과정.
-
+- MapperScan 어노테이션
+- org.mybatis.spring.mapper.MapperScannerConfigurer
 
 ![](/resource/img/dwyt0603_2.png)
