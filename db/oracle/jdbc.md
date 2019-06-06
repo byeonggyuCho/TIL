@@ -6,12 +6,12 @@
 - middleware에게 드라이버를 제공한다.
 - middleware는 DB와 프로그램 사이에 있는 표준규약. 일종의 컨버터 기능을 한다.
 - 드라이버를 임의의 이클립스 폴더에 넣고 클래스패스 설정을 한다.
-  - (이클립스 안에서 패스를 걸어야한다. 제어판에서 하는 패스설정은 안먹힌다.) 
-  - 우클릭 configure bild path
-  - 라이브러리 탭
-  -  우측에 ADD JARS// ADD EXTERNAL JARS
-  -  Referenced Libraries가 생성됨.
- 
+- (이클립스 안에서 패스를 걸어야한다. 제어판에서 하는 패스설정은 안먹힌다.) 
+- 우클릭 configure bild path
+- 라이브러리 탭
+-  우측에 ADD JARS// ADD EXTERNAL JARS
+-  Referenced Libraries가 생성됨.
+
 
 
 ### 드라이버로드
@@ -19,14 +19,12 @@
 - 강제적으로 클래스를 메모리로 올려주는것
 - Class 클래스
 - Class.forName() ;
-
 - Class.forName("oracle.jdbc.driver.OracleDriver") ;
 - 이게 로드가 제대로 되어면 JDBC사용가능.
-
 - 어떤 프로그램이 어떤 데이터베이스가 필요한가?
- - DriverManager 클래스
- - Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:orcl","scott","1111") ;
- - 이건 다큐먼트 참고!!!
+- DriverManager 클래스
+- Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:orcl","scott","1111") ;
+- 이건 다큐먼트 참고!!!
 
 
 
