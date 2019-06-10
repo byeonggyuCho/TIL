@@ -67,11 +67,13 @@ store.dispatch(액션생성함수)로 알린다.
 - https://bestalign.github.io/2015/10/06/cartoon-guide-to-flux/
 
 
-# 기술 발전 시리즈
+# 기술 발전 이력
+
+![](/resource/img/redux_cycle.png)
 
 1. 페이스북이 MVC대신에 FLUX 아키텍쳐를 선택한 이유
 2. FLUX 라이브러리 redux
 3. redux를 편하게 사용하기 위한 react-redux, react-actions
 4. 객체 불변성을 편리하게 구현하기 위한 immulate.js
 5. 미들웨어를 사용하기 위한 react-thunk
-6. 비동기 통신을 위한 axios 라이브러리
+6. Promiss기분의 비동기 통신을 위한  라이브러리 axios
