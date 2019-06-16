@@ -2,7 +2,7 @@
 
 ![](/resource/img/javascript/promise.png)
 
-프로미스는 자바스크립트 비동기 처리에 사용되는 객체<br>
+자바스크립트 비동기(asynchronous code)에 사용되는 객체<br>
 
 
 ## 왜?
@@ -14,6 +14,32 @@ ES6에서 부터 공식 기능으로 적용됨.
 - Pending(대기) : 비동기 처리 로직이 아직 완료되지 않은 상태
 - Fulfilled(이행) : 비동기 처리가 완료되어 프로미스가 결과 값을 반환해준 상태
 - Rejected(실패) : 비동기 처리가 실패하거나 오류가 발생한 상태
+
+
+~~~ js
+const age = 10
+const user = {name: 'chuchu'}
+
+const checkCoffeeAble = new Promise((resolve, reject) => {
+  if (age >= 18) {
+    resolve(user)
+  } else {
+    reject("cannot have coffee")
+  }
+})
+
+const canHaveCoffee = (result) => {
+  localStorage('coffee_drinker', result.name)
+}
+
+const cannotHaveCoffee = (result) => {
+  console.log(result)
+}
+
+
+checkCoffeeAble.then(canHaveCoffee).catch(cannotHaveCoffee)
+
+~~~
 
 
 
@@ -34,13 +60,13 @@ let getData = ()=>{
     })
 };
 
-getData().then((resolve,reject)=>{
+getData().then((resolve)=>{
 
-}).then((resolve,reject)=>{
+}).then((resolve)=>{
     
-}).then((resolve,reject)=>{
+}).then((resolve)=>{
     
-}).catch(()=>{
+}).catch((error)=>{
     //예외처리
 });
 ~~~
