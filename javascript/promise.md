@@ -37,8 +37,7 @@ const cannotHaveCoffee = (result) => {
 }
 
 
-checkCoffeeAble.then(canHaveCoffee).catch(cannotHaveCoffee)
-
+checkCoffeeAble.then(canHaveCoffee).catch(cannotHaveCoffee);
 ~~~
 
 

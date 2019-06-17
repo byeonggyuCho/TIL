@@ -1,12 +1,12 @@
 
-## Class part2
+# Class part2
 
-### 1. 접근제한자.(access Modifier)
+## 1. 접근제한자.(access Modifier)
 - 클래스의 캡슐화(보안)에 대한 부분에 대한 특성이다.
 - 클래스안의 데이터를 어떻게 사용하고 어떻게 보호할 것인가에 대한기능.
 - 종류에 따라서 클래스의 보안능력이 달라진다.
 
-#### 종류		
+### 종류		
 - **default**: (생략된 형태)제한된허용,클래스가 같은페키지에 있을때 	접근허용(다른클래스간의 접근허용)
 - **public**  :  완전개방!,어디서든지 접근가능하다.			접근허용
 - **private** :  완전차단,외부의 접근을 완전차단.			접근차단
@@ -14,7 +14,7 @@
 
 
 
-####	1.1 private
+###	1.1 private
 - private로 명시되는 순간 다른 필드에서 접근할 수 없다.
 - private값을 지정할 경우 직접적은 접근을 할수 없기 때문에 우회적인 접근이 필요하다.
 - 이때 사용되는게 Setter 메서드와 ,Getter메서드다.
@@ -33,7 +33,7 @@
 
 
 
-#### 1.2 Method
+### 1.2 Method
 
 
 1) 인자 전달 방식.
@@ -55,25 +55,52 @@
 
 
 3) static(고정된)
-	- 클래스와는 상관없는 남남.
-	- 인스턴스로 부터 독립된다.반복적으로 인스턴트화를 해도 하나만생긴다.
 	- 용도 
-		- 모든 인스턴스가 공동으로 사용한다.
+		- 클래스를 설게할 때 멤버변수 중 모든 인스턴스가 공통적으로 사용하는 자원
 		- 모든 인스턴스가 값을 공동으로 유지하기위함.
 		- 인스턴스를 생성하지 않아도 사용이 가능하다.
-		- 공용변소처럼.
 		- 힙에 저장된다.
+		- static변수와 static함수는 클래스변수, 클래스함수라고 도 한다.
 
-	1) 인스턴스와는 상관없이 별도의 메모리로 생성.
-	2) 여러인스턴스들이 공유할수 있는 메모리.
-	3) 클래스변수
-	4) static block(스태틱끼리 모이게 만들기 위함.)
-	5) static매서드에 this(인스턴스의 참조값)이 존재하지 않는다.
+	1. static 자원은 클래스가 메모리에 로드되는 시점에 힙 메모리에 생성된다. 이 점은 다음 두가지를 보장한다.
+		- 인스턴스 생성없이 사용 가능하다.
+		- static 자원간에는 자유로운 참조가 가능하다.(이미 전부 메모리에 로드됨)
+	2. static Method에서는 인스턴스 변수를 사용할 수 없다. 
+		- 인스턴스를 생성해서 메모리에 올리고 사용한다.
+		- 인스턴스와 독립적으로 동작하기 때문에 util성 method로 많이 사용된다.
+	3. 인스턴스 멤버간의 참조는 제한이 없다.
+		- '인스턴스가 생성되었다'라는 가정을 공유하고 있기 때문이다.
+
+	4. 메서드 내에서 인스턴스 변수를 사용하지 않는다면 static을 붙이는 것을 고려한다.
+	5. 클래스 설계시 static resource
+		- 클래스의 멤버변수 중 모든 인스턴스에 공통된 값을 유지해야하는 멤버변수
+		- 인스턴스 변수를 사용하지 않는 메서드에 대해서 static을 붙일 것을 고려한다.
+
+
 	~~~ java
-	static {
-	//static변수 초기화...
-	//가독성도 좋고.. 관리에도 편리하고 안전하고 
+	import java.text.SimpleDateFormat;
+	import java.util.Date;
+
+
+	public class Util {
+		public static String getCurrentDate(String fmt) {
+			SimpleDateFormat sdf = new SimpleDateFormat(fmt);
+			return sdf.format(new Date());
+		}
+
+		public static void main(String[] args) {
+			System.out.println(Util.getCurrentDate("yyyyMMdd"));
+		}
 	}
+
+	~~~
+	
+
+
+
+	~~~ java
+	final private static String SERIAL_NUMBER = "AD01380";
+
 	~~~
 	
 
