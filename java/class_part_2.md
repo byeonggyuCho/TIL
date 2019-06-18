@@ -77,6 +77,13 @@
 		- 인스턴스 변수를 사용하지 않는 메서드에 대해서 static을 붙일 것을 고려한다.
 
 
+	static 변수
+	~~~ java
+	final private static String SERIAL_NUMBER = "AD01380";
+	~~~
+
+
+	static 함수
 	~~~ java
 	import java.text.SimpleDateFormat;
 	import java.util.Date;
@@ -92,17 +99,10 @@
 			System.out.println(Util.getCurrentDate("yyyyMMdd"));
 		}
 	}
-
 	~~~
 	
 
 
-
-	~~~ java
-	final private static String SERIAL_NUMBER = "AD01380";
-
-	~~~
-	
 
 
 
