@@ -69,12 +69,9 @@ while(i<member.size()){
 ### Collection stream
 
 ~~~ java
-
 List<Map<String,Object>> members = new ArrayList();
-
 
 members.forEach((member)->{
    System.out.println(member.toString());
 });
-
 ~~~
