@@ -194,7 +194,6 @@ public boolean pwdRegularExpressionChk(String newPwd, String oldPwd, String user
     /**
     * 같은 문자, 숫자 4자리 체크
     */
-
     public boolean samePwd(String pwd) {
 
         match = Pattern.compile(pattern5).matcher(pwd);
@@ -205,7 +204,6 @@ public boolean pwdRegularExpressionChk(String newPwd, String oldPwd, String user
     /**
     * 연속 문자, 숫자 4자리 체크
     */
-
     public boolean continuousPwd(String pwd) {
 
         int o = 0;
@@ -241,7 +239,6 @@ public boolean pwdRegularExpressionChk(String newPwd, String oldPwd, String user
                 return true;
             }
         }
-
 
         return false;
     }
