@@ -24,7 +24,7 @@
 
 ### 2. Execution Engine
 
-![](/resource/img/java/JITcompiler.png)
+![](/resource/img/java/JITcompiler.png)<br>
 Class Loader에 의해 메모리에 적재된 클래스(바이트 코드)들을 기계어로 변경해 명령어 단위로 실행하는 역할을 한다.<br>
 바이트코드를 기계어로 바꾸는 방식에는 두가지 방식이 있다.<br/>
 
@@ -46,9 +46,7 @@ Class Loader에 의해 메모리에 적재된 클래스(바이트 코드)들을 
 ### 3. Garbage Collector
 
 Garbage Collector(GC)는 Heap 메모리 영역에 생성(적재)된 객체들 중에 참조되지 않는 객체들을 탐색 후 제거하는 역할을 한다.<br>
-
 GC가 역할을 하는 시간은 정확히 언제인지를 알 수 없다. (참조가 없어지자마자 해제되는 것을 보장하지 않음)<br>
-
 또 다른 특징은 GC가 수행되는 동안 GarbageCollection을 수행하는 쓰레드가 아닌 다른 모든 쓰레드가 일시정지된다.<br>
 
 특히 Full GC가 일어나서 수 초간 모든 쓰레드가 정지한다면 장애로 이어지는 치명적인 문제가 생길 수 있는 것이다. (GC와 관련된 내용은 아래 Heap영역 메모리를 설명할 때 더 자세히 알아본다.)<br>
@@ -66,7 +64,7 @@ Method Area, Stack Area는 모든 쓰레드가 공유한다.<br>
 PC Register, Native Method Stack는 쓰레가 개별적으로 생성된다.
 
 
-![](/resource/img/java/javaRuntimeMemoryArea.png)
+![](/resource/img/java/javaRuntimeMemoryArea.png)<br>
 
 
 #### 4.1  Method area (메소드 영역)
@@ -161,9 +159,6 @@ GC는 Minor GC와 Major GC로 나뉜다.<br>
 
 
 
-## 자바 애플리케이션이 실행될 때 JVM에서 일어나는 일.
-## JVM 구동순서
-
 
 ## 클래스 로더.
 1. 계층구주조
@@ -174,7 +169,7 @@ GC는 Minor GC와 Major GC로 나뉜다.<br>
 
 
 ### 1. 클래스로더_계층구조
-![](/resource/img/java/classLoader.png)
+![](/resource/img/java/classLoader.png)<br>
 
 
 ### 부트스크랩 클래스 로더 (Bootstrap Class Loader)
@@ -197,7 +192,7 @@ was같은 프레임 워크는 웹 어플리케이션, 엔터프라이즈 어플�
 
 
 ### 2. 클래스로더_위임모델
-![](/resource/img/java/classLoader2.png)
+![](/resource/img/java/classLoader2.png)<br>
 위임모델이란 처음 바이트코드를 넘겨받은 클래스 로더가 필요한 클래스를 로드할 때 혹인 실행엔젠에서 명령어 단위로 바이트 코드를 실행하다가 처음으로 참조하는 클래스에 대해 클래스 로더에게 로드를 요청할 때 로드를 요청받는 클래스 로더는 다음 순서대로 요청받는 클래스가 있는지 확인한다.
 
 1. 클래스 로더 캐시
@@ -232,7 +227,7 @@ was같은 프레임 워크는 웹 어플리케이션, 엔터프라이즈 어플�
 
 
 ### 클래스 로드
-![](/resource/img/java/classLoader3.png)
+![](/resource/img/java/classLoader3.png)<br>
 
 
 1. 로드 : 클래스 파일을 가져와서 JVM 메모리에 로드한다.
