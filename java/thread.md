@@ -61,7 +61,7 @@
 
 
 ## 라이프 사이클
-![Thread](../resource/img/Life_Cycle_Of_Thread.jpg)
+![Thread](../resource/img/Life_Cycle_of_Thread.jpg)
 
 
 1. run
