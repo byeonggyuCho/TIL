@@ -1,14 +1,41 @@
 # JAVA
 
+
+## 탄생배경
+다양한 가전제품에 같은 소스코드를 사용할 순 없을까?<br>
+가상머신에서 소스코드가 동작하는 언어를 만들자!<br>
+C/C++로 만들면 같은 작업을 하는 소스를 하드웨어에 맞게 다시 작성해야한다.
+
+## 자바의 특징.
+![](/resource/img/java/JVM.png)
+- 하드웨어,운영체제에 종속되지 않는다. 즉 컴파일된 바이트코드가 플랫폼에 독립적이다.
+- java는 JVM 위에서 돌아간다.
+- JVM : 컴파일된 코드(바이트코드)를 실행시켜주는 가상 머신
+
+
+
+
 ## JAVA 프로그램 실행 과정 
 
-1. White a Program
-    - Programmer white Source Code  like Foo.java.
-2.  Complie it
-    - Source Code is Complied  by Compiler.
-    - Foo.class (JVM이 class 파일을 실행한다.)
-3. Excute it
+![](/resource/img/java/howToRunJavaApplicatoin.png)
+
+1. 자바 컴파일러가 Person.java같은 자바 소스코드(바이트 코드)를 컴파일한다.
+2. JVM이 클래스 로더를 이용해 컴파일된 바이트코드를 런타임 데이터 영역(Runtime Data Area)에 적재한다.
+3. 런타임 데이터 영역에 올라간 바이트 코드는 실행 엔진(Execution Engine)이 바이트코드를 명령어 단위로 한줄씩 실행시킨다.
 
 
-1. 소스코드
-2. JVM 실행콛으
+
+**자바 컴파일러(Java Compiler)**
+자바 컴파일러는 자바를 가지고 작성한 자바 소스 코드를 자바 가상 머신이 이해할 수 있는 자바 바이트 코드로 변환합니다.<br>
+자바 컴파일러는 자바를 설치하면 javac.exe라는 실행 파일 형태로 설치됩니다
+
+**자바 바이트 코드(Java bytecode)**
+자바 바이트 코드(Java bytecode)란 자바 가상 머신이 이해할 수 있는 언어로 변환된 자바 소스 코드를 의미합니다.<br>
+자바 컴파일러에 의해 변환되는 코드의 명령어 크기가 1바이트라서 자바 바이트 코드라고 불리고 있습니다.<br>
+이러한 자바 바이트 코드의 확장자는 .class입니다.<br>
+자바 바이트 코드는 자바 가상 머신만 설치되어 있으면, 어떤 운영체제에서라도 실행될 수 있습니다.<br>
+
+
+
+## Java Runtime Environment(JRE)
+![](/resource/img/java/JRE.png)
