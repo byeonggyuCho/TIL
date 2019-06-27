@@ -41,6 +41,22 @@ checkCoffeeAble.then(canHaveCoffee).catch(cannotHaveCoffee);
 ~~~
 
 
+## then Method
+프로미스객체는 then 메소드를 가진다.<br/>
+When Promise is fullfilled or rejected the respective handler function (onFulfilled or onRejected) will be called asynchronously<br>
+then Method는 Promise를 리턴하는데 그 Promise는 다음 특징을 갖는다.
+
+
+### 1.Parameter
+- onFulfilled : 'fulfillment value'가 매개변수로 전달된다.
+- onRejected  : 'rejection reason'이 매개변수로 전달된다.
+### 2. Return Value
+- then이 return하면 resolved Promise를 반환한다.
+- then의 return value가 있을때, resolved Promise의 값이 된다.
+- then의 return value가 없을때, resolved Promise의 값은 undefined이다.
+- then throws an error, rejected Promise를 반환한다.
+- returns an already rejected promise, rejected Promise를 반환하며 value는 already rejected promise의 value와 같다.
+
 
 ## Promise Chaining
 ![](/resource/img/javascript/promiseChain.png)
@@ -48,14 +64,12 @@ checkCoffeeAble.then(canHaveCoffee).catch(cannotHaveCoffee);
 let getData = ()=>{
 
     return new Pomise({
-        //비동기 통신.
         let status;
         if(status === 200){
             resolve();
         }else{
             reject();
         }
-
     })
 };
 
@@ -71,7 +85,81 @@ getData().then((resolve)=>{
 ~~~
 
 
-## PromiseAll
+
+
+
+
+## Method
+
+### 1.Promise.resolve
+- resolved Promise object를 반환한다.
+- 매개변수가 프로미스면 그 프로미스를 리턴한다.
+- 매개변수가 then메소드 가졌으면 리턴되는 프로미스는 thenable을 따른다.
+- 타입을 프로미스로 캐스팅할 때 사용된다.
+
+***thenalbe object***
+Promise형식의 then 메서드를 가진 객체를 말한다.<br>
+따라서 Promise객체는 thenable object다.
+``` js
+var thenable = { then: function(resolve) {
+  resolve('Resolving');
+  throw new TypeError('Throwing');
+}};
+```
+
+
+아래 예제는 Promise.resovle의 특징을 이해하는데 도움이 된다.
+``` js
+const p = new Promise(resovle => setTimeout(resovle));
+
+new Promise(resolve => resolve(p)).then(() => {
+  console.log("tick 3");
+});
+
+p.then(() => {
+  console.log("tick 1");
+}).then(() => {
+  console.log("tick 2");
+});
+
+/*
+  tick 1
+  tick 2
+  tick 3
+*/
+```
+
+
+``` js
+const p = new Promise(resovle => setTimeout(resovle));
+
+Promise.resolve(p).then(() => {
+  console.log("tick 3");
+});
+
+p.then(() => {
+  console.log("tick 1");
+}).then(() => {
+  console.log("tick 2");
+});
+
+/*
+  tick 3
+  tick 1
+  tick 2
+*/
+```
+
+위 예제에서 
+new Promise(resolve => resolve(p))와 Promise.resolve(p)의 차이는 <br/>
+새로운 Promise객체를 생성하는가?에 있다.<br/>
+앞서 말한봐와 같이 Promise.resolve의 매개변수에 Promise가 전달될 경우<br/>
+전달받은 Promise를 그대로 return한다.
+
+
+
+### Promise.all()
+
 
 
 ## 예외처리
