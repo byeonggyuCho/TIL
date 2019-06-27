@@ -11,6 +11,8 @@ ES6에서 부터 공식 기능으로 적용됨.
 
 
 ## 상태코드
+![](/resource/img/javascript/promiseStatus.jpg)
+
 - Pending(대기) : 비동기 처리 로직이 아직 완료되지 않은 상태
 - Fulfilled(이행) : 비동기 처리가 완료되어 프로미스가 결과 값을 반환해준 상태
 - Rejected(실패) : 비동기 처리가 실패하거나 오류가 발생한 상태
@@ -42,9 +44,9 @@ checkCoffeeAble.then(canHaveCoffee).catch(cannotHaveCoffee);
 
 
 ## then Method
-프로미스객체는 then 메소드를 가진다.<br/>
-When Promise is fullfilled or rejected the respective handler function (onFulfilled or onRejected) will be called asynchronously<br>
-then Method는 Promise를 리턴하는데 그 Promise는 다음 특징을 갖는다.
+Promise has then Method.<br/>
+When Promise is fullfilled or rejected the respective handler function (onFulfilled or onRejected) will be called asynchronously.<br>
+Then Method return new Promise, it has following features.
 
 
 ### 1.Parameter
@@ -97,7 +99,7 @@ getData().then((resolve)=>{
 - 매개변수가 then메소드 가졌으면 리턴되는 프로미스는 thenable을 따른다.
 - 타입을 프로미스로 캐스팅할 때 사용된다.
 
-***thenalbe object***
+***thenalbe object***<br>
 Promise형식의 then 메서드를 가진 객체를 말한다.<br>
 따라서 Promise객체는 thenable object다.
 ``` js
@@ -153,13 +155,11 @@ p.then(() => {
 위 예제에서 
 new Promise(resolve => resolve(p))와 Promise.resolve(p)의 차이는 <br/>
 새로운 Promise객체를 생성하는가?에 있다.<br/>
-앞서 말한봐와 같이 Promise.resolve의 매개변수에 Promise가 전달될 경우<br/>
-전달받은 Promise를 그대로 return한다.
+앞서 말한바와 같이 Promise.resolve()의 매개변수로 Promise가 전달될 경우<br/>
+전달받은 Promise를 그대로 return한다.<br/>
+따라서 이 경우에는 새로운 Promise가 생기지 않는다.
 
 
 
-### Promise.all()
+### 2.Promise.all
 
-
-
-## 예외처리
