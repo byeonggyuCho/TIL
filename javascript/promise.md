@@ -5,7 +5,7 @@
 자바스크립트 비동기(asynchronous code)에 사용되는 객체<br>
 
 
-## 왜?
+## 등장배경
 callback Hell에서 벗어나기 위한 패턴.<br>
 ES6에서 부터 공식 기능으로 적용됨.
 
@@ -49,7 +49,7 @@ When Promise is fullfilled or rejected the respective handler function (onFulfil
 Then Method return new Promise, it has following features.
 
 
-### 1.Parameter
+### 1. Parameter
 - onFulfilled : 'fulfillment value'가 매개변수로 전달된다.
 - onRejected  : 'rejection reason'이 매개변수로 전달된다.
 ### 2. Return Value
@@ -93,7 +93,7 @@ getData().then((resolve)=>{
 
 ## Method
 
-### 1.Promise.resolve
+### 1. Promise.resolve
 - resolved Promise object를 반환한다.
 - 매개변수가 프로미스면 그 프로미스를 리턴한다.
 - 매개변수가 then메소드 가졌으면 리턴되는 프로미스는 thenable을 따른다.
@@ -161,5 +161,5 @@ new Promise(resolve => resolve(p))와 Promise.resolve(p)의 차이는 <br/>
 
 
 
-### 2.Promise.all
+### 2. Promise.all
 
