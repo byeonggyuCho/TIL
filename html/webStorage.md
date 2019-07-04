@@ -1,5 +1,5 @@
 # WebStorage
-![](/resource/img/html/webStorage.jpg)
+![](/resource/img/html/webStorage.jpg)<br>
 HTML5에서 브라우저의 내부 스토리지를 사용할 수 있도록 제공해주는 기능.<br>
 기존 Cookie에 대한 제약을 해소하고 조금 더 다양한 클라이언트으에 많은 기능을 넣고자 생긴 기능.<br><br><br>
 
