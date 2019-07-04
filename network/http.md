@@ -18,10 +18,9 @@
 ![alt text](../resource/img/http_request.png "http")
 
 #### 2.1.1 요청라인
-
-    메서드 : GET, HEAD, POST, PUT, TRACE, DELETE
-    URL : /login.do
-    버전 : 1.1
+- 메서드 : GET, HEAD, POST, PUT, TRACE, DELETE
+- URL : /login.do
+- 버전 : 1.1
 
 #### 2.1.2 헤더
 

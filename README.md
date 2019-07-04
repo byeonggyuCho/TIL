@@ -85,7 +85,6 @@
 2. For Architecture Series
     - 브라우저 동작 원리
     - 함수형프로그래밍
-    - TCP/IP
 
 3. Tool Series
     - 이용중인 툴의 소개 및 응용방법

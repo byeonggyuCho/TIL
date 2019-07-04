@@ -1,5 +1,4 @@
-## function
-
+# function
 
 함수의 내부에는 arguments, this라는 객체가 있다.
 

@@ -40,7 +40,6 @@ console.log(util.isEmpty(30));          //false
 
 ### 2.1 내보내기
 ```js
-
 /**
  *  util.js
  */
