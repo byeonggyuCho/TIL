@@ -1,8 +1,14 @@
-SOLID 객체지향 설계 원칙
-======================
+# Object-Oriented Programming
 
 
-## 1. SRP(Single Responsibility)
+
+
+## 1. SOLID
+객체지향 설계 원칙
+
+
+
+### 1. SRP(Single Responsibility)
 단일책임의 원칙
 
 클래스는 단 한개의 책임을 가져야한다.<br>
@@ -11,7 +17,7 @@ dto의 경우 Text에 대한 DTO, img에 대한 DTO 가 나뉘어져있어야한
 
 
 
-## 2. OCP(Open Close Principle)
+### 2. OCP(Open Close Principle)
  개방-폐쇄의 원칙<br>
  확장에는 열려있고 수정에는 닫혀있어야한다.
  
@@ -26,7 +32,7 @@ dto의 경우 Text에 대한 DTO, img에 대한 DTO 가 나뉘어져있어야한
 
 
 
-## 3. LSP(The Liskov Substitution Principle)
+### 3. LSP(The Liskov Substitution Principle)
 리스코프 치환 원칙<br>
 부모 클래스에서 자식 클래스 객체를 대입해 사용해도 프로그램은 정상적으로 동작해야한다.<br>
 	자식과 부모 클래스 사이에 행위에는 일관성이 있어야한다.<br>
@@ -36,14 +42,14 @@ dto의 경우 Text에 대한 DTO, img에 대한 DTO 가 나뉘어져있어야한
 - 자식클래스 객체를 파라미터로 전달 했을때 프로그램이 정상적으로 동작하지 않는다.
 - 향후 기능을 변경하거나 확장시 코드를 수정해야한다.
 
-## 4. ISP(Interface Segregation Principle)
+### 4. ISP(Interface Segregation Principle)
 - 인터페이스 분리의 원칙.
 
 클래스는 자신이 사용하지 않는 인터페이스는 구현하지 말야아한다.<br>
 하나의 인터페이스로 모든것을 처리하는 것보다는 작은 여러개의 인터페이스를 처리하는것이 낫다.<br>
 
 
-## 5. DIP(Dependency Inversion Principle)
+### 5. DIP(Dependency Inversion Principle)
  - 의존 역전의 원칙.
 
 상위 모듈이 하위 모듈의 구현이 의존해서는 안된다.<br>

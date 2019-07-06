@@ -8,12 +8,12 @@
 <br>
 여기서 CORS는 타 도메인 간에 자원을 공유할 수 있게 해주는 것이다. Cross-Origin Resource Sharing 표준은 웹 브라우저가 사용하는 정보를 읽을 수 있도록 허가된 출처 집합을 서버에게 알려주도록 허용하는 특정 HTTP 헤더를 추가함으로써 동작한다.
 <br>
-HTTP Header	Description
-Access-Control-Allow-Origin	접근 가능한 url 설정
-Access-Control-Allow-Credentials	접근 가능한 쿠키 설정
-Access-Control-Allow-Headers	접근 가능한 헤더 설정
-Access-Control-Allow-Methods	접근 가능한 http method 설정
-Preflight Request
+- HTTP Header	Description
+- Access-Control-Allow-Origin	접근 가능한 url 설정
+- Access-Control-Allow-Credentials	접근 가능한 쿠키 설정
+- Access-Control-Allow-Headers	접근 가능한 헤더 설정
+- Access-Control-Allow-Methods	접근 가능한 http method 설정
+- Preflight Request
 <br>
 
 실제 요청을 보내도 안전한지 판단하기 위해 preflight 요청을 먼저 보내는 방법을 말한다. 즉, Preflight Request는 실제 요청 전에 인증 헤더를 전송하여 서버의 허용 여부를 미리 체크하는 테스트 요청이다. 이 요청으로 트래픽이 증가할 수 있는데 서버의 헤더 설정으로 캐쉬가 가능하다. 서버 측에서는 브라우저가 해당 도메인에서 CORS 를 허용하는지 알아보기 위해 preflight 요청을 보내는데 이에 대한 처리가 필요하다. preflight 요청은 HTTP 의 OPTIONS 메서드를 사용하며 Access-Control-Request-* 형태의 헤더로 전송한다.

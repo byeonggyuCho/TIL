@@ -4,8 +4,7 @@ new 연산자를 사용할때 다음의 4가지 일이 순차적으로 일어난
 **new연산자를 이용한 객체 생성**
 1. 빈 객체(plain Object)를 생성한다.
 2. 생성자 함수의 this를 새로 만들어진 객체에 binding한다.
-3. 새로 만들어진 객체에 \_\_proto\_\_  property를 더한다. \_\_proto\_\_ 는 생성자 함수의 constructor.prototype이다. 
-즉 생성자함수의 Prototype을 상속받는다.
+3. 새로 만들어진 객체에 생성자 함수의 prototype 객체를 참조하는 \_\_proto\_\_  property를 추가한다. (즉 생성자함수의 Prototype을 상속받는다.)
 4. 생성자함수에 별도의 반환값이 없으면 마지막에 'return this'를 추가하여 새로 생성한 객체를 반환한다.
 
 ```js
