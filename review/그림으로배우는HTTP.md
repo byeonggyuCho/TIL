@@ -1,3 +1,5 @@
-![alt text](../resource/img/그림으로배우는HTTP.png "book")
-
 # 그림으로배우는HTTP&네트워크
+![alt text](../resource/img/book/그림으로배우는HTTP.png "book")
+
+웹을 다루면서 네트워크에 대한 지식이 전무하다는걸 깨닫고 구매했다.<br>
+비전공인 만큼 기술의 기반이되는 지식을 차곡차곡 정리하자.

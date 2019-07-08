@@ -9,20 +9,20 @@
 
 
 1. user 테이블 조회
-~~~ mysql
+~~~ SQL
 mysql> describe user;
 ~~~
 2. authentication_string 필드 확인
 
 
 3. update 명령어로 페스워드 변경
-~~~
+~~~SQL
 mysql> update user set authentication_string=password('1234') where user='root';
 ~~~
 
 4. 변경사항 적용
 
-~~~
+~~~SQL
 mysql> flush privileges;
 mysql> quti;
 ~~~
