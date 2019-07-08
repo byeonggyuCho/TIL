@@ -5,6 +5,8 @@
 
 ## Spring 프론트 컨트롤러 패턴의 요청경로
 
+![](/resource/img/spring/STS.jpg)
+
 1. 요청 
 2. dispatcher Servlet으로 이동 
 	- 이동경로 설정은 "-servlet. xml"에서 bean을 생성하여 정한다. 
