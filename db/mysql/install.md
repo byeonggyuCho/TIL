@@ -27,4 +27,7 @@ Now your MySQL server is up and running!
     Using command prompt in administrator mode is only for the setting up. You don't want administrator mode in the later sever startups.
 
     A Note for MySQL Workbench Users:
-    I use MySQL Workbench as the IDE. My OS is a 64bit OS and I downloaded 64bit non-install zip version of MySQL Workbench. But it got crashed when i started it. Then i browsed internet and found that 32bit version is the solution. I downloaded MySQL Workbench 32 bit non-install zip and it worked fine.
+    I use MySQL Workbench as the IDE. My OS is a 64bit OS and I downloaded 64bit non-install zip version of MySQL Workbench. 
+    But it got crashed when i started it. 
+    Then i browsed internet and found that 32bit version is the solution. 
+    I downloaded MySQL Workbench 32 bit non-install zip and it worked fine.
