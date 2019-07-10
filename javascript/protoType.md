@@ -5,14 +5,13 @@
 	
 
 2. 프로토타입 객체
-	-
 
 3. 프로토타입 링크
 
 
 
 
-4.원형 함수 객체(host Function Object)
+4.  함수 객체(host Function Object)
 	-객체를 정의한것에 해당한다.
 	-프로토타입 property를 갖는다.
 	-프로토타입 property는 함수 객체를 정의할때 생성된 프로토타입 Object를 참조한다.
@@ -20,7 +19,7 @@
 	ex) function a(){};
 	ex) var a = new Function();
 
-5.프로토타입 Object
+5. 프로토타입 Object
 	-함수객체가 생성되는 시점의 정보를 가지는 객체다
 	-원형 함수객체로 부터 만들어질 다른객체가 참조할 프로토타입이다.
 	-즉 원형 함수객체로 만들어낸 인스턴스들은 원형 함수객체의 프로토타입 object를 참조한다.
