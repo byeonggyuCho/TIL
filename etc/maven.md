@@ -6,7 +6,6 @@
 즉, 자바 소스를 compile하고 package해서 deploy하는 일을 자동화 해주는 것
 
 
-
 *cf.* build tool: Ant, Gradle, Gulp, Webpack
 
 ## 1. Goal and Feature
