@@ -11,7 +11,7 @@
 ## 1. Goal and Feature
 ### 1.1 빌드 절차 간소화
 ### 1.2 통합된 빌드 시스템 제공
-### 1.3  Quility Project Information 제공
+### 1.3 Quility Project Information 제공
 ### 1.4 개발에 있어서 Best Practice를 위한 가이드 제공
 ### 1.5 소스코드 디렉토리 구조 표준화
 ### 1.6 의존성 관리
@@ -48,7 +48,7 @@ http://maven.apache.org/xsd/maven-4.0.0.xsd">
 </project>
 ~~~
 
-pom.xml에서 이 <dependency>태그 부분에서 lib를 자동으로 준비해준다.
+pom.xml에서 <dependency>태그 부분에서 lib를 자동으로 준비해준다.
 - 서버에 들어가서 lib를 다운받는다.
 -  www.mvnrepository.com 이 홈페이지에서 웬만한 양식은 모두 찾을 수 있다.
     -  <https://mvnrepository.com/artifact/mysql/mysql- connector- java/5.1.42>
