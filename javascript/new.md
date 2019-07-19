@@ -158,7 +158,7 @@ var car2 = new Car("Nissan", "300ZX", 1992, ken);
 car2의 ownder name을 확인해보기 위해서 다음 코드처럼 접근할 수 있다.
 
 ```js
-car2.owner.name
+car2.owner.name 
 ```
 
 
