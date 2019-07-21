@@ -146,7 +146,7 @@ function Car(make, model, year, owner) {
   this.year = year;
   this.owner = owner;
 }
-
+ 
 ```
 새로운 객체의 인스턴스를 생성하기 위해 다음과 같이 사용한다.
 
