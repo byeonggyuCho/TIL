@@ -204,7 +204,7 @@ clean 작업을 수행하기에 앞서 필요한 사전 작업을 수행한다.
 
 
 ## 2. Description
-1) POM.XML (Project Object Model)
+###  POM.XML (Project Object Model)
     - Maven은 pom에 project에 대한 모든 정보를 기술되어있다.	
     - 프로젝트 환경설정파일이라고 생각하면된다.
     - 프로젝트 관계설정
@@ -343,36 +343,6 @@ Spring이나 JDBC처럼 의존관계가 축라되는 라이브러리등은 해�
 기본위치: "\c/.m2"라는 폴더가 자동으로 생긴다.<br>
 이곳에 다운받은 라이브러리가 저장된다.<br>
 
-
-- mvn을 실행할때는 porm.xml이 있는곳에서 실행해야한다.
-    'mvn compile'
-- packaging하기
-    'mvn package'
-
-
-### Goal
--  complie package같은 기능을 Goal이라 부른다.
-
-
-2) Build Lifecycle & Pase
-    validate
-    initialize
-    generate- sources
-    ...
-    compile			//컴파일
-    process- classes
-    ...
-    test- compile
-    test
-    package			//패키지
-    ...
-    verify
-    install
-    deploy			//배포.
-    - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-    clean			//싹 지워버린다.
-
-    - 이 순서대로 단계가 진행된다.
 
 ## 3. Maven Standard Directory Layout
    ![](/resource/img/etc/mavenFolderStructure.jpg)
