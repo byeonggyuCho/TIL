@@ -129,7 +129,7 @@ function Person(name, age, sex){
   this.age = age;
   this.sex = sex;
 }
-```
+``` 
 그리고 다음과 같이 두 개의 person의인스턴스를 새롭게 생성한다.
 
 ```js
