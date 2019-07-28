@@ -56,7 +56,7 @@
 Shift+Delete:  휴지통을 거치지 않고, 영구 삭제.
 Alt+Enter:  현재 선택된 파일의 속성 창.
 * Win+Shift+Any Number Key:  작업 표시줄내 앱 새 창 실행
-* Win+Ctrl+Shift+Any Number Key:  작업 표시줄내 앱 새 창 실행(관리자 권한)
+* Win+Ctrl+Shift+Any Number Key:  작업 표시줄내 앱 새 창 실행(관리자 권한) 
 
 
 ## 그림, 비디오, 디스플레이 관련
