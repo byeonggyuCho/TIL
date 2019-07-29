@@ -1,6 +1,8 @@
 # VSCODE
 node랑 react를 공부하면서 사용해봄.
 전반적으로 이클립스보단 모던한 느낌이 강하다.
+commitTest
+
 
 ## 1. 단축키
 
