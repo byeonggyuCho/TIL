@@ -18,7 +18,7 @@
 - 서버쪽에서 작업을 못할 경우 하는 방식
 - css나 js같은 리소스 파일을 json으로 변환하여 호출한다.
 - 리소스를 get방식으로만 불러올 수 있따.
-
+ 
 2. 서버사이드에서 데이터 요청을한다.
 - Cross Origin Requests for RESTful WebService
 
