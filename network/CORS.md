@@ -9,19 +9,18 @@
 - 서버와 클라이언트가 정해진 헤더를 통해 서로 요청이나 응답에 반응할지 결정하는 방식
 - 요청 받은 웹서버가 허용할 경우에 다른 도메인에서 자원을 주고받을 수 있게 해준다.
 
-CORS는 HTTP에 추가정보를 넣음으로서 다른 도메인에 대한 접근권한을 확인하는 방법이다.
+CORS는 HTTP에 추가정보를 넣음으로서 다른 도메인에 대한 접근권한을 확인하는 방법이다.<br>
 웹 애플리케이션은 다른 서버의 리소스를 요청할때 cross origin HTTP요청을 한다.
 <br>
 예를 들어 http://domain-a.com에서 XMLHttpRequest를 이용해서 http://api.domain-b.com/data.json에 요청을 보낸다고 해보자.<br>
 보안상의 이유로 브라우저는 cross-origin HTTP requests을 할 수 없을 것이다.<br>
-따라서 CORS해더를 사용하지 않는 한, 웹 브라우저는 애플리케이션이 로딩된 도메인과 같은 도메인에서만 API를 요청할 수 없다.<br>
-CORS는  secure cross-origin requests와 브라우저와 웹서버간의 데이터 통신을 지원한다.
+따라서 CORS해더를 사용하지 않으면 웹 브라우저는 애플리케이션이 로딩된 도메인과 같은 도메인에서만 API를 요청할 수 없다.<br>
 
 
 ![](/resource/img/network/CORS_principle.png)
 
 
-## CORS의 용도
+**CORS의 용도**<br>
 1. XMLHttpRequest나 Fetch API등으로 cross domain 요청을 할때.
 2. Web Fonts
 3. WebGL textures.
@@ -29,11 +28,11 @@ CORS는  secure cross-origin requests와 브라우저와 웹서버간의 데이�
 
 
 
-## 개요
-CORS를 이용하기 위해선 HTTP해더를 추가해야한다.
+## 1. 개요
+CORS를 이용하기 위해선 HTTP해더를 추가해야한다.<br>
 이 헤더에는 Client 도메인이 타겟 도메인의 정보에 대한 요청권한이 있음을 알리는 정보가 담겨있다.
 CORS에서는 서버데이터의 사이드이펙트를 야기하는 HTTP 요청(GET, MIME types를 포함한 POST요청등)에 대해서  Client 브라우저는 "preflight"을 해야한다.
-"preflight"란 HTTP OPTIONS 메소드를 이용하여 API Server에 요청권한을 확인하고 서버로 부터 승인이 떨어졌을때 실제 요청을 하는것을 말한다.
+"preflight"란 HTTP OPTIONS 메소드를 이용하여 API Server에 요청권한을 확인하고 서버로 부터 승인이 떨어졌을때 실제 요청을 하는것을 말한다.<br>
 Preflight Request는 실제 요청 전에 인증 헤더를 전송하여 서버의 허용 여부를 미리 체크하는 테스트 요청이다.<br>
 이 요청으로 트래픽이 증가할 수 있는데 서버의 헤더 설정으로 캐쉬가 가능하다.
 preflight 요청은 HTTP 의 OPTIONS 메서드를 사용하며 Access-Control-Request-* 형태의 헤더로 전송한다.
@@ -47,15 +46,13 @@ preflight 요청은 HTTP 의 OPTIONS 메서드를 사용하며 Access-Control-Re
 
 
 
-### preflight request (사전요청)
+**preflight request**<br>
 요청하려는  URL이 외부 도메인일 경우 웹 브라우저는 preflight요청을 먼저 날리게 된다.
-preflight요청은 실제로 요청하려는 경로와 같은 URL에 대해 OPTIONS메서드로 요청을 미리 날려보고 요청을 할 수 있는 권한이 있는지 확인한다.
-
-위와 같이 CORS 요청을 편법없이 하기 위해서는 클라이언트의 처리만으로는 안되고 해당 서버측에서의 추가 처리 사항이 필요하다.
+preflight요청은 실제로 요청하려는 경로와 같은 URL에 대해 OPTIONS메서드로 요청을 미리 날려보고 요청을 할 수 있는 권한이 있는지 확인한다.<br><br><br>
 
 
 
-## HTTP 요청헤더
+## 2.HTTP 요청헤더
 
 ### 1. Origin
 요청이 초기화 된곳에서 서버를 가리키는 URL 서버이름만 포함한다.
@@ -63,15 +60,13 @@ preflight요청은 실제로 요청하려는 경로와 같은 URL에 대해 OPTI
 ### 2.Access-Control-Request-Method
 실제 요청이 일어나는 경우 어떤 HTTP 메서드가 사용될 것인지 서버에 알리기 위해 사전 전달시 사용
 
-
 ### 3.Access-Control-Request-Headers
 실제 요청이 일어나는 경우 어떤 HTTP 헤더가 사용될것인지 서버에 알리기 위해 사전 전달 요청시 사용
+<br><br><br>
 
 
-<br>
 
-## HTTP 응답헤더
-
+## 3.HTTP 응답헤더
 
 ### 1. Access-Control-Allow-Origin
 요청을 허용하는 출처, *이면 모든 곳에 공개되어있음을 의미한다.
@@ -116,7 +111,7 @@ Access-Control-Allow-Headers: Origin,Accept,X-Requested-With, Content-TypemAcces
 
 
 
-## 예제
+## 4.예제
 
 ### 1. Simple requests
 preflight를 요청하지 않는 경우이다.
