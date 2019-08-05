@@ -31,17 +31,14 @@ CORS는 HTTP에 추가정보를 넣음으로서 다른 도메인에 대한 접�
 ## 1. 개요
 CORS를 이용하기 위해선 HTTP해더를 추가해야한다.<br>
 이 헤더에는 Client 도메인이 타겟 도메인의 정보에 대한 요청권한이 있음을 알리는 정보가 담겨있다.
-CORS에서는 서버데이터의 사이드이펙트를 야기하는 HTTP 요청(GET, MIME types를 포함한 POST요청등)에 대해서  Client 브라우저는 "preflight"을 해야한다.
+CORS에서는 서버데이터의 사이드이펙트를 야기하는 HTTP 요청(GET, MIME types를 포함한 POST요청등)에 대해서  Client 브라우저는 "preflight"을 해야한다.<br>
 "preflight"란 HTTP OPTIONS 메소드를 이용하여 API Server에 요청권한을 확인하고 서버로 부터 승인이 떨어졌을때 실제 요청을 하는것을 말한다.<br>
 Preflight Request는 실제 요청 전에 인증 헤더를 전송하여 서버의 허용 여부를 미리 체크하는 테스트 요청이다.<br>
 이 요청으로 트래픽이 증가할 수 있는데 서버의 헤더 설정으로 캐쉬가 가능하다.
 preflight 요청은 HTTP 의 OPTIONS 메서드를 사용하며 Access-Control-Request-* 형태의 헤더로 전송한다.
 <br>
 또 서버는 해당 요청에 대한 인증정보(credentials, Cookies나 HTTP Authentication data)가 포함되어야 하는지를 알려준다.
-
-서버 측에서는 브라우저가 해당 도메인에서 CORS 를 허용하는지 알아보기 위해 preflight 요청을 보내는데 이에 대한 처리가 필요하다. 
-
-<br>
+서버 측에서는 브라우저가 해당 도메인에서 CORS 를 허용하는지 알아보기 위해 preflight 요청을 보내는데 이에 대한 처리가 필요하다.<br>
 이는 브라우저가 강제하며 HTTP OPTION 요청 메서드를 이용해 서버로부터 지원 중인 메서드들을 내려 받은 뒤, 서버에서 approval(승인) 시에 실제 HTTP 요청 메서드를 이용해 실제 요청을 전송하는 것이다.<br>
 
 
@@ -109,9 +106,11 @@ preflight 요청의 응답으로 사용된다.
 Access-Control-Allow-Headers: Origin,Accept,X-Requested-With, Content-TypemAccess-Control-Request-Method, Access-Control-Request-Headers, Authorizion
 ```
 
+<br><br><br>
 
 
-## 4.예제
+
+## 예제
 
 ### 1. Simple requests
 preflight를 요청하지 않는 경우이다.
@@ -328,7 +327,7 @@ Access-Control-Max-Age: 86400
 ```
 
 
-모든 브라우저가 CORS 프로토콜을 완벽하게 지원하진 않는다.
+모든 브라우저가 CORS 프로토콜을 완벽하게 지원하진 않는다.<br>
 따라서 Cross domain를 회피하기 위한 몇가지 방법이 있다.
 
 1. 서버에서 preflight가 필요하지 않도록 수정한다. (컨트롤 권한이 있는 경우)

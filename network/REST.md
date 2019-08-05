@@ -16,21 +16,20 @@
 - HTTP Method
 - 표현(Representations)	
 
-## REST API 
+**REST API**<br> 
 rest의 특징을 지키면서 api를 제공하는 것
 
 
-
 **RESTFUL**<br>
-- rest의 원칙을 따른다는 뜻이다.
+rest의 원칙을 따른다는 뜻이다.
 
 
 ## REST API 가이드
-- 첫 번째, URI는 정보의 자원을 표현해야 한다.
-- 두 번째, 자원에 대한 행위는 HTTP Method(GET, POST, PUT, DELETE)로 표현한다.
+1. URI는 정보의 자원을 표현해야 한다.
+2. 자원에 대한 행위는 HTTP Method(GET, POST, PUT, DELETE)로 표현한다.<br>
 단 명확한 표준이 없기때문에 개발하는 서비스의 특징과 개발집단의 환경을 고려하여 설계하는것이 중요하다.
-- RestFul한 URI API를 설계하는 가이드.
 
+<br><br>
 ## 특징 
 ### 1.Uniform(유니폼 인터페이스)
 url로 지정한 리소스에 대한 조작을 통일되고 한정적인 인터페이스로 수행하는 아키텍쳐 스타일을 말한다.
@@ -48,34 +47,29 @@ url로 지정한 리소스에 대한 조작을 통일되고 한정적인 인터�
 - 캐쉬를 사용하게 되면 네트워크 응답시간 뿐만 아니라 Rest 컴포넌트가 위치한 서버에 트랜젝션을 발생시키지 않기 때문에 전체 응답시간과 성능 서버자원 사용률을 향상시킬 수 있다.
 
 ### 4.Self-descripttiveness(자체표현구조)
-- REST의 또 다른 큰 특징 중 하나는 REST API 메시지만 보고도 이를 쉽게 이해 할 수 있는 자체 표현 구조로 되어 있다는 것입니다.
+REST의 또 다른 큰 특징 중 하나는 REST API 메시지만 보고도 이를 쉽게 이해 할 수 있는 자체 표현 구조로 되어 있다는 것입니다.
 
 
 ### 5.Client-Server 구조
-- REST 서버는 API 제공, 클라이언트는 사용자 인증이나 컨텍스트(세션, 로그인 정보)등을 직접 관리하는 구조로 각각의 역할이 확실히 구분되기 때문에 클라이언트와 서버에서 개발해야 할 내용이 명확해지고 서로간 의존성이 줄어들게 됩니다.
+REST 서버는 API 제공, 클라이언트는 사용자 인증이나 컨텍스트(세션, 로그인 정보)등을 직접 관리하는 구조로 각각의 역할이 확실히 구분되기 때문에 클라이언트와 서버에서 개발해야 할 내용이 명확해지고 서로간 의존성이 줄어들게 됩니다.
 
 
 ### 6.계층형 구조
 REST 서버는 다중 계층으로 구성될 수 있으며 보안, 로드 밸런싱, 암호화 계층을 추가해 구조상의 유연성을 둘 수 있고 PROXY, 게이트웨이 같은 네트워크 기반의 중간매체를 사용할 수 있게 합니다.
 
-<br>
-<br>
+<br><br>
 
 ## REST API 서버 설계
 
 ### 1. 최대 2depth
 ### 2. URI에 리소스명은 동사보다 명사를 사용한다.
 1. HTTP Post : /dogs
-    - 등록
 2. HTTP Get : /dogs
-    - 조회
 3. HTTP Put : /dogs
-    - 업데이트
 4. HTTP Delete : /dogs
-    - 삭제
+<br><br><br>
 
 
-<br><br>
 
 ## REST의 문제점
 
@@ -88,14 +82,19 @@ REST 서버는 다중 계층으로 구성될 수 있으며 보안, 로드 밸런
 - 구형 브라우저가 PUT, DELETE등의 메소드를 지원하지 못함
 - 따라서 범용적 사용이 필요한 OPEN API에서는 REST스타일을 따르지 않는 경우가 많음
 
+<br><br><br>
+
+
 
 ## REST 보안
 
 
 ### 1. 인증 (Authentication)
-- 누가 서비스를 사용하는지 확인하는 절차
+누가 서비스를 사용하는지 확인하는 절차
+
 #### 1_1 서비스키(API KEY)
-- 서비스키가 노출되면 보안이 뚫려버린다.
+서비스키가 노출되면 보안이 뚫려버린다.
+
 #### 2_2  API Token방식
 ![](/resource/img/network/API_token.png)
 - API사용기간을 설정한 API Token을 발급하여 요청을 처리한다.
@@ -109,38 +108,41 @@ REST 서버는 다중 계층으로 구성될 수 있으며 보안, 로드 밸런
 
 **Digest access Authentication**<br>
 클라이언트가 인증을 요청할 때 클라이언트가 서버로부터 nonce라는 일정의 난소값을 받은 후에 (서버와 클라이언트는 이 난수를 알고 있다.) 사용자 ID와 PASSWORD를 이 난수를 이용해 HASH해서 서버로 전송하는 방식
-이 경우 ID와 PASSWORD가  평문으로 날아가지 않기 때문에 해커가 중간에 PASSWORD를 탈취 할 수 없고 HASH알고리즘을 알고 있다고 하더라도 HASH된 값에서 반대로 PASSWORD를 추출하기가 어렵기 때문에 보안이 두텁다.
+이 경우 ID와 PASSWORD가  평문으로 날아가지 않기 때문에 해커가 중간에 PASSWORD를 탈취 할 수 없고 HASH알고리즘을 알고 있다고 하더라도 HASH된 값에서 반대로 PASSWORD를 추출하기가 어렵기 때문에 보안이 강력하다.
 <br>
 ![](/resource/img/network/DigestAccessAuthentication.png)<br>
 
 
 1. 클라이언트가 서버에 리소스를 요청한다.
 2. 서버는 해당 세션에 대한 nonce값을 생성하여 저장한 후에, 클라이언트에 리턴한다. 이때 realm을 같이 리턴하는데 realm은 인정의 범위로 하나의 웹서버에 car.war와 market.war가 각각 http:myweb/car, http://myweb/market이라는 URL로 배포가 되었다고 하면 이 웹사이트는 각각 애플리케이션 car.war와 market.war에 대해서 다른 인증 realm을 갖는다.
-    - 해당 session에 대해서 nonce값을 유지 저장해야 하기 때문에 서버쪽에서는 상태 유지에 대한 부담이 생긴다.
-    - HTTP Session을 이용하거나 서버간에 메모리 공유(memcached나 redis등)을 넣어서 서버간에 상태 정보를 유지할 수 있는 설계가 필요하다.
+
+    해당 session에 대해서 nonce값을 유지 저장해야 하기 때문에 서버쪽에서는 상태 유지에 대한 부담이 생긴다.
+    <br>
+    HTTP Session을 이용하거나 서버간에 메모리 공유(memcached나 redis등)을 넣어서 서버간에 상태 정보를 유지할 수 있는 설계가 필요하다.
+    <br>
 
 3.	클라이언트는 앞에서 서버로부터 받은 realm과 nonce값으로 Hash 값을 생성하는데, 
 
-    - HA1 = MD5(사용자이름:realm:비밀번호)
-    - HA2 = MD5(HTTP method:HTTP URL)
-    - response hash = MD5(HA1:nonce:HA2)
+    HA1 = MD5(사용자이름:realm:비밀번호)<br>
+    HA2 = MD5(HTTP method:HTTP URL)<br>
+    response hash = MD5(HA1:nonce:HA2)<br>
     를 통해서 response hash 값을 생성한다.
 
     예를 들어서 /car/index.html 페이지를 접근하려고 했다고 하자,<br> 
     서버에서 nonce값을 dcd98b7102dd2f0e8b11d0f600bfb0c093를 리턴하였고, <br>
     realm은 car_realm@myweb.com 이라고 하자. <br>
-
     그리고 사용자 이름이 terry, 비밀 번호가 hello world하면
 
-    - HA1 = MD5(terry:car_realm@myweb.com:hello world)로 7f052c45acf53fa508741fcf68b5c860 값이 생성되고
-    - HA2 = MD5(GET:/car/index.html) 으로 0c9f8cf299f5fc5c38d5a68198f27247 값이 생성된다.
-    - Response Hash는MD5(7f052c45acf53fa508741fcf68b5c860: dcd98b7102dd2f0e8b11d0f600bfb0c093:0c9f8cf299f5fc5c38d5a68198f27247) 로 결과는 95b0497f435dcc9019c335253791762f 된다.
+    HA1 = MD5(terry:car_realm@myweb.com:hello world)로 7f052c45acf53fa508741fcf68b5c860 값이 생성되고<br>
+    HA2 = MD5(GET:/car/index.html) 으로 0c9f8cf299f5fc5c38d5a68198f27247 값이 생성된다.<br>
+    Response Hash는MD5(7f052c45acf53fa508741fcf68b5c860: dcd98b7102dd2f0e8b11d0f600bfb0c093:0c9f8cf299f5fc5c38d5a68198f27247) 로 결과는 <br>95b0497f435dcc9019c335253791762f 된다.
 
-    클라이언트는 사용자 이름인 “terry”와 앞서 받은 nonce값인 dcd98b7102dd2f0e8b11d0f600bfb0c093와 계산된 hash값인 95b0497f435dcc9019c335253791762f 값을 서버에게 전송한다.
+    클라이언트는 사용자 이름인 “terry”와 앞서 받은 <br>
+    nonce값인 dcd98b7102dd2f0e8b11d0f600bfb0c093와 <br>
+    계산된 hash값인 95b0497f435dcc9019c335253791762f 값을 서버에게 전송한다.
 
 
-
-4.	서버는 먼저 3에서 전달된 nonce값이 이 세션을 위해서 서버에 저장된 nonce 값과 같은지 비교를 한후, 전달된 사용자 이름인 terry와nonce값 그리고 서버에 저장된 사용자 비밀 번호를 이용해서 3번과 같은 방식으로 response hash 값을 계산하여 클라이언트에서 전달된 hash값과 같은지 비교를 하고 같으면 해당 리소스를 (/car/index.html 파일)을 리턴한다. 
+4.	서버는 먼저 3에서 전달된 nonce값이 이 세션을 위해서 서버에 저장된 nonce 값과 같은지 비교를 한후, 전달된 사용자 이름인 terry와 nonce값 그리고 서버에 저장된 사용자 비밀 번호를 이용해서 3번과 같은 방식으로 response hash 값을 계산하여 클라이언트에서 전달된 hash값과 같은지 비교를 하고 같으면 해당 리소스를 (/car/index.html 파일)을 리턴한다. 
 
 
 **참고**<br>
