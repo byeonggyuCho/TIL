@@ -7,7 +7,6 @@
 ## 1. Object.creaate
 
 ```js
-
 var person = {
  isHuman: false,
  print: function () { console.log(this.name + ", " + this.isHuman);}
@@ -25,7 +24,6 @@ console.log(JSON.stringify(person));//{"isHuman":false}
 ## 2. Object.defineProperty
 
 ``` js
-
 var object1 = {};
 Object.defineProperty(object1, 'property1', {
  value: 42,
@@ -34,31 +32,26 @@ Object.defineProperty(object1, 'property1', {
 object1.property1 = 77;
 // throws an error in strict mode
 console.log(object1.property1); // 42
-
 ```
 
 ### Object.defineProperties
 ``` js
-
 var o1 = {};
 Object.defineProperties(o1, {
  prop1: { value: 42, writable: true},
  prop2: {}
 });
 console.log(o1.prop1); // 42
-
 ```
 
 
 ### Object.getPrototypeOf
-
 ```js
 var prototype1 = {};
 var object1 = Object.create(prototype1);
 var object2 = Object.getPrototypeOf(object1)
 console.log(object2 === prototype1); //true
 console.log(object2 === object1.__proto__); //true
-
 ```
 
 
@@ -131,7 +124,6 @@ console.log(Object.isSealed(o1)); // true
 ### Object.isFrozen
 
 ```js
-
 var o1 = { prop1: 42 }
 console.log(Object.isFrozen(o1)); // false
 Object.freeze(o1);
