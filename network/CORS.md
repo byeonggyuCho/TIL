@@ -336,10 +336,14 @@ Access-Control-Max-Age: 86400
 이런 방법들은 서버에서 인증헤더(Authorization header)를 요청하는 경우에만 유용한 방법이다.
 
 
-### ref
-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS
-- https://ooz.co.kr/232
-- https://brunch.co.kr/@adrenalinee31/1
+## SPRING  4.2 CORS supprt
+- https://docs.spring.io/spring/docs/current/spring-framework-reference/#cors
 - https://spring.io/guides/gs/rest-service-cors/
 - https://spring.io/blog/2015/06/08/cors-support-in-spring-framework
+​
+
+### ref
+- https://brunch.co.kr/@adrenalinee31/1
+- https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS
+- https://ooz.co.kr/232
 - https://www.html5rocks.com/en/tutorials/cors/
