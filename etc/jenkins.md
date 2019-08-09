@@ -11,7 +11,7 @@ Jenkins란 Open Source CI(Continuous Integration) Tool 로써 팀의 구성원�
 지속적 통합이라는 뜻으로 형상관리 시스템 (SVN, Git) 에 있는 Source 파일을 읽어들여 자동으로 빌드하여 실행할 수 있는 결과물 형태 (exe , jar, apk or war 등) 로 주기적으로 생산해주는 시스템<br>
 그냥 쉽게 말하면 주기적으로 소스파일을 빌드해서 실행 파일을 만든다.
 
-
+  
 
 
 ## 기능
