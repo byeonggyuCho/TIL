@@ -130,6 +130,9 @@
 - 스프링 빈 생성 과정
 - 스프링 의존성 주입과정.
 - sqlSessoinFactory 생성 및 흐름.
+- TypeScript
+- 모듈 번들러(webpack, gulp)
+- Rest API 서버 개발
 
 
 ## 차기 REPOSITRORY
