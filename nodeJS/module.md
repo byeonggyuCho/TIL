@@ -7,9 +7,7 @@ node.js에서 지원하는 모듈시스템.
 
 ### 1.1 내보내기
 ```js
-/**
- *  util.js
- */
+//util.js
 function isEmpty (val) {
     return val === "" 
         || val === null

@@ -10,7 +10,7 @@ CDN 방식과 NPM방식을 지원한다.
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 ```
 
-
+## NPM 방식
 ```
 npm install axios
 ```
@@ -19,3 +19,4 @@ npm install axios
 
 ## 참조
 - https://sabe.io/tutorials/using-axios-pull-data-rest-api
+- https://github.com/axios/axios#example
