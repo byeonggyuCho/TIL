@@ -75,74 +75,85 @@
 ## 컨텐츠 컨테이터
 
 1.  Practice Series
-    - 기본기를 다루면서 예제화 한다.
-    - contents
-        - spring
-        - design pattern
-        - react
-        - javaScript
+  - 기본기  예제화 정리
+  - contents
+    - spring
+    - design pattern
+    - react
+    - javaScript
 
 2. For Architecture Series
-    - 브라우저 동작 원리
-    - 함수형프로그래밍
+  - 브라우저 동작 원리
+  - 함수형 프로그래밍
 
-3. Tool Series
-    - 이용중인 툴의 소개 및 응용방법
-    - contents
-      - webpack
-      - babel
-      - mybatis
-      - jUnit
-      - esLint
-      - maven
+3. Tool
+  - 이용중인 툴의 소개 및 응용방법
+  - contents
+    - 자스민.
+    - webpack
+    - babel
+    - mybatis
+    - jUnit
+    - esLint
+    - maven
 
 4. 기술의 변천사 특집
-    - contents
-      - 데이터베이스 연동모듈
-      - Build Tool[Maven, Gradle]
+  - 데이터베이스 연동모듈
+  - Build Tool[Maven, Gradle]
 
 
-# 관심분야
-- 기술중심 스타트업
-- 디지털 노마드
-- 클린코드
-- 성능 최적화
-- UX를 고려한 설계
-- 나와 다른 방법을 생각하는 개발자와의 커뮤니케이션
+## 관심분야
+1. TDD
+2. 클린코드
+3. 성능 최적화
+4. 타입 스크립트
+5. 최신 EcmaScript API
+6. 커뮤니케이션
+  - UX를 고려한 설계
+  - 프로그래머 소통(코드)
+7. 디지털 노마드
+8. 오픈소스
+  - 기여
+  - 라이브러리 개발
+9. 토이프로젝트
+  - 3개이상 만들어보기
+10. 개인블로그 개설하기.
+11. 협업습관 기르기
+  - (이슈관리, JIRA,Confluence, 프로젝트 보드)
+12. 서비스 품질 개선
+  - 더 빠르고 더 편리한 서비스 품질을 제공
+13. 이쁘고 아름다운 코드
 
 
-# 하고싶은것
-1. 개인블로그 개설.
-2. 프로그래머들과 소통하기.
-3. 사이드프로젝트 3개이상 완성.
-4. 오픈소스 기여하기.
-5. 협업 습관.(이슈관리, JIRA,Confluence, 프로젝트 보드)
-6. 오픈소스 라이브러리 개발.
-7. 더 빠르고 더 편리한 서비스를 제공
-8. 개선된 서비스 품질을 제공하기 위한 노력
 
 
 ## Plan to upgrade 
 1. Study
 2. Side Project
-- 코딩테스트
-- 타입스크립트
-- 주력 언어 공부
+  - 코딩테스트
 
 
 
 ## TODO
-- oop 프로그래밍 연습.
-- java,js 최신스펙에 대한 변경사항.
-- 클린코드
-- 브라우저 이해도.
-- 스프링 라이프 사이클
-- 스프링 빈 생성 과정
-- 스프링 의존성 주입과정.
-- sqlSessoinFactory 생성 및 흐름.
-- TypeScript
-- 모듈 번들러(webpack, gulp)
-- Rest API 서버 개발
+1. 함수형프로그래밍
+2. 모듈 번들러 (webpack, gulp)
+3. oop 프로그래밍
+4. 브라우져
+5. 스프링
+  - 스프링 라이프 사이클
+  - 스프링 빈 생성 과정
+  - 스프링 의존성 주입과정.
+  - sqlSessoinFactory 생성 및 흐름.
+6. Rest API 서버 개발
 
 
-## 차기 REPOSITRORY
+
+
+## 차기 ToyProject
+
+디자인패턴
+- mediator
+- facade
+- abstract factory
+- composite
+- flyweight
