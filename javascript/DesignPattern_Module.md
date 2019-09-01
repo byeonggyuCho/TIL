@@ -1,8 +1,21 @@
 # Module
 
 
+## 언제 사용하나?
+
+## 무엇을 해결하나?
+
+## 제안된 문제를 어떻게 해결하나?
+
+
+## 용도
+- 구성요소를 다른 구성요도와 독립적으류 유지하는데 사용된다.
+- 느슨한 결합을 제공한다.
+- 캡슐화를 할 수 있다.
+- 
+
 ## First knowledge
-- IIFE(즉시 호출 함수 표현식)
+- IIFE(Immediately-Invoked-Function-Expressions)
 - 클로저
 - 비공개 변수 (특권 멤버)
 - 캡슐화
@@ -33,6 +46,7 @@ var person = (function () {
 
     //read only property
     var personalInfo = {
+        tribe    : 'human', 
         gender   : 'M',
         nativeCountry : 'korea'
     }
@@ -58,7 +72,7 @@ var person = (function () {
 이를 위해 등장하는 패턴이 모듈화 패턴이다.
 클로져를 이용해 outter function의 스코프에 접근을 막아 캡슐화를 했다.<br>
 클로저로 정의된 맴버에 대한 접근을 inner function으로 제한하여 데이터가 왜곡되는 것을 막을 수 있다.<br>
-단, 이와 같은 패턴에서 객체를 리턴할때 문제 가 생길 수 있는데 다음과 같은 이유다.
+단, 이와 같은 패턴에서 객체를 리턴할 때 문제가 생길 수 있는데 다음과 같은 이유다.
 <br><br><br>
 
 ## 비공개 변수가 객체 형태일 경우.
