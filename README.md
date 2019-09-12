@@ -70,6 +70,45 @@
 
 
 
+## 관심분야
+1. TDD
+2. 클린코드
+3. 성능 최적화
+4. 타입 스크립트
+5. 최신 EcmaScript API
+6. 커뮤니케이션
+  - UX를 고려한 설계
+  - 프로그래머 소통(코드)
+7. 함수형프로그래밍
+8. 오픈소스
+  - 기여
+  - 라이브러리 개발
+9. 토이프로젝트
+  - 3개이상 만들어보기
+10. 개인블로그 개설하기.
+11. 협업습관 기르기
+  - (이슈관리, JIRA,Confluence, 프로젝트 보드)
+12. 서비스 품질 개선
+  - 더 빠르고 더 편리한 서비스 품질을 제공
+13. 이쁘고 아름다운 코드
+14. 디자인 패턴
+  - mediator
+  - facade
+  - abstract factory
+  - composite
+  - flyweight
+15. 디지털 노마드
+16. 퍼포먼스 측정
+    - request animation fram
+    - requestidlecallback
+    - pwa
+    - 렌더링 최적화
+      - web workers
+      - service workders
+17. 금주 학습 내용 올리기
+  - https://www.slideshare.net/
+18. Web Assembly
+
 
 
 ## 컨텐츠 컨테이터
@@ -102,29 +141,6 @@
   - Build Tool[Maven, Gradle]
 
 
-## 관심분야
-1. TDD
-2. 클린코드
-3. 성능 최적화
-4. 타입 스크립트
-5. 최신 EcmaScript API
-6. 커뮤니케이션
-  - UX를 고려한 설계
-  - 프로그래머 소통(코드)
-7. 디지털 노마드
-8. 오픈소스
-  - 기여
-  - 라이브러리 개발
-9. 토이프로젝트
-  - 3개이상 만들어보기
-10. 개인블로그 개설하기.
-11. 협업습관 기르기
-  - (이슈관리, JIRA,Confluence, 프로젝트 보드)
-12. 서비스 품질 개선
-  - 더 빠르고 더 편리한 서비스 품질을 제공
-13. 이쁘고 아름다운 코드
-
-
 
 
 ## Plan to upgrade 
@@ -151,9 +167,3 @@
 
 ## 차기 ToyProject
 
-디자인패턴
-- mediator
-- facade
-- abstract factory
-- composite
-- flyweight

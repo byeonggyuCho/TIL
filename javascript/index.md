@@ -10,6 +10,7 @@ HTML document의 동적제어 및 간단한 UI로직처리가 목적.
 - JSON
 - Ajax
 - Node.js 
+- TypeScript
 
 
 ## 구분

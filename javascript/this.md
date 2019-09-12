@@ -1,11 +1,14 @@
 # this
-자바스크립트에서 모든 함수는 실행될 때마다 함수 내부에 this라는 객체가 추가된다.<br> arguments라는 유사 배열 객체와 함께 함수 내부로 암묵적으로 전달된다.<br>
-this객체는 상황별로 참조하는 객체가 달라지는데 각 상황은 다음과 같다.
+자바스크립트에서 모든 함수는 실행될 때마다 함수 내부에 this라는 객체가 추가된다.<br> 
+arguments라는 유사 배열 객체와 함께 함수 내부로 암묵적으로 전달된다.<br>
+this는 기본적으로 window 객체를 참조하며  call, bind, apply 등의 API에 의해 참조값이 변한다.<br>
+이외에 this객체가  참조하는 객체가 달라지는 상황이 있는데 각 상황은 다음과 같다.
 
 
 ## Case1 객체의 메서드
 객체의 프로퍼티가 함수일 경우 메서드라고 부른다.<br> 
-이 때의 this는 메서드를 실행할 때 메서드를 소유하고 있는 객체(메소드를 포함하고 있는 인스턴스)를 참조한다. 즉 해당 메서드를 호출한 객체로 바인딩된다. A.B일 때 B함수 내부에서의 this는 A를 가리키는 것이다.
+이 때의 this는 메서드를 실행할 때 메서드를 소유하고 있는 객체(메소드를 포함하고 있는 인스턴스)를 참조한다.<br> 
+즉 해당 메서드를 호출한 객체로 바인딩된다. A.B일 때 B함수 내부에서의 this는 A를 가리키는 것이다.
 
 
 ```js
@@ -87,7 +90,8 @@ myObj.func1();
 
 
 ### 4.2 call 메소드 사용
-함수 호출시 동적으로 this참조를 변경할 수 있다.
+함수 호출시 동적으로 this참조를 변경할 수 있다.<br>
+call의 첫번째 파라미터가 this의 참조값이 된다.
 ```js
 var value = 100;
 var myObj = {
@@ -98,6 +102,7 @@ var myObj = {
     var func2 = function(val1, val2) {
       console.log(`func2's this.value ${this.value} and ${val1} and ${val2}`);
     };
+    // func2의 this가 window에서 myObj를 참조한다.
     func2.call(this, `param1`, `param2`);
   }
 };

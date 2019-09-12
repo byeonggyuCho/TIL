@@ -29,3 +29,5 @@ SPA에서 로딩속도에 대한 이슈를 해결하기 위해서 등장<br>
 - redux_thunk
 - hook
 - hot loader
+- next.js
+- react-sagao

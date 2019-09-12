@@ -163,3 +163,32 @@ new Promise(resolve => resolve(p))와 Promise.resolve(p)의 차이는 <br/>
 
 ### 2. Promise.all
 
+
+
+
+### Example
+
+#### 1.비동기 호출 루프돌리기.
+```js
+
+const items = ['a','b','c','d']
+
+const promiseFactory = function(fn){
+
+  return new Promise((resolve,reject)=>{
+      fn(resolve,reject);
+  })
+}
+
+const forEachPromise = function(items){
+  
+  return items.reduce((promise, item, idx )=>){
+
+    return promise.then(rtn =>promiseFactory((resolve,reject)=>{
+      setTimeout(resolve,3000)
+    }))
+
+  },Promise.resolve())
+}
+
+```
