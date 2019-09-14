@@ -117,27 +117,8 @@
 
 
 
-## Plan to upgrade 
-1. Study
-2. Side Project
-    - 코딩테스트
-
-
-
 ## TODO
 1. 함수형프로그래밍
 2. 모듈 번들러 (webpack, gulp)
-3. oop 프로그래밍
 4. 브라우져
-5. 스프링
-    - 스프링 라이프 사이클
-    - 스프링 빈 생성 과정
-    - 스프링 의존성 주입과정.
-    - sqlSessoinFactory 생성 및 흐름.
-6. Rest API 서버 개발
-
-
-
-
-## 차기 ToyProject
-
+5. Rest API 서버 개발
