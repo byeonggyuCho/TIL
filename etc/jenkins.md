@@ -15,6 +15,9 @@ Jenkins란 Open Source CI(Continuous Integration) Tool 로써 팀의 구성원�
 
 
 ## 기능
+
+
+![](/resource/img/etc/jenkins2.png)
 - 웹 인터페이스를 통한 간편한 설정.
 - 강력하고 편리한 Reporting 기능.
 - 지속적인 자동화 빌드.
