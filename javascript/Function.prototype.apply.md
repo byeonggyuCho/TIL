@@ -33,7 +33,7 @@ Optional. 호출되는 함수에 제공할 매개변수값.<br>
 ## 설명
 apply를 사용하면 이미 선언된 함수의 this변수에 다른값을 참조시켜서 호출할 수 있습니다.<br>
 또 객체의 메소드를 다른 객체가 상속받도록 할 수 있습니다.<br>
-다시 말해 새로운 객체에 똑같은 메소드를 중복해서 쓰지 않아도 되는거죠!
+다시 말해 새로운 객체에 똑같은 메소드를 중복해서 쓰지 않아도 되는거죠!<br><br>
 
 apply는 call()과 비슷합니다.<br>
 차이점은 call()은 두 번째 매개변수로*arguments* 타입만 지원한다는 거죠.<br>
@@ -56,19 +56,20 @@ func.apply(this, new Array('eat', 'banana'));
 *arguments*에 담겨 있기 때문이죠.<br>
 *arguments*만 사용하면 호출된 함수에 전달된 모든 매개변수들을 전달할 수 있습니다.<br>
 
-EC5 이후로 여러분은 유사 배열 객체또한 사용가능합니다.
+EC5 이후로 여러분은 유사 배열 객체또한 사용가능합니다.<br>
 예를 들면  Dom의 NodeList나  { 'length': 2, '0': 'eat', '1': 'bananas' }같은 커스텀 객체가 사용가능하다는 얘기죠.<br>
 
-```
-NodeList는 Array가 아닙니다. 하지만 배열과 비슷하죠.
-그래서 유사배열(array-like)이라고 합니다.
-배열의 메소드를 사용하고 싶다면
-Array.from()메소드를 이용해 Array로 바꾼뒤 사용하면 됩니다!
+    <NOTE>
+    NodeList는 Array가 아닙니다. 하지만 배열과 비슷하죠.
+    그래서 유사배열(array-like)이라고 합니다.
+    배열의 메소드를 사용하고 싶다면
+    Array.from()메소드를 이용해 Array로 바꾼뒤 사용하면 됩니다!
 
-하지만 위 두가지는 구닥다리 브라우저에서 지원을 안할지 모르니.
-웹 호환성을 고려한 NodeList 루프 방법을 하나 소개합니다.
-이 포스팅의 주제와도 맞물려 있으니 참고 바랍니다.
+    하지만 위 두가지는 구닥다리 브라우저에서 지원을 안할지 모르니.
+    웹 호환성을 고려한 NodeList 루프 방법을 하나 소개합니다.
+    이 포스팅의 주제와도 맞물려 있으니 참고 바랍니다.
 
+```js
 //call메소드를 이용한 Array.prototype.foreEach 호출.
 var list = document.querySelectorAll('input[type=checkbox]');
 Array.prototype.forEach.call(list, function (checkbox) {
@@ -108,7 +109,7 @@ var array = ['a','b']
 var elements = ['c','d','e'];
 array.push.apply(array, elements);
 ```
-개인적으로 첫번째 파라미터에 array를 넣는것이 헷깔려서 첨언합니다.
+개인적으로 첫번째 파라미터에 array를 넣는것이 헷깔려서 첨언합니다.<br>
 push의 타겟 즉 push를 호출할 객체가 첫번째 매개변수가 되어야하니
 array가 첫번째 매개변수로 전달하는 것이죠.<br>
 
@@ -238,19 +239,18 @@ console.log(myInstance.constructor);              // logs 'MyConstructor'
 ```
 
 
-```
-위 예제에서 사용한 Function.construct 메소드는 Date같은 네이티브 생성자함수에서 작동을 안 합니다. 
-이런 경우에는 Function.prototype.bind 메소드를 사용해야하죠.
+    <NOTE>
+    위 예제에서 사용한 Function.construct 메소드는 Date같은 네이티브 생성자함수에서 작동을 안 합니다. 
+    이런 경우에는 Function.prototype.bind 메소드를 사용해야하죠.
 
-예를 들어 Date 생성자에 [2012, 11, 4]를 매개변수로 전달해야한다고 생각해봅시다.
-이 경우
+    예를 들어 Date 생성자에 [2012, 11, 4]를 매개변수로 전달해야한다고 생각해봅시다.
+    이 경우
 
- new (Function.prototype.bind.apply(Date, [null].concat([2012, 11, 4])))()
+    new (Function.prototype.bind.apply(Date, [null].concat([2012, 11, 4])))()
 
- 이렇게 사용할 수 있습니다.
- 물론 이건 최선의 방법은 아니죠.
- 아마 몇몇 환경에서는 동작도 안 할겁니다.
-```
+    이렇게 사용할 수 있습니다.
+    물론 이건 최선의 방법은 아니죠.
+    아마 몇몇 환경에서는 동작도 안 할겁니다.
 
 
 
