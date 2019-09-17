@@ -27,89 +27,90 @@ bind할 인수(arguments)가 제공되지 않으면 실행 스코프 내의 this
 
 
 ##  Description
+bind() 메소드로 함수를 호출하면 새로운 함수가 생성된다고 앞서 설명했습니다.
+좀 더 정확히는 새롭게 생성되는 함수는 원래 함수를 감싸고있는(warp) 함수입니다.
+이렇게 생성된 바인딩 함수에는 내부 동작을 설명해줄 속성들이 있습니다.
+
+### Property
+
+- \[\[BoundTargetFunction\]\] : 바인딩으로 감싼 원본 함수 객체.
+- \[\[BoundThis\]\] : 바인딩 함수를 호출을 때 this 변수에 전달되는 값.
+- \[\[BoundArguments\]\] : 바인딩 함수가 호출될 때 첫번째 매개변수로 전달된 arguments 객체.
+- \[\[Call\]\] : 이 객체와 관련된 코드 실행. Functoin.prototype.call에 의해 호출됩니다. 이 때 전달되는 매개변수들은 this변수와 
+함수표현식에 의해 전달된 매개변수 리스트입니다.
+
+바인딩된 함수가 호출될 떄 \[\[BoundTargetFunction\]\]의 내부 메소드 \[\[Call\]\]을 호출합니다.
+\[\[Call\]\] 메소드는  Call(boundThis,args)와 같이 두개의 매개변수를 갖습니다.
+이 때 boundThis는 \[\[BoundThis\]\]이고 args는 함수가 호출될 대 전달되어 오는 \[\[BoundArguments\]\]이다.
 
 
-## Property
-
-- [[BoundTargetFunction]] : 바인딩으로 감싼 원본 함수 객체
-- [[BoundThis]] : 감싸진 함수를 호출ㅎㅆ을 떄 항상 전달되는 값.
-- [[BoundArguments]] : 감싸진 함수가 호출될 때 첫번째 인수로 사용되는 값들의 목록
-- [[Call]] : 이 객체와 관련된 코드 실행. 함수 호출 식을 통해 호출된다. 내부 메소드의 인수는 this 값 및 호출식으로 함수에 전달되는 인수를 포함하는 목록이다.
-
-
-바인딩된 함수가 호출될떄 [[BoundTargetFunction]]의 내부 메소드 [[Call]]을 호출한다.
-[[Call]]은 Call(boundThis,args)와 같은 인자를 가진다. 이 때 boundThis는 [[BoundThis]]이고 args는 함수가 호출될 대 전달되어 오는 
-[[BoundArguments]]]이다.
-
-
-바인딩된 함수는 new 연산자를 사용하여 생성될 수도 있다. 그렇게 하면 대상함수가 마치 대신 생성된 것처럼 행동한다.
-제공된 this값은 무시된다.
-앞에 붙인 prepend 인수는 에뮬레이트된 함수에 제공된다.
+바인딩된 함수는 new 연산자를 사용하여 생성될 수도 있다. 그렇게 하면 대상함수가 마치 대신 생성된 것처럼 행동합니다
+즉 전달된 this값은 무시되지만 앞에 붙인 매개변수들은 함수에 전달됩니다.
 
 
 ## Example
 
 ### 바인딩된 함수 생성하기
-호출 방법과 관계없이 특정 this값으로 호출하는 함수를 생성하기.
-특정 객체의 메소드를 추출한뒤 실행하면 원본 객체의 this값을 상실한다.
-이를 위해 bind를 사용할 수 있다.
+bind()를 하는 가장 간단한 방법은 특정 this값으로 호출되는 함수를 만드는 것입니다.
+이 때 주의해야할 점이 있습니다.
+특정 객체에서 추출한 메소드가 있다고 할때, 이 메소드를 실행하면 메소드 내부의 this는
+원래 객체를 가르킬까요? 전역객체(window)를 가르킬까요?
 
+이렇게 추출된 메소드에서는 원래객체에 대한 참조를 잃어버립니다.
+즉 this값이 전역객체를 참조한다는 말이죠.
+이런 상황에서 bind()메소드를 이용하여 함수를 만들면 해결 할 수 있습니다.
 
 ```js
 this.x = 9;
 var module = {
   x: 81,
-  getX: function() { return this.x; }
+  getX: function() { 
+      return this.x; 
+  }
 };
 
 module.getX(); // 81
 
+//객체로 부터 메소드 추출.
 var retrieveX = module.getX;
-retrieveX();
-// 9 반환 - 함수가 전역 스코프에서 호출됐음
+retrieveX();    
+// 9  전역 스코프에서 호출됐음
 
 // module과 바인딩된 'this'가 있는 새로운 함수 생성
-// 신입 프로그래머는 전역 변수 x와
-// module의 속성 x를 혼동할 수 있음
+// 메소드 내의 this가 module을 가르키므로 객체 내부 속성인 x를 참조한다.
 var boundGetX = retrieveX.bind(module);
 boundGetX(); // 81
-
-
-
 ```
 
 
 ### 부분 적용 함수
-미리 지정된 초기 인수가 있는 함수를 만드는 방법
-지정될 초기 인수가 있다면 제공된 this값을 따르고 바인딩 된 함수에 전달되어 바인딩 된 함수가 호출될 떄마다 대상 함수의 인수앞에 삽입된다.
+다음으로 간단한 bind()의 방법은 특정 초기 인자가 있는 함수를 만드는 방법입니다.
+특정 초기 인수는 제공된 this값을 참조하며 바인딩 함수에 전달되어 바인딩 함수가 호출될 떄마다 대상 함수의 인수 앞에 삽입됩니다.
 
 ```js
 function list(){
     return Array.prototype.slice.call(arguments)
 }
 
-var list1 = list(1,2,3);
-
-// 선행될 인수를 설정하여 함수를 생성한다.
-var leadingThirtySevenList = list.bind(null, 37);
-var list2 = leadingThirtySevenList();
-var list3 = leadingThirtySevenList(1,2,3);
-
-
 function addArguments(arg1, arg2){
     return arg1 + arg2
 }
 
-var result1 = addArguments(1,2);
 
-//첫 번째 인수를 지정하여 함수를 생성한다.
-var addThirtySeven = addArguments.bind(null, 37);
+var list1 = list(1,2,3);                //[1,2,3]
+var result1 = addArguments(1,2);        //3
 
-var result2 = addThirtySeven(5);
+// Create a function with a preset leading argument
+var leadingFiveList = list.bind(null, 5);
+var list2 = leadingFiveList();          //[5]
+var list3 = leadingFiveList(1,2,3);     //[5,1,2,3]
 
-// 두 번쨰 인수는 무시된다.
-var result3 = addThirtySeven(5,10);
 
+
+// Create a function with a preset first argument.
+var addFive = addArguments.bind(null, 5);
+var result2 = addFive(1);        // 5+1 = 6
+var result3 = addFive(1,3);      // 5+1 = 6 (두번째 변수 무시)
 ```
 
 
@@ -175,5 +176,4 @@ new와 함께 쓰기 위한 바인딩 함수는 만들기 위해 특별별한 �
 
 
 ### REF
-
-https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/Function/bind
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind
