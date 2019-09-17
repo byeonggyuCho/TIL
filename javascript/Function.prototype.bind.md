@@ -50,7 +50,7 @@ bind() 메소드로 함수를 호출하면 새로운 함수가 생성된다고 �
 
 ## Example
 
-### 바인딩된 함수 생성하기
+### Ex1.바인딩된 함수 생성하기
 bind()를 하는 가장 간단한 방법은 특정 this값으로 호출되는 함수를 만드는 것입니다.
 이 때 주의해야할 점이 있습니다.<br>
 특정 객체에서 추출한 메소드가 있다고 할때, 이 메소드를 실행하면 메소드 내부의 this는
@@ -82,7 +82,7 @@ boundGetX(); // 81
 ```
 
 
-### 부분 적용 함수
+### Ex2. 부분 적용 함수
 다음으로 간단한 bind()의 방법은 특정 초기 인자가 있는 함수를 만드는 방법입니다.<br>
 특정 초기 인수는 제공된 this값을 참조하며 바인딩 함수에 전달되어 바인딩 함수가 호출될 떄마다 대상 함수의 인수 앞에 삽입됩니다.<br>
 
@@ -113,7 +113,7 @@ var result3 = addFive(1,3);      // 5+1 = 6 (두번째 변수 무시)
 ```
 
 
-### setTimeout과 함께 사용
+### Ex3. setTimeout과 함께 사용
 
 window.setTimeout()내에서 기본으로 this 키워드는 window 객체로 설정된다.<br>
 클래스 인스컨스를 참조하는 this를 필요로 하는 클래스 메소드로 작업하는 경우 인스턴스유지를 위해 명시해서 this를 콜백 함수에 바인딩 할 수 있다.<br>
@@ -140,7 +140,7 @@ flower.bloom();
 ```
 
 
-### 바로가기 생성.
+### Ex4. 바로가기 생성.
 bind()는 특정 this값을 필요로 하는 함수의 바로가기를 만들고 싶은 경우에 도움이 된다.<br>
 가령 배열 같은 객체를 실제 배열로 변환하는데 사용하고 싶은 Array.prototype.slice를 취해라.<br>
 이와같이 바로가기를 만들 수 있다.<br>
@@ -165,7 +165,7 @@ slice(arguments)
 
 
 
-### 생성자로 쓰이는 바인딩 함수.
+### Ex5. 생성자로 쓰이는 바인딩 함수.
 new와 함께 쓰기 위한 바인딩 함수는 만들기 위해 특별별한 일을 할 필요가 전혀 없다.
 그 결과 분명히 호출되는 바인딩 함수를 만들기 위해 특별하 아무것도 할 필요가 없다.
 오히려 new를 사용해서만 호출되는 바인딩 함수를 요구하는 경우에도.
@@ -216,9 +216,23 @@ emptyObj.x + ',' + emptyObj.y;
 ```
 
 
-### shortcuts 만들기
+### Ex6. shortcuts 만들기
 
+bind()는 특정한 this값을 요구하는 함수에 대한  shortcuts를 만들때 사용할 수 있습니다.
+<br>
+ Array.prototype.slice를 이용해서 유사배열 객체를 배열로 변환하는 예제에서 다음처럼 shorcuts를 만들 수 있습니다.
+```js
+var slice = Array.prototype.slice;
 
+// ...
+
+slice.apply(arguments);
+```
+
+bind()를 이용하면 위 소스는 아래처럼 단순화 할 수있습니다.
+다음 코드에서 slice는 Function.ptrototype.apply 메소드에 대한 바운딩 함수입니다.
+이때 this 값은 Array.prototype.slice로 설정했습니다.
+이건 apply()메소드를 추가적으로 호출하는걸 줄일 수 있음을 의미합니다.
 ```js
 // same as "slice" in the previous example
 var unboundSlice = Array.prototype.slice;
@@ -227,9 +241,41 @@ var slice = Function.prototype.apply.bind(unboundSlice);
 // ...
 
 slice(arguments);
-
 ```
 
 
+
+#### 참고 : Array.prototype.Slice를 이용한 유사배열 객체 다루기.
+slice 메서드는 유사배열객체를 배열로 바꿀 때 사용할 수 있다.
+
+```js
+function list() {
+  return Array.prototype.slice.call(arguments);
+}
+
+var list1 = list(1, 2, 3); // [1, 2, 3]
+```
+
+바인딩은 Function.prototype.call의 기능으로 수행할 수 있으며,
+Array.prototype.slice.call 대신 [].slice.call(arguments)를 사용하여 코드를 줄일 수 있다.
+
+```js
+var unboundSlice = Array.prototype.slice;
+var slice = Function.prototype.call.bind(unboundSlice);
+
+function list() {
+  return slice(arguments);
+}
+
+var list1 = list(1, 2, 3); // [1, 2, 3]
+```
+
+
+
+
+
+
+
 ### REF
-https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind
+- https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind
+- https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/slice
