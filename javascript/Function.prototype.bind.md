@@ -32,16 +32,16 @@ bind() 메소드로 함수를 호출하면 새로운 함수가 생성된다고 �
 
 ### Property
 
-- \[\[BoundTargetFunction\]\] : 바인딩으로 감싼 원본 함수 객체.
-- \[\[BoundThis\]\] : 바인딩 함수를 호출을 때 this 변수에 전달되는 값.
-- \[\[BoundArguments\]\] : 바인딩 함수가 호출될 때 첫번째 매개변수로 전달된 arguments 객체.
-- \[\[Call\]\] : 이 객체와 관련된 코드 실행. Functoin.prototype.call에 의해 호출됩니다. <br>
+- **\[\[BoundTargetFunction\]\]** : 바인딩으로 감싼 원본 함수 객체.
+- **\[\[BoundThis\]\]** : 바인딩 함수를 호출을 때 this 변수에 전달되는 값.
+- **\[\[BoundArguments\]\]** : 바인딩 함수가 호출될 때 첫번째 매개변수로 전달된 arguments 객체.
+- **\[\[Call\]\]** : 이 객체와 관련된 코드 실행. Functoin.prototype.call에 의해 호출됩니다. <br>
 이 때 전달되는 매개변수들은 this변수와 
 함수표현식에 의해 전달된 매개변수 리스트입니다.
 
-바인딩된 함수가 호출될 때 \[\[BoundTargetFunction\]\]의 내부 메소드 \[\[Call\]\]을 호출합니다.<br>
-\[\[Call\]\] 메소드는  Call(boundThis,args)와 같이 두개의 매개변수를 갖습니다.<br>
-이 때 boundThis는 \[\[BoundThis\]\]이고 args는 함수가 호출될 대 전달되어 오는 \[\[BoundArguments\]\]이다.<br><br>
+바인딩된 함수가 호출될 때 **\[\[BoundTargetFunction\]\]** 의 내부 메소드 **\[\[Call\]\]** 을 호출합니다.<br>
+**\[\[Call\]\]** 메소드는  Call(boundThis,args)와 같이 두개의 매개변수를 갖습니다.<br>
+이 때 boundThis는 **\[\[BoundThis\]\]** 이고 args는 함수가 호출될 대 전달되어 오는 **\[\[BoundArguments\]\]** 이다.<br><br>
 
 
 바인딩된 함수는 new 연산자를 사용하여 생성될 수도 있다. 그렇게 하면 대상함수가 마치 대신 생성된 것처럼 행동합니다.<br>
@@ -53,8 +53,8 @@ bind() 메소드로 함수를 호출하면 새로운 함수가 생성된다고 �
 ### Ex1.바인딩된 함수 생성하기
 bind()를 하는 가장 간단한 방법은 특정 this값으로 호출되는 함수를 만드는 것입니다.
 이 때 주의해야할 점이 있습니다.<br>
-특정 객체에서 추출한 메소드가 있다고 할때, 이 메소드를 실행하면 메소드 내부의 this는
-원래 객체를 가르킬까요? 전역객체(window)를 가르킬까요?<br>
+특정 객체에서 추출한 메소드가 있다고 할때, <br>
+이 메소드를 실행하면 메소드 내부의 this는 원래 객체를 가르킬까요? 전역객체(window)를 가르킬까요?<br>
 
 이렇게 추출된 메소드에서는 원래객체에 대한 참조를 잃어버립니다.<br>
 즉 this값이 전역객체를 참조한다는 말이죠.<br>
@@ -116,7 +116,8 @@ var result3 = addFive(1,3);      // 5+1 = 6 (두번째 변수 무시)
 ### Ex3. setTimeout과 함께 사용
 
 window.setTimeout()내에서 기본으로 this 키워드는 window 객체로 설정된다.<br>
-this가 인스턴스를 참조해야하는 경우, 인스턴스를 유지하기 위해 콜백함수에 명시적으로 바인딩 할 수 있습니다.
+this가 인스턴스를 참조해야하는 경우, 인스턴스를 유지하기 위해 콜백함수에 명시적으로 바인딩 할 수 있습니다.<br>
+
 ```js
 function LateBloomer(){
     this.petalCount = Math.ceil(Meth.random() * 12) +1;
@@ -154,10 +155,10 @@ var slice = Array.prototype.slice;
 slice.apply(arguments);
 ```
 
-bind()를 이용하면 위 소스는 아래처럼 단순화 할 수있습니다.
-다음 코드에서 slice는 Function.ptrototype.apply 메소드에 대한 바운딩 함수입니다.
-이때 this 값은 Array.prototype.slice로 설정했습니다.
-이건 apply()메소드를 추가적으로 호출하는걸 줄일 수 있음을 의미합니다.
+bind()를 이용하면 위 소스는 아래처럼 단순화 할 수있습니다.<br>
+다음 코드에서 slice는 Function.ptrototype.apply 메소드에 대한 바운딩 함수입니다.<br>
+이때 this 값은 Array.prototype.slice로 설정했습니다.<br>
+이건 apply()메소드를 추가적으로 호출하는걸 줄일 수 있음을 의미합니다.<br>
 
 ```js
 // same as "slice" in the previous example
@@ -182,8 +183,8 @@ function list() {
 var list1 = list(1, 2, 3); // [1, 2, 3]
 ```
 
-바인딩은 Function.prototype.call의 기능으로 수행할 수 있으며,
-Array.prototype.slice.call 대신 [].slice.call(arguments)를 사용하여 코드를 줄일 수 있다.
+바인딩은 Function.prototype.call의 기능으로 수행할 수 있으며,<br>
+Array.prototype.slice.call 대신 [].slice.call(arguments)를 사용하여 코드를 줄일 수 있다.<br>
 
 ```js
 var unboundSlice = Array.prototype.slice;
@@ -202,8 +203,8 @@ var list1 = list(1, 2, 3); // [1, 2, 3]
 ### Ex5. 생성자로 쓰이는 바인딩 함수.
 
 
-타겟함수가 만든 새로운 인스턴스를 구성할때, 바인딩 함수는 new 연산자와 함께 쓰면 좋습니다.
-바인딩 함수가 값을 구성하는데 사용되는 경우, 제공된 this는 무시되지만 arguments는 생성자를 호출할때 앞부분에 전달됩니다.
+타겟함수가 만든 새로운 인스턴스를 구성할때, 바인딩 함수는 new 연산자와 함께 쓰면 좋습니다.<br>
+바인딩 함수가 값을 구성하는데 사용되는 경우, 제공된 this는 무시되지만 arguments는 생성자를 호출할때 앞부분에 전달됩니다.<br>
 
 ```js
 function Point(x, y) {
@@ -245,16 +246,13 @@ emptyObj.x + ',' + emptyObj.y;
 
 ```
 
-new 연산자와 함께 쓰기 위한 바인딩 함수를 만들기 위해서 특별히 할게 없다.
-호출되는 바인딩 함수를만들기 위해 특별히 할 작업이 없습니다.
-오히려 new를 사용해서만 호출되는 바인딩 함수를 요구하는 경우에도 마찬가지입니다.
-
+new 연산자와 함께 쓰기 위한 바인딩 함수를 만들기 위해서 특별히 할게 없습니다.<br>
+호출되는 바인딩 함수를만들기 위해 특별히 할 작업이 없습니다.<br>
+오히려 new를 사용해서만 호출되는 바인딩 함수를 요구하는 경우에도 마찬가지입니다.<br>
+<br>
 반드시 new연산자를 사용해야하는 경우나 함수호출에서만 바인딩 함수를 지원하고 싶은 경우에는
 타겟 함수는 그 제한을 강제해야합니다.
-```js
-
-```
-
+<br>
 
 
 
