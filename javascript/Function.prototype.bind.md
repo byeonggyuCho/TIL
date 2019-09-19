@@ -116,14 +116,14 @@ var result3 = addFive(1,3);      // 5+1 = 6 (두번째 변수 무시)
 ### Ex3. setTimeout과 함께 사용
 
 window.setTimeout()내에서 기본으로 this 키워드는 window 객체로 설정된다.<br>
-클래스 인스컨스를 참조하는 this를 필요로 하는 클래스 메소드로 작업하는 경우 인스턴스유지를 위해 명시해서 this를 콜백 함수에 바인딩 할 수 있다.<br>
-
+this가 인스턴스를 참조해야하는 경우, 인스턴스를 유지하기 위해 콜백함수에 명시적으로 바인딩 할 수 있습니다.
 ```js
 function LateBloomer(){
     this.petalCount = Math.ceil(Meth.random() * 12) +1;
 }
 
 // 1초 지체 후 bloom 선언
+// bind를 이용해서 callback문맥에서 LateBloomer를 참조함.
 LateBloomer.prototype.bloom = function(){
     window.setTimeout(this.declare.bind(this), 1000);
 }
@@ -140,87 +140,12 @@ flower.bloom();
 ```
 
 
-### Ex4. 바로가기 생성.
-bind()는 특정 this값을 필요로 하는 함수의 바로가기를 만들고 싶은 경우에 도움이 된다.<br>
-가령 배열 같은 객체를 실제 배열로 변환하는데 사용하고 싶은 Array.prototype.slice를 취해라.<br>
-이와같이 바로가기를 만들 수 있다.<br>
-
-```js
-var slice = Array.prototype.slice;
-
-slice.apply(arguments)
-
-
-```
-위 로직은 bind()로 단순화할 수 있따. 다음 코드에서 slice는 Function.prototype의 apply() 함수에 바인된 함수다.<br>
-this값을 Array.prototype의 slice함수로 설정한채 추가 apply()호출은 삭제될 수 있음을 의미한다.<br>
-
-```js
-
-var unboundSlice = Array.prototype.slice;
-var slice = Function.prototype.apply.bind(unboundSlice)
-
-slice(arguments)
-```
-
-
-
-### Ex5. 생성자로 쓰이는 바인딩 함수.
-new와 함께 쓰기 위한 바인딩 함수는 만들기 위해 특별별한 일을 할 필요가 전혀 없다.
-그 결과 분명히 호출되는 바인딩 함수를 만들기 위해 특별하 아무것도 할 필요가 없다.
-오히려 new를 사용해서만 호출되는 바인딩 함수를 요구하는 경우에도.
-오로지 new를 사용하거나 호출해서만 바인딩 함수의 사용을 지원하고 싶은 경우 대상 함수는 그 제한을 강제해야한다.
-
-```js
-function Point(x, y) {
-  this.x = x;
-  this.y = y;
-}
-
-Point.prototype.toString = function() { 
-  return this.x + ',' + this.y; 
-};
-
-var p = new Point(1, 2);
-p.toString(); // '1,2'
-
-// not supported in the polyfill below,
-
-// works fine with native bind:
-
-var YAxisPoint = Point.bind(null, 0/*x*/);
-
-
-var emptyObj = {};
-var YAxisPoint = Point.bind(emptyObj, 0/*x*/);
-
-var axisPoint = new YAxisPoint(5);
-axisPoint.toString(); // '0,5'
-
-axisPoint instanceof Point; // true
-axisPoint instanceof YAxisPoint; // true
-new Point(17, 42) instanceof YAxisPoint; // true
-```
-
-```js
-// Example can be run directly in your JavaScript console
-// ...continuing from above
-
-// Can still be called as a normal function 
-// (although usually this is undesired)
-YAxisPoint(13);
-
-emptyObj.x + ',' + emptyObj.y;
-// >  '0,13'
-
-```
-
-
-### Ex6. shortcuts 만들기
+### Ex4.  shortcuts 만들기
 
 bind()는 특정한 this값을 요구하는 함수에 대한  shortcuts를 만들때 사용할 수 있습니다.
 <br>
  Array.prototype.slice를 이용해서 유사배열 객체를 배열로 변환하는 예제에서 다음처럼 shorcuts를 만들 수 있습니다.
+ 
 ```js
 var slice = Array.prototype.slice;
 
@@ -233,6 +158,7 @@ bind()를 이용하면 위 소스는 아래처럼 단순화 할 수있습니다.
 다음 코드에서 slice는 Function.ptrototype.apply 메소드에 대한 바운딩 함수입니다.
 이때 this 값은 Array.prototype.slice로 설정했습니다.
 이건 apply()메소드를 추가적으로 호출하는걸 줄일 수 있음을 의미합니다.
+
 ```js
 // same as "slice" in the previous example
 var unboundSlice = Array.prototype.slice;
@@ -269,6 +195,67 @@ function list() {
 
 var list1 = list(1, 2, 3); // [1, 2, 3]
 ```
+
+
+
+
+### Ex5. 생성자로 쓰이는 바인딩 함수.
+
+
+타겟함수가 만든 새로운 인스턴스를 구성할때, 바인딩 함수는 new 연산자와 함께 쓰면 좋습니다.
+바인딩 함수가 값을 구성하는데 사용되는 경우, 제공된 this는 무시되지만 arguments는 생성자를 호출할때 앞부분에 전달됩니다.
+
+```js
+function Point(x, y) {
+  this.x = x;
+  this.y = y;
+}
+
+Point.prototype.toString = function() { 
+  return this.x + ',' + this.y; 
+};
+
+var p = new Point(1, 2);
+p.toString(); // '1,2'
+
+// not supported in the polyfill below,
+
+// works fine with native bind:
+
+var YAxisPoint = Point.bind(null, 0/*x*/);
+
+
+var emptyObj = {};
+var YAxisPoint = Point.bind(emptyObj, 0/*x*/);
+
+var axisPoint = new YAxisPoint(5);
+axisPoint.toString(); // '0,5'
+
+axisPoint instanceof Point; // true
+axisPoint instanceof YAxisPoint; // true
+new Point(17, 42) instanceof YAxisPoint; // true
+
+
+// Can still be called as a normal function 
+// (although usually this is undesired)
+YAxisPoint(13);
+
+emptyObj.x + ',' + emptyObj.y;
+//   '0,13'
+
+```
+
+new 연산자와 함께 쓰기 위한 바인딩 함수를 만들기 위해서 특별히 할게 없다.
+호출되는 바인딩 함수를만들기 위해 특별히 할 작업이 없습니다.
+오히려 new를 사용해서만 호출되는 바인딩 함수를 요구하는 경우에도 마찬가지입니다.
+
+반드시 new연산자를 사용해야하는 경우나 함수호출에서만 바인딩 함수를 지원하고 싶은 경우에는
+타겟 함수는 그 제한을 강제해야합니다.
+```js
+
+```
+
+
 
 
 
