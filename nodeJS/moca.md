@@ -25,6 +25,7 @@ devDependencies
 테스트 코드 자체가 테스트 대상의 명세서(Sepcification)이 되기 때문이다.
 
 
+
 ### Supertest
  API테스트를 하기위한 노드 패키지
  익스프레스 서버를 구동한뒤 HTTP요청을 보내고 응답을 받는 구조.
