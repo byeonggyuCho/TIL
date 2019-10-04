@@ -1,7 +1,7 @@
 # WebStorage
-![](/resource/img/html/webStorage.jpg)<br>
-HTML5에서 브라우저의 내부 스토리지를 사용할 수 있도록 제공해주는 기능.<br>
-기존 Cookie에 대한 제약을 해소하고 조금 더 다양한 클라이언트으에 많은 기능을 넣고자 생긴 기능.<br><br><br>
+![](/resource/img/html/webStorage.jpg)  
+HTML5에서 브라우저의 내부 스토리지를 사용할 수 있도록 제공해주는 기능.  
+기존 Cookie에 대한 제약을 해소하고 조금 더 다양한 클라이언트으에 많은 기능을 넣고자 생긴 기능.      
 
 
 ## 1. 등장배경.
@@ -33,7 +33,7 @@ HTML5에서 브라우저의 내부 스토리지를 사용할 수 있도록 제�
 - 현재 읽은 글의 히스토리 저장 (카운팅, 읽은글 표시 등으로 활용)
 - Canvas나 이미지에 대한 임시 저장 기능(base64로 변환)
 - 웹페이지간 정보 전달 (웹서버를 경유하지 않고 정보 로컬에 유지)
-<br><br>
+    
 
 
 ## 2.종류
@@ -46,7 +46,7 @@ HTML5에서 브라우저의 내부 스토리지를 사용할 수 있도록 제�
 ### 2.2 Session Storage
 - sessionStorage는 페이지의 window가 바뀌거나 브라우저 탭을 닫을 때 사라진다.
 - 잠깐 동안 필요한 정보(일회성 로그인 정보)
-<br><br><br>
+      
 
 
 ## 3. WebStorage를 사용전 고려해야할 점
@@ -79,10 +79,10 @@ WebStorage를 제공하는 브라우저에서 지켜야 할 사항들.
 
 ### 3.4 개발자 주의사항
 
-http://blog.naver.com/angel 에서 저장된 webStorage는<br> 
-http://blog.naver.com/devil 에서 접근가능하다.<br>
-이를 방지하기 위해 같은 도메인을 사용하지만 서로 다른 디렉토리를 사용하는 공유서버 환경에서 webStorage를 사용할 경우에 이런한 접근을 고려하여 민감한 데이터를 저장하지 말아야한다.<br>
-<br><br>
+http://blog.naver.com/angel 에서 저장된 webStorage는   
+http://blog.naver.com/devil 에서 접근가능하다.  
+이를 방지하기 위해 같은 도메인을 사용하지만 서로 다른 디렉토리를 사용하는 공유서버 환경에서 webStorage를 사용할 경우에 이런한 접근을 고려하여 민감한 데이터를 저장하지 말아야한다.  
+    
 
 ## 4. webStorage 이전의 기존 저장소
 ### 4.1 Cookie
@@ -96,6 +96,6 @@ http://blog.naver.com/devil 에서 접근가능하다.<br>
 
 
 
-<br><br>
+    
 ### 정보 출처
 - https://unikys.tistory.com/352

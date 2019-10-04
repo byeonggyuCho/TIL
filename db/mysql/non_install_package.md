@@ -14,13 +14,13 @@ privileges once to create the key, add the key manually, or turn off
 logging for that application.
 
 ## **Step 3**: Enter following commands.
-D:\mysql-server> mysqld --initialize<br>
-or<br>
-D:\mysql-server>mysqld --initialize-insecure<br>
+D:\mysql-server> mysqld --initialize  
+or  
+D:\mysql-server>mysqld --initialize-insecure  
 
-1. Option :  initialize<br>
-     설정 파일(my.ini) 옵션대로 초기화 작업<br>
-2. Option : insecure  <br>
+1. Option :  initialize  
+     설정 파일(my.ini) 옵션대로 초기화 작업  
+2. Option : insecure    
 최초 root 접속시 비밀번호를 입력안하고 접속할 권한 부여 - 암호없이 root로 로그인 하도록 하는 옵션
 
 
@@ -38,7 +38,7 @@ Now your MySQL server is up and running!
     Then i browsed internet and found that 32bit version is the solution. 
     I downloaded MySQL Workbench 32 bit non-install zip and it worked fine.
 
-<br><br>
+    
 
 
 ## my.ini settin Guide

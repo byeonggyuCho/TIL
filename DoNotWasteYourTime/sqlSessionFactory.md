@@ -11,7 +11,7 @@ mybatis관련 database-context.xml에서  MapperScannerConfigurer 빈의 MapperS
 
 
 ## 3. 해결
-basePackage에 mapper interface경로 추가.<br>
+basePackage에 mapper interface경로 추가.  
 
 
 

@@ -1,9 +1,9 @@
 
 # Git
 
-git은 분산 버전관리시스템 <br>
-git Hub는 git을 공유하는 원격저장소를 의미한다.<br>
-분산은 데이터의 복사함으로서 안정성을 확보하고<br>
+git은 분산 버전관리시스템   
+git Hub는 git을 공유하는 원격저장소를 의미한다.  
+분산은 데이터의 복사함으로서 안정성을 확보하고  
 분산된 데이터(브런치)로 작업하고 통합하는 프로세스를 통해 협업을 할 수 있게 돕는다.
 
 ``` java
@@ -32,32 +32,32 @@ git Hub는 git을 공유하는 원격저장소를 의미한다.<br>
 
 1. untracked
 
-특정 저장소(repository)를 지정했을때 그 저장의 경로에 있는 모든 파일의 상태<br>
-이력 관리 대상에서 제외댄 파일로 볼 수 있다.<br>
+특정 저장소(repository)를 지정했을때 그 저장의 경로에 있는 모든 파일의 상태  
+이력 관리 대상에서 제외댄 파일로 볼 수 있다.  
 
 2. tracked
 
-git의 추적상태에 있는 파일<br>
-즉 감시 대상인 파일이다.<br>
+git의 추적상태에 있는 파일  
+즉 감시 대상인 파일이다.  
 
 
 3. unstaged
 
-tracked 상태인 파일중에서 수정이 발생했지만 stage에 올라가지 않은 상태이다.<br>
+tracked 상태인 파일중에서 수정이 발생했지만 stage에 올라가지 않은 상태이다.  
 수정이 발생했지만 아직 commit되지 않은 파일.
 
 
 4. staged
 
-tracked 파일이면서 stage에 올라간 파일.<br>
+tracked 파일이면서 stage에 올라간 파일.  
 즉 commit된 파일.
 
 ## 1.시작하기
 
 1. INIT
 
-저장소 생성 명령어<br>
-소스코드가 있는 경로로 이동하여 local repository를 생성한다.<br>
+저장소 생성 명령어  
+소스코드가 있는 경로로 이동하여 local repository를 생성한다.  
 .git폴더가 생성되는것을 확인한다.
 ~~~ 
 $ git init
@@ -82,8 +82,8 @@ $ git status
 ~~~
 $ git status
 ~~~
-status로 상태변화를 확인할 수 있다.<br>
-commit은  staged상태에서만 가능하다.<br>
+status로 상태변화를 확인할 수 있다.  
+commit은  staged상태에서만 가능하다.  
 mofied상태에서 staged상태로 이동할때도 add명령어를 사용한다.
 
 
@@ -103,8 +103,8 @@ $ git commit -m''
 - staging area의 내용을 local repository에 확정 짓습니다.
 - staging단계를 패스하기 위해선 -a를 붙여라.
 - 메세지와 함께 커밋한다.
-- 저장소에 보관할때는 기록이 필요하다. <br>
-- m속성은 메세지를 입력하는데 현재 내가 저장한 내용을 저장소에 보관할때 어떤 내용인지 적어준다.<br>
+- 저장소에 보관할때는 기록이 필요하다.   
+- m속성은 메세지를 입력하는데 현재 내가 저장한 내용을 저장소에 보관할때 어떤 내용인지 적어준다.  
 - m '메세지'를 치면 편집기가 뜨지 않는다.
 
 
@@ -113,9 +113,9 @@ $ git commit -m''
 ~~~
 $ git remote add origin {remote repsitory 주소}
 ~~~
-원격 저장소를 'origin'라는 이름으로 등록한다.<br>
-별칭이라 생각하면 쉽다.<br>
-원격저장소의 주소는 깃허브에서 repository를 생성해야한다.<br>
+원격 저장소를 'origin'라는 이름으로 등록한다.  
+별칭이라 생각하면 쉽다.  
+원격저장소의 주소는 깃허브에서 repository를 생성해야한다.  
 ~~~
 $ git remote - v
 ~~~
@@ -128,11 +128,11 @@ $ git remote - v
 $ git push origin master
 ~~~
 - local repository의 내용을 remote repository로 업로드 합니다.
-업로드<br>
+업로드  
 커밋한 소스를 origin 경로의 원격 레포지토리 master 브랜치에 올린다.
-업로드를 할때는 내가 다운받을때와 같은버전일때만 가능하다.<br>
-서버에 새로운 업데이트가 되어있다면 새로 받아서 올려야함.<br>
-원격저장소에 readMe 문서를 만들었으면 pull받고 repository를 시작해야한다.<br>
+업로드를 할때는 내가 다운받을때와 같은버전일때만 가능하다.  
+서버에 새로운 업데이트가 되어있다면 새로 받아서 올려야함.  
+원격저장소에 readMe 문서를 만들었으면 pull받고 repository를 시작해야한다.  
 
 
 7. RESET
@@ -231,7 +231,7 @@ $ git commit -- amend
 - Staging Area
     - 실제 저장하기 전에 임시로 보관하는 임시저장소
 - .git directory
-	- 내가 작업한 프로젝트가 저장되는 저장소.<br>
+	- 내가 작업한 프로젝트가 저장되는 저장소.  
 	- 네트워크가 연결되어있지않아도 작업을 할 수 있다.
 
 ### 2.협업

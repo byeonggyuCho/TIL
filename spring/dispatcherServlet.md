@@ -48,28 +48,28 @@
 
 *DispatcherServlet의 처리과정
 
-1) 클라이언트 요청<br>
+1) 클라이언트 요청  
 클라이언트가 해당 어플리케이션에 접근하면 접근한 URL 요청을 DispatcherServlet이 가로챈다.
 이렇게 요청을 가로챌 수 있는 이유는 web.xml에 등록된 DispatcherServlet의 \<url-pattern\>이 '/'와 같이 해당 어플리케이션의 모든 URL로 등록되었기 때문입니다.
 만약 특정 URL만 적용하고 싶다면 \<url-pattern\>의 내용을 바꿔서 범위를 변경하면 된다.
 
-2) HandlerMapping<br>
+2) HandlerMapping  
 가로챈 정보를 HandlerMapping에게 보내 해당 요청을 처리할 수 있는 Controller(handler)를 찾습니다.
 (스프링은 기본적으로 5가지의 핸들러 매핑이 있다) 
 이 부분은 스프링의 디폴트 전략에 의해 BeanNameUrlHandlerMapping과 DefaultAnnotationHandlerMapping이 
 기본으로 스프링 MVC에 탑재되있기 떄문에 특별한 경우가 아니라면 따로 설정할 필요가 없다.
 
-3) Controller<br>
+3) Controller  
 핸들러매핑이 해당 요청을 처리할 컨트롤러를 찾아냈다면 요청을 컨트롤러에 보낸다.
 컨트롤러는 사용자가 직접 구현해주는 부분이다.
 @MVC는 매우 다양한 코딩방식과 직관적이고 편리한 컨트롤러 작성방법을 제공하므로 이 부분에 대해서는 차후 심층적인 분석하여 자신에게 맞는 알맞은 전략을 선정해야한다.
 
-4) ViewResolver<br>
+4) ViewResolver  
 컨트롤러가 해당 요청을 처리한 후에 보통 컨트롤러는 요청을 응답받을 viewname을 리턴한다
 이는 핸들러 매핑전략에 따라 달라진다.
 그 때 이 viewname을 viewResolver가 받아 해당하는 view가 있는지 검색한다.
 
-5) 요청 처리<br>
+5) 요청 처리  
 해당하는 view가 있다면 처리결과를 view에게 보낸후 처리결과를 Dispatcherservlet에 보낸 후 DispatcherServlet은 최종결과를 클라이언트에게 전송한다.
 
 

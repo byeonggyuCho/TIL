@@ -7,7 +7,7 @@ MySQL 처럼 전통적인 테이블-관계 기반의 **RDBMS가 아니며 SQL을
 
 
 #### **RDBMS
-relational database management system, RDBMS<br>
+relational database management system, RDBMS  
 관계형 데이터베이스 관리 시스템
 
 

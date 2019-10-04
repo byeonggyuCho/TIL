@@ -1,13 +1,13 @@
 # Ajax
 
 ## 설명
-Asynchronous JavaScript and XML<br>
-Javascript 와 xml을 이용한 비동기적 통신 방법.<br>
-근래에는 JSON방식이 사용된다.<br>
-<br><br>
+Asynchronous JavaScript and XML  
+Javascript 와 xml을 이용한 비동기적 통신 방법.  
+근래에는 JSON방식이 사용된다.  
+    
 
 ## 등장배경
-**form Tag 전송방식의 단점**<br>
+**form Tag 전송방식의 단점**  
 - 요청 마다 페이지의 모든 리소스 다시 내려받아서 서버 부하가 큼
 - 브라우저가 매번 똑같인 레이아웃의 페이지를 랜더링해야함.
 - 성능상 문제뿐만 아니라 화면이 깜빡이는 현상(리랜더링)이 발생.

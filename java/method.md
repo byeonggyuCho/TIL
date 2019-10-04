@@ -100,7 +100,7 @@ boolean isLogin = loginCheck(memberInfo);
 
 
 **Method Signature**
-메서드 이름과 매개변수의 조합을 말한다.<br>
+메서드 이름과 매개변수의 조합을 말한다.  
 메서드 오버로딩에서는 메서드시그니처를 기준으로 식별한다.
 
 

@@ -1,6 +1,6 @@
 # AXIOS
 
-Promise 기반의 HTTP통신 라이브러리<br>
+Promise 기반의 HTTP통신 라이브러리  
 CDN 방식과 NPM방식을 지원한다.
 
 

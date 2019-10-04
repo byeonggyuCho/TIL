@@ -13,14 +13,14 @@ fn.apply(thisArg, [argsArray])
 
 
 #### thisArg
-호출되는 함수의 this변수로 제공된다 <br>
+호출되는 함수의 this변수로 제공된다   
 이 매개변수는 입력하는 값과 실질적으로 적용되는 값이 달라지는데
-실질적 적용은 다음과 같다.<br>
-non-strict Mode에서는 null and undefined는 global object로 치환된다.<br>
+실질적 적용은 다음과 같다.  
+non-strict Mode에서는 null and undefined는 global object로 치환된다.  
 이 값은 필수값이다.
 
 #### argsArray
-Optional. 호출되는 함수에 제공할 매개변수값.<br>
+Optional. 호출되는 함수에 제공할 매개변수값.  
 유사배열객체나 값이 없을 경우 null or undefined
 
 
@@ -31,13 +31,13 @@ Optional. 호출되는 함수에 제공할 매개변수값.<br>
 
 
 ## 설명
-apply를 사용하면 이미 선언된 함수의 this변수에 다른값을 참조시켜서 호출할 수 있습니다.<br>
-또 객체의 메소드를 다른 객체가 상속받도록 할 수 있습니다.<br>
-다시 말해 새로운 객체에 똑같은 메소드를 중복해서 쓰지 않아도 되는거죠!<br><br>
+apply를 사용하면 이미 선언된 함수의 this변수에 다른값을 참조시켜서 호출할 수 있습니다.  
+또 객체의 메소드를 다른 객체가 상속받도록 할 수 있습니다.  
+다시 말해 새로운 객체에 똑같은 메소드를 중복해서 쓰지 않아도 되는거죠!    
 
-apply는 call()과 비슷합니다.<br>
-차이점은 call()은 두 번째 매개변수로*arguments* 타입만 지원한다는 거죠.<br>
-apply에서는*arguments* 대신에*arguments Array*를 사용할 수 있습니다!<br>
+apply는 call()과 비슷합니다.  
+차이점은 call()은 두 번째 매개변수로*arguments* 타입만 지원한다는 거죠.  
+apply에서는*arguments* 대신에*arguments Array*를 사용할 수 있습니다!  
 또 Array literal이나 Array Object를 사용할 수도 있죠.
 
 ```js
@@ -48,16 +48,16 @@ func.apply(this, ['eat', 'banana'])
 func.apply(this, new Array('eat', 'banana'));
 ```
 
-물론 *arguments*도 사용가능합니다.<br>
-*arguments*에 대해 간략히 술명하자면 함수의 로컬 변수입니다.<br>
+물론 *arguments*도 사용가능합니다.  
+*arguments*에 대해 간략히 술명하자면 함수의 로컬 변수입니다.  
 호출된 함수에서 매개변수로 정의되지 않은 변수들까지 사용 가능하죠.
 
 그렇기 때문에 apply 메소드를 사용할때 호출된 함수의 매개변수들을 다 알 필요가 없습니다.
-*arguments*에 담겨 있기 때문이죠.<br>
-*arguments*만 사용하면 호출된 함수에 전달된 모든 매개변수들을 전달할 수 있습니다.<br>
+*arguments*에 담겨 있기 때문이죠.  
+*arguments*만 사용하면 호출된 함수에 전달된 모든 매개변수들을 전달할 수 있습니다.  
 
-EC5 이후로 여러분은 유사 배열 객체또한 사용가능합니다.<br>
-예를 들면  Dom의 NodeList나  { 'length': 2, '0': 'eat', '1': 'bananas' }같은 커스텀 객체가 사용가능하다는 얘기죠.<br>
+EC5 이후로 여러분은 유사 배열 객체또한 사용가능합니다.  
+예를 들면  Dom의 NodeList나  { 'length': 2, '0': 'eat', '1': 'bananas' }같은 커스텀 객체가 사용가능하다는 얘기죠.  
 
     <NOTE>
     NodeList는 Array가 아닙니다. 하지만 배열과 비슷하죠.
@@ -83,25 +83,25 @@ Array.prototype.forEach.call(list, function (checkbox) {
 ## 예제
 
 ### Apply를 이용하여 배열 병합.
-배열에 요소를 추가할때 Array.prototype.push를 사용하면 됩니다. 가장 쉬운 방법이죠.<br>
-물론 *push*메소드는 복수 매개변수도 한번에 추가할 수  있습니다.<br>
+배열에 요소를 추가할때 Array.prototype.push를 사용하면 됩니다. 가장 쉬운 방법이죠.  
+물론 *push*메소드는 복수 매개변수도 한번에 추가할 수  있습니다.  
 ```js
 var array = ['a','b'];
 array.push('c','d')
 ```
-하지만 *push*를 이용해 배열의 요소를 추가해야할 때는 어떻게 할까요?<br>
+하지만 *push*를 이용해 배열의 요소를 추가해야할 때는 어떻게 할까요?  
 ```js
 var array = ['a','b'];
 array.push(['c','d']);
 ```
-이런 방식은 우리가 원하는 결과와 좀 다릅니다.<br>
+이런 방식은 우리가 원하는 결과와 좀 다릅니다.  
 우리가 원하는건 개별적인 요소가 추가되는 것이데
-Array Object를 하나의 element로 추가되죠.<br>
-Array의 element로 Array가 들어가는 꼴이 되는겁니다.<br>
+Array Object를 하나의 element로 추가되죠.  
+Array의 element로 Array가 들어가는 꼴이 되는겁니다.  
 
 물론 Array.prototype.concat을 이용하면 병합이 가능합니다.
-하지만 기존의 Array에 요소가 추가되는 것이 아니라.<br>
-요소가 추가된 Array가 복제되죠.<br>
+하지만 기존의 Array에 요소가 추가되는 것이 아니라.  
+요소가 추가된 Array가 복제되죠.  
 
 이런 경우, *apply*를 이용하면 간단히 해결 가능합니다.
 ```js
@@ -109,18 +109,18 @@ var array = ['a','b']
 var elements = ['c','d','e'];
 array.push.apply(array, elements);
 ```
-개인적으로 첫번째 파라미터에 array를 넣는것이 헷깔려서 첨언합니다.<br>
+개인적으로 첫번째 파라미터에 array를 넣는것이 헷깔려서 첨언합니다.  
 push의 타겟 즉 push를 호출할 객체가 첫번째 매개변수가 되어야하니
-array가 첫번째 매개변수로 전달하는 것이죠.<br>
+array가 첫번째 매개변수로 전달하는 것이죠.  
 
 
 
 ### 내장 함수(functions built-in)에 사용  
-apply를 잘 사용하면 내장함수를 응용할 수 있습니다.<br>
-apply를 사용하면 배열의 형태로 매개변수를 전달할 수 있다는 점을 응용한거죠.<br>
-이렇게 하면 불필요하게 루프로직을 짤일이 많이 줄어듭니다.<br>
-한 가지 예로 *Math.max*, *Math.min*을 보여드리죠.<br>
-<br><br>
+apply를 잘 사용하면 내장함수를 응용할 수 있습니다.  
+apply를 사용하면 배열의 형태로 매개변수를 전달할 수 있다는 점을 응용한거죠.  
+이렇게 하면 불필요하게 루프로직을 짤일이 많이 줄어듭니다.  
+한 가지 예로 *Math.max*, *Math.min*을 보여드리죠.  
+    
 
 ```js
 var numbers = [5,6,2,3,7]
@@ -144,14 +144,14 @@ for (var i = 0; i < numbers.length; i++) {
   }
 }
 ```
-*apply*를 이용해서 못 생긴 코드를 쌈박하게 바꿔봤습니다.<br>
-하지만 *apply*를 사용할 때 조심해야할 점이 있습니다.<br>
-자바스크립트 엔진의 매개변수 제한이 있다는 점이죠.<br>
-매개변수의 한도는 자바스크립트 엔진에 따라 다릅니다.<br>
-따라서 어떤 엔진에서는 예외가 생길 수 있습니다.<br>
-혹은 멋대로 파라미터수를 제한 할 수도 있죠. 5만개를 지원할 경우 5만 1개부터는 전달이 안된다는 식으로요.<br>
+*apply*를 이용해서 못 생긴 코드를 쌈박하게 바꿔봤습니다.  
+하지만 *apply*를 사용할 때 조심해야할 점이 있습니다.  
+자바스크립트 엔진의 매개변수 제한이 있다는 점이죠.  
+매개변수의 한도는 자바스크립트 엔진에 따라 다릅니다.  
+따라서 어떤 엔진에서는 예외가 생길 수 있습니다.  
+혹은 멋대로 파라미터수를 제한 할 수도 있죠. 5만개를 지원할 경우 5만 1개부터는 전달이 안된다는 식으로요.  
 
-예를 위해 매개변수의 갯수제한이 4개인 예를 들어봅시다.<br>
+예를 위해 매개변수의 갯수제한이 4개인 예를 들어봅시다.  
  
 
 ```js
@@ -173,10 +173,10 @@ var min = minOfArray([5, 6, 2, 3, 7]);
 ```
 
 ### constructors chain에 사용하기.
-여러분은 자바스크립트 처럼 객체의 생성자함수 체인에 apply를 사용할 수 있습니다!<br>
-아래 예제에서는 global *Function*객체의 메소드를 만들겁니다.<br>
+여러분은 자바스크립트 처럼 객체의 생성자함수 체인에 apply를 사용할 수 있습니다!  
+아래 예제에서는 global *Function*객체의 메소드를 만들겁니다.  
 매개변수의 리스트를 개별적으로 전달하는 대신에 유사배열을 전달하는 식으로 만들어보죠.
-<br><br>
+    
 
 ```js
 Function.prototype.construct = function(aArgs) {
@@ -186,8 +186,8 @@ Function.prototype.construct = function(aArgs) {
 };
 ```
 
-예제에서 사용한 *Object.crate()*메소드가 생소하게 느껴질 수 있습니다.<br>
-아래의 코드는 *Object.crate()*의 대안으로 사용할 수 있습니다.<br><br>
+예제에서 사용한 *Object.crate()*메소드가 생소하게 느껴질 수 있습니다.  
+아래의 코드는 *Object.crate()*의 대안으로 사용할 수 있습니다.    
 
 
 ```js
@@ -220,7 +220,7 @@ Function.prototype.construct = function (aArgs) {
 ```
 
 다시 본론으로 들어와서 앞서 만든 construct메소드를 사용하는
-예제입니다.<br><br>
+예제입니다.    
 
 
 ```js
@@ -255,9 +255,9 @@ console.log(myInstance.constructor);              // logs 'MyConstructor'
 
 
 ### 후기.
-mnd 참 친절하다.<br>
-그리고 번역 생각보다 빡세다.<br>
-중간에 말투가 바뀌었는데 작업을 끊어서 해서 그렇다.<br>
+mnd 참 친절하다.  
+그리고 번역 생각보다 빡세다.  
+중간에 말투가 바뀌었는데 작업을 끊어서 해서 그렇다.  
 다중이처럼 보일 수 있으니 수정해야지 오늘은 말고.
 
 

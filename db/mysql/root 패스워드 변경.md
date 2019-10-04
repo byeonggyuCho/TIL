@@ -12,7 +12,7 @@
 ~~~ SQL
 mysql> describe user;
 ~~~
-2. authentication_string 필드 확인<br>
+2. authentication_string 필드 확인  
 MYSQL 5.7부터 패스워드 컬럼명이 바뀌었다.
 
 3. update 명령어로 페스워드 변경

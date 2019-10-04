@@ -2,10 +2,10 @@
 # Maven
 ![](/resource/img/etc/maven.jpeg)
 
-자바 프로젝트의 빌드(build)를 자동화 해주는 빌드 툴<br>
-즉, 자바 소스를 compile하고 package해서 deploy하는 일을 자동화 해주는 것<br>
-표준화된 빌드와 산출물 리포지토리 모델을 제공하며 프로젝트를 관리하고 그에 관해서 설명할 수 있는 엔진을 포함하는 도구<br>
-프로젝트 산출물을 빌드 테스트 배포하는 표준 라이프 사이클을 정의하고 이를 따르는 프로젝트에 공통적인 빌드로직을 쉽게 재사용할 수 있게 해주는 프레임워크<br>
+자바 프로젝트의 빌드(build)를 자동화 해주는 빌드 툴  
+즉, 자바 소스를 compile하고 package해서 deploy하는 일을 자동화 해주는 것  
+표준화된 빌드와 산출물 리포지토리 모델을 제공하며 프로젝트를 관리하고 그에 관해서 설명할 수 있는 엔진을 포함하는 도구  
+프로젝트 산출물을 빌드 테스트 배포하는 표준 라이프 사이클을 정의하고 이를 따르는 프로젝트에 공통적인 빌드로직을 쉽게 재사용할 수 있게 해주는 프레임워크  
 공식 홈페이지에서 설명하는 메이븐의 6가지 특성은 다음과 같다.
 - 1 빌드 절차 간소화
 - 2 통합된 빌드 시스템 제공
@@ -15,7 +15,7 @@
 - 6 의존성 관리
 
 
-**주요기능**<br>
+**주요기능**  
 1. Build
     - 소스 코드를 컴파일 한다.
     - 테스트 코드를 컴파일한다.
@@ -99,75 +99,75 @@
 ![](/resource/img/etc/mavenLifeCyle2.png)
 
 
-**defulat Lifecycle**<br>
-1. validate <br>
+**defulat Lifecycle**  
+1. validate   
 프로젝트의 상태가 정상인지 여부와 빌듳에 필요한 모든 정보가 존재하는 지 검사한다. 이 과정은 pom.xml 파일 트리 구조를 검증한다.
-2. initailize <br>
+2. initailize   
 빌드 상태를 초기화한다. 속성을 설정하거나, 작업 디렉터리 등을 생성하는 작업을 수행한다.
-3. generate-sources<br>
+3. generate-sources  
 컴파일에 필요한 소스를 생성한다.
-4. process-sources<br>
+4. process-sources  
 필요한 모든 값에 대한 필터링 처리등 소스코드를 가공한다. 소스의 파싱, 수정, 변경을 제공한다. 일반 코드 또는 생성된 코드 모두 여기서 처리된다.
-5. generate-resources<br> 
+5. generate-resources   
 패키지에 포함될 자원들을 생성한다. 보통 메타데이터 파일과 설정 파일을 포함한다.
-6. process-resources <br>
+6. process-resources   
 패키지 작업을 준비하기 위해 자원들을 대상 디렉터리로 복사하고 가공한다.
-7. compile<br>
+7. compile  
 프로젝트의 소스를 컴파일한다. 컴파일된 클래스들은 타킷 디렉터리 트리 구조에 저장된다.
-8. process-classes<br>
+8. process-classes  
 컴파일 된 파일들에 대한 후처리(post-process)를 수행한다.
 (i.e. 자바 클래스에 대한 byte0code enhancement)
-9. generate-test-sources<br>
+9. generate-test-sources  
 컴파일 하기 위해 테스를 위한 소스 코드를 생성한다.
-10. process-test-sources<br>
+10. process-test-sources  
 필요한 값에 대한 필터링 처리 등 테스트 소스 코드를 가공한다.
-11. generate-test-resources<br>
+11. generate-test-resources  
 테스트 수행을 위한 자원을 생성한다.
-12. process-test-resources<br>
+12. process-test-resources  
 테스트 대상 디렉터리에 자원을 복사하고 가공한다.
-13. test-compile<br>
+13. test-compile  
 테스트 소스 코드를 컴파일하고 대상 디렉터리에 담는다.
-14. process-test-classes<br>
+14. process-test-classes  
 컴파일 된 테스트 파일들에 대한 후처리(post-process)를 수행한다.
-15. test<br>
+15. test  
 적합한 단위 테스트 프레임워크를 이용해 테스를 수행한다. 테스트 코드는 패키지 되거나 배포된 패키지 없이 실행될 수 있어야한다.
-16. prepare-package<br>
+16. prepare-package  
 실제 패키지 생성을 수행하기 전에 필요한 사전 작업을 수행한다.
-17. package<br>
+17. package  
 실행 가능한 비이너리 파일들을 JAR나 WAR같은 배포용 압축파일로 묶는다.
-18. pre-integration-test<br>
+18. pre-integration-test  
 통합 테스트를 준비한다. 이 경우 통합 테스트는 실제 배치 환경의 코드를 테스트 하는 것을 말한다.
 이 단계에서 위에서 묶은 압축 파일을 서버에 배치할 수 있다.
-19. integration-test<br>
+19. integration-test  
 실제 통합 테스트를 수행한다.
-20. post-integration-test<br>
+20. post-integration-test  
 통합 테스트 수행 이후의 후처리 작업을 수행한다. (환경 설정 해제 등의 작업)
 이것은 테스트 환경의 리셋 또는 재초기화 과정을 포함할 수 있다.
-21. verify <br>
+21. verify   
 패키지가 품질 기준에 적합한지 여부를 검사하는 작업을 수행한다.
-22. install<br>
+22. install  
 다른 프로젝트에서 참조하고 사용할 수 있도록 패키지를 로컬 저장소에 설치한다.
-23. deploy <br>
+23. deploy   
 다른 개발자 혹은 프로젝트와 공유할 수 있도록 원격 저장소에 최정 패키지를 배포한다.
 
 
 **clean_lifecycle**
-1. pre-clean <br>
+1. pre-clean   
 clean 작업을 수행하기에 앞서 필요한 사전 작업을 수행한다.
-2. clean<br>
+2. clean  
 이전 빌드에서 생성된 모든 파일들을 삭제한다.
-3. post-clean<br>
+3. post-clean  
 프로젝트 clean작업을 끝내기 위해 필요한 작업을 수행한다.
 
 
 **site_lifecycle**
-1. pre-site<br>
+1. pre-site  
 사이트 생성을 수행하기에 앞서 필요한 사전 작업을 수행한다.
-2. site<br>
+2. site  
 프로젝트 사이트 문서를 생성한다.
-3. post-site<br>
+3. post-site  
 프로젝트 사이트 생성을 긑내기 위해 필요한 작업을수행하고 배포를 위한 사전 작업을 수행한다.
-4. site-deploy<br>
+4. site-deploy  
 생성된 사이트 문서를 대상 웹 서버에 배포한다.
 
 
@@ -195,9 +195,9 @@ clean 작업을 수행하기에 앞서 필요한 사전 작업을 수행한다.
     - 개발자들의 관습 혹은 암묵적으로 알고 있는 디렉터리나 위치 정보를 빌드 도구들도 똑같이 사용하자.
     - 설정 작업이 좀더 간결해지고 쉬워진다.
 
-<br>
-<br>
-<br>
+  
+  
+  
 
 
 
@@ -309,16 +309,16 @@ clean 작업을 수행하기에 앞서 필요한 사전 작업을 수행한다.
         6. pluginManagement : 빌드 설정 파일에서 관리하는 플러그인 목록. 이 엘리먼트에 설정되어 있다고 해서 반드시 사용하는 것은 아님
         7. repositories : 빌드할 때 접근할 저장소의 위치를 관리한다.
 
-**의존성전이**<br>
+**의존성전이**  
 Spring이나 JDBC처럼 의존관계가 축라되는 라이브러리등은 해당 타켓 라이브러리만 지정해주면 maven이 자동으로 타켓이 의존하는 라이브러리를 설정해준다.
 - 중앙 저장소에서 라이브러리를 다운받을 때 *.pom도 같이 다운로드 하게 되는데 이 pom을 통해 명시된 의존관의 모듈도 함께 다운받는다.
 - 따라서 의존관계에 있는 라이브러리들도 함께 받는다.
 
 ![](/resource/img/etc/maven_dependency.jpeg)
 
-<br>
-<br>
-<br>
+  
+  
+  
 
 ### 의존범위(SCOPE)
 
@@ -336,14 +336,14 @@ Spring이나 JDBC처럼 의존관계가 축라되는 라이브러리등은 해�
 
 
 
-**리모트 레포지토리**<br>
-서버에 lib가 저장된 장소를 "리모트 레포지토리"라고 부른다.<br><br>
+**리모트 레포지토리**  
+서버에 lib가 저장된 장소를 "리모트 레포지토리"라고 부른다.    
 
-**로컬 레포지토리**<br>
-로컬에 라이브러리를 저장하고 그 폴더에 있는 lib를 프로젝트에 공유하는 방법<br>
-이때 로컬의 lib폴더를 "로컬 레포지토리"라고 한다.<br>
-기본위치: "\c/.m2"라는 폴더가 자동으로 생긴다.<br>
-이곳에 다운받은 라이브러리가 저장된다.<br>
+**로컬 레포지토리**  
+로컬에 라이브러리를 저장하고 그 폴더에 있는 lib를 프로젝트에 공유하는 방법  
+이때 로컬의 lib폴더를 "로컬 레포지토리"라고 한다.  
+기본위치: "\c/.m2"라는 폴더가 자동으로 생긴다.  
+이곳에 다운받은 라이브러리가 저장된다.  
 
 
 ## 3. Maven Standard Directory Layout

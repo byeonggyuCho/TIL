@@ -40,7 +40,7 @@ requestAnimationFrame(updateScreen)
 
 
 
-![](/resource/img/javascript/settimeout.jpg)<br>
+![](/resource/img/javascript/settimeout.jpg)  
 
 실제로 jQuery의 기본 animate 동작은 현재 setTime을 사용한다.
 
@@ -113,7 +113,7 @@ function processTaskList (taskStartTime) {
 이제 확인란이 활성화 된 상태에서 동일한 작업을 수행하고 자바스크립트에서 호출된 함수에 대해 훨씬 더 많은 정보를 얻을 수 있다.
 
 
-![](/resource/img/javascript/high-js-detail.jpg)<br>
+![](/resource/img/javascript/high-js-detail.jpg)  
 이 정보를 사용하여 자바스크립트가 애플리케이션에 미치는 성능 영향을 평가하고, 함수 실행에 너무 오랜 시간이 걸리는 핫스팟을 찾아 수정하기 시작할 수 있다. 이전에 언급한 것처럼 오래 실행되는 자바스크립트를 찾아 제거하거나, WebWorkers로 이전하여 (자바스크립트를 제거할 수 없는 경우) 메인 스레드의 여유 공간을 확보하여 다른 작업을 계속 수행할 수 있도록 해야한다.
 
 

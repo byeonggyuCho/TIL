@@ -1,41 +1,41 @@
 MyBatis 프레임워크의 트랜잭션 제어
 ==============================
 
- MyBatis 프레임워크는 관계형 데이터베이스의 레코드와 자바 도메인 객체 사이의 매핑을 자동화 해주는 ORM(Object Relation Mapping) 프레임워크로 데이터베이스의 SQL 문을 거의 그대로 사용할 수 있게 해준다. <br>
- 특히 J2EE의 엔티티 빈(entity bean)이나 하이버네이트(Hibernate) 프레임워크에서는 (견해에 따라) 활용하기 어려운 집계나 조인도 데이터베이스의 SQL을 그대로 사용함으로 쉽게 활용할 수 있게 해준다.<br>
+ MyBatis 프레임워크는 관계형 데이터베이스의 레코드와 자바 도메인 객체 사이의 매핑을 자동화 해주는 ORM(Object Relation Mapping) 프레임워크로 데이터베이스의 SQL 문을 거의 그대로 사용할 수 있게 해준다.   
+ 특히 J2EE의 엔티티 빈(entity bean)이나 하이버네이트(Hibernate) 프레임워크에서는 (견해에 따라) 활용하기 어려운 집계나 조인도 데이터베이스의 SQL을 그대로 사용함으로 쉽게 활용할 수 있게 해준다.  
 
- MyBatis 프레임워크는 오랫동안 사랑받아 왔던 ORM 프레임워크인 iBatis 프레임워크를 동일한 개발자들이 내부 구조를 재설계하여 새롭게 만든 ORM 프레임워크이다.<br> 
- (그래서 내부적으로는 iBatis라는 패키지 이름이 계속 사용되고 있다. 심지어 버전도 이어 받고 있다.) <br>
- MyBatis는 iBatis의 기본 골격을 거의 그대로 유지하고 있으므로, iBatis에 익숙한 개발자라면 MyBatis로 적응하는 것이 그렇게 어렵지 않을 것이다. 필자도 MyBatis 사용자 가이드를 보면서 간단한 MyBatis 프로그램을 어렵지 않게 작성할 수 있었다.<br> 
- 동작하는 MyBatis 애플리케이션을 작성하는 데 하루 정도 걸린 것 같다.<br>
+ MyBatis 프레임워크는 오랫동안 사랑받아 왔던 ORM 프레임워크인 iBatis 프레임워크를 동일한 개발자들이 내부 구조를 재설계하여 새롭게 만든 ORM 프레임워크이다.   
+ (그래서 내부적으로는 iBatis라는 패키지 이름이 계속 사용되고 있다. 심지어 버전도 이어 받고 있다.)   
+ MyBatis는 iBatis의 기본 골격을 거의 그대로 유지하고 있으므로, iBatis에 익숙한 개발자라면 MyBatis로 적응하는 것이 그렇게 어렵지 않을 것이다. 필자도 MyBatis 사용자 가이드를 보면서 간단한 MyBatis 프로그램을 어렵지 않게 작성할 수 있었다.   
+ 동작하는 MyBatis 애플리케이션을 작성하는 데 하루 정도 걸린 것 같다.  
 
 ## 1. 트랜잭션 관리 
 
- 최근 프레임워크들은 선언적 트랜잭션 관리(DTM, declarative transaction management)라든지 컨테이너 관리 트랜잭션(CMT, Container Managed Transaction)들의 지원에 많은 노력을 기울이고 있다.<br>
-선언적 트랜잭션 관리는 어노테이션 등을 사용하여 메소드나 클래스 단위의 트랜잭션의 흐름을 정의하는 방법이고, 컨테이너 관리 트랜잭션은 컨테이너 서버의 설정으로 컨테이너 내 객체들의 트랜잭션을 관리하는 방법이다.<br> 
-그런데 선언적 방법 또는 컨테이너 관리 방법 모두 데이터베이스를 연동하는 애플리케이션 개발자들에게 익숙하지 않다는 점이 문제가 된다.<br> 
-그 결과 이 두 방법으로는 개발자가 트랜잭션이 잘 처리 되었는지 안되었는지 확신하기가 어려울 수 있다.<br> 
-왜냐면 선언적 방법에서는 어떻게 선언하느냐에 따라 트랜잭션의 범위나 적용 방법이 달라지게 되는데 이것을 개발자가 쉽게 이해하지 못할 수 있고, 컨테이너 기반의 트랜잭션 관리는 J2EE의 엔티티 빈이나 CMT 기반 세션 빈의 실패로 이미 그 개발자들의 적응에 문제가 있음이 증명되었다고 볼 수 있다.<br> 
-그래도 여전히 이 두 방법이 추구되는 이유는 세상의 모든 데이터를 객체로 다루고 싶은 사람들의 주장이나 이상의 입김이 계속 업계로 작용하는 것이 아닐지 생각해 보게 된다.<br>
-아무리 좋은 기술이더라도 개발자가 쉽게 이해하고 사용하고 확인할 수 없다면 좋은 기술이라고 볼 수 없는데, 뛰어나거나 위대한 그루(?)들이 개발자들을 이끌려는 방향이 너무 이상적인 것 같다.<br> 어쨌든 DTM이든 CMT이든 개발자들에게는 너무 어렵다는 것이 필자가 가진 일관된 의견이다.<br>
+ 최근 프레임워크들은 선언적 트랜잭션 관리(DTM, declarative transaction management)라든지 컨테이너 관리 트랜잭션(CMT, Container Managed Transaction)들의 지원에 많은 노력을 기울이고 있다.  
+선언적 트랜잭션 관리는 어노테이션 등을 사용하여 메소드나 클래스 단위의 트랜잭션의 흐름을 정의하는 방법이고, 컨테이너 관리 트랜잭션은 컨테이너 서버의 설정으로 컨테이너 내 객체들의 트랜잭션을 관리하는 방법이다.   
+그런데 선언적 방법 또는 컨테이너 관리 방법 모두 데이터베이스를 연동하는 애플리케이션 개발자들에게 익숙하지 않다는 점이 문제가 된다.   
+그 결과 이 두 방법으로는 개발자가 트랜잭션이 잘 처리 되었는지 안되었는지 확신하기가 어려울 수 있다.   
+왜냐면 선언적 방법에서는 어떻게 선언하느냐에 따라 트랜잭션의 범위나 적용 방법이 달라지게 되는데 이것을 개발자가 쉽게 이해하지 못할 수 있고, 컨테이너 기반의 트랜잭션 관리는 J2EE의 엔티티 빈이나 CMT 기반 세션 빈의 실패로 이미 그 개발자들의 적응에 문제가 있음이 증명되었다고 볼 수 있다.   
+그래도 여전히 이 두 방법이 추구되는 이유는 세상의 모든 데이터를 객체로 다루고 싶은 사람들의 주장이나 이상의 입김이 계속 업계로 작용하는 것이 아닐지 생각해 보게 된다.  
+아무리 좋은 기술이더라도 개발자가 쉽게 이해하고 사용하고 확인할 수 없다면 좋은 기술이라고 볼 수 없는데, 뛰어나거나 위대한 그루(?)들이 개발자들을 이끌려는 방향이 너무 이상적인 것 같다.   어쨌든 DTM이든 CMT이든 개발자들에게는 너무 어렵다는 것이 필자가 가진 일관된 의견이다.  
 
- 그럼 트랜잭션을 프로그램으로 관리하는 것은 어떤가? 트랜잭션을 프로그램을 관리하는 방법은 수십 년 동안 개발자들이 사용해 오던 방법이다.<br> 
- 이 방법을 사용하면, 데이터베이스 처리 로직이 중첩 또는 내포 형식의 복잡한 구조를 갖지 않는 일상적인 구조인 경우, 개발자들은 누구든지 쉽게 트랜잭션의 범위를 명시적으로 프로그램으로 지정할 수 있고, 이렇게 명시적으로 지정된 트랜잭션의 범위는 일반적으로 쉽게 파악된다.<br> 
- 그리고 데이터베이스와 관련된 비즈니스 로직들은 단순한 구조를 갖는 경우가 대부분이다.<br> 
- 더욱이 긴 절차가 필요한 비즈니스에서 일정 절차까지의 진행 상황을 커밋해야 하는 경우엔, 프로그램으로 관리하는 데이터베이스 트랜잭션 방법이 더 적합하다.<br> 
- 선언적 방법으로 진행해야 하는 경우 각 메소드마다 트랜잭션의 전파를 고려해야 하는 어려움이 따르고, 컨테이너 관리 방법도 긴 절차의 트랜잭션을 관리하기 위해서는 더욱 복잡하게 각 단계마다 세션 빈과 같은 것들을 만들어야 한다.<br> 
- 그렇기 때문에 최신 프레임워크들이 DTM이나 CMT을 제시함에도 불구하고 개발자들에게는 프로그램으로 관리하는 데이터베이스 트랜잭션이 여전히 선호되고 있다.<br> 
- 그리고 iBatis 프레임워크는 이런 기본적인 기능에 충실한 프레임워크 중 하나였다.<br>
+ 그럼 트랜잭션을 프로그램으로 관리하는 것은 어떤가? 트랜잭션을 프로그램을 관리하는 방법은 수십 년 동안 개발자들이 사용해 오던 방법이다.   
+ 이 방법을 사용하면, 데이터베이스 처리 로직이 중첩 또는 내포 형식의 복잡한 구조를 갖지 않는 일상적인 구조인 경우, 개발자들은 누구든지 쉽게 트랜잭션의 범위를 명시적으로 프로그램으로 지정할 수 있고, 이렇게 명시적으로 지정된 트랜잭션의 범위는 일반적으로 쉽게 파악된다.   
+ 그리고 데이터베이스와 관련된 비즈니스 로직들은 단순한 구조를 갖는 경우가 대부분이다.   
+ 더욱이 긴 절차가 필요한 비즈니스에서 일정 절차까지의 진행 상황을 커밋해야 하는 경우엔, 프로그램으로 관리하는 데이터베이스 트랜잭션 방법이 더 적합하다.   
+ 선언적 방법으로 진행해야 하는 경우 각 메소드마다 트랜잭션의 전파를 고려해야 하는 어려움이 따르고, 컨테이너 관리 방법도 긴 절차의 트랜잭션을 관리하기 위해서는 더욱 복잡하게 각 단계마다 세션 빈과 같은 것들을 만들어야 한다.   
+ 그렇기 때문에 최신 프레임워크들이 DTM이나 CMT을 제시함에도 불구하고 개발자들에게는 프로그램으로 관리하는 데이터베이스 트랜잭션이 여전히 선호되고 있다.   
+ 그리고 iBatis 프레임워크는 이런 기본적인 기능에 충실한 프레임워크 중 하나였다.  
 
 ## 2. iBatis의 장점 
 
- iBatis 프레임워크는 데이터베이스 트랜잭션에 있어서 질의 메소드 단위의 자동 커밋과 필요한 경우 언제든지 프로그램으로 트랜잭션의 범위를 지정하게 해주는 유연성을 동시에 제공한다.<br> 그리고 데이터베이스 처리와 관련된 자원도 자동으로 해제한다.<br> 
- 다시 말해 iBatis 프레임워크를 사용면 JDBC API를 다루는 경우 발생하는 connection 객체나 statement 객체들을 해제하기 위해 호출해야 하는 close() 메소드들을 호출하지 않아도 된다.<br>
-자원 해제 문제는 애플리케이션의 안정성과 가용성에 아주 중요한 문제를 야기할 수 있다.<br> 
-제대로 해제 되지 않는 자원 객체들은 자원의 고갈이나 메모리 부족의 문제를 야기시키고 결과적으로 애플리케이션의 다운 문제로 확대될 수 있기 때문이다.<br> 
-iBatis를 사용하면 데이터베이스 연동에서 발생하는 이런 자원 샘 현상도 방지할 수 있다.<br>
+ iBatis 프레임워크는 데이터베이스 트랜잭션에 있어서 질의 메소드 단위의 자동 커밋과 필요한 경우 언제든지 프로그램으로 트랜잭션의 범위를 지정하게 해주는 유연성을 동시에 제공한다.   그리고 데이터베이스 처리와 관련된 자원도 자동으로 해제한다.   
+ 다시 말해 iBatis 프레임워크를 사용면 JDBC API를 다루는 경우 발생하는 connection 객체나 statement 객체들을 해제하기 위해 호출해야 하는 close() 메소드들을 호출하지 않아도 된다.  
+자원 해제 문제는 애플리케이션의 안정성과 가용성에 아주 중요한 문제를 야기할 수 있다.   
+제대로 해제 되지 않는 자원 객체들은 자원의 고갈이나 메모리 부족의 문제를 야기시키고 결과적으로 애플리케이션의 다운 문제로 확대될 수 있기 때문이다.   
+iBatis를 사용하면 데이터베이스 연동에서 발생하는 이런 자원 샘 현상도 방지할 수 있다.  
 
- iBatis 프레임워크를 사용하면 데이터베이스를 연동하는 코드를 다음과 같이 간단하게 작성할 수 있다.<br>
+ iBatis 프레임워크를 사용하면 데이터베이스를 연동하는 코드를 다음과 같이 간단하게 작성할 수 있다.  
 ~~~ java
 …
 try {
@@ -47,7 +47,7 @@ try {
     }
 …
 ~~~
- 위 코드처럼 iBatis를 사용하면 자원 해제를 위해 close() 메소드들을 직접 호출하지 않아도 되며, 필요한 곳에서 언제든지 데이터베이스 트랜잭션을 시작하고 종료할 수 있다.<br> 단 finally 블록 안에 트랜잭션을 종료하는 로직을 반드시 추가하여 트랜잭션이 닫히지 않는 것을 방지해야 한다.<br> 이 코드에서 볼 수 있듯이 iBatis는 데이터베이스 연동에 필요한 코드를 상당히 줄여 줄 뿐만 아니라, 데이터베이스 트랜잭션도 자유롭게 지정할 수 있게 하고, 소스와 SQL 쿼리를 분리함으로 이기종 데이터베이스의 이식성도 좋게 한다.<br> 결과적으로 데이터베이스 비즈니스 개발의 생산성을 향상시킨다.<br> 그리고 이런 장점들이 MyBatis로 이어져 발전하고 있다.<br> 또 위 코드에서 트랜잭션 관련 코드들을 제거하더라도 iBatis가 메소드 단위의 커밋을 지원하게 설정된 경우 메소드가 성공적으로 호출되면 자동으로 커밋까지 실행된다.<br> 그러므로 이 경우 데이터베이스 처리 로직이 단 하나의 갱신이나 추가 메소드를 호출하는 경우 트랜잭션 과련 로직을 굳이 추가하지 않아도 된다.<br> 즉 테이블에 입력할 정보가 준비된 경우, 아래와 같이 단 한 줄로 데이터베이스에 레코드를 추가할 수 있게 된다.<br>
+ 위 코드처럼 iBatis를 사용하면 자원 해제를 위해 close() 메소드들을 직접 호출하지 않아도 되며, 필요한 곳에서 언제든지 데이터베이스 트랜잭션을 시작하고 종료할 수 있다.   단 finally 블록 안에 트랜잭션을 종료하는 로직을 반드시 추가하여 트랜잭션이 닫히지 않는 것을 방지해야 한다.   이 코드에서 볼 수 있듯이 iBatis는 데이터베이스 연동에 필요한 코드를 상당히 줄여 줄 뿐만 아니라, 데이터베이스 트랜잭션도 자유롭게 지정할 수 있게 하고, 소스와 SQL 쿼리를 분리함으로 이기종 데이터베이스의 이식성도 좋게 한다.   결과적으로 데이터베이스 비즈니스 개발의 생산성을 향상시킨다.   그리고 이런 장점들이 MyBatis로 이어져 발전하고 있다.   또 위 코드에서 트랜잭션 관련 코드들을 제거하더라도 iBatis가 메소드 단위의 커밋을 지원하게 설정된 경우 메소드가 성공적으로 호출되면 자동으로 커밋까지 실행된다.   그러므로 이 경우 데이터베이스 처리 로직이 단 하나의 갱신이나 추가 메소드를 호출하는 경우 트랜잭션 과련 로직을 굳이 추가하지 않아도 된다.   즉 테이블에 입력할 정보가 준비된 경우, 아래와 같이 단 한 줄로 데이터베이스에 레코드를 추가할 수 있게 된다.  
 ~~~ java
 …
 sqlMapClient.update("insertAccountViaParameterMap", account);
@@ -56,14 +56,14 @@ sqlMapClient.update("insertAccountViaParameterMap", account);
 
 ## 3. MyBatis의 변화 
 
- 그런데 MyBatis에 와서 이상한 변화가 생겼다.<br> 
- 첫째, 그동안 스레드 안전한 SqlMapClient 클래스가 사라졌다.<br>
-SqlMapClient 객체 대신 스레드 안전하지 않는 SqlSesssion 객체를 사용하여 질의를 수행한다.<br>
-(SqlSesssion 객체가 스레드 안전하지 않은 이유는 요청(request) 또는 메소드(method) 범위의 객체이기 때문이다.)<br>
-또 SqlSession 객체는 자원 해제를 위해 반드시 close() 메소드를 호출해야 한다.<br> 
-나아진 점도 있다. 데이터베이스의 트랜잭션을 시작하는 메소드가 없어도 트랜잭션을 처리할 수 있다.<br> 
-(즉 openSession 메소드의 호출과 더불어 필요에 따라 자동으로 트랜잭션이 시작된다.) <br>
-그 결과 MyBatis API를 사용한 데이터베이스를 연동하는 코드가 다음과 같이 작성된다.<br>
+ 그런데 MyBatis에 와서 이상한 변화가 생겼다.   
+ 첫째, 그동안 스레드 안전한 SqlMapClient 클래스가 사라졌다.  
+SqlMapClient 객체 대신 스레드 안전하지 않는 SqlSesssion 객체를 사용하여 질의를 수행한다.  
+(SqlSesssion 객체가 스레드 안전하지 않은 이유는 요청(request) 또는 메소드(method) 범위의 객체이기 때문이다.)  
+또 SqlSession 객체는 자원 해제를 위해 반드시 close() 메소드를 호출해야 한다.   
+나아진 점도 있다. 데이터베이스의 트랜잭션을 시작하는 메소드가 없어도 트랜잭션을 처리할 수 있다.   
+(즉 openSession 메소드의 호출과 더불어 필요에 따라 자동으로 트랜잭션이 시작된다.)   
+그 결과 MyBatis API를 사용한 데이터베이스를 연동하는 코드가 다음과 같이 작성된다.  
 
 ~~~ java
 ...
@@ -80,21 +80,21 @@ try {
 ...
 ~~~ 
 
-위 코드에서 볼 수 있듯이 MyBatis 프레임워크를 사용하는 경우 사용을 마친 SqlSession 객체는 반드시 닫아 주어야 한다.<br> 
-즉 finally 블록 등에서 반드시 session.close()를 호출해야 한다.<br> 
-iBatis에서는 없던 호출을 MyBatis에서는 넣어 주어야 한다.<br> 
-의아한 것은 왜 자원 해제의 누락으로 애플리케이션의 안정성을 해칠 수도 있는 로직을 개발자에게 떠 넘겼냐 하는 것이다.<br>
-또 close()를 호출하지 않는 방법을 전혀 제공하지 않는 것도 아니다.<br>
-MyBatis 프레임워크를 Spring 프레임워크와 결합하여 SqlSessionTemplate 클래스 객체를 사용하면 자원 해제에 대한 문제가 사라진다.<br>
+위 코드에서 볼 수 있듯이 MyBatis 프레임워크를 사용하는 경우 사용을 마친 SqlSession 객체는 반드시 닫아 주어야 한다.   
+즉 finally 블록 등에서 반드시 session.close()를 호출해야 한다.   
+iBatis에서는 없던 호출을 MyBatis에서는 넣어 주어야 한다.   
+의아한 것은 왜 자원 해제의 누락으로 애플리케이션의 안정성을 해칠 수도 있는 로직을 개발자에게 떠 넘겼냐 하는 것이다.  
+또 close()를 호출하지 않는 방법을 전혀 제공하지 않는 것도 아니다.  
+MyBatis 프레임워크를 Spring 프레임워크와 결합하여 SqlSessionTemplate 클래스 객체를 사용하면 자원 해제에 대한 문제가 사라진다.  
 
-MyBatis 프레임워크는 Spring 프레임워크에서 MyBatis를 통합하여 사용할 수 있게 MyBatis-Spring를 제공한다.<br> 
-MyBatis-Spring를 통해 만들어진 SqlSessionTemplate 객체는 SqlSession 객체와 달리 내부적으로 인터셉터를 통해 자동으로 close()를 호출하여 자원 해제 문제를 해결한다.<br> 
-개발자는 SqlSessionTemplate 객체를 사용하는 경우 더 이상 MyBatis의 자원 해제 문제를 신경 쓰지 않아도 된다.<br> 
-그런데 대신 MyBatis-Spring은 다른 문제를 야기한다.<br> 
-데이터베이스 트랜잭션의 문제이다.<br> 
-MyBatis-Spring을 사용하는 경우, MyBatis의 SqlSessionTemplate 객체는 commit(), rollback() 메소드를 사용할 수 없다.<br> 
-즉 SqlSessionTemplate 객체를 이용하여 프로그램적으로는 트랜잭션을 관리할 수 없게 한다.<br> 
-억지로 SqlSessionTemplate 객체의 commit() 메소드를 호출하면 다음과 같은 예외를 발생한다.<br>
+MyBatis 프레임워크는 Spring 프레임워크에서 MyBatis를 통합하여 사용할 수 있게 MyBatis-Spring를 제공한다.   
+MyBatis-Spring를 통해 만들어진 SqlSessionTemplate 객체는 SqlSession 객체와 달리 내부적으로 인터셉터를 통해 자동으로 close()를 호출하여 자원 해제 문제를 해결한다.   
+개발자는 SqlSessionTemplate 객체를 사용하는 경우 더 이상 MyBatis의 자원 해제 문제를 신경 쓰지 않아도 된다.   
+그런데 대신 MyBatis-Spring은 다른 문제를 야기한다.   
+데이터베이스 트랜잭션의 문제이다.   
+MyBatis-Spring을 사용하는 경우, MyBatis의 SqlSessionTemplate 객체는 commit(), rollback() 메소드를 사용할 수 없다.   
+즉 SqlSessionTemplate 객체를 이용하여 프로그램적으로는 트랜잭션을 관리할 수 없게 한다.   
+억지로 SqlSessionTemplate 객체의 commit() 메소드를 호출하면 다음과 같은 예외를 발생한다.  
 
  ~~~
 java.lang.UnsupportedOperationException: Manual commit is not allowed over a Spring managed SqlSession
@@ -132,21 +132,21 @@ java.lang.UnsupportedOperationException: Manual commit is not allowed over a Spr
 
 ## 4. Spring 프레임워크의 트랜잭션 관리 
 
-SqlSessionTemplate 객체를 이용하여 MyBatis의 자원 해제 문제를 해결하고 나니, 프로그램 방법의 데이터베이스 트랜잭션 관리가 불가능해지는 새로운 문제가 등장했다.<br>
-이 문제에 대해 MyBatis 문서는 Spring 프레임워크의 프로그램적 트랜잭션 관리 방법을 사용할 수 있다고 언급한다. <br>
-한 가지는 TransactionTemplate을 이용한 프로그램 방법이고 다른 가지는 PlatformTransactionManager를 사용한 프로그램 방법이 있다고 언급한다.<br>
-프로그램으로 데이터베이스 트랜잭션을 관리하려고 했더니, Spring 프레임워크를 이용하라고 한다.<br>
-이 부분이 참 의아한 부분이다. <br>
-이전에 iBatis에서 제공하는 SqlMapClient 객체는 이런 번거로운 작업 없이도 자원 해제와 트랜잭션을 모두 자체적으로 처리를 해 주었는데, 왜 MyBatis에서는 이렇게 바뀌었는지 굳이 Spring 프레임워크에 의존해야 했는지, <br>
+SqlSessionTemplate 객체를 이용하여 MyBatis의 자원 해제 문제를 해결하고 나니, 프로그램 방법의 데이터베이스 트랜잭션 관리가 불가능해지는 새로운 문제가 등장했다.  
+이 문제에 대해 MyBatis 문서는 Spring 프레임워크의 프로그램적 트랜잭션 관리 방법을 사용할 수 있다고 언급한다.   
+한 가지는 TransactionTemplate을 이용한 프로그램 방법이고 다른 가지는 PlatformTransactionManager를 사용한 프로그램 방법이 있다고 언급한다.  
+프로그램으로 데이터베이스 트랜잭션을 관리하려고 했더니, Spring 프레임워크를 이용하라고 한다.  
+이 부분이 참 의아한 부분이다.   
+이전에 iBatis에서 제공하는 SqlMapClient 객체는 이런 번거로운 작업 없이도 자원 해제와 트랜잭션을 모두 자체적으로 처리를 해 주었는데, 왜 MyBatis에서는 이렇게 바뀌었는지 굳이 Spring 프레임워크에 의존해야 했는지,   
 그런 경우라도 기본 구현을 내부에 포함하면 될 일인데, 굳이 MyBatis를 사용하는 개발자들에게 Spring 프레임워크를 사용하여 직접 구현하게 할 필요가 있었는지. 어쨌든 현실은 적응해야 한다.
 
-필자는 Spring 프레임워크의 데이터베이스 관련 Template 시리즈 클래스 객체들을 아주 싫어한다.<br>
- 그 이유는 콜백처리 때문이다. <br>
- 질의 하나를 호출하려고 해도 콜백 방식을 사용해야 한다. <br>
- (필자가 데이터베이스 처리에 있어서 Spring 프레임워크보다 iBatis 프레임워크를 더 선호했던 이유가 바로 iBatis에서는 일반적인 질의에 콜백을 사용하지 않기 때문이기도 했다.) <br>
- Spring의 TransactionTemplate도 예외는 아니다. <br>
- TransactionTemplate를 사용하려면 반드시 콜백 방식을 사용해야 한다. <br>
- 다음은 TransactionTemplate를 사용하는 Spring 문서의 코드에 TransactionTemplate 객체를 사용하는 코드 부분을 추가한 예이다.<br>
+필자는 Spring 프레임워크의 데이터베이스 관련 Template 시리즈 클래스 객체들을 아주 싫어한다.  
+ 그 이유는 콜백처리 때문이다.   
+ 질의 하나를 호출하려고 해도 콜백 방식을 사용해야 한다.   
+ (필자가 데이터베이스 처리에 있어서 Spring 프레임워크보다 iBatis 프레임워크를 더 선호했던 이유가 바로 iBatis에서는 일반적인 질의에 콜백을 사용하지 않기 때문이기도 했다.)   
+ Spring의 TransactionTemplate도 예외는 아니다.   
+ TransactionTemplate를 사용하려면 반드시 콜백 방식을 사용해야 한다.   
+ 다음은 TransactionTemplate를 사용하는 Spring 문서의 코드에 TransactionTemplate 객체를 사용하는 코드 부분을 추가한 예이다.  
 
  ~~~ java
 public class SimpleService implements Service {
@@ -176,9 +176,9 @@ public class SimpleService implements Service {
     }
 }
 ~~~
-프로그램적으로 데이터베이스 트랜잭션을 처리하기 위해 이렇게 복잡하게 일을 해야 하다니, MyBatis 프레임워크는 프로그램 방법의 데이터베이스 트랜잭션을 Spring에 떠 넘기고 Spring 프레임워크는 여전히 자신들의 콜백 방식을 고집한다.<br><br>
-콜백이 없는 두 번째 방법으로 PlatformTransactionManager를 사용하는 방법이 있다. <br>
-다음은 PlatformTransactionManager를 사용하는 Spring 문서의 코드 예이다.<br>
+프로그램적으로 데이터베이스 트랜잭션을 처리하기 위해 이렇게 복잡하게 일을 해야 하다니, MyBatis 프레임워크는 프로그램 방법의 데이터베이스 트랜잭션을 Spring에 떠 넘기고 Spring 프레임워크는 여전히 자신들의 콜백 방식을 고집한다.    
+콜백이 없는 두 번째 방법으로 PlatformTransactionManager를 사용하는 방법이 있다.   
+다음은 PlatformTransactionManager를 사용하는 Spring 문서의 코드 예이다.  
 
  ~~~ java
 DefaultTransactionDefinition def = new DefaultTransactionDefinition();
@@ -196,22 +196,22 @@ catch (MyException ex) {
 }
 txManager.commit(status);
 ~~~
-위 코드도 여전히 복잡하다.<br>
-iBatis에서는 프로그램에서 데이터베이스 트랜잭션을 사용할 때 startTransaction(), commitTransaction(), rollbackTransaction(), endTransaction() 메소드들만 호출하면 됐었는데.<br>
+위 코드도 여전히 복잡하다.  
+iBatis에서는 프로그램에서 데이터베이스 트랜잭션을 사용할 때 startTransaction(), commitTransaction(), rollbackTransaction(), endTransaction() 메소드들만 호출하면 됐었는데.  
 위 코드에서 보다시피 데이터베이스 트랜잭션이 필요한 경우 몇 개의 객체들을 추가로 생성하고 관련 메소드들을 호출해야 한다.
 
 ## 5.문제 해결 
 
-어떻게 하면 MyBatis도 자원 해제에 대해 자유로워 지고, 편리하게 프로그램으로 데이터 트랜잭션을 관리할 수 있을까? <br>
-구글링을 해보고 관련 문서들을 다 찾아 보았지만 원론적인 설명 밖에는 찾을 수 없었다. 그래서 직접 이 문제를 해결하기로 했다.<br>
+어떻게 하면 MyBatis도 자원 해제에 대해 자유로워 지고, 편리하게 프로그램으로 데이터 트랜잭션을 관리할 수 있을까?   
+구글링을 해보고 관련 문서들을 다 찾아 보았지만 원론적인 설명 밖에는 찾을 수 없었다. 그래서 직접 이 문제를 해결하기로 했다.  
 
- 필자도 MyBatis 프레임워크와 Spring 프레임워크를 결합하여 사용하는 것을 권장한다. <br>
- 이 경우 일차적으로 자원 해제 문제가 해결된다. <br>
- 남은 문제는 프로그램으로 관리할 수 있는 편리한 데이터베이스 트랜잭션 방법을 찾아 내는 것이다. <br>
- 필자는 소스 코드의 흐름의 방해하는 콜백 방식을 사용하지 않는 PlatformTransactionManager을 사용하여 이 문제를 해결했다.<br>
+ 필자도 MyBatis 프레임워크와 Spring 프레임워크를 결합하여 사용하는 것을 권장한다.   
+ 이 경우 일차적으로 자원 해제 문제가 해결된다.   
+ 남은 문제는 프로그램으로 관리할 수 있는 편리한 데이터베이스 트랜잭션 방법을 찾아 내는 것이다.   
+ 필자는 소스 코드의 흐름의 방해하는 콜백 방식을 사용하지 않는 PlatformTransactionManager을 사용하여 이 문제를 해결했다.  
 
- 문제 해결 전략은 DefaultTransactionDefinition, PlatformTransactionManager, TransactionStatus 클래스를 묶어 내부적으로 처리하는 새로운 클래스를 정의하고, iBatis의 SqlMapClient 클래스 객체에서 호출하는 트랜잭션 절차 메소드들을 이 새로운 클래스에서 노출시키고, 이 과정에서 Spring 프레임워크의 빈 자동 주입, 프로토타입 빈 등을 사용하고, 위임(delegation)과 상속(inheritance)를 적절히 이용하여 추가되는 코드 량을 최소화 하는 것이었다. <br>
- 이런 전략을 바탕으로 MyBatisTransactionManager 클래스와 지원 클래스인 MyBatisSupport 클래스를 다음과 개발했다.<br>
+ 문제 해결 전략은 DefaultTransactionDefinition, PlatformTransactionManager, TransactionStatus 클래스를 묶어 내부적으로 처리하는 새로운 클래스를 정의하고, iBatis의 SqlMapClient 클래스 객체에서 호출하는 트랜잭션 절차 메소드들을 이 새로운 클래스에서 노출시키고, 이 과정에서 Spring 프레임워크의 빈 자동 주입, 프로토타입 빈 등을 사용하고, 위임(delegation)과 상속(inheritance)를 적절히 이용하여 추가되는 코드 량을 최소화 하는 것이었다.   
+ 이런 전략을 바탕으로 MyBatisTransactionManager 클래스와 지원 클래스인 MyBatisSupport 클래스를 다음과 개발했다.  
 
 ### MyBatisTransactionManager.java 
 ~~~ java
@@ -256,7 +256,7 @@ public class MyBatisTransactionManager extends DefaultTransactionDefinition {
   rollback();
  }
 }
-위 코드에서 MyBatisTransactionManager 클래스는 DefaultTransactionDefinition를 상속하여 DefaultTransactionDefinition를 위임할 경우 발생하는 수많은 위임 메소드들을 정의하지 않게 했고, <br>
+위 코드에서 MyBatisTransactionManager 클래스는 DefaultTransactionDefinition를 상속하여 DefaultTransactionDefinition를 위임할 경우 발생하는 수많은 위임 메소드들을 정의하지 않게 했고,   
 MyBatisTransactionManager가 프로토타입 빈으로 정의되는 것을 감안하여 자유롭게 멤버 변수를 선언했고, transactionManager 멤버 변수는 Spring의 어노테이션 주입 기능을 이용하여 불필요한 설정자(setter) 메소드를 정의하지 않았다.
 
 MyBatisSupport.java 
@@ -284,10 +284,10 @@ public class MyBatisSupport {
  }
 }
 ~~~
- MyBatisSupport 클래스는 간단하지만 MyBatis를 이용하려는 애플리케이션 클래스들이 간단한 상속이나 주입만으로 언제든지 데이터베이스를 연동할 수 있는 SqlSessionTemplate 객체와 데이터베이스 트랜잭션을 프로그램적으로 지원하는 MyBatisTransactionManager 객체를 이용할 수 있게 해준다. 단 MyBatisSupport 클래스가 Spring 프레임워크의 어노테이션과 컨텍스트를 사용함으로 MyBatisSupport를 상속하는 애플리케이션 클래스들도 Spring 프레임워크 내에서 동작하게 해야 한다. <br>애플리케이션 클래스들을 Spring 프레임워크 내에서 동작하게 하는 방법은 Spring 프레임워크의 문서를 참조하기 바란다.<br>
-  필자는 프로그램적 데이터베이스 트랜잭션을 데트스하는 JUnit MybatisSupportTest 클래스에 Spring-Test의 @RunWith와 @ContextConfiguration 어노테이션을 사용하여 Spring 프레임워크가 MybatisSupportTest 클래스의 Spring 어노테이션들을 자동으로 조사하여 객체를 주입하게 했다. <br>
-<br>
- 다음은 MyBatisTransactionManager를 테스트하는 MybatisSupportTest 클래스 소스이다. MybatisSupportTest 클래스는 MyBatisSupport 클래스를 상속한다.<br>
+ MyBatisSupport 클래스는 간단하지만 MyBatis를 이용하려는 애플리케이션 클래스들이 간단한 상속이나 주입만으로 언제든지 데이터베이스를 연동할 수 있는 SqlSessionTemplate 객체와 데이터베이스 트랜잭션을 프로그램적으로 지원하는 MyBatisTransactionManager 객체를 이용할 수 있게 해준다. 단 MyBatisSupport 클래스가 Spring 프레임워크의 어노테이션과 컨텍스트를 사용함으로 MyBatisSupport를 상속하는 애플리케이션 클래스들도 Spring 프레임워크 내에서 동작하게 해야 한다.   애플리케이션 클래스들을 Spring 프레임워크 내에서 동작하게 하는 방법은 Spring 프레임워크의 문서를 참조하기 바란다.  
+  필자는 프로그램적 데이터베이스 트랜잭션을 데트스하는 JUnit MybatisSupportTest 클래스에 Spring-Test의 @RunWith와 @ContextConfiguration 어노테이션을 사용하여 Spring 프레임워크가 MybatisSupportTest 클래스의 Spring 어노테이션들을 자동으로 조사하여 객체를 주입하게 했다.   
+  
+ 다음은 MyBatisTransactionManager를 테스트하는 MybatisSupportTest 클래스 소스이다. MybatisSupportTest 클래스는 MyBatisSupport 클래스를 상속한다.  
 
 ### MybatisSupportTest.java 
 
@@ -329,17 +329,17 @@ public class MybatisSupportTest extends MyBatisSupport {
  }
 }
 ~~~
- 위 코드를 보면 SqlSessionTemplate 객체를 주입하는 부분도, 자원 해제를 위한 close() 메소드의 호출도 없다. <br>
- 스레드에 안전한 SqlSessionTemplate 객체는 MyBatisSupport 지원 클래스에서 자동으로 주입되고, 자원 해제는 MyBatis-Spring 내부에서 인터셉터를 통해 자동으로 처리된다. <br>
+ 위 코드를 보면 SqlSessionTemplate 객체를 주입하는 부분도, 자원 해제를 위한 close() 메소드의 호출도 없다.   
+ 스레드에 안전한 SqlSessionTemplate 객체는 MyBatisSupport 지원 클래스에서 자동으로 주입되고, 자원 해제는 MyBatis-Spring 내부에서 인터셉터를 통해 자동으로 처리된다.   
  트랜잭션 매니저 객체인 MyBatisTransactionManager 객체는 MyBatisSupport 클래스의 getTransactionManager() 메소드 호출을 통해 Spring 프레임워크의 애플리케이션 컨테이너로부터 반환 받는다. 
- <br>
- MyBatisTransactionManager 객체는 iBatis SqlMapClient 객체의 데이터베이스 트랜잭션 처리 메소드들과 거의 유사한 메소드들을 애플리케이션에게 노출한다.<br>
+   
+ MyBatisTransactionManager 객체는 iBatis SqlMapClient 객체의 데이터베이스 트랜잭션 처리 메소드들과 거의 유사한 메소드들을 애플리케이션에게 노출한다.  
   차이점은 iBatis SqlMapClient 객체는 내부적으로 트랜잭션 관련 인스턴스들을 생성하고 관리하는 반면 MyBatisTransactionManager 객체는 getTransactionManager() 메소드를 통해 획득된다는 점이다.
-<br>
- 다음은 MyBatis 프레임워크를 Spring 프레임워크와 함께 사용하기 위한 Spring 프레임워크의 빈 정의 XML인 mybatis.xml이다. <br>
- 이곳에 MyBatisTransactionManager 클래스가 빈으로 등록된다. <br>
- (어노테이션 스캔을 활용하는 경우, 이런 정의조차 없앨 수 있다.) <br>
- 나머지 부분은 데이터 소스와 트랜잭션 관리자 SqlSessionTemplate과 관련된 빈들의 등록이다.<br>
+  
+ 다음은 MyBatis 프레임워크를 Spring 프레임워크와 함께 사용하기 위한 Spring 프레임워크의 빈 정의 XML인 mybatis.xml이다.   
+ 이곳에 MyBatisTransactionManager 클래스가 빈으로 등록된다.   
+ (어노테이션 스캔을 활용하는 경우, 이런 정의조차 없앨 수 있다.)   
+ 나머지 부분은 데이터 소스와 트랜잭션 관리자 SqlSessionTemplate과 관련된 빈들의 등록이다.  
 
 ### mybatis.xml 
 ~~~ xml
@@ -388,9 +388,9 @@ public class MybatisSupportTest extends MyBatisSupport {
 </beans>
 
 ~~~
- 위 XML에서 MyBatisTransactionManager 빈은 스코프가 prototype이다. 그러므로 애플리케이션이 데이터베이스의 트랜잭션을 위해 MyBatisSupport 클래스의 getTransactionManager 메소드를 호출하면 Spring 프레임워크는 새로운 MyBatisTransactionManager 객체를 생성하여 반환한다.<br>
+ 위 XML에서 MyBatisTransactionManager 빈은 스코프가 prototype이다. 그러므로 애플리케이션이 데이터베이스의 트랜잭션을 위해 MyBatisSupport 클래스의 getTransactionManager 메소드를 호출하면 Spring 프레임워크는 새로운 MyBatisTransactionManager 객체를 생성하여 반환한다.  
 
- mybatis.xml에서 참조하는 설정 속성 파일인 app.properties는 다음과 같다. 테스트 데이터베이스는 오라클 데이터베이스를 사용했다.<br><br>
+ mybatis.xml에서 참조하는 설정 속성 파일인 app.properties는 다음과 같다. 테스트 데이터베이스는 오라클 데이터베이스를 사용했다.    
 ~~~
 app.properties 
 datasource.driver = oracle.jdbc.driver.OracleDriver
@@ -399,12 +399,12 @@ datasource.username = ******
 datasource.password = ******
 mybatis.query.locations =  com/brm/**/sql/*.xml
 ~~~
- MyBatis 프레임워크를 사용하여 데이터베이스 연동 로직을 개발 할 때, 위에 설명한 MyBatisTransactionManager 클래스와 MyBatisSupport 클래스를 추가하면, iBatis를 사용할 때와 유사한 방법으로 자원 해제와 데이터베이스 트랜잭션을 처리할 수 있게 된다. <br>
- 또한 위 테스트 코드에서 MyBatisTransactionManager의 데이터베이스 트랜잭션 호출들을 제거하는 경우, MyBatis의 SqlSessionTemplate 객체는 내부에서 인터셉터를 통해 세션을 닫을 때 자동으로 커밋을 호출해 준다. <br>
- 즉 데이터베이스 트랜잭션 처리 로직을 제거하면, SqlSessionTemplate의 메소스 호출 단위로 처리 성공 시 자동 커밋이 진행된다. <br>
- 그러므로 데이터베이스 처리를 트랜잭션으로 묶을 경우 MyBatisTransactionManager 객체를 사용하고, 메소드 단위로 트랜잭션을 사용하는 경우 SqlSessionTemplate의 메소드를 단독으로 호출하면 된다.<br>
+ MyBatis 프레임워크를 사용하여 데이터베이스 연동 로직을 개발 할 때, 위에 설명한 MyBatisTransactionManager 클래스와 MyBatisSupport 클래스를 추가하면, iBatis를 사용할 때와 유사한 방법으로 자원 해제와 데이터베이스 트랜잭션을 처리할 수 있게 된다.   
+ 또한 위 테스트 코드에서 MyBatisTransactionManager의 데이터베이스 트랜잭션 호출들을 제거하는 경우, MyBatis의 SqlSessionTemplate 객체는 내부에서 인터셉터를 통해 세션을 닫을 때 자동으로 커밋을 호출해 준다.   
+ 즉 데이터베이스 트랜잭션 처리 로직을 제거하면, SqlSessionTemplate의 메소스 호출 단위로 처리 성공 시 자동 커밋이 진행된다.   
+ 그러므로 데이터베이스 처리를 트랜잭션으로 묶을 경우 MyBatisTransactionManager 객체를 사용하고, 메소드 단위로 트랜잭션을 사용하는 경우 SqlSessionTemplate의 메소드를 단독으로 호출하면 된다.  
 
- 다음은 MyBatis를 테스트하기 위해 사용한 Maven의 pom.xml 파일이다. 사용된 jar 들을 아래 pom.xml을 통해 다운받을 수 있다.<br>
+ 다음은 MyBatis를 테스트하기 위해 사용한 Maven의 pom.xml 파일이다. 사용된 jar 들을 아래 pom.xml을 통해 다운받을 수 있다.  
 
 ## pom.xml 
 ~~~ xml

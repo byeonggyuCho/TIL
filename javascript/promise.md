@@ -2,11 +2,11 @@
 
 ![](/resource/img/javascript/promise.png)
 
-자바스크립트 비동기(asynchronous code)에 사용되는 객체<br>
+자바스크립트 비동기(asynchronous code)에 사용되는 객체  
 
 
 ## 등장배경
-callback Hell에서 벗어나기 위한 패턴.<br>
+callback Hell에서 벗어나기 위한 패턴.  
 ES6에서 부터 공식 기능으로 적용됨.
 
 
@@ -45,7 +45,7 @@ checkCoffeeAble.then(canHaveCoffee).catch(cannotHaveCoffee);
 
 ## then Method
 Promise has then Method.<br/>
-When Promise is fullfilled or rejected the respective handler function (onFulfilled or onRejected) will be called asynchronously.<br>
+When Promise is fullfilled or rejected the respective handler function (onFulfilled or onRejected) will be called asynchronously.  
 Then Method return new Promise, it has following features.
 
 
@@ -99,8 +99,8 @@ getData().then((resolve)=>{
 - 매개변수가 then메소드 가졌으면 리턴되는 프로미스는 thenable을 따른다.
 - 타입을 프로미스로 캐스팅할 때 사용된다.
 
-***thenalbe object***<br>
-Promise형식의 then 메서드를 가진 객체를 말한다.<br>
+***thenalbe object***  
+Promise형식의 then 메서드를 가진 객체를 말한다.  
 따라서 Promise객체는 thenable object다.
 ``` js
 var thenable = { then: function(resolve) {

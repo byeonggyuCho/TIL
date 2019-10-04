@@ -2,7 +2,7 @@
 
 
 
-**RDBMS(Relational Database Management System)**<br>
+**RDBMS(Relational Database Management System)**  
 - 관계형 데이터 베이스를 생성하고 수정하고 관리할 수 있는 소프트웨어
 - 데이터간의 관련성을 중요시한다.
 - 일련의 정형화된 테이블로 구성된 데이터 항목들의 집합체
@@ -10,7 +10,7 @@
 - 관계형 데이터베이스는 만들거나 이용하기가 비교적 쉽지만, 무엇보다도 확장이 용이하다는 장점을 가지고 있습니다.
 
 
-**OODBMS( Object-Oriented Database Management System)**<br>
+**OODBMS( Object-Oriented Database Management System)**  
 객체 모델링과 데이터 생성을 지원하는 DBMS이다. 
 - 객체지향 모델은 데이터와 관련 코드가 결합한 구조의 객체에 기반하는 것으로서, 객체에 대한 정의는 클래스에 포함되며 각 객체는 해당 클래스의 인스턴스(instance)로 생성된다.
 - 다시 계층들을 하위 계층이 상위 계층으로부터 속성과 방법들을 물려받을 수 있는 계승 가능한 구조로 구성됩니다.
