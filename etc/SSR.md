@@ -104,3 +104,4 @@ SPA는 CRS방식으로 애플리케이션 생명 주기중에서 단 한번만 �
 [서버사이드렌더링](https://asfirstalways.tistory.com/244)
 [리액트와서버사이드랜더링](https://velopert.com/3425)
 [왜서버사이드렌더링인가?](https://subicura.com/2016/06/20/server-side-rendering-with-react.html)
+[SPA에SSR적용하기](https://medium.com/aha-official/%EC%95%84%ED%95%98-%ED%94%84%EB%A1%A0%ED%8A%B8-%EA%B0%9C%EB%B0%9C%EA%B8%B0-1-spa%EC%99%80-ssr%EC%9D%98-%EC%9E%A5%EB%8B%A8%EC%A0%90-%EA%B7%B8%EB%A6%AC%EA%B3%A0-nuxt-js-cafdc3ac2053)
