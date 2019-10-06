@@ -27,7 +27,8 @@ Hook을 적용하여 얻을 수 있는 장점은 아래와같다.
 
 ## Rules of Hooks
 ### 1. Top-level에서만 Hook을 사용하세요
-루프, 조건문, 중첩된 함수에서 훅을 사용하지 마세요. 훅은 리액트 함수의 최상위 레벨에서만 사용해야합니다. 이 규칙을 지킴으로써 훅이 컴포넌트가 렌더링될 때마다 동일한 순서로 호출되는걸 보장할 수 있습니다. 
+루프, 조건문, 중첩된 함수에서 훅을 사용하지 마세요.  
+훅은 리액트 함수의 최상위 레벨에서만 사용해야합니다. 이 규칙을 지킴으로써 훅이 컴포넌트가 렌더링될 때마다 동일한 순서로 호출되는걸 보장할 수 있습니다. 
 
 ### 2. Hook은 리액트 함수에서만 호출해야합니다.
 Hook을 일반 자바스크립트 함수에서 호출하지 마세요.  
@@ -688,3 +689,5 @@ export default RefSample;
 
 ### REF
 - [리액트의 Hooks 완전 정복하기.](https://velog.io/@velopert/react-hooks)
+- [React의 새로운 패러다임 Hooks](https://velog.io/@vies00/React-Hooks)
+- [Hooks](https://ko.reactjs.org/docs/hooks-reference.html)
