@@ -1,4 +1,4 @@
-# REDUX
+# redux
 
 ![](../resource/img/react/redux.png)
 
