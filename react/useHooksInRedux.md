@@ -11,6 +11,10 @@
 ```js
 const result : any = useSelector(selector : Function,  deps : any[])
 ```
+EX)
+```js
+const { a, b } = useSelector(state => ({ a: state.a, state.b }), [])
+```
 여기서 selector는 기존의 connect를 사용 할 때 `mapStateToProps`와 비슷하다고 생각하면 된다. deps배열은 어떤 값이 바뀌었을 때 selector를 재정의 할 지 설정해준다.
 deps 값을 생략하면 매번 렌더링 될 때마다 selector 함수도 새로 정의된다. 기존의 `useCallback`이나 `useMemo`에서의 deps랑 동일하다고 보면 된다.  
 selector함수를 선언하는데 큰 리소스가 들어가지 않기 때무에 기본적으로 deps를 넣지 않아도 큰 문제는 없다. 최적화를 위해서 두번째 파라미터에 `[]`를 넣는 것이 좋다.
@@ -45,7 +49,7 @@ export const CounterComponent = ({ value }) => {
 `useStore`은 컴포넌트 내에서 store을 사용할 수 있게 해준다.
 ```js
 import {useStore} from 'react-redux'
-const store = = useStore();
+const store = useStore();
 ```
 
 ```js
