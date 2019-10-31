@@ -390,16 +390,236 @@ console.log(iterator.next());           // "{ value: undefined, done: true }"
 
 
 
-## Generator 위임
+### Generator 위임
+경우에 따라 두개의 Iterator값을 하나로 결합하는 것이 유용할 수 있습니다. Generator는 별(*)문자로 `yield`라는 특수 형식을 사용하여 다른 Iterator에 위임할 수 있습니다. 
+
+```js
+function *createNumberIterator() {
+    yield 1;
+    yield 2;
+}
+function *createColorIterator() {
+    yield "red";
+    yield "green";
+}
+function *createCombinedIterator() {
+    yield *createNumberIterator();
+    yield *createColorIterator();
+    yield true;
+}
+var iterator = createCombinedIterator();
+console.log(iterator.next());           // "{ value: 1, done: false }"
+console.log(iterator.next());           // "{ value: 2, done: false }"
+console.log(iterator.next());           // "{ value: "red", done: false }"
+console.log(iterator.next());           // "{ value: "green", done: false }"
+console.log(iterator.next());           // "{ value: true, done: false }"
+console.log(iterator.next());           // "{ value: undefined, done: true }"
+```
 
 
+```js
+function *createNumberIterator() {
+    yield 1;
+    yield 2;
+    return 3;
+}
+function *createRepeatingIterator(count) {
+    for (let i=0; i < count; i++) {
+        yield "repeat";
+    }
+}
+function *createCombinedIterator() {
+    let result = yield *createNumberIterator();
+    yield *createRepeatingIterator(result);
+}
+var iterator = createCombinedIterator();
+console.log(iterator.next());           // "{ value: 1, done: false }"
+console.log(iterator.next());           // "{ value: 2, done: false }"
+console.log(iterator.next());           // "{ value: "repeat", done: false }"
+console.log(iterator.next());           // "{ value: "repeat", done: false }"
+console.log(iterator.next());           // "{ value: "repeat", done: false }"
+console.log(iterator.next());           // "{ value: undefined, done: true }"
+
+```
 
 
+```js
+function *createNumberIterator() {
+    yield 1;
+    yield 2;
+    return 3;
+}
+function *createRepeatingIterator(count) {
+    for (let i=0; i < count; i++) {
+        yield "repeat";
+    }
+}
+function *createCombinedIterator() {
+    let result = yield *createNumberIterator();
+    yield result;
+    yield *createRepeatingIterator(result);
+}
+var iterator = createCombinedIterator();
+console.log(iterator.next());           // "{ value: 1, done: false }"
+console.log(iterator.next());           // "{ value: 2, done: false }"
+console.log(iterator.next());           // "{ value: 3, done: false }"
+console.log(iterator.next());           // "{ value: "repeat", done: false }"
+console.log(iterator.next());           // "{ value: "repeat", done: false }"
+console.log(iterator.next());           // "{ value: "repeat", done: false }"
+console.log(iterator.next());           // "{ value: undefined, done: true }"
+```
 
 
+## 비동기작업 실행
+
+### 간단한 작업
+`yield`는 실행을 멈추고 다시 시작하기 전에 `next()`메서드가 호출되기를 기다리기 떄문에 콜백을 관리하지 ㅇ낳고 비동기 호출을 구현할 수 있습니다. 시작하려면 Generator를 호출하고 다음과 같이 Iterator를 시작할 수 있는 함수가 필요합니다.
 
 
+```js
+/**
+ * @param {object} taskDef : generator함수.
+ */
+function run (taskDef){
 
+    //iterator를 만들고 다른곳에서 사용할 수 있게 합니다.
+    let task = taskDef();
+
+    //타스크 시작
+    let result = task.next();
+
+    // next() 호출을 계속하는 재귀함수
+    function step() {
+
+        (!result.done) {
+            result = task.next();
+            step();
+        }
+    }
+    // proces를 시작.
+    step();
+}
+
+```
+`run()`함수는 타스크 정의(Generator함수)를 파라미터로 받아들입니다. 
+
+
+위에 구현한 `run()`을 다음과 같이 여러 `yield`문이 포함된 generator로 실핼할 수 있습니다.
+```js
+run(function*() {
+    console.log(1);
+    yield;
+    console.log(2);
+    yield;
+    console.log(3);
+});
+```
+이 예제는 간단히 `next()`에 대한 모든 호출이 이루어지는 것을 보여줍니다.
+
+
+### 데이터를 가진 타스크 실행하기
+타스크 실행에 데이터를 전달하는 가장 쉬운 방법은 `yield`에 의해 지정된 값을 `next()`메서드에 대한 호출에 전달하는 것입니다. 이렇게 하면 이 코드와 같이 `result.value`만 전달하면 됩니다.
+
+
+```js
+function run(taskDef) {
+    // iterator를 만들고 다른곳에서 사용할 수 있게 합니다.
+    let task = taskDef();
+    // 태스크 시작
+    let result = task.next();
+    // next() 호출을 계속하는 재귀 함수
+    function step() {
+        // 더해야 할 일이 있다면
+        if (!result.done) {
+            result = task.next(result.value);
+            step();
+        }
+    }
+    // process 시작
+    step();
+}
+```
+이제 `result.value`가 파라미터로 `next()`에 전달되었으므로 다음과 같이 `yield`호출간에 데이터를 전달할 수 있습니다.
+
+```js
+run(function*() {
+    let value = yield 1;
+    console.log(value);         // 1
+    value = yield value + 3;
+    console.log(value);         // 4
+});
+```
+이 예제는 콘솔에 두개 의 값을 출력합니다. 값 1은 `yield 1`에서 나오는데, 1은 `value`변수로 바로 전달됩니다. 4는 `value`에 3을 더하고 그 결과를 `value`에 전달함으로써 계산됩니다. 데이터가 `yield`호출 사이에서 흐르고 있으므로 비동기 호출을 허용하려면 작은 변경만 하면 됩니다.
+
+### 비동기 타스크 실행
+앞의 예제는 정적 데이터가 `yield`호출 사이에서 왔다 갔다했지만 비동기 프로세스를 기다르는 것은 약간 다릅니다. 타스크 러너는 콜백 및 그 사용법을 알아야합니다. 
+그리고 `yield`표현식은 값을 태스크 러너로 전달하기 때문에 어떤 함수 호출이라도 호출이 태스크 러너가 기다려야하는 비동기 연ㅇ산임을 나타내는 값을 리턴해야함을 의미합니다.
+
+다음은 값이 비동기 작업임을 알리는 한가지 방법입니다.
+```js
+function fetchData() {
+    return function(callback){
+        callback(null, "")
+    }
+}
+```
+이 예제의 목적을 위해, 태스크 러너에 의해 호출되는 모든 함수는 callback을 실행하는 함수를 리턴합니다. `fetchData()`함수는 콜백함수를 파라미터로 받아들이는 함수를 리턴합니다. 반화니된 함수가 호출되면, 단일데이터로 콜백함수를 실행합니다. `callback`파라미터는 콜백을 실행하는 것이 기본 iterator와 정확하게 상호작용 하는지를 확인하기 위해 타스크러너로부터 올 필요가 있습니다. `featch Data()`함수는 동기식이지만, 다음과 같이 약간의 지연만으로 콜백을 호출하여 쉽게 비동기식으로 확장할 수 있습니다.
+
+```js
+function fetchData(){
+    return function(callback){
+        setTimeout(function(){
+            callback(null,"hi");
+        },50)
+    }
+}
+```
+이 버전의 `fetchData()`는 콜백을 호출하기 전에 50ms의 지연을 가져와 이 패턴이 동기 및 비동기 코드에서 똑같이 잘 동작함을 보여줍니다. `yield`를 사용하여 호출하려는 각 함수가 동일한 패턴을 따르는지 확인해야합니다.
+
+
+함수가 비동기 프로세스라는 신호를 보내는 방법을 잘 이해하려면 타스크 러너를 수장하여 해당 사실을 고려할 수 있습니다. `result.value`가 함수 일때 마다, 태스크 러너는 그 값을 `next()`메서드로 전달하는 대신에 실행할 것입니다.
+
+```js
+function run(taskDef) {
+    // iterator를 만들고 다른곳에서 사용할 수 있게 합니다.
+    let task = taskDef();
+    // 태스크 시작
+    let result = task.next();
+    // next() 호출을 계속하는 재귀 함수
+    function step() {
+        // 더해야 할 일이 있다면
+        if (!result.done) {
+            if (typeof result.value === "function") {
+                result.value(function(err, data) {
+                    if (err) {
+                        result = task.throw(err);
+                        return;
+                    }
+                    result = task.next(data);
+                    step();
+                });
+            } else {
+                result = task.next(result.value);
+                step();
+            }
+        }
+    }
+    // 프로세스 시작
+    step();
+}
+```
+`result.value`가 함수이면 콜백함수가 호출됩니다. 이 콜백함수는 가능한 오류를 첫번째 인수로 전달하고 결과를 두번째 인수로 전달하는 node.js의 규칙을 따릅니다. `err`가 있어 오류가 발생하면 `task.throw()`가 `task.next()`대신에 오류 객체와 함께 호출되므로 ㅈ더오학한 위치에 오류가 발생합니다. 오류가 없으면 `data`가 `task.next()`에 전달되고 그 결과가 저장됩니다. 그런다음 `step()`이 호출되어 프로세스가 계속 진행됩니다. `result.value`가 함수가 아니라면 `next()`메소드에 직접 전달됩니다.
+
+이 새로운 버전의 태스크 러너는 모든 ㅣㅂ동기 태스크에 대한 준비가 되어있습니다. node.js에서 파일로부터 데이터를 읽으려면 이 섹션의 시작 부분에 `fetchData()` 함수와 유사한ㄴ 함수를 반환하는 `fs.readFeile()`을 감싸는 레퍼를 생성해야합니다.
+
+```js
+let fs = require("fs");
+function readFile(filename) {
+    return function(callback) {
+        fs.readFile(filename, callback);
+    };
+}
+```
 
 
 ### ref
@@ -416,3 +636,4 @@ console.log(iterator.next());           // "{ value: undefined, done: true }"
 - [https://medium.com/@jooyunghan/js-async-generator-코루틴-cabb4f5ffaff](https://medium.com/@jooyunghan/js-async-generator-%EC%BD%94%EB%A3%A8%ED%8B%B4-cabb4f5ffaff)
 - [https://jlongster.com/A-Study-on-Solving-Callbacks-with-JavaScript-Generators](https://jlongster.com/A-Study-on-Solving-Callbacks-with-JavaScript-Generators)
 - [https://medium.com/@jooyunghan/자바스크립트-제너레이터의-재미-246553cadfbd](https://medium.com/@jooyunghan/%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8-%EC%A0%9C%EB%84%88%EB%A0%88%EC%9D%B4%ED%84%B0%EC%9D%98-%EC%9E%AC%EB%AF%B8-246553cadfbd)
+- https://leanpub.com/understandinges6/read#leanpub-auto-promises-and-asynchronous-programming
