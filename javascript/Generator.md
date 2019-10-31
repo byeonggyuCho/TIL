@@ -128,7 +128,7 @@ isIterable()함수는 객체에 Default Iterator가 존재하는지를 확인하
 ### Iterable만들기
 
 개발자가 정의한 객체는 기본적으로 반복 가능하지 않지만 Generator가 포함된 Symbol.iterator 프로퍼티를 만들어 반복 가능하게 만들수 있습니다.
-
+```js
     let collection = {
         items: [],
         *[Symbol.iterator]() {
@@ -143,10 +143,264 @@ isIterable()함수는 객체에 Default Iterator가 존재하는지를 확인하
     for (let x of collection) {
         console.log(x);
     }
-
+```
 collection이라는 객체를 Default Iterator로 정의합니다. Default Iterator는 Generator인  Symbol.iterator 메서드에 의해 생성됩니다. Generator는 for-of 루프를 사용하여 this.items의 값을 반복하고 yield를 사용하여 각각을 리턴합니다. collection 객체는 수동으로 반복하여 collenction의 Default Iterator에 대한 값을 정의하는 대신, this.items의 Default Iterator를 사용하여 작업을 수행합니다.
 
-## 
+
+
+
+### 내장 Iterator
+
+대부분의 빌트인 타입에 대해서는 언어 레벨에서 기본적으로 Iterator를 포함하고 있습니다. 따라서 기본 제공되는 Iterator가 목적에 부합하지 않을 때만 Iterator를 만들어야하며, 이는 자신만의 객체나 클래스를 정의할 때 발생합니다. 가장 일반적인 Iterator는 컬렉션에서 작동하는 Iterator이다.
+
+## 컬렉션 Iteraotr
+ES6에서는 Array, Map, Set 세가지 타입의 컬렉션 객체가 있습니다. 세가지 모두 내용을 탐색하는데 도움이 되는 기본 Iterator를 제공합니다.
+- entries() : 값이 키-값 쌍인 Iterator를 반환합니다.
+- values(): 값이 컬렉션의 value인 Iterator를 반환합니다.
+- key() : 값이 컬렉션에 포함된 key인 Iteraotr를 반환합니다.
+
+### entries() Iterator
+`entries()` Iterator는 `next()`가 호출될 떄마다 두개의 아이템 Array를 반환합니다. 두개의 아이템 Array는 컬렉션의 각 항목에 대한 키와 값을 나타냅니다. Array의 경우 첫 번째 항목은 숫자 인덱스입니다. Set의 경우 첫 번째 항목은 값이기도 합니다. Map의 경우 첫 번째 항목은 키입니다.
+
+```js
+let colors = [ "red", "green", "blue" ];
+let tracking = new Set([1234, 5678, 9012]);
+let data = new Map();
+data.set("title", "Understanding ECMAScript 6");
+data.set("format", "ebook");
+
+for (let entry of colors.entries()) {
+    console.log(entry);
+}
+
+for (let entry of tracking.entries()) {
+    console.log(entry);
+}
+
+for (let entry of data.entries()) {
+    console.log(entry);
+}
+```
+위 예제는 각 컬렉션 타입에 대해 `entries()` 메소드를 사용하여 Iterator를 검색하고 `for-of`루프를 사용하여 반복합니다. console출력은 각 객체에 대해 어떻게 키와 값이 쌍으로 리턴되는지 보여줍니다.
+
+
+### values() Iterator
+`values()` Iterator는 컬렉션에 지정된 값을 반환합니다.
+```js
+let colors = [ "red", "green", "blue" ];
+let tracking = new Set([1234, 5678, 9012]);
+let data = new Map();
+data.set("title", "Understanding ECMAScript 6");
+data.set("format", "ebook");
+for (let value of colors.values()) {
+    console.log(value);
+}
+for (let value of tracking.values()) {
+    console.log(value);
+}
+for (let value of data.values()) {
+    console.log(value);
+}
+```
+위 예제에서 처럼 `values()`Iterator를 호출하면 컬렉션의 해당 데이터 위치에 대한 정보없이 각 컬렉션에 포함된 정확한 데이터가 반환됩니다.
+
+
+### key() Iterator
+
+`keys()`Iterator는 컬렉션에 있는 각 키를 반환합니다. Array의 경우 숫자 키만 반환하며 Array의 다른 프로퍼티는 반환하지 않습니다.  
+Set의 경우 키는 값과 동일함으로 `keys()` 및 `values()`는 동일한 Iterator를 반환합니다. Map의 경우, `keys()` Iterator는 각 고유 키를 리컨합니다. 다음은 이 세가지를 모두 보여주는 예입니다.
+
+```js
+let colors = [ "red", "green", "blue" ];
+let tracking = new Set([1234, 5678, 9012]);
+let data = new Map();
+data.set("title", "Understanding ECMAScript 6");
+data.set("format", "ebook");
+for (let key of colors.keys()) {
+    console.log(key);
+}
+for (let key of tracking.keys()) {
+    console.log(key);
+}
+for (let key of data.keys()) {
+    console.log(key);
+}
+```
+`keys()` Iterator는 `color`, `tracking` 및 `data`에서 각 키를 가져오며, 이 키들은 세개의 `for-of` 루프 내부에서 출력됩니다. Array의 경우 숫자색인만 출력되며 Array에 명명된 (name)프로퍼티를 추가한 경우에도 숫자 색인만 출력합니다. 이것은 `for-in`루프는 수자 인덱스가 아닌 프로퍼티를 반복하기 떄문에 `for-in`에서 Array를 사용하는 방식과 다릅니다.
+
+
+<br><br>
+
+
+## 컬렉션 타입에 대한 Default Iterator
+
+각 컬렉션 타입에는 Iterator가 명시적으로 지정되지 않은 경우 `for-of`에 의해 사용되는 Default Iterator가 있습니다. `values()`메서드는 Array와 
+Default Iterator이며, `entries()`메서드는 Map의 Default Iterator입니다. 이러한 기본값은 `for-of` 루프에서 컬렉션객체를 사용하는 것을 좀더 쉽게 만듭니다.
+
+```js
+let colors = [ "red", "green", "blue" ];
+let tracking = new Set([1234, 5678, 9012]);
+let data = new Map();
+data.set("title", "Understanding ECMAScript 6");
+data.set("format", "print");
+// colors.values()를 사용하는 것과 같습니다.
+for (let value of colors) {
+    console.log(value);
+}
+// tracking.values()를 사용하는 것과 같습니다.
+for (let num of tracking) {
+    console.log(num);
+}
+// data.entries()를 사용하는 것과 같습니다.
+for (let entry of data) {
+    console.log(entry);
+}
+
+```
+Iterator가 지정되지 않았기 때문에 Default Iterator가 사용됩니다. Array, Set 및 Map의 Default Iterator는 이러한 객체 초기화되는 방식을 반영하도록 설계되었음으로 아래 처럼 출력된다.
+
+```js
+"red"
+"green"
+"blue"
+1234
+5678
+9012
+["title", "Understanding ECMAScript 6"]
+["format", "print"]
+```
+Array와 Set은 기본적으로 값을 반환하고, Map은 `map`생성장네 전달할 수 있는 것과 동일한 Array형태를 반환합니다. 반대로 Week Set과 Week Map에는 Built-in Iterator가 없습니다. 약한 참조를 관리한다는 것은 이러한 컬렉션에 정확히 얼마나 많은 값이 있는지 알 수있는 방법이 없다는 것을 의미합니다. 또한 이들을 반복할 방법이 없다는 것을 의미합니다.
+
+
+## Destructing과 for-of루프
+Map에 대한 Default Iterator의 동작은 다음 예와 같이 Destructoring이 있는 `for-of`루프에 사용될 떄도 유용합니다.
+
+```js
+let data = new Map();
+data.set("title", "Understanding ECMAScript 6");
+data.set("format", "ebook");
+// data.entries()을 사용하는 것과 같습니다.
+for (let [key, value] of data) {
+    console.log(key + "=" + value);
+}
+
+```
+이 코드의 `for-of`fnvmsms Destructured Array를 사용하여 Map의 각 항목에 대해 `key`와 `value`를 지정합니다. 이 방법으로 두 항목 Array에 접근하거나 Map에서 키 또는 값을 가져오지 않고도 키와 값을 사용하여 쉽게 작업할 수 있습니다. Map에 대해 Destructured Array를 사용하여 `for-of`루프가 Set과 Array의 경우와 마찬가지로 Map에 똑같이 유용할 수 있습니다.
+
+
+
+## NodoList Iterator
+
+Dom에는 문서의 요소 컬렉션을 나타내는 `NodeList`타입이 있습니다.JavaScript를 웹 브라우저에서 실행하는 사람들에게는 `NodeList`객체와 Array의 차이점을 이해하는 것이 어려웠습니다. `NodeList` 객체와 Array는 항목의 수를 나타내기 위해 length프로퍼티를 사용하며, 둘다 괄표 표기법을 사용하여 개별 항목에 접근합니다. 그러나 내부적으로 `NodeList`와 Array는 완전히 다르게 작동하므로 많은 혼란을 겪습니다.
+
+ECMAScript6에 Default Iterator가 추가된 `NodeList`의 DOM정의에는 Array Default Iterator와 같은 방식으로 작동하는 Default Iterator가 포함되어 있습니다. 즉 `for-of`루프 또는 객체의 Default Iterator를 사용하는 다른 부분에서 아래오 같이 `NodeLIst`를 사용할 수 있습니다.
+
+```js
+var divs = document.getElementsByTagName("div");
+for (let div of divs) {
+    console.log(div.id);
+}
+```
+이 코드는 `getElementszbyTagName()`을 호출하여 `document`객체의 모든 `<div>`요소를 나타내는 `NodeList`를 검색합니다. `for-of`루프는 각 요소를 반복하고 엘리먼트 ID를 출력하므로 표준 Array의 코드와 동일합니다.
+
+
+## Spread 연산자와 None-Array Iterables
+
+다음처럼 Spread연산자(...)를 사용하여 Set을 Array로 변환할 수 있습니다.
+```js
+let set = new Set([1,2,3,4,5,6,7]),
+    array = [...set];
+
+    console.log(array)
+```
+이 코드는 Array 리터럴의 Spead연산자를 사용하여 해당 Array을 set의 값으로 채웁니다. Spread연산자는 모든 Iterable에서 작동하고 default Iterator를 사용하여 포함할 값을 결정합니다. 모든 값은 Iterator에서 읽혀지고 Iteraotr에서 값이 리턴된 순서대로 Array에 삽입됩니다. 이 예제는 Set이 Iterable이기 떄문에 작동했습니다. 그리고 모든 Iterable에서 똑같이 작동합니다. 다른 예를 살펴보겠습니다.
+```js
+let map = new Map([ ["name", "Nicholas"], ["age", 25]]),
+    array = [...map];
+console.log(array);         // [ ["name", "Nicholas"], ["age", 25]]
+```
+여기에서 Spread연산자는 `map`을 Array의 Array로 변환합니다. Map에 대한 Default Iterator는 키-값 쌍으로 반환하기 때문에 Array는 `new Map()` 호출중에 전달된 Array처럼 보입니다.  
+Array 리터럴에서 원하는 만큼 여러번 Spread연산자를 사용할 수 있으며 Iterable에서 여러 항목을 삽입하는 곳이면 어디에서나 사용할 수 있습니다. 이러한 항목은 Spread연산자의 위치에 있는 새로운 Array에 순서대로 나타납니다.
+
+```js
+let smallNumbers = [1, 2, 3],
+    bigNumbers = [100, 101, 102],
+    allNumbers = [0, ...smallNumbers, ...bigNumbers];
+console.log(allNumbers.length);     // 7
+console.log(allNumbers);    // [0, 1, 2, 3, 100, 101, 102]
+```
+Spread연산자는 어떤 Iteralbe에서도 사용할 수 있기 떄문에 Iteralbe을 Array로 변환하는 가장 쉬운 방법입니다. 문자열을 문자 Array 및 브라우저의`NodeList`객체를 Node Array로 변환할 수 있습니다.  
+
+`for-of`연산자와 Spread 연산자를 포함하여 Iterator가 작동하는 기본 사항을 이해 했으므로 이제는 Iterator를 좀 더 복작하게 살펴볼 차례입니다.
+
+
+
+
+## Iterator의 고급 기능
+Iterator는 Generator를 이용하여 쉽게 만들고 기본 기능을 이용하여 Iterator를 쉽게 사용할 수 있습니다 그러나 Iterator는 단순히 값의 모음을 반복하는것 이외의 작업에 사용될 때 훨씬 강력합니다. 
+
+
+
+
+### Iterator에 파라미터 넘기기.
+Iterator의 `next()`메소드를 통해 값을 전달받거나 Generator의 `yield`를 사용하는 모습을 보여줬습니다. 그러나 `next()`메서드를 통해 Iterator에 파라미터를 전달할 수도 있ㅅ그빈다. 파라미터가 `next()`메서드에 전달되면, 그 파라미터는 Genrator내부의 `yield`문의 값이 됩니다. 이 기능은 비동기 프로그래과 같은 고급 기능에 중요합니다.
+
+```js
+function *createIterator() {
+    let first = yield 1;
+    let second = yield first + 2;       // 4 + 2
+    yield second + 3;                   // 5 + 3
+}
+let iterator = createIterator();
+console.log(iterator.next());           // "{ value: 1, done: false }"
+console.log(iterator.next(4));          // "{ value: 6, done: false }"
+console.log(iterator.next(5));          // "{ value: 8, done: false }"
+console.log(iterator.next());           // "{ value: undefined, done: true }"
+```
+
+
+### Generator의 Return문
+
+```js
+function *createIterator() {
+    yield 1;
+    return;
+    yield 2;
+    yield 3;
+}
+let iterator = createIterator();
+console.log(iterator.next());           // "{ value: 1, done: false }"
+console.log(iterator.next());           // "{ value: undefined, done: true }"
+```
+Generator에서 `return`을 만나면 아래의 `yield`를 무시하고 리턴값이 `done: true`로 나오는것을 볼 수 있다.
+
+
+```js
+
+function *createIterator() {
+    yield 1;
+    return 42;
+}
+let iterator = createIterator();
+console.log(iterator.next());           // "{ value: 1, done: false }"
+console.log(iterator.next());           // "{ value: 42, done: true }"
+console.log(iterator.next());           // "{ value: undefined, done: true }"
+```
+`return`에 값을 넘길 경우에 `value`프로퍼티로 확인이 가능하다.
+
+
+
+## Generator 위임
+
+
+
+
+
+
+
+
+
+
 
 ### ref
 
