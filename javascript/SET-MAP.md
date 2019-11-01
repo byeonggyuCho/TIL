@@ -42,7 +42,7 @@ console.log(map["5"]);      // "foo"
 
 #### 객체를 key로 사용하는 경우
 ```js
-et map = Object.create(null),
+let map = Object.create(null),
     key1 = {},
     key2 = {};
 map[key1] = "foo";
@@ -69,6 +69,124 @@ if (map.count) {
 Set과 Map의 등장배경에는 ES5의 콜렉션으로 대규모 애플리케이션을 만들때 모호함을 줄여서 유지관리 비용을 줄임에 있습니다.
 
 
+
+## ES6에서 Set
+`Set`을 이용하면 중복되지 않은 목록을 만들 수 있습니다. 불연속값을 추적하기 쉽죠.
+
+
+```js
+let set = new Set();
+set.add(5);
+set.add("5");
+console.log(set.size);    // 2
+```
+이렇게 데이터 타입이 다른 값을 구분할 수 있습니다. 유일한 예외는 -0과 +0을 구분하지 못한다는 겁니다.
+
+
+```js
+let set = new Set(),
+    key1 = {},
+    key2 = {};
+set.add(key1);
+set.add(key2);
+console.log(set.size);    // 2
+```
+서로 다른 객체도 구분하는 걸 볼 수 있습니다. 객체의 참조값을 식별한다는걸 알 수 있죠
+
+
+```js
+let set = new Set([1, 2, 3, 4, 5, 5, 5, 5]);
+console.log(set.size);    // 5
+```
+Array를 이용한 set객체 초기화입니다. 보다싶이 중복값이 걸려졌음을 알 수 있습니다.
+
+    Set constructor는 Iterable Object를 인수로 받습니다. Set 생성자가 Iterator를 이용해 인수에서 값을 추출한다고 보시면 됩니다.
+
+
+```js
+let set = new Set();
+set.add(5);
+set.add("5");
+console.log(set.has(5));    // true
+console.log(set.has(6));    // false
+```
+`has()`메서드를 이용해 값을 체크할 수 있습니다.
+
+
+```js
+let set = new Set();
+set.add(5);
+set.add("5");
+console.log(set.has(5));    // true
+set.delete(5);
+console.log(set.has(5));    // false
+console.log(set.size);      // 1
+set.clear();
+console.log(set.has("5"));  // false
+console.log(set.size);      // 0
+```
+`clear()`와 `delete()`를 이용해 값을 지을 수 있습니다.
+
+
+### forEach
+array의 `forEach`와 차이점이 있습니다 콜백함수의 파라미터에서 첫번째와 두번째 값이 같다는것이죠.  
+`set`에는 key프로퍼티가 없기 때문입니다.
+
+```js
+let set = new Set([1, 2]);
+set.forEach(function(value, key, ownerSet) {
+    console.log(key + " " + value);
+    console.log(ownerSet === set);
+});
+```
+
+```js
+let set = new Set([1, 2]);
+let processor = {
+    output(value) {
+        console.log(value);
+    },
+    process(dataSet) {
+        dataSet.forEach(function(value) {
+            this.output(value);
+        }, this);
+    }
+};
+processor.process(set);
+```
+`forEach`에서 this를 사용하려면 두번째파라미터로 전달하면됩니다. 물론 `Arrow Function`을 이용하면 두번째 파라미터를 생략할 수 있습니다.
+
+```js
+let set = new Set([1, 2]);
+let processor = {
+    output(value) {
+        console.log(value);
+    },
+    process(dataSet) {
+        dataSet.forEach((value) => this.output(value));
+    }
+};
+processor.process(set);
+```
+
+
+#### Set을 Array로 변환하기
+```js
+let set = new Set([1, 2, 3, 3, 3, 4, 5]),
+    array = [...set];
+console.log(array);             // [1,2,3,4,5]
+```
+이 방법을 이용해 배열의 중복값을 제거 할 수 있습니다.
+
+이렇게 말이죠
+```js
+function eliminateDuplicates(items) {
+    return [...new Set(items)];
+}
+let numbers = [1, 2, 3, 3, 3, 4, 5],
+    noDuplicates = eliminateDuplicates(numbers);
+console.log(noDuplicates);      // [1,2,3,4,5]
+```
 
 
 ## REF
