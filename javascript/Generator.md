@@ -4,26 +4,26 @@ Iterator를 반환하는 함수입니다. 함수는  Generator객체를 반환�
 
 Generator문법은 ES5에서 아래처럼 만들던 Iterator를 쉽게 만들 수 있는 도구입니다.
 ```js
-    function createIterator(items) {
-        var i = 0;
-        return {
-            next: function() {
-                var done = (i >= items.length);
-                var value = !done ? items[i++] : undefined;
-                return {
-                    done: done,
-                    value: value
-                };
-            }
-        };
-    }
-    var iterator = createIterator([1, 2, 3]);
-    console.log(iterator.next());         // "{ value: 1, done: false }"
-    console.log(iterator.next());         // "{ value: 2, done: false }"
-    console.log(iterator.next());         // "{ value: 3, done: false }"
-    console.log(iterator.next());         // "{ value: undefined, done: true }"
-    // for all further calls
-    console.log(iterator.next());         // "{ value: undefined, done: true }"
+function createIterator(items) {
+    var i = 0;
+    return {
+        next: function() {
+            var done = (i >= items.length);
+            var value = !done ? items[i++] : undefined;
+            return {
+                done: done,
+                value: value
+            };
+        }
+    };
+}
+var iterator = createIterator([1, 2, 3]);
+console.log(iterator.next());         // "{ value: 1, done: false }"
+console.log(iterator.next());         // "{ value: 2, done: false }"
+console.log(iterator.next());         // "{ value: 3, done: false }"
+console.log(iterator.next());         // "{ value: undefined, done: true }"
+// for all further calls
+console.log(iterator.next());         // "{ value: undefined, done: true }"
 ```
 ## 0. 루프의 문제점
 
@@ -102,12 +102,12 @@ for-of문은  Non-iterable객체, null또는 undefined에서 사용될 때 에�
 
 Symbol.iterator를 사용하여 다음과 같이 객체 Default Iterator를 만들수 있습니다.
 ```js
-    let values = [1, 2, 3];
-    let iterator = values[Symbol.iterator]();
-    console.log(iterator.next());         // "{ value: 1, done: false }"
-    console.log(iterator.next());         // "{ value: 2, done: false }"
-    console.log(iterator.next());         // "{ value: 3, done: false }"
-    console.log(iterator.next());         // "{ value: undefined, done: true }"
+let values = [1, 2, 3];
+let iterator = values[Symbol.iterator]();
+console.log(iterator.next());         // "{ value: 1, done: false }"
+console.log(iterator.next());         // "{ value: 2, done: false }"
+console.log(iterator.next());         // "{ value: 3, done: false }"
+console.log(iterator.next());         // "{ value: undefined, done: true }"
 ```
 이 코드는 values에 대한 Default Iteraotr를 가져오고 이를 사용하여 Array의 각항목을 반복합니다. 이것은 for-of 루프를 사용할 때 배ㅅ후에서 일어나느 것과 같은 방식입니다.
 

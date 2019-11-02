@@ -6,9 +6,8 @@
 
 
 ## 등장배경
-callback Hell에서 벗어나기 위한 패턴.  
-ES6에서 부터 공식 기능으로 적용됨.
-
+단일 스레드의 Event Loop개념을 기반으로 으로 하는 JavaScript엔진에서 작업순서를 제어하기 위해 비동기 프로그래밍을 도입습니다.
+Promise는 비동기 프로그맹을 좀 더 깔끔하게 사용할 수있는 패턴입니다.
 
 ## 상태코드
 ![](/resource/img/javascript/promiseStatus.jpg)
@@ -190,5 +189,10 @@ const forEachPromise = function(items){
 
   },Promise.resolve())
 }
-
 ```
+
+
+
+### REF
+- [infoscis.github.io](https://infoscis.github.io/2018/02/27/ecmascript-6-promises-and-asynchronous-programming/)
+- [Understanding EcmaScript](https://leanpub.com/understandinges6/read#leanpub-auto-promises-and-asynchronous-programming)
