@@ -2,14 +2,13 @@
 
 
 
-## 1. Accessor
-
 ## 1. Object.creaate
 
 ```js
 var person = {
  isHuman: false,
- print: function () { console.log(this.name + ", " + this.isHuman);}
+ print: function () { 
+     console.log(this.name + ", " + this.isHuman);}
 };
 var me = Object.create(person);
 me.name = "Matthew";
@@ -27,14 +26,14 @@ console.log(JSON.stringify(person));//{"isHuman":false}
 var object1 = {};
 Object.defineProperty(object1, 'property1', {
  value: 42,
- writable: false
+ writable: false        //수정가능한지?
 });
 object1.property1 = 77;
 // throws an error in strict mode
 console.log(object1.property1); // 42
 ```
 
-### Object.defineProperties
+## 3. Object.defineProperties
 ``` js
 var o1 = {};
 Object.defineProperties(o1, {
@@ -45,7 +44,7 @@ console.log(o1.prop1); // 42
 ```
 
 
-### Object.getPrototypeOf
+## 4.Object.getPrototypeOf
 ```js
 var prototype1 = {};
 var object1 = Object.create(prototype1);
@@ -55,7 +54,7 @@ console.log(object2 === object1.__proto__); //true
 ```
 
 
-### Object.keys
+## 5.Object.keys
 
 ```js
 var arr = ['a', 'b', 'c']; // simple array
@@ -65,12 +64,11 @@ console.log(Object.keys(obj)); // ['0', '1' ]
 // array like object with random key ordering
 var anObj = { 100: 'a', 2: 'b', 7: 'c' };
 console.log(Object.keys(anObj)); // ['2', '7', '100']
-
 ```
 
 
 
-### Object.seal
+## 6.Object.seal
 
 ```js
 var o1 = { prop1: 42 };
@@ -84,7 +82,7 @@ console.log(o1.prop1 + " " + o2.prop1); // 33 33
 ```
 
 
-### Object.freeze
+## 7. Object.freeze
 
 ```js
 var o1 = { prop1: 42 };
@@ -97,11 +95,12 @@ delete o1.prop1; // cannot delete
 console.log(o1.prop1 + " " + o2.prop1); // 42 42
 ```
 
-### Object.preventExtensions
+## 8.Object.preventExtensions
 
 ```js
 var o1 = {};
 Object.preventExtensions(o1);
+
 try {
  Object.defineProperty(o1, 'prop1', {value: 42});
 } catch (e) {
@@ -111,7 +110,7 @@ try {
 }
 ```
 
-### Object.isSealed
+## 9.Object.isSealed
 
 ```js
 var o1 = { prop1: 42 }
@@ -121,7 +120,7 @@ console.log(Object.isSealed(o1)); // true
 ```
 
 
-### Object.isFrozen
+## 10.Object.isFrozen
 
 ```js
 var o1 = { prop1: 42 }
@@ -131,7 +130,7 @@ console.log(Object.isFrozen(o1)); // true
 ```
 
 
-### Object.isExtensible
+## 11.Object.isExtensible
 
 ```js
 var o1 = { prop1: 42 }
@@ -140,7 +139,7 @@ Object.preventExtensions(o1);
 console.log(Object.isExtensible(o1)); // false
 ```
 
-### Object.getOwnPropertyDescriptor
+## 12.Object.getOwnPropertyDescriptor
 
 ```js
 var obj1 = { prop1: 42 }
@@ -150,14 +149,15 @@ console.log(desc1.value); // 42
 ```
 
 
-### Object.getOwnPropertyNames
+## 13. Object.getOwnPropertyNames
 
 ```js
 var o1 = { a: 1, b: 2, c: 3 };
 console.log(Object.getOwnPropertyNames(o1)); 
 ```
 
-### Object.is()
+
+## 14. Object.is()
 
 ```js
 console.log(+0 === -0); // true
@@ -167,7 +167,7 @@ console.log(Object.is(NaN, NaN)); // true
 ```
 
 
-### Object.assign()
+## 15.Object.assign()
 
 ```js
 function mixin(target, source) {
@@ -178,13 +178,9 @@ function mixin(target, source) {
 }
 var ret = mixin({}, {prop:'a'});
 var ret1 = Object.assign({}, {prop:'a'});
-
 ```
 
 
-### Object.setPrototypeOf()
-변경
-### Object.getPrototypeOf()
-조회
-
-### Object.entries()
+## 16.Object.setPrototypeOf()
+## 17.Object.getPrototypeOf()
+## 18.Object.entries()

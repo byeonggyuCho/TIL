@@ -102,14 +102,14 @@ function orderCoffee(phoneNumber, callback) {
 ### 1. 프로미스 적용
 
 이런 패턴은 프로미스의 적용으로 상당 부분 완화되었다. 
-
-    function orderCoffee(phoneNumber) {
-        return getId(phoneNumber)
-            .then(id => getEmail(id))
-            .then(email => getName(email))
-            .then(name => order(name, 'coffee'));
-    }
-
+```js
+function orderCoffee(phoneNumber) {
+    return getId(phoneNumber)
+        .then(id => getEmail(id))
+        .then(email => getName(email))
+        .then(name => order(name, 'coffee'));
+}
+```
 ### 2. 제너레이터 적용하기
 ```js
 function* orderCoffee(phoneNumber) {
