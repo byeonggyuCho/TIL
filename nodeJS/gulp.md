@@ -212,7 +212,6 @@ function mapshaper(key) {
 
         console.log(stdout);
         console.log(stderr);
-
         console.log('=> convert size')
         console.log('%s : %d bytes', shpPath[key].source,  fs.statSync(shpPath[key].source).size);
         console.log('%s : %d bytes', shpPath[key].convert, fs.statSync(shpPath[key].convert).size);
@@ -237,7 +236,6 @@ function ogr2ogr(key) {
 
         console.log(stdout);
         console.log(stderr);
-
         console.log('=> convert json size')
         console.log('%s : %d bytes', shpPath[key].json, fs.statSync(shpPath[key].json).size);
         console.log('=>')
@@ -327,3 +325,4 @@ function splitGeojson(type) {
 ### REF
 - [프론트엔드를 위한 gulp](https://github.com/FEDevelopers/tech.description/wiki/%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C-%EA%B0%9C%EB%B0%9C%EC%9D%84-%EC%9C%84%ED%95%9C-Gulp)
 - [Gulpjs.com](https://gulpjs.com/)
+- [Gulp for beginners](https://css-tricks.com/gulp-for-beginners/)

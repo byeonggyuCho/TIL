@@ -139,11 +139,11 @@ setTimeout을 통해 실행된다.
 
 
 ## REF
+- [what is good way to extend error](https://stackoverflow.com/questions/1382107/whats-a-good-way-to-extend-error-in-javascript)
+- [Capture and report JavaScript errors](https://blog.sentry.io/2016/01/04/client-javascript-reporting-window-onerror)
 
-[https://blog.sentry.io/2016/01/04/client-javascript-reporting-window-onerror](https://blog.sentry.io/2016/01/04/client-javascript-reporting-window-onerror)
+- [How to catch JavaScript Errors with window.onerror](https://dzone.com/articles/capture-and-report-javascript-errors-with-windowon) 
 
-[https://dzone.com/articles/capture-and-report-javascript-errors-with-windowon](https://dzone.com/articles/capture-and-report-javascript-errors-with-windowon) 
+- [How to catch JavaScript Errors with window.onerror](https://danlimerick.wordpress.com/2014/01/18/how-to-catch-javascript-errors-with-window-onerror-even-on-chrome-and-firefox/)
 
-[https://danlimerick.wordpress.com/2014/01/18/how-to-catch-javascript-errors-with-window-onerror-even-on-chrome-and-firefox/](https://danlimerick.wordpress.com/2014/01/18/how-to-catch-javascript-errors-with-window-onerror-even-on-chrome-and-firefox/)
-
-[https://dev.opera.com/articles/better-error-handling-with-window-onerror/](https://dev.opera.com/articles/better-error-handling-with-window-onerror/)
+- [Better Error Handling With window.onerror](https://dev.opera.com/articles/better-error-handling-with-window-onerror/)

@@ -136,3 +136,11 @@ myObj.func1();
 bind vs apply, call 우선 bind는 함수를 선언할 때, this와 파라미터를 지정해줄 수 있으며, call과 apply는 함수를 호출할 때, this와 파라미터를 지정해준다.
 
 apply vs bind, call apply 메소드에는 첫번째 인자로 this를 넘겨주고 두번째 인자로 넘겨줘야 하는 파라미터를 배열의 형태로 전달한다. bind메소드와 call메소드는 각각의 파라미터를 하나씩 넘겨준다.
+
+
+
+### REF
+
+- [javascript_this](https://github.com/FEDevelopers/tech.description/wiki/%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%EC%97%90%EC%84%9C-%EC%82%AC%EC%9A%A9%EB%90%98%EB%8A%94-this%EC%97%90-%EB%8C%80%ED%95%9C-%EC%84%A4%EB%AA%85-1#31-%EB%A9%94%EC%86%8C%EB%93%9C-%EC%8B%A4%ED%96%89%EC%97%90%EC%84%9C%EC%9D%98-this)
+- [Gentle Explanation of this Keyword in JavaScript](https://dmitripavlutin.com/gentle-explanation-of-this-in-javascript/)
+- [intro](http://bonsaiden.github.io/JavaScript-Garden/ko/#function.constructors)

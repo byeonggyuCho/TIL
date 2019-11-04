@@ -342,5 +342,5 @@ Object.setPrototypeOf(proxy, {});
 
 
 ## REF
-- https://infoscis.github.io/2018/02/27/ecmascript-6-proxies-and-the-reflection-api/
+- [proxyAndReflectionApi](https://infoscis.github.io/2018/02/27/ecmascript-6-proxies-and-the-reflection-api)
 - [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy)

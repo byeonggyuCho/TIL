@@ -18,7 +18,8 @@ HTML document의 동적제어 및 간단한 UI로직처리가 목적.
 - DOM : HTML에서 사용할 수 있도록 확장한 PAI
 - BOM : 브라우저 창에 접근해서 제어 할 수 있는 메서드와 인터페이스 제공
 
-## 참조 
+## REF
+- [JavaScript Garden](http://bonsaiden.github.io/JavaScript-Garden/ko/#intro)
 - https://han41858.tistory.com/2
 - https://ko.wikipedia.org/wiki/%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8
 
