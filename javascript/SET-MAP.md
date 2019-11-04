@@ -170,7 +170,7 @@ processor.process(set);
 ```
 
 
-#### Set을 Array로 변환하기
+### Set을 Array로 변환하기
 ```js
 let set = new Set([1, 2, 3, 3, 3, 4, 5]),
     array = [...set];
@@ -187,6 +187,133 @@ let numbers = [1, 2, 3, 3, 3, 4, 5],
     noDuplicates = eliminateDuplicates(numbers);
 console.log(noDuplicates);      // [1,2,3,4,5]
 ```
+
+
+## MAP
+- has(key) : 지정된 키가 Map에 있는지 확인합니다.
+- delete(key) : Map에서 키와 과련 값을 제거합니다.
+- clear(key) : Map에서 모든 키와 값을 제거합니다.
+
+```js
+let map = new Map();
+map.set("name", "Nicholas");
+map.set("age", 25);
+console.log(map.size);          // 2
+console.log(map.has("name"));   // true
+console.log(map.get("name"));   // "Nicholas"
+console.log(map.has("age"));    // true
+console.log(map.get("age"));    // 25
+map.delete("name");
+console.log(map.has("name"));   // false
+console.log(map.get("name"));   // undefined
+console.log(map.size);          // 1
+map.clear();
+console.log(map.has("name"));   // false
+console.log(map.get("name"));   // undefined
+console.log(map.has("age"));    // false
+console.log(map.get("age"));    // undefined
+console.log(map.size);          // 0
+```
+
+### MAP 초기화
+Map 생성자에 Array를 전달하여 Map을 초기화할 수 있다. Array의 첫번째항목은 key Array의 두번째 항목은 value이다.
+```js
+let map = new Map([["name", "Nicholas"], ["age", 25]]);
+console.log(map.has("name"));   // true
+console.log(map.get("name"));   // "Nicholas"
+console.log(map.has("age"));    // true
+console.log(map.get("age"));    // 25
+console.log(map.size);          // 2
+```
+
+
+### MAP forEach
+map의 forEach에서 콜백함수의 매개변수는 다음을 의미한다.
+1. Map의 다음위치값ㄷ.
+2. 그 값의 키
+3. 값을 읽는 map
+
+
+```js
+let map = new Map([ ["name", "Nicholas"], ["age", 25]]);
+map.forEach(function(value, key, ownerMap) {
+    console.log(key + " " + value);
+    console.log(ownerMap === map);
+});
+
+```
+
+
+### WeakMap
+
+
+
+### Private Data
+
+WeakMap이용하면 private data를 만들수 있다.
+ES6에서 모든 데이터는 `public`이다. 그동안 하나의 약속으로 속성이름 앞에 `_`를 붙임으로서 private data라는것을 명시해왔지만, 
+수정이 불가능하도록 강제한것은 아니다. 얼마든지 덮어쓸 수 있다.
+
+```js
+function Person(name) {
+    this._name = name;
+}
+Person.prototype.getName = function() {
+    return this._name;
+};
+```
+
+
+ES5에서 private data를 만들기 위해서 다음과 같은 패턴을 사용했다.
+```js
+var Person = (function() {
+    var privateData = {},
+        privateId = 0;
+    function Person(name) {
+        Object.defineProperty(this, "_id", { value: privateId++ });
+        privateData[this._id] = {
+            name: name
+        };
+    }
+    Person.prototype.getName = function() {
+        return privateData[this._id].name;
+    };
+    return Person;
+}());
+
+```
+이 예제에서는 두 개의 Prvate변수 `privateData`와 `privateId`를 만들었다.
+`privateData` 객체는 각 인스턴스에 대한 정보를 저장한다.  
+`privateId`는 각 인스턴스에 대한 고유 ID를 생성하는데 사용되는 시퀀스값이다.  
+
+`privateData`는 IIFE 외부에서 접근이 불가능하기 때문에 `_id`가 노출되도 수정이 불가능하다.
+
+하지만 이 패턴의 문제는 객체 인스턴스가 사용되지 않는 시점을 알 수 없기 때문에 
+privateData의 데이터가 계속 누적된다는 것이다.  (i.g. `Person`생성자를 통해 생성된 p1인스턴스가 있다고 할때,
+p1인스턴스가 만료되어도 privateData에는 p1의 정보가 계속 누적되어있다. )
+이런 문제를 `WeakMap`을 통해 해결 가능하다.
+
+
+*WeakMap을 이용한 PrvateData*
+```js
+let Person = (function() {
+    let privateData = new WeakMap();
+    function Person(name) {
+        privateData.set(this, { name: name });
+    }
+    Person.prototype.getName = function() {
+        return privateData.get(this).name;
+    };
+    return Person;
+}());
+```
+이전버전과의 차이점을 보자. 우선 객체 인스턴스를 키로 사용할 수 있기때문에 별도의 id가 불필요하다. 그냥 `this`를 키로 사용하면 된다. 
+이 방법을 사용하면 개인 정보를 비공개로 유지하면서 관련 인스턴스가 사라지면 정보가 사라지게 할 수 있다.
+
+
+### WeakMap의 제한 사항.
+
+
 
 
 ## REF
