@@ -245,8 +245,18 @@ map.forEach(function(value, key, ownerMap) {
 
 
 ### WeakMap
+```js
 
-
+let map = new WeakMap(),
+    element = document.querySelector(".element");
+map.set(element, "Original");
+console.log(map.has(element));   // true
+console.log(map.get(element));   // "Original"
+map.delete(element);
+console.log(map.has(element));   // false
+console.log(map.get(element));   // undefined
+```
+인스컨스에 대한 참조값을 키로 하는 경우, 인스턴스가 소멸되면 관련 데이터가 사라진다.
 
 ### Private Data
 
@@ -288,9 +298,9 @@ var Person = (function() {
 
 `privateData`는 IIFE 외부에서 접근이 불가능하기 때문에 `_id`가 노출되도 수정이 불가능하다.
 
-하지만 이 패턴의 문제는 객체 인스턴스가 사용되지 않는 시점을 알 수 없기 때문에 
+하지만 이 패턴의 문제는 객체 인스턴스가 소멸되는 시점을 알 수 없기 때문에 
 privateData의 데이터가 계속 누적된다는 것이다.  (i.g. `Person`생성자를 통해 생성된 p1인스턴스가 있다고 할때,
-p1인스턴스가 만료되어도 privateData에는 p1의 정보가 계속 누적되어있다. )
+p1인스턴스가 소멸되어도 privateData에는 p1의 정보가 남는다. )
 이런 문제를 `WeakMap`을 통해 해결 가능하다.
 
 
@@ -312,10 +322,21 @@ let Person = (function() {
 
 
 ### WeakMap의 제한 사항.
+언제 WeakMap을 쓰고 Map을 써야할까요?  
+정답은 객체참조값만 key로 사용할떄는 WeakMap을 쓰는것입니다. 이렇게 하면 객체가 소멸될때 데이터를 소멸시킬수 있기때문에 메모리 누수를 피할수 있습니다.  
+
+WeakMap은 내용을 거의 볼 수 없어서 `forEach()`메소드 `size`프로퍼티, `clear()`메서드를 사용해서 항목을 관리할 수 없습니다. 몇 가지 검사 기능이 필요한 경우 일반 Map을 쓰는게 좋지만 Map을 쓸때는 항상 메모리 사용에 주시해야합니다.
+
+
+### 정리.
+
+Weak Set은 객체만 포함할 수 있는 특수 Set입니다. Weak Set은 객체의 참조값을 저장합니다. 따라서 Weak Set항목이 객체에 대한 유일한 참조일 경우 가비지 컬렉트 대상입니다. Weak Set 내용은 메모리 관리의 복잡성 때문에 검사할 수 없으므로 함께 그룹화 해야하는 객체 추적에만 Weak Set을 사용하는 게 좋습니다.  
+
+Weak Map은 객체 키만 가질 수 있는 타입의 Map입니다. Weak Set과 마찬가지로 객체의 참조값을 저장하며 객체에 대한 유일한 참조일 경우 가비지 컬렉트의 대상이됩니다. 키가 가비지 컬렉트되면 키와 연관된 값도 메모리에서 지워집니다. 추가 정보를 접근하는 코드 외부에서 라이프사이클이 관리되는 구조에서 Weak Map을 사용하면 메모리관리를 수월하게 할 수 있습니다.
 
 
 
 
 ## REF
 
-[https://infoscis.github.io/2018/01/27/ecmascript-6-sets-and-maps/](https://infoscis.github.io/2018/01/27/ecmascript-6-sets-and-maps/)
+[Set과 Map](https://infoscis.github.io/2018/01/27/ecmascript-6-sets-and-maps/)
