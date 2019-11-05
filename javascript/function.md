@@ -307,10 +307,176 @@ env.outer = F.[[Environment]];
 
 return env;
 ```
+`Environment Record`와 `outer`를 가진 Lexical Environment를 만들어 반환한다. 여기에 함수 환경으로 `this`, `super`, `new.target`등의 정보를 Environment Record와 함게 초기화 했다. 다음으로 Environment Rocord를 살펴보자.  
 
 
 
 
+### Environment Record - Identifier bindings
+EnvironmentRecord는 식별자들의 바인딩을 기록하는 객체를 말한다. 간단히 말해 변수, 함수 등이 기록되는 곳이다. 실질적으로 Declarative Environment Record와 Object Environment Record 두 종류로 생각할 수 있으며, 이외에 조금 더 자세히 보면 Global Environment Record, Function Environemnt, Module Environment Record가 있다.
+
+```
+  											Environment Record
+                                                    |
+                    -----------------------------------------------------------------
+                    |                               |                               |
+        Declarative Environment Record     Object Environment Record     Global Environment Record
+                    |
+            --------------------------------
+            |                              |
+Function Environment Record     Module Environment Record
+```
+우리는 함수에 관심이 있으므로 이제 Function Environment Record를 살펴보자. Declarative Environment Record에 변수나 함수의 정보가 담겨있다면, Function Environment Rocord는 추가로 `new.target`, `this`, `super`를 갖는다.
+
+```js
+{
+  environmentRecord: { // = FunctionEnvironmentRecord
+    //.... 위와 동일
+
+    [[ThisValue]]: global, // Any
+    [[ThisBindingStatus]]: 'uninitialized', // 'lexical' | 'initialized' | 'uninitialized'
+    [[FunctionObject]]: foo, // Object
+    [[HomeObject]]: undefined, // Object | undefined,
+    [[NewTarget]]: undefined // Object | undefined
+  },
+  outer: foo.[[Environment]]
+```
+만약 ECMAScript5까지의 Execution Context를 잘 알고 있었다면 여기에서 한 가지 다른 점을 찾아낼 수 있을 것이다. 바로 `this`바인딩이다. 이 전까지는 `this`바인딩을 Execution Context에서 관리했다면 ES6부터는 Environment Record에서 관리한다. 따라서 `this`, `super`, `new.target`등 모두 Function Environment Record에서 찾아볼 수 있으며, Record가 식별자들의 정보를 관리한느 객체이기 때문에 이게 더 합리적이라 볼 수 있을것 같다.   
+
+(드디어 첫 번째 목적이었던 `this`, `new.target`, `super`참조가 어디에서 저장되고 가져오는지 알 수 있게 됐다.)
+
+
+
+
+### outer environment reference 스코프 체인
+지금까지의 설명에서 `outer`에 대한 언급이 종종있었는데, 정확히 무엇인지 알아보자. 자바스크립트는 Lexical Scope를 갖는 언어다. 그리고 식발자 택색에 있어서 당연히 스코프 체인을 포함한다. outer는 이 스코프 체인을 위해 존재하는 참조이다. 다만 ES3까지는 Scope Chain이란 용어를 직접 명시했다면, ES5부터는 `Lexical nesting structure` 또는 `Logical nesting of Lexical Environment values`등으로 표현하고 있다. 아마 3판에서 5판으로 올라가면서 List가 아닌 `outer`참조를 활용하는 구현으로 바뀌었는데 이에 맞춰 같이 변경한 것이 나닐까 추측한다.  
+
+아래 코드에서 `outer`를 활용해 식별자를 찾느 과정을 보자.
+
+```js
+// global
+const globalA = 'globalA';
+
+function foo() {
+  const fooA = 'fooA';
+
+  function bar() {
+    const barA = 'barA';
+
+    console.log(globalA);   // globalA
+    console.log(fooA);      // fooA
+    console.log(barA);      // barA
+    console.log(unknownA);  // Reference Error
+  }
+
+  bar();
+}
+
+foo();
+```
+아래는 Environments를 간단히 나타낸다.(`this`같은 특별한 값들은 생략한다.)
+
+```js
+GlobalEnvironment = {
+  // Global Environment Record에는
+  // Object Environment Record와 Declarative Environment Record 등이 같이 존재하지만 이 글에서는 구분하지 않겠다.
+  environmentRecord: {
+    globalA: 'globalA'
+  },
+  outer: null
+};
+
+fooEnvironment = {
+  environmentRecord: {
+    fooA: 'fooA'
+  },
+  outer: globalEnvironment // foo는 Global에서 생성됐다.
+}
+
+barEnvironment = {
+  environmentRecord: {
+    barA: 'barA'
+  },
+  outer: fooEnvironment // bar는 foo 안에서 생성됐다.
+}
+```
+
+bar의 environment에서는 `fooA`는 `globalA`를 찾을 수 없기 때문에 `outer`참조를 통해 상위 environment로 올라가 식별자를 찾아야한다. `outer`가 `null`임에도 불구하고 `unknownA`처럼 찾을 수 없는 식별자라면 Reference Error가 발생한다.  
+
+
+
+### 기본값 매개변수 (Default parameter)와 Lexical Environment 
+
+```js
+function add(a, b) {
+  return a + b;
+}
+
+function foo(a, b = add(a, 1)) {
+  return `foo ${a + b}`;
+}
+
+function bar(a = add(b, 1), b) {
+  return `bar ${a + b}`;
+}
+
+console.log(foo(1)); // foo 3
+console.log(bar(undefined, 1)); // Error
+```
+위 예제에서는 b에 대한 참조를 찾을 수 없어 에러가 발생한다 (Temporal dead zone)와 같은 동작이다.  
+
+사실 기본값 매개변수에서 중요한 부분은 따로 있다. 바로 Lexical Envronment를 새로 만든다는 것이다. 얼핏 생각해보면 어떤 의미인지 잘 파악되지 않는다. 단순히 매개변수와 일반 변수 모두 Record에 저장하고 가져다 쓰면 되는 것 아닌가?
+
+
+```js
+const str = 'outerText';
+
+function foo(fn = () => str) {
+  const str = 'innerText';
+
+  console.log(fn());
+}
+
+foo(); // 'outerText'
+```
+코드를 보면 `outerText`가 출력되는게 당연한 것으로 느껴진다. 하지만 만약 처음에 단순히 생각했던 것처럼 매개변수나 일반 변수들을 모두 같은 Environment의 Record에 저장하고 사용하면 `fn`함수에서 참조해야 하는 `str`식별자는 `foo`내부의 `str`, 즉 `innerText`를 참조해버릴 것이다. 이는 삭식적이지 않은 동작ㄷ이고, 마치 함수 외부에서 내부 스코프를 참조할 수 없도록 만들어야 한다. 그러기 위해서는 매개변수, 함수 내부 변수들을 Environment부터 분리해서 추가적인 스코프 체인을 만들어야한다. 
+
+따라서 함수가 실행되고 변수들을 초기화할 때는 다음과 같은 동작을한다. (단순화해서 정리한 내용이며, strict mdoe를 가정한다.)
+
+```
+1. env = calleeContext.LexicalEnvironment;
+2. envRec = env.environmentRecord;
+
+3. envRec에 매개변수들을 등록하고 초기화한다.
+
+4. If (기본값 매개변수가 없다면)
+  4-1. Environment가 구분될 필요가 없으므로, 기존의 envRec에 일반 변수들(VarScoped)도 등록한다.
+  4-2. varEnv = env;
+  4-3. varEnvRec = envRec;
+5. Else(= 만약 기본값 매개변수가 있다면)
+  5-1. varEnv = NewDeclarativeEnvironment(env);
+  5-2. varEnvRec = varEnv.environmentRecord;
+  5-3. calleeContext.VariableEnvironment = varEnv;
+  5-4. varEnvRec에 일반 변수(VarScoped)들을 등록한다.
+
+6. lexEnv = varEnv;
+7. lexEnvRec = lexEnv.environmentRecord;
+8. calleeContext.LexicalEnvironment = lexEnv;
+9. lexEnvRec에 4, 5에서 등록하지 못한 변수들(LexicallyScoped)도 모두 등록한다.
+10. 내부에 있는 함수 객체들을 초기화한다.
+```
+내용을 정리하자면 함수가 호출도리 때, 매개변수들을 먼저 초기화하고 기본값 매개변수가 있다면 새로운 Environment를 추가로 만들어서 여기에 함수 내부의 변수들을 등록한다. 이렇게 Environment를 새로 만들어버리기 때문에 기본값 매개변수는 함수 내부를 참조할 수 없으면서 함수 내부에서는 매개변수를 참조할 수있는 중첩 구조를 만들 수 있다.
+
+
+
+
+
+
+
+
+
+
+------
 
 
 ### apply()
@@ -354,8 +520,7 @@ objectSayColor(); // blue
 - [Toast_function2](https://meetup.toast.com/posts/123)
 - [Toast_function3](https://meetup.toast.com/posts/129)
 - [qodot_function](https://gist.github.com/qodot/1845fd02f14807d2eee9c58270ff1b2a)
-- [EcamInternational.org](https://www.ecma-international.org/ecma-262/8.0/index.html)
-
+- [EcamInternational.org](https://www.ecma-international.org/ecma-262/8.0/index.htm
 
 	
 내부함수는 외부함수의 렉시컬스코프를 참조한다.
