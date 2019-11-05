@@ -521,6 +521,7 @@ objectSayColor(); // blue
 - [Toast_function3](https://meetup.toast.com/posts/129)
 - [qodot_function](https://gist.github.com/qodot/1845fd02f14807d2eee9c58270ff1b2a)
 - [EcamInternational.org](https://www.ecma-international.org/ecma-262/8.0/index.htm
+- [infoscis](https://infoscis.github.io/2018/01/24/ecmascript-6-functions/)
 
 	
 내부함수는 외부함수의 렉시컬스코프를 참조한다.
