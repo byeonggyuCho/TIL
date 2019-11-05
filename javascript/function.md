@@ -140,7 +140,175 @@ ECMAScript2017은 함수 호출을 `Call(F,V, [, argumentsList])`으로 표현�
 1. `F.[[FunctionKind]]`가 "classConstructor"라며 에러를 발생시킨다.
 2. `callerContext`는 현재 실행 중인 실행 컨텍스트
 3. `calleeContext`에 새로운 실행 컨택스트를 생성하여 지정한다. (PrepareForOrdinaryCall)
-4. 
+4. (--assertion: 새로 만들어진 `calleeCOntext`가 현재 running execution context이다.)
+5. `this`를 바인딩한다. (OrdinaryCallBindThis)
+6. 함수 코드를 수행하고 `result`에 그 결과를 저장한다.(OrdinaryCallEvaluateBody)
+7. `calleeContext`를 execution context stack에서 제거하고, `callerContext`를 다시 running execution context로 저장한다.
+8. `result`를 반환한다.
+
+위 동작에서 Execution Context, execution context stack, running execution context내용이 조금 난해할 수 있을 것같다.
+ 우선은 이런게 있다 정도로 생각하자.
+
+ 함수 호출을 조금더 쉽게 정리해보면 다음과 같다.
+
+ 1. 함수를 호출하면 이에 맞춰서 함수를 실행할 수 있느 환경을 만들고 초기화한다.
+ 2. `this`를 바인딩한다(`this`가 어떤 객체를 참조해야 할지 정한다.)
+ 3. 실제 함수 코드를 수행하고 그 결과를 `result`에 저장한다.
+ 4. 이 함수를 호출했던 곳으로 돌아간다.
+ 5. `result`를 반환한다.
+
+ ## Execution Context
+ Execution Context는 스코프와 기본 객체들(intrinsic objects -Array, Object등의 기본 생성자와 그 프로토타입)을 가지고 있는 Realm등 코드 수행환경에 대한 여러 정보를 가지고 어떤 장치라고 생각하면 된다. 결국 EC는 ECMAScript에서 코드 수행 메커니즘을 표현하ㅣ 위한 것이며, 실제 스트립트엔진들은 이 명세와 완벽히 일치하지 않을 수 있다.  
+
+ 자바스크립트가 단일 스레드 환경으로 코드를 컴파일하고 실행할 때 call stack을 만드는 것과 같이 EC Stack을 만든다고 생각해보자. 가장 밑바탕에는 Global 코드 환경에 대한 EC가 있을 것이고, 그 위로 함수가 호출될 때마다 그에 맞는 EC가 하나씩 추가되고 빠지기를 반복할 것이다. 그리고 각 시점에 stack의 최상위에 있는 EC가 바로 running execution context인 것이다.  
+
+ 다음과 같은 코드에서 EC stack이 어떻게 변하는지 살펴보자.
+```js
+function foo() {
+
+	function bar(){
+		return 'bar'
+	}
+	return bar();
+}
+
+foo();
+```
+ 
+ ```
+                      |--------|
+                      | bar    |
+           |--------| |--------| |--------| 
+           | foo    | | foo    | | foo    | 
+|--------| |--------| |--------| |--------| |--------|
+| global | | global | | global | | global | | global |
+|--------| |--------| |--------| |--------| |--------|
+ ```
+ECMAScript 코드 수행을 위한 EC에는 LexicalEnvironment와 VariableEnvironment라는 커포넌트가 존재한다. 간단히 변수와 참조를 기록하는 황경이라고 생각하며 된다. LexicalEvironment와 VariableEnvironment가 서로 나누어져있지만, 사실은 초기화 시에 같은 객체를 바라보고 있다. `with`와 같은 특별한 문장을 만나면 block내부에서는 새로 만들어진 LexicalEnvironment를 참조한다.
+
+## OrdinaryCall
+위에서 알아본 `[[Call]]`의 동작에서 OrdinaryCall이라는 단어가 3번 등장했다.
+
+1. PrepareForOrdinayCall
+2. OrdinayCallBindThis
+3. OrdinayCallEvaluateBody
+
+위 3개는 ECMAScrip에서 정의하고 있는 내부 동작인데 하나씩 살펴볼 필요가 있을것 같다.
+
+### PrepareForOrdinayCall
+PrepareForOrdinayCall결국 EC를 만들고 초기화시키는 내용을 가진 동작을 추상적으로 표현한 것인데 조금 더 자세히 보면 아래 3단계를 갖는다.
+
+1. 새로운 EC를 생성한다. (`calleeContext`)
+2. `calleeContext`에 들어갈 Lexical Environment를 생성한다.
+3. `calleeContext`를 EC Stack에 추가한다. 따라서 `calleeContext`가 running execution context가 된다.
+
+### OrdinaryCallBindThis
+OrdinaryCallBindThis는 함수 객체의 `[[ThisMode]]`에 따른 `this`값 참조를 결정한다. Arrow Function, Stric mode, Environment와 연결된다.
+
+1. `[[ThisMode]]`가 lexical인 경우는 다른 처리를 하지 않는다. (arrowFunction)
+2. `[[ThisMode]]`가 stric인 경우 인자로 넘어온 thisArgument를 Environment record에 설정한다.
+3. `[[ThisMode]]`가 lexical도 아니고 stric도 아닌 경우 global에 있는 `[[thisValue]]`를 Environment record에 설정한다.
+
+### OrdinaryCallEvaluateBody
+OrdinaryCallEvaluateBody는 다음 두 개 동작으로 나눌 수 있다.
+
+1. 변수 선언 초기화 (FunctionDeclationInstantiation)
+2. 코드 수행 및 결과 반환
+
+변수 선언 초기화는 결국 Environment Record(식별자 이름과 값의 매칭을 위한 표 정도)를 채우는 동작인데 꽤 복잡한 동작들이 작성돼 있다. 특히 arguments객체가 필요한지 아닌지 기본값 매개변수가 있는지 없는지에 따라 분기가 나뉘는데 결국에는 또 EC의 LexicalEvironment와 VariableEnvironment로 이어지게된다.
+
+
+
+## Lexical Environment
+
+### Lexical Environment
+Lexical Environment는 자바스크립트 코드에서 변수나 함수 등의 식별자를 정의하는데 사용하느 객체로 생각하면 쉽다. 
+Lexical Evironment는 식별자와 참조 혹은 값을 기록하는 `Environment Record`와 `outer`라는 또 다른 Lexical Environment를 참조하는 포인터로 구성된다. `outer`는 외부 Lexical Envronment를 참조하는 포인터로, 중첩된 자바스크립트 코드에서 스코프탐색을 위해 사용한다.  
+
+`Environment Record`와 `outer`를 조금 더 이해하기 쉽게 아래 구조를 살패보자. 
+
+```js
+function foo() {
+  const a = 1;
+  const b = 2;
+  const c = 3;
+  function bar() {}
+
+  // 2. Running execution context
+
+  // ...
+}
+
+foo(); // 1. Call
+```
+
+```js
+// Running execution context의 LexicalEnvironment
+
+{
+  environmentRecord: {
+    a: 1,
+    b: 2,
+    c: 3,
+    bar: <Function>
+  },
+  outer: foo.[[Environment]]
+}
+```
+위 구조에서는 단순히 함수 호출 한 번에 하나의 Lexical Environment를 나타내고 있지만 실제로는 함수 `BlockStatement`, `catch`, `with`등과 같은 여러 코드 구분과 상황에 따라 생성됐다 파괴되기도 한다.  
+
+### 함수의 Lexical Environment는 언제 만들어질까?
+이전 글에서 함수의 호출 - `F.[[Call]]`에는 크게 3가지 단계가 있다고 설명했다.
+1. PrepareForOrdinayCall
+2. OrdinaryCallBindThis
+3. OrdinayCallEvaluateBody
+
+그리고 `PrepareForOrdinayCall`에서 Executon Context를 새로 만단다고만 하였는데, 사실은 Lexical Environment 역시 함께 만들어서 Execution Context에 저장한다. 그럼 이제 `F.[[Call]]`에서 `PrepareForOrdinayCall`을 조금 더 자세히 살펴보자.
+
+```js
+// PrepareForOrdinayCall(F, newTarget)
+
+callerContext = runningExecutionContext;
+calleeContext = new ExecutionContext;
+calleeContext.Function = F;
+
+// 바로 여기, Execution Context를 만든 직후 Lexical Environment를 생성한다.
+localEnv = NewFunctionEnvironment(F, newTarget);
+
+// --- LexicalEnvironment와 VariableEnvironment의 차이는 서두에 있는 링크를 참고하자.
+calleeContext.LexicalEnvironment = localEnv;
+calleeContext.VariableEnvironment = localEnv;
+
+executionContextStack.push(calleeContext);
+```
+
+### NewFunctionEnvironment
+이제 NewFunctionEnvironment의 동작을 살펴보자.
+
+```js
+/ NewFunctionEnvironment(F, newTarget)
+
+env = new LexicalEnvironment;
+envRec = new functionEnvironmentRecord;
+envRec.[[FunctionObject]] = F;
+
+if (F.[[ThisMode]] === lexical) {
+  envRec.[[ThisBindingStatus]] = 'lexical';
+} else {
+  envRec.[[ThisBindingStatus]] = 'uninitialized';
+}
+
+home = F.[[HomeObject]];
+envRec.[[HomeObject]] = home;
+envRec.[[NewTarget]] = newTarget;
+
+env.EnvironmentRecord = envRec.
+env.outer = F.[[Environment]];
+
+return env;
+```
+
+
 
 
 
@@ -190,4 +358,6 @@ objectSayColor(); // blue
 
 
 	
-
+내부함수는 외부함수의 렉시컬스코프를 참조한다.
+만약 내부함수가 반횐되어 변수에 할당된 경우 내부함수를 통하여 외부함수의 렉시컬 스코프에 접근할 수 있다. 
+모든 변수가 public접근 권한을 가지는 자바스크립트에서 이런 패턴을 이용해 private 변수를 연출한다.

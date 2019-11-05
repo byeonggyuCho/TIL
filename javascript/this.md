@@ -140,7 +140,7 @@ apply vs bind, call apply 메소드에는 첫번째 인자로 this를 넘겨주�
 
 
 ### REF
-
+- [this바인딩 우선순위](http://jeonghwan-kim.github.io/2017/10/22/js-context-binding.html)
 - [javascript_this](https://github.com/FEDevelopers/tech.description/wiki/%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%EC%97%90%EC%84%9C-%EC%82%AC%EC%9A%A9%EB%90%98%EB%8A%94-this%EC%97%90-%EB%8C%80%ED%95%9C-%EC%84%A4%EB%AA%85-1#31-%EB%A9%94%EC%86%8C%EB%93%9C-%EC%8B%A4%ED%96%89%EC%97%90%EC%84%9C%EC%9D%98-this)
 - [Gentle Explanation of this Keyword in JavaScript](https://dmitripavlutin.com/gentle-explanation-of-this-in-javascript/)
 - [intro](http://bonsaiden.github.io/JavaScript-Garden/ko/#function.constructors)
