@@ -22,9 +22,38 @@ myObject.sayName();
 // console> Object {name: "foo"}
 ```
 
+이런 경우는 어떨까?
+```js
+var myObject = {
+  name: "foo",
+  sayName: function() {
+    console.log(this);
+  }
+};
+
+var sayNameFn = myObject.sayName;
+sayNameFn();
+```
+메서드가 변수에 할당되며는 순간 일반함수가 된다. 따라서 sayNameFn은 일반함수임으로 `this`의 참조값은 `window`객체가 된다. 이런 특이점은 메서드를 콜백으로 넘길때 간과하기 쉽다.
+
+```js
+var obj = {
+  name: 'chris',
+  hello: function sayName() {
+    console.log(this.name);
+  }
+};
+
+setTimeout(obj.hello, 1000); 
+
+var name = 'global context!';
+```
+`setTimeout`의 입장에서는 `obj`객체와 상관없이 `sayName`이라는 함수객체만 알고 있을 뿐이다. 따라서 콜백으로 실행되는 `sayName`의 실행환경에서 `this`가 참조하는 값은 전역변수인 global context가 된다.
+
 
 ## Case2 함수
 특정 객체의 메서드가 아닌 함수를 호출하면, 해당 함수 내부 코드에서 사용된 this 는 전역객체에 바인딩 된다. A.B일 때 A가 전역 객체가 되므로 B함수 내부에서의 this는 당연히 전역 객체에 바인딩 되는 것이다.
+
 ```js
 var value = 100;
 var myObj = {
@@ -136,6 +165,108 @@ myObj.func1();
 bind vs apply, call 우선 bind는 함수를 선언할 때, this와 파라미터를 지정해줄 수 있으며, call과 apply는 함수를 호출할 때, this와 파라미터를 지정해준다.
 
 apply vs bind, call apply 메소드에는 첫번째 인자로 this를 넘겨주고 두번째 인자로 넘겨줘야 하는 파라미터를 배열의 형태로 전달한다. bind메소드와 call메소드는 각각의 파라미터를 하나씩 넘겨준다.
+
+
+
+### this 바인딩의 우선순위
+
+#### 1.임시적 바인딩보다 명시적 바인딩이 우선순위가 높다.
+```js
+function hello() {
+  console.log(this.name);
+}
+
+var obj = {
+  name: 'chris',
+  hello: hello
+};
+
+obj.hello(); // 'chris'
+obj.hello.call({name: 'alice'}); // 'alice
+```
+
+#### 2. New 바인딩
+자바스크립트 함수 앞에 `new`연산자를 붙여서 실행하면 다음과 같은 일이 일어난다.
+- 새로운 객체를 반환한다.
+- 새로운 객체는 객체의 메소드를 호출시 `this`로 바인딩된다.
+
+```js
+function Person(name){
+  this.name = name
+}
+
+Person.prototype.hello = function() {
+  console.log(this.name)
+}
+
+var man = new Person('cater')
+man.hello();
+```
+`new Person(name)`을 실행해 생성된 새로운 객체를 변수 `man`에 할당했다.
+`man.hello`를 실행하면 `hello()`함수의 실행환경에서 `this`는 `man`과 바인딩된다.
+
+
+#### 3. 임시적 바인딩과 new 바인딩의 우선순위.
+```js
+function setName(name) {
+  this.name = name
+}
+
+var p1 = {
+  setName: setName
+};
+
+p1.setName('Jimmy');
+console.log(p1.name); // Jimmy
+
+var p2 = new p1.setName('Cater')
+console.log(p1.name); // Jimmy
+console.log(p2.name); // Cater
+```
+위 예제에서 객체의 메서드의 실행환경에서 `this`는 메서드를 소유하는 객체를 참조하기 때문에 `p1.setName`의 `this`가 p1이라는 것은 명백하다. 
+그렇다면 객체의 메서드에 `new`연산자를 붙여서 실행하면 `this`는 뭘 참조할까???  
+`new`연산자를 통해 새로운 객체를 생성하고 `this`는 새로운 객체를 참조하기떄문에 당연히 p1 메소드에서 `this`의 참조값과는 별개로 `this`는 새롭게 생성된 객체를 참조한다.
+
+
+#### 4. 명시적 바인딩과 new 바인딩의 우선순위.
+
+```js
+
+function setName(name) {
+  this.name = name
+}
+
+var p1 = {}
+
+var setNameFn = setName.bind(p1);
+setNameFn('chris');
+console.log(p1.name); // chris
+
+var p2 = new setNameFn('alice')
+console.log(p1.name); // chris
+console.log(p2.name); // alice
+```
+위 예에서 `setNameFn`에서 `this`는 `p1`을 참조한다.  
+이때 `new`연산자를 통해 새로운 객체를 생성했다. 이때 `p2.name`은 뭘 참조할것인가??? 
+결과는 보다싶이 새로운 객체를 참조한다.
+
+
+#### 정리.
+
+1. `new`연산자로 함수를 호출하면 반환값이 this가 된다.
+2. `call`,`bind`,`apply`로 함수츨 호출하면 넘겨준 인자가 this가 된다.
+3. 객체의 메서드를 실행하면 메서드를 소유하는 객체가 this다.
+4. 이외의 상황에서는 `window`가 this다.
+
+
+
+#### Arrow Function
+기존에는 컨텍스트 실행 시점에 바인딩 규칙이 정해지는 `동적 바인딩`이지만  
+화살표 함수는 선언시점에 바인딩이 정해지는 `정적 바인딩`이다. 
+  Arrow Function은 코사등 상위 블록의 컨텍스트를 this로 바인딩한다.
+
+
+
 
 
 

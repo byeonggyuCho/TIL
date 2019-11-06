@@ -4,7 +4,9 @@
 ## Intro
 
 ### 프로토타입 기반 프로그래밍
-	객체의 원형인 프로토타입을 이용하여 새로운 객체를 만들어내는 프로그래밍 기법이다. 이렇게 만들어진 객체 역시 자기자신의 프로토타입을 갖는다. 이 새로운 객체의 원형을 이용하면 또 다른 새로운 객체를 만들어 낼수도 있으며 이런 구조로 객체를 확장하는 방식을 프로토타입 기반 프로그래밍이라고 한다.
+	객체의 원형인 프로토타입을 이용하여 새로운 객체를 만들어내는 프로그래밍 기법이다. 
+	이렇게 만들어진 객체 역시 자기자신의 프로토타입을 갖는다. 
+	이 새로운 객체의 원형을 이용하면 또 다른 새로운 객체를 만들어 낼수도 있으며 이런 구조로 객체를 확장하는 방식을 프로토타입 기반 프로그래밍이라고 한다.
 
 자바스크립트에서는 Class가 없다. 그래서 자바스크립트에서는 객체의 원형인 프로토타입을 이용한 복사와 객체특성을 확장해 나가는 방식을 통해 새로운 객체를 생성한다. 자바스크립트의 프로토타입 객체의 확장은 옵져버패턴을 따른다. 지금으로서는 그다지 중요하게 알고 있을 필요는 없다.
 
@@ -27,14 +29,7 @@ console.log(foo.a);
 
 
 ###  1.Prototype Object
-함수를 정의하면 함수(`Host Object`)와 함께 `Prototype Object`가 생성된다.
-![__proto__](/resource/img/javascript/prototype1.png)  
-
-생성된 함수객체는 `Prototype property`를 통해 `Prototype Object`에 접근할 수 있습니다.  
-`Prototype Object`는 `counstructor`와 `__proto__`를 기본속성으로 가지고 있다.
-- `counstructor` : Prototype Object와 같이 생성되었던 함수를 가리키고 있습니다.
-- `__proto__` : `Prototype Linke`입니다.
-
+함수를 정의하면 함수(`Host Object`)와 함께 `Prototype Object`가 생성된다.  
 
 
 ```js
@@ -44,14 +39,25 @@ Person.prototype.nose = 1;
 var kim  = new Person();
 ```
 
-![__proto__](/resource/img/javascript/prototype.png)
+![__proto__](/resource/img/javascript/prototype.png)    
 위 예제에서 `prototype Property`를 통해 `Prototype Object`에 `eyes`와 `nose`를 추가했습니다.
+
+
+![__proto__](/resource/img/javascript/prototype1.png)  
+
+생성된 함수객체는 `prototype property`를 통해 `Prototype Object`에 접근할 수 있습니다.  
+`Prototype Object`는 `counstructor`와 `__proto__`를 기본속성으로 가지고 있다.
+- `counstructor` : Prototype Object와 같이 생성되었던 함수를 가리키고 있습니다.
+- `__proto__` : `Prototype Linke`입니다.
+
+
+
 
 
 
 ### 2.Prototype Link
 앞선 예제에서 kim객체 속성에 `eyes`가 없지만 2라는 결과가 나왔습니다. 이것은 `Prototype Object`를 참조하여 `Prototype Object`의 속성값을 출력한 것입니다.  
-모든 객체는 `__proto__`라는 속성을 갖는데 이 속성은 host Object의 `Prototype Object`를 참조합니다. 이 예제에서는 
+모든 객체는 `__proto__`라는 속성을 갖는데 이 속성은 Host Object(Person)의 `Prototype Object`를 참조합니다. 이 예제에서는 
  `__proto__`속성이 Person함수의 `Prototype Object`를 참조하는걸 확인할 수 있습니다.
 
 ![__proto__](/resource/img/javascript/prototype2.png)
