@@ -265,7 +265,45 @@ console.log(p2.name); // alice
 화살표 함수는 선언시점에 바인딩이 정해지는 `정적 바인딩`이다. 
   Arrow Function은 코사등 상위 블록의 컨텍스트를 this로 바인딩한다.
 
+```js
+ 
+ 
+function hello() {
+  setTimeout(function callback(){ 
+    console.log(this.name) 
+  })
+}
 
+var obj = {
+  name: 'chris',
+  hello: hello
+};
+
+var name = 'global contenxt!'
+
+hello(); // 'global contenxt!'
+obj.hello(); // 'global contenxt!'
+hello.call({name: 'chris'}); // 'global contenxt!'
+```
+위 예는 `동적바인딩`환경에서 간과하기 쉬운 실수중 한다. 이 소스를 ArrowFunciton을 이용해 `정적바인딩`으로 수정해보자. 
+
+```js
+function hello() {
+  setTimeout(() => {
+    console.log(this.name)
+  })
+}
+var obj = {
+  name: 'chris',
+  hello: hello
+};
+var name = 'global contenxt!'
+
+hello(); // 'global contenxt!'
+obj.hello(); // 'chris'
+hello.call({name: 'alice'}); // 'alice'
+
+```
 
 
 
