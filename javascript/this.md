@@ -266,8 +266,6 @@ console.log(p2.name); // alice
   Arrow Function은 코사등 상위 블록의 컨텍스트를 this로 바인딩한다.
 
 ```js
- 
- 
 function hello() {
   setTimeout(function callback(){ 
     console.log(this.name) 
@@ -285,7 +283,7 @@ hello(); // 'global contenxt!'
 obj.hello(); // 'global contenxt!'
 hello.call({name: 'chris'}); // 'global contenxt!'
 ```
-위 예는 `동적바인딩`환경에서 간과하기 쉬운 실수중 한다. 이 소스를 ArrowFunciton을 이용해 `정적바인딩`으로 수정해보자. 
+위 예는 `동적 바인딩`환경에서 간과하기 쉬운 실수중 한다. 이 소스를 ArrowFunction을 이용해 `정적 바인딩`으로 수정해보자. 
 
 ```js
 function hello() {
@@ -299,9 +297,11 @@ var obj = {
 };
 var name = 'global contenxt!'
 
-hello(); // 'global contenxt!'
-obj.hello(); // 'chris'
-hello.call({name: 'alice'}); // 'alice'
+hello();                // 'global contenxt!'
+obj.hello();            // 'chris'
+hello.call({            // 'alice'
+  name: 'alice'}
+);
 
 ```
 
