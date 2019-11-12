@@ -2,12 +2,16 @@
 
 ![](/resource/img/T490.png)
 ![](/resource/img/t490_spec.png)
-
+M47A1K43BB1
+M471A1K43BB1
 
 ## 메모리
-1. samsung M471A1K43BB1-CTD 2666MHz
+1. 삼성 M471A1K43BB1-CTD 2666MHz
+2. 삼성 M471A1K43CB1-CTD 2666MHz
 
-DDR4 16Gb 2400MHz
+----
+16Gb
+
 
 ## 디스플레이
 1. Info
