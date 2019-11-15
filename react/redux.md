@@ -143,3 +143,4 @@ store.dispatch(액션생성함수)로 알린다.
 - [MVC패턴의한계](https://taegon.kim/archives/5288)
 - [FLUX카툰으로이해하기](https://bestalign.github.io/2015/10/06/cartoon-guide-to-flux/)
 - [Redux를이용한데이터교류방법](https://velopert.com/1225)
+- [Flux and MVC](https://beomy.tistory.com/44)

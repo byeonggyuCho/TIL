@@ -38,9 +38,72 @@ MVC 구조에서 프로그램의 모든 객체는 모델, 뷰, 컨트롤러 중 
 업데이트 지시는 전적으로 컨트롤러 역할이기 떄문에 뷰와 모델은 서로를 인식하지 못한다. 뷰에는 비지니스로직이 가능한 적어야하고 모델은 데이터의 단순한 인터페이스다. 그 말은 MVC구조에서 애플리케이션 내에서 컨트롤러가 애플리케이션 논리를 거의 다 가지고 있다는 뜻이다. 
 MVC 아키텍처의 최고 장점은 스파게티 코드로 가득한 파일이 나올리 없다는 것이다.ㅣ MVC는
 
+*단점*  
+- View와 Model사이의 의존성이 높다. View와 Model의 높은 의존성은 어플리케이션이 커질수록 구조를 복잡하게 만들고 유지보수하기 어렵게 만든다.
+
+*특징*
+Controller는 여러개의 View를 선택할 수 있는 1:N구조다.
+Controller는 view를 선택할 뿐 직접 업데이트 하지 않습니다.
+
+*장점*
 
 
+*동작*
+1. 사용자의 Action들이 Controller에 들어오게 됩니다.
+2. Controller는 사용자의 Action를 확인하고 Model을 업데이트 합니다.
+3. Controller는 Model을 나타내줄 View를 선택합니다.
+4. View는 Model을 이용하여 화면ㅇ르 나타냅니다.
+
+
+
+## 2. MVVM
+MVVM은 Model + View + View Model을 합친 용어입니다. 
+
+
+### 1.구조 
+- Model : 어플리케이션에서 사용되는 데이터와 그 데이터를 처리하는 부분.
+- View : 사용자에서 보여지는 UI부분.
+- View Model : View를 표현하기 위해 만든 View를 위한 Model. View를 나타내 주기 위한 Model이자 View르 ㄹ나타내기 위한 데이터를 처리하는 부분다.
+
+
+### 2. 동작
+1. 사용자의 Action들은 View를통해 들어오게 됩니다.
+2. View에 Action이 들어오면, Command패턴으로 View Model에 Action을 전달합니다.
+3. View Model은 Model에게 데이터를 요청합니다.
+4. Model은 View Model에게 요청받은 데이터를 응답합니다.
+5. View Model은 응답 받은 데이터를 가공하여 저장합니다.
+6. Viwe는 View Model과 Data Binding하여 화면을 나타냅니다.
+
+### 3. 특징
+MVVC팬턴은 Command패턴과 Data Binding 두 가지 패턴을 상요하여 구현되었습니다. 이 두가지 패턴을 이용하여 View와 View 사이의 의존성을 없앴습니다. View MOdel과 view는 1:n 관계입니다.
+
+
+### 4. 장점
+MVVM 패턴은 View와 Model 사이의 의존성이 없습니다. 또한 Command 패턴과 DataBinding을 사용하여 View와 View Model사이의 의존성 또한 없앤 디자인패턴입니다. 각각의 부분은 독립적이기 떄문에 모듈화 하여 개발할 수 있습니다.
+
+
+## Flux
+
+### 1.특징
+Flux의 가장 큰 특징은 단방향 데이터 흐름이빈다. 데이터 흐름은 항상 Dispatcher에서 Store로, Store에서 View로 View는 Action을 통해서 다시 Dispatcher로 데이터가 흐르게 됩니다. 이런 단방향 데이터 흐름은 데이터 변화를 예측하기 쉽게 만듭니다.
+
+
+### 2.구성
+1. Dispatcher  
+Dispatcher는 Flux의 모든 데이터 흐름을 관리하는 허브 역할을 하는 부분입니다. Action이 발생하명 Dispatcher로전달되는데 Dispatcher는 전달된 Action을 보고 등록된 콜백 함수를 실행하여 Store에 데이터를 전달합니다. Dispatcher는 전체 어플리케이션에서 한 개의 인스턴스를 사용합니다.
+
+2. Store
+어플리케이션의 모든 상태 변경은 Store에 의해 결정됩니다. Dispatcher로 부터 메시지를 수신 받기 위해서는 Dispatcher에 콜백 함수를 등록해야 합니다. 
+Store가 변경되면 View에 변겨오디었다는 사실을 알려주게 됩니다. Store는 싱글톤으로 관리됩니다.
+
+3. View
+Flux의 View는 화면에 나타내는 것 뿐만 아니라, 자식 View로 데이터를 흘려 보내는 뷰 컨ㅁ트롤러의 역할도 함꼐 합니다.
+
+4. Action
+Dispatcher에서 콜백 함수가 실행되면 Store가 업데이트 되게 되는데, 이 콜백 함수를 실행 할 때 데이터가 담겨 있는 객체가 인수로 전달 되어야하니다. 이 전달되는 객체를 Action이라고 하는데, Actoin은 대채로 Action creater에서 만들어집니다.
 
 
 ## Ref
+- [Flux](https://beomy.tistory.com/44)
+- [  s](https://beomy.tistory.com/43)
 - [Front-End Mvc](https://www.miraeweb.com/single-post/2016/11/17/%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C-%EC%9B%B9%EC%95%A0%ED%94%8C%EB%A6%AC%EC%BC%80%EC%9D%B4%EC%85%98-%EC%95%84%ED%82%A4%ED%85%8D%EC%B3%90-%EB%B9%84%EA%B5%90%EB%B6%84%EC%84%9D-MVC%EC%99%80-MVVM)
