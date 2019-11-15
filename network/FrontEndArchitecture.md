@@ -85,7 +85,7 @@ MVVM 패턴은 View와 Model 사이의 의존성이 없습니다. 또한 Command
 ## Flux
 
 ### 1.특징
-Flux의 가장 큰 특징은 단방향 데이터 흐름이빈다. 데이터 흐름은 항상 Dispatcher에서 Store로, Store에서 View로 View는 Action을 통해서 다시 Dispatcher로 데이터가 흐르게 됩니다. 이런 단방향 데이터 흐름은 데이터 변화를 예측하기 쉽게 만듭니다.
+Flux의 가장 큰 특징은 단방향 데이터 흐름입니다. 데이터 흐름은 항상 Dispatcher에서 Store로, Store에서 View로 View는 Action을 통해서 다시 Dispatcher로 데이터가 흐르게 됩니다. 이런 단방향 데이터 흐름은 데이터 변화를 예측하기 쉽게 만듭니다.  기존의 MVC모델에서는 양방향 데이터 바인딩 구조이문에 한 모델을 업데이트 한 뒤 다른 모델을 업데이트 해야하는 순차적인 업데이트가 발생하게 된다. 이런 순차적 데이터 업데이트는 대규모 애플리케이션에서 User Interaction을 복잡하게 만든다. 한편 Flux의 단방향 데이터 흐름은 데이터 변화를 예측하기 쉽다.
 
 
 ### 2.구성
@@ -93,17 +93,44 @@ Flux의 가장 큰 특징은 단방향 데이터 흐름이빈다. 데이터 흐�
 Dispatcher는 Flux의 모든 데이터 흐름을 관리하는 허브 역할을 하는 부분입니다. Action이 발생하명 Dispatcher로전달되는데 Dispatcher는 전달된 Action을 보고 등록된 콜백 함수를 실행하여 Store에 데이터를 전달합니다. Dispatcher는 전체 어플리케이션에서 한 개의 인스턴스를 사용합니다.
 
 2. Store
-어플리케이션의 모든 상태 변경은 Store에 의해 결정됩니다. Dispatcher로 부터 메시지를 수신 받기 위해서는 Dispatcher에 콜백 함수를 등록해야 합니다. 
-Store가 변경되면 View에 변겨오디었다는 사실을 알려주게 됩니다. Store는 싱글톤으로 관리됩니다.
+Store는 애플리케이션 내의 모든 상태와 그와 관련된 로직을 가지고 있다. 모든 상태변경은 반드시 스토어에 의해서 결정되어야만 하며, 상태 변경을 위한 요청을 스토어에 직접 보낼 순없다. 무조건 Action-Dispatcher를 거쳐서 액션을 전달받아야한다.
+
+Store의 내부는 보통 Switch stetement를 사용해서 처리할 액션과 무시할 액션을 결정하게 된다. 만약 처리가 필요한 액션이라면 주어진 액션에 따라서 무엇을 할지 결정하고 상태를 변경하게 된다. 일단 스토어에서 상태를 변경하고 나면 상태값이 변경되었다는 사실을 Controller View에 전달한다.
 
 3. View
-Flux의 View는 화면에 나타내는 것 뿐만 아니라, 자식 View로 데이터를 흘려 보내는 뷰 컨ㅁ트롤러의 역할도 함꼐 합니다.
+View는 상태를 가져오고 사용자에게 보여주고 입력받을 화면을 렌더링하는 역할을 맡습니다.
+View를 Presenter라고 생각하면 좋습니다. 애플리케이션 내부에 대해서 아는것이 없지만 받은 데이터를 처리해서 사람들이 이해할 수 있는 포맷(HTML)로 바꾸는 역할을 하는거죠.  
+
+Flux에서의 View는 Controller의 셩격도 가지고 있습니다. 중첩된 View Layer의 최상단 View는 Store에서 데이터를 가져와 자식 View로 배분하는 역할을 한는데 이 View를 Controller View라고 합니다. Store와 View 사이의 중간관리자 같은 역할을 한다고 볼 수 있습니다. 상태가 변경되었을 떄 Store가 그 사실을 Controller View에게 알려주면 Controler View는 자신의 아래에 있는 모든 View에게 새로운 상태를 넘겨줍니다.
 
 4. Action
-Dispatcher에서 콜백 함수가 실행되면 Store가 업데이트 되게 되는데, 이 콜백 함수를 실행 할 때 데이터가 담겨 있는 객체가 인수로 전달 되어야하니다. 이 전달되는 객체를 Action이라고 하는데, Actoin은 대채로 Action creater에서 만들어집니다.
+Dispatcher에서 콜백 함수가 실행되면 Store가 업데이트 되게 되는데, 이 콜백 함수를 실행 할 때 데이터가 담겨 있는 객체가 인수로 전달 되어야하니다. 이 전달되는 객체를 Action이라고 하는데, Actoin은 대채로 Action creater에서 만들어집니다.  
+
+5. Action Createer
+액션 생성자는 모든 변경사항과 user Interaction을 거쳐가야 하는 액션의 생성을 담당하고 있다. 언제든 애플리케이션의 상태를 변경하거나 뷰를 업데이트하고 싶다면 액션을 생성해야한다. 무슨 메세지를 보낼지 알려주면 액션 생성자는 시스템이 이해할 수 있는 포멧으로 변환한다. 액션 생성자는 type과 payLoad를 포함한 액션을 생성한다. 타입은 시스템에 정의된 액션중의 하나이다.  
+
+모든 가능한 액션들을 아는 시스템을 가짐으로써 부차적으로 갖는 멋진 효과가 있다. 새로운 개발자가 프로젝트에 들어와서 행동 생성자 파일을 열면 시스템에서 제공하는 API전체를 바로 확일 할 수있다.
+
+
+### 동작.
+사용자 입력으로 액션이 생겼을 떄를 생각해봅시다.
+1. View는 Action Creater를 통해 상태값 변경에 대한 정보가 담긴 Action을 생성합니다.
+2. Action Creater가 생성한 Action을 Dispatcher에 전달합니다.
+3. Dispatcher는 Action이 호출된 순서에 따라 알맞은 스토어로 전달합니다.(Store가 여러개인 구조)
+4. Store에서는 Actoin의 정보를 확인해서 상태값 변경을 처리합니다.(경우에 따라 Action을 무시합니다.)
+5. 상태 변경이 완료되면 Store는 자신을 subscribe하고 있는 Controller View에게 상태값이 변경됐다는 사실을 전달합니다.
+6. Controller view는 Store에게 변경된 상태값을 전달받습니다.
+7. 변경된 상태값을 전달받은 Controller View는 자신 아래의 모든 View에게 새로운 상태를 렌더링하라는 신호를 전달합니다.
+8. View에서 상태값에 따라 ReRendergin을 수행합니다.s
+
+
+
 
 
 ## Ref
+- [페이스북이 Flux구조를 선택한 이유](https://blog.coderifleman.com/2015/06/19/mvc-does-not-scale-use-flux-instead/)
+- [Flux](https://facebook.github.io/flux/)
+- [카툰으로 이해하는 Flux](https://bestalign.github.io/2015/10/06/cartoon-guide-to-flux/)
 - [Flux](https://beomy.tistory.com/44)
 - [  s](https://beomy.tistory.com/43)
 - [Front-End Mvc](https://www.miraeweb.com/single-post/2016/11/17/%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C-%EC%9B%B9%EC%95%A0%ED%94%8C%EB%A6%AC%EC%BC%80%EC%9D%B4%EC%85%98-%EC%95%84%ED%82%A4%ED%85%8D%EC%B3%90-%EB%B9%84%EA%B5%90%EB%B6%84%EC%84%9D-MVC%EC%99%80-MVVM)
