@@ -1,7 +1,7 @@
 # Gulp
 ![](/resource/img/nodeJs/gulp.png)
 
-## 1.Intro
+## Intro
 
 Stream기반의 빌드 자동화 도구.  
 프론트엔드 작업을 하며 하게되는 병합 압축등의 웹 리소스 최적화 작업을 손쉽게 할 수 있다.  
@@ -39,6 +39,16 @@ node.js 기반의 task
 
 
 
+## 1. 폴더구조
+1. src  (soruce)
+가공 대상 파일이 들어간다. 아무런 처리를 하지 않은 javascript, 압축하지 않은 css 최적화하지 않은 이미지 등이 될 수 있다.
+2. dist (distribution)  
+Gulp에 의해 빌드된 파일이 들어가게 된다.
+
+3. gulpfile.js  
+gulpfile.js파일은 Gul의 설정이 담겨지게 된다.
+
+
 
 
 ## 2.문법
@@ -70,7 +80,7 @@ gulp.src([
 ```
 파일이나 파일의 경로들이 포함된 배열또는 스트링이다.  
 와일드카드 형태의 표현이 가능하다.  
-경로 앞에 느낌표를 붙이는것은 해당파일을 포함하지 않겠다는 의미이다.  
+경로 앞에 `!`(느낌표)를 붙이는것은 해당파일을 포함하지 않겠다는 의미이다.  
 
 ### 2.3 pipe
 ```js
@@ -112,217 +122,97 @@ $  gulp task-name
 만일 특정 타스크를 실핼하고 싶다면 이렇게 하면된다.
 
 
+### 2.5 Gulp Plug-iin
+1. gulp-webserver : 웹서버처럼 동작하게 하는 프러려그인.
+2. gulp-concat : js 파일 병합을 위한 플러그인
+3. gulp-uglify : js 파일 압축을 위한 플러그인
+4. gulp-minify-html : html파일 minify를 위한 플러그인
+5. gulp-ssas : ssas파일을 컴파일 하기 위한 플러그인
+6. gulp-livereload : 웹 브라우저를 리로드하기 위한 플러그인.
+
+
+
 
       
 
 
 ## 3. SAMPLE
-다음 소스는 http://blog.hkwon.me/draw-korean-map-chart-with-geojson/에서 발췌한 소스이다.
-지형 데이터 (.shp)파일을 json형식으로 가공하는데 필요한 일련의 작업들을 처리한다.
-작업 내용은 다음과 같다.
-1. shape 파일 축소
-2. geoJSON파일로 변환
-3. 행정구역별로 분해
-등의 작업을 한번에 할 수 있다.
+(이곳)[https://programmingsummaries.tistory.com/356?category=700959]에서 발췌한  Gulp 셈플을 추가한다.
+
 
 ```js
-'use strict';
+var gulp = require('gulp');
+var webserver = require('gulp-webserver');
+var concat = require('gulp-concat');
+var uglify = require('gulp-uglify');
+var minifyhtml = require('gulp-minify-html');
+var sass = require('gulp-sass');
+var livereload = require('gulp-livereload');
 
-var fs = require("fs");
+var src = 'public/src';
+var dist = 'public/dist';
 
-var gulp  = require('gulp'),  
-    gutil = require('gulp-util'),
-    clean = require('gulp-clean'),
-    exec  = require('child_process').exec,
-    _     = require('lodash'),
-    iconv = require('iconv-lite');
+var paths = {
+	js: src + '/js/*.js',
+	scss: src + '/scss/*.scss',
+	html: src + '/**/*.html'
+};
 
-var shpPath = {  
-    ctprvn : {
-        source : 'src/CTPRVN/TL_SCCO_CTPRVN.shp',
-        convert : 'src/CTPRVN/TL_SCCO_CTPRVN_CONVERT.shp',
-        json : 'dist/ctprvn.json'
-    },
-    sig : {
-        source : 'src/SIG/TL_SCCO_SIG.shp',
-        convert : 'src/SIG/TL_SCCO_SIG_CONVERT.shp',
-        json : 'dist/sig.json'
-    },
-    emd : {
-        source : 'src/EMD/TL_SCCO_EMD.shp',
-        convert : 'src/EMD/TL_SCCO_EMD_CONVERT.shp',
-        json : 'dist/emd.json'
-    }
-}
-gulp.task('default', ['convert']);
 
-gulp.task('clean-shp', function() {  
-    return gulp.src(['dist/*.json', 'src/**/*_CONVERT.*'])
-        .pipe(clean());
+// 웹서버를 localhost:8000 로 실행한다.
+gulp.task('server', function () {
+	return gulp.src(dist + '/')
+		.pipe(webserver());
 });
 
-gulp.task('clean-split', function() {  
-    if (!fs.existsSync('dist/sig')){
-        fs.mkdirSync('dist/sig');
-    }
-
-    if (!fs.existsSync('dist/emd')){
-        fs.mkdirSync('dist/emd');
-    }
-
-    return gulp.src(['dist/sig/*.json', 'dist/emd/*.json'])
-        .pipe(clean());
+// 자바스크립트 파일을 하나로 합치고 압축한다.
+gulp.task('combine-js', function () {
+	return gulp.src(paths.js)
+		.pipe(concat('script.js'))
+		.pipe(uglify())
+		.pipe(gulp.dest(dist + '/js'));
 });
 
-console.log(1)
-
-gulp.task('convert', ['clean-shp'], function() {  
-    for (var key in shpPath) {
-        console.log('==========');
-
-        mapshaper(key, shpPath[key].source);
-    }
+// sass 파일을 css 로 컴파일한다.
+gulp.task('compile-sass', function () {
+	return gulp.src(paths.scss)
+		.pipe(sass())
+		.pipe(gulp.dest(dist + '/css'));
 });
 
-
-
-
-gulp.task('split', ['clean-split'], function() {  
-    
-    // 시군구 geojson 생성
-    splitGeojson('sig');
-
-    // 동 geojson 생성
-    splitGeojson('emd');
+// HTML 파일을 압축한다.
+gulp.task('compress-html', function () {
+	return gulp.src(paths.html)
+		.pipe(minifyhtml())
+		.pipe(gulp.dest(dist + '/'));
 });
 
-function mapshaper(key) {  
-    var command = 'mapshaper -i '
-                + shpPath[key].source
-                + ' encoding=euc-kr -simplify weighted 0.5% -o format=shapefile '
-                + shpPath[key].convert;
+// 파일 변경 감지 및 브라우저 재시작
+gulp.task('watch', function () {
+	livereload.listen();
+	gulp.watch(paths.js, ['combine-js']);
+	gulp.watch(paths.scss, ['compile-sass']);
+	gulp.watch(paths.html, ['compress-html']);
+	gulp.watch(dist + '/**').on('change', livereload.changed);
+});
 
-    console.log(command);
-
-    exec(command, function (error, stdout, stderr) {
-        if (error) {
-            console.error(`exec error: ${error}`);
-            return;
-        }
-
-        console.log(stdout);
-        console.log(stderr);
-        console.log('=> convert size')
-        console.log('%s : %d bytes', shpPath[key].source,  fs.statSync(shpPath[key].source).size);
-        console.log('%s : %d bytes', shpPath[key].convert, fs.statSync(shpPath[key].convert).size);
-        console.log('=>')
-
-        ogr2ogr(key);
-    });
-}
-
-function ogr2ogr(key) {  
-    var command = 'ogr2ogr -f GeoJSON -t_srs epsg:4326 '  //-lco COORDINATE_PRECISION=3
-                + shpPath[key].json
-                +' '+ shpPath[key].convert;
-
-    console.log(command);
-
-    exec(command, function (error, stdout, stderr) {
-        if (error) {
-            console.error(`exec error: ${error}`);
-            return;
-        }
-
-        console.log(stdout);
-        console.log(stderr);
-        console.log('=> convert json size')
-        console.log('%s : %d bytes', shpPath[key].json, fs.statSync(shpPath[key].json).size);
-        console.log('=>')
-    });
-}
-
-function splitGeojson(type) {  
-    console.log("\n *Split geoJSON START* \n");
-    console.log(type);
-
-    var fileName = shpPath[type].json;
-    //var exception = [ "47940" ];
-    var exception = [];
-
-    // 시군구 데이터 sido 별로 자르기
-    var contents = fs.readFileSync(fileName);
-    var features ={};
-    contents = iconv.decode(contents, 'utf-8');
-
-    var jsonContent = JSON.parse(contents);
-
-    for (var key in jsonContent.features) {
-        var feature = jsonContent.features[key];
-        var subKey, cd, name;
-
-        if (type == 'sig') {
-            cd = feature.properties.SIG_CD;
-            name = feature.properties.SIG_KOR_NM;
-            subKey = feature.properties.SIG_CD.substr(0, 2);
-        } else if (type == 'emd') {
-            cd = feature.properties.EMD_CD;
-            name = feature.properties.EMD_KOR_NM;
-            subKey = feature.properties.EMD_CD.substr(0, 5);
-        }
-
-        console.log(`feature.properties.cd: ${cd}, feature.properties.name: ${name}`);
-
-        if (features.hasOwnProperty(subKey)) {
-            if (!_.has(exception, cd)) {
-                features[subKey].push(feature);
-            }
-        } else {
-            features[subKey] = [];
-
-            if (!_.has(exception, cd)) {
-                features[subKey].push(feature);
-            }
-        }
-    }
-
-    for (var key in features) {
-        var featuresCollection = _.template('{"type": "FeatureCollection", "features": [ \
-                <% _.forEach(iterator, function(val, index, list) { %> \
-                \n  <%= JSON.stringify(val) %><% \
-                if (index < list.length - 1) { \
-                %>, <% \
-                } \
-                }); %> \
-            \n]}');
-
-        var jsonStr = featuresCollection({
-            'iterator': features[key]
-        });
-
-        // split json파일 생성
-        fs.writeFileSync("dist/" + type + "/" + key + ".json", jsonStr);
-    }
-
-    console.log("\n *EXIT* \n");
-}
-
-
-
-/*
- "devDependencies": {
-    "gulp": "^3.9.1",
-    "gulp-clean": "^0.3.2",
-    "gulp-exec": "^2.1.3",
-    "gulp-util": "^3.0.8",
-    "iconv-lite": "^0.4.17",
-    "lodash": "^4.17.4"
-  }
-*/
+//기본 task 설정
+gulp.task('default', [
+	'server', 'combine-js', 
+	'compile-sass', 'compress-html', 
+	'watch' ]);
 
 ```
 
+
+### 후기.
+배포자동화를 연습해보기 위해서 빌드자동화 도구를 다뤄보고 싶었다. Grunt는 장황했고 webpack은 너무 복잡하게 느껴졌다. 
+나와 같은 개발자들에게 빌드 자동화도구를 캐주얼한 마음으로 연습해 볼 수 있는게 Gulp가 아닐까하는 생각이 든다. 
+Gulp의 연관 플러그인으로 빌드 자동화를 연습해보다가 좀더 트랜드하고 디테일한 작업이 필요해졌을때 webpack에 대해 알아보는게 어떨까?
+
 ### REF
+- [Gulp입문하기](https://programmingsummaries.tistory.com/356?category=700959)
+- [Gulp4.0](https://programmingsummaries.tistory.com/387)
 - [프론트엔드를 위한 gulp](https://github.com/FEDevelopers/tech.description/wiki/%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C-%EA%B0%9C%EB%B0%9C%EC%9D%84-%EC%9C%84%ED%95%9C-Gulp)
 - [Gulpjs.com](https://gulpjs.com/)
 - [Gulp for beginners](https://css-tricks.com/gulp-for-beginners/)
