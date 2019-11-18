@@ -3,9 +3,15 @@
 
 ## Intro
 
-Stream기반의 빌드 자동화 도구.  
-프론트엔드 작업을 하며 하게되는 병합 압축등의 웹 리소스 최적화 작업을 손쉽게 할 수 있다.  
-GULP를 이용하면 다음의 작업이 손쉽게 해결 가능하다.
+node기반의 Streaming build Stystem.  
+요청 후 한번에 결과를 받는 것이 아니라 이벤트로 중간중간 전달받는 방식을 stream이라고 하는데 gulp에서는
+각각의 Task가 pipe로 연결되어 있어 각 작업 파일의 결과가 pipe를 흘러가며 작업결과를 전달하며 파일을 가공한다. 
+
+gulp를 이용하면 프론트엔드 작업을 하며 하게되는 병합 압축등의 웹 리소스 최적화 작업을 손쉽게 할 수 있다.  
+대표적인 작업으로 다음과 같은 일을 수행할 수 있다.  
+
+
+![](/resource/img/nodeJs/bildProcess.png)  
 
 
 **STREAM**  
@@ -210,8 +216,10 @@ gulp.task('default', [
 나와 같은 개발자들에게 빌드 자동화도구를 캐주얼한 마음으로 연습해 볼 수 있는게 Gulp가 아닐까하는 생각이 든다. 
 Gulp의 연관 플러그인으로 빌드 자동화를 연습해보다가 좀더 트랜드하고 디테일한 작업이 필요해졌을때 webpack에 대해 알아보는게 어떨까?
 
+
 ### REF
-- [Gulp입문하기](https://programmingsummaries.tistory.com/356?category=700959)
+- [Gulp입문1](https://programmingsummaries.tistory.com/356?category=700959)
+- [gulp입문2](https://programmingsummaries.tistory.com/377?category=700959)
 - [Gulp4.0](https://programmingsummaries.tistory.com/387)
 - [프론트엔드를 위한 gulp](https://github.com/FEDevelopers/tech.description/wiki/%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C-%EA%B0%9C%EB%B0%9C%EC%9D%84-%EC%9C%84%ED%95%9C-Gulp)
 - [Gulpjs.com](https://gulpjs.com/)
