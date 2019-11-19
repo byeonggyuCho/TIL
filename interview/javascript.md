@@ -275,7 +275,17 @@ name = 'cater';
 
 ## What is a first class function?
 
-## What is unary function?
+## What is unary operator?
+(+) 연산자는 변수를 순자로 변환할때 사용됩니다. 변수를 바꿀 수 없는 경우에는 NaN으로 변환한힙니다.
+```js
+var x = "100";
+var y = + x;
+console.log(typeof x, typeof y); // string, number
+
+var a = "Hello";
+var b = + a;
+console.log(typeof a, typeof b, b); // string, number, NaN
+```
 
 ## How do you redeclare variables in switch block without an error?
 
@@ -434,7 +444,7 @@ console.log(a === b);   //false
 
 ## What is the purpose of void 0?
 Void(0)은 페이지가 리프레쉬 되는것을 막기위해 사요오딘다. `void(0)`은 사이드 이팩트를 막는데 도움이 된다. 이 코드는 일반적으로 HTML document 엘리먼트에 `herf=JavaScript:Vide(0);`를 넣어서 사용된다. 아래 예는 이 코드를 사용하여 브라우저 리프레쉬를 막는 예이다.
-```js
+```html
 <a href="JavaScript:void(0);" onclick="alert('Well done!')">Click Me!</a>
 ```
 
@@ -497,13 +507,20 @@ function secondFunc() {
 ## What tools and techniques do you use debugging JavaScript code?
 브라우저 개발자 도구에서 브레이크포인트를 찍거나 `debugger`연산자를 이용하여 실행문맥을 확인하는 방법을 가장 좋아합니다.
 
+
 ## Explain the difference between mutable and immutable objects.
 - What is an example of an immutable object in JavaScript?
 - What are the pros and cons of immutability?
-- How can you achieve immutability in your own code?
+- How can you achieve immutability in your own code?  
+
+
 ## Explain the difference between synchronous and asynchronous functions.
+
+
 ## What is event loop?
-- What is the difference between call stack and task queue?
+- What is the difference between call stack and task queue?  
+
+
 ## What are the differences between variables created using let, var or const?
 
 
@@ -572,6 +589,34 @@ console.log(firstSkill)
 
 ## Can you give an example of a curry function and why this syntax offers an advantage?
 
+
+## What is a rest parameter?
+rest 파라미터는 함수의 파라미터를 처리하는 향상된 방법입니다. Rest파라미터를 이용하면 많은 인수를 배열의 형태로 표현할 수 있다.
+```js
+function total(...args){
+  let sum = 0;
+  args.forEach(arg=>{
+    sum+=arg;
+  })
+
+  return sum;
+}
+```
+
+## What is a spread operator?
+Spread연산자는 이터레이터를 단일 연산자나 단일 요소로 만들어 줄 수 있습니다.
+```js
+function calulateSum(x,y,z) {
+  return x + y + z;
+}
+
+const numbers = [1,2,3];
+
+console.log(calulateSum(...numbers));
+```
+
+
+
 ## What are the benefits of using spread syntax and how is it different from rest syntax?
 Spread는 ES5에서 `apply`로 대체될 수 있습니다. 
 
@@ -601,6 +646,331 @@ console.log(sum(1,2,4))
 
 ```
 
+## How do you determine two values same or not using object?
+`Object.prototype.is`는 두 값이 같은지 아닌지 결졍합니다.
+
+```js
+Object.is('hello', 'hello');     // true
+Object.is(window, window);   // true
+Object.is([], []) // false
+```
+다음과 같은 경우에 같음으로 간주합니다.  
+1. 둘다 undefined
+2. 둘 다 null
+3. 둘 다 true 이거나 false
+4. 문자열인 경우 길이가 깉고 같은 인덱스의 값이 같아야한다.
+5. 객체인 경우 해당 객체가 참조하는 값이 같아야한다.
+6. 숫자인 경우 둘다 +0 -0이 아니고 둘다 NaN이 아닐 떄 값이 동일해야한다.
+
+
+## How do you copy properties from one object to other?
+`Object.assign()`을 사용할 수 있다. 이 메서드는 target의 값과 속성을 복사하여 새로운 객체를 반환한다. 
+
+```js
+const target = { a: 1, b: 2 };
+const source = { b: 3, c: 4 };
+
+const returnedTarget = Object.assign(target, source);
+
+console.log(target); // { a: 1, b: 3, c: 5 }
+
+console.log(returnedTarget); // { a: 1, b: 3, c: 5 }
+```
+만일 공통 속성이 있는 경우 덮어쓰게 된다. 위 예제에서 속성 b가 `source`객체의 속성으로 수정된걸 알 수 있다.
+
+## What are the applicaations of assign method?
+
+1. 객체 복사.
+2. 객체 병합.
+
+
+## How do you create an object with prototype?
+`Object.create()`는 새로운 객체를 생성합니다.  이 메서드는 존재하는 객체를 새롭게 생성하는 객체의 프로토타입으로 만들 수 있습니다. 
+
+```js
+const user = {
+  name : 'John',
+  printInfo : function(){
+    console.log(`My name is ${this.name}`);
+  }
+}
+
+const admin = Object.create(user);
+
+admin.name = 'Nick';
+admin.printInfo();
+
+```
+
+## What is an anonymous function?
+익명함수는 이름이 없는 함수다. 익명함수는 보통 변수 할당하거나 콜백으로 사용된다.
+
+```js
+function (optionalPrarameters) {
+
+}
+
+// 익명함를 변수에 할당.
+const myFunction = function(){
+
+}
+
+// 익명함수를 콜백함수로 사용.
+[1,2,3].map(function(elements){ 
+
+})
+
+
+```
+
+## How do you define property on Object constructor?
+`Object.prototype.defineProperty()`는 객체에 직접적으로 새로운 속성을 정의하거나 이미 존재하는 속성을 변경하거나 객체를 반환할 때 사용됩니다.
+
+```js
+const newObect = {};
+
+Object.defineProtperty(newObject, 'newProperty', [
+  value: 100,
+  writable: false
+])
+
+console.log(newObject.newProperty); //100
+
+newObject.newProperty = 200;    // It throws an error in strict mode due to writable setting
+
+```
+
+
+## What is the difference between get and defineProperty?
+두 가지 기능은 클래스를 쓰지 않는 이상 비슷한 결과가 나왼다. 만약 `get`
+
+## What is the purpose of switch-case?
+
+`switch`는 때로는 `if`문 보다 편할떄가 있다.
+
+```js
+switch (expression)
+{
+    case value1:
+        statement1;
+        break;
+    case value2:
+        statement2;
+        break;
+    .
+    .
+    case valueN:
+        statementN;
+        break;
+    default:
+        statementDefault;
+}
+```
+
+`switch`를 사용하기 위해서는 조건이 있다.
+1. expression은 숫자나 문자이어야한다.
+2. expression이 중복되면 안된다.
+3. `default`는 선택이다.
+4. `braek`는 `switch`의 해당 시퀀스를 종료하기 위해 사용한다.
+5. `break`는 선택값이지만 다음 케이스가 실행된다.
+
+
+
+## What is an Iterator?
+이터레이터는 순차적으로 값을 반환하면서 종료여부를 확인할 수 있는 객체 프로토콜입니다. `next()`메서드를 호출하면 `value`와 `done`속성을 가진 객체를 반환합니다. 
+
+## What is an event loop?
+
+## What is an event queue?
+
+## How do you get meta data of a module?
+`import.meta`는 자바스크립트 모듈에 대한 메타데이터 정보를 볼 수 있는 객체이다. 현재 모듈(모듈의 URL같은 )에 대한 정보를 볼 수 있다. 
+
+```html
+<script type="module" src="welcome-module.js"></script>
+<script>
+  console.log(import.meta); // { url: "file:///home/user/welcome-module.js" }
+</script>
+```
+
+## What are the advantages of typescript over javascript
+1. TypeScript은 컴파일에러를 개발하는 시점에 알 수 있고 런타임 에러를 줄일 수 있다.
+2. TypeScript는 컴파일의 정확성을 높히는 정적 타입을 지원한다.
+3. TypeScript 컴파일러는 ts파일을 ES3,ES4,ES5,ES6로 컴파일 할 수 있다.
+
+
+
+## What is contructor method in class?
+생성자 메소드는 클래스 안에 생성된 객체를 만들고 초기화하는 특별한 메소드입니다. 생성자 메소드가 필요 없으면 default 생성자 메소드를 사용할 수 있습니다.
+
+```js
+class Employee {
+  constructor() {
+    this.name = "John";
+  }
+}
+
+var employeeObject = new Employee();
+
+console.log(employeeObject.name); // John
+```
+
+
+### What happens if you write constructor more than once in a class?
+생성자 메소드는 클래스에서 한번만 정의해야 합니다. 생성자 메소드를 여러번 쓰면 문법 오류가 발생합니다.
+
+```js
+class Employee {
+   constructor() {
+     this.name = "John";
+   }
+   constructor() {   //  Uncaught SyntaxError: A class may only have one constructor
+     this.age = 30;
+   }
+ }
+
+ var employeeObject = new Employee();
+
+ console.log(employeeObject.name);
+```
+
+## What are the advantages of module loaders?
+1. 동적인 로딩
+2. 상태 분리
+3. 전역 네임스페이스 분리
+4. Compilation hooks
+5. Nested virtualization
+
+
+## How do you call the constructor of parent class?
+부모 클래스의 생성자 함수를 호출하기 위해 `super`키워드를 사용할 수 있습니다. `super()`를 `this`를 사용하기 전에 호출하지 않으면 참조 오류를 발생합니다.
+
+```js
+class Square extends Rectangle {
+  constructor(length) {
+    super(length, length);
+    this.name = 'Square';
+  }
+
+  get area() {
+    return this.width * this.height;
+  }
+
+  set area(value) {
+    this.area = value;
+  }
+}
+
+```
+
+## How do you extend classes?
+`extends`키워드는 다른 클래스의 자식 클래스를 생성할때 사용됩니다. 기본 제공 객체뿐만 아니라 사용자 정의 객체도 하위클래스화할 수 있습니다.
+
+```js
+ class Square extends Rectangle {
+   constructor(length) {
+     super(length, length);
+     this.name = 'Square';
+   }
+
+   get area() {
+     return this.width * this.height;
+   }
+
+   set area(value) {
+     this.area = value;
+   }
+ }
+```
+
+## How to get value frome get parameters?
+`new URL()`객체는 searchParams 속성을 통해 인수들에 접근할 수 있다.
+
+```js
+let urlString = "http://www.some-domain.com/about.html?x=1&y=2&z=3"; //window.location.href
+let url = new URL(urlString);
+let parameterZ = url.searchParams.get("z");
+console.log(parameterZ); // 3
+```
+
+
+## How do you load CSS and JS files dynamically?
+Dom에 링크와 스크립트 엘리먼트를 만들수 있고 해드테그의 자식테그로 추가할 수 있다.   
+리소스의 로드시점을 어떻게 잡을 수 있을까?
+
+```js
+function loadAssets(filename, filetype) {
+  var fileReference = null;
+
+  if(filetype === 'css'){
+      fileReference = document.createElement("link")
+      fileReference.sestAttribute('rel', 'stylesheet');
+      fileReference.sestAttribute('type', 'text/css');
+      fileReference.sestAttribute('src', filename);
+
+  }else if(filetype === 'js') {
+      fileReference = document.createElement('script');
+      fileReference.sestAttribute('type', 'text/javascript');
+      fileReference.sestAttribute('src', filename);
+  }
+
+  if(fileReference){
+    var headNode = document.getElementsByTagName("head")[0];
+    headNode.appendChild(fileReference);
+  }
+
+}
+
+```
+
+
+## How do you get the prototype of an object?
+`Object.getPrototypeOf(obj)`메소드를 사용하면 prototypeObject를 반환받을 수 있습니다. 상속된 속성이 없으면 `null`을 반환합니다.
+상속받은 프로토타입 객체가 없으면 Null을 반환합니다.
+
+```js
+const newPrototype = {};
+const newObject = Object.create(newPrototype);
+
+console.log(Object.getPrototypeOf(newObject) === newPrototype) // true
+```
+
+
+## How do you set prototype of one object to acother?
+`Object.setprototypeOf()`메소드를 사용하면 프로토타입을 셋팅할 수 있다. 
+
+```js
+const newObject = {};
+console.log(Object.isExtensible(newObject)); //true
+
+```
+
+
+## How do you define multiple properties on an object?
+`Object.defineProperties()`메소드는 새로운 프로퍼티를 생성하거나 존재하는 프로퍼티를 변경할때 사용할 수 있다.
+
+```js
+const newObject = {};
+
+Object.defineProperties(newObject, {
+  newProperty1:{
+    value : 'cater',
+    writable : true;
+  },
+  newProperty2: {}
+})
+```
+
+## Whay do you need Obfuscation?
+1. 코드 크기를 줄일 수 있다. 
+2. 비지니스 로직을 숨겨서 외부로 부터 보호할 수 있다.
+3. 리버스 엔지니어링을 어렵게 만들 수 있다.
+4. 다운로드 시간이 줄어든다.
+
+
+
+
+
 ## How can you share code between files?
 
 ## Why you might want to create static class members?
@@ -613,11 +983,36 @@ console.log(sum(1,2,4))
 `User objects`는 자바스크립트 코드로 정의된 객체를 말한다.
 
 
+## What is a thunk function?
 
 
+## What are asynchronus thunk?
+
+## What is the output of below function calls?
+
+## What is the difference between reflow and repaint?
 
 
+## What is the difference between Shallow and Deep Copy?
 
+## What is the purpose of Error object?
+
+## What is the purpose of double tilde operator?
+
+```js
+~~
+```
+
+
+## What is ArrayBuffer?
+
+```js
+let buffer = new ArrayBuffer(16); // create a buffer of length 16
+alert(buffer.byteLength); // 16
+
+//Create a DataView referring to the buffer
+ let view = new DataView(buffer);
+```
 
 
 ## Coding Qeustions
