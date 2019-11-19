@@ -522,9 +522,28 @@ function secondFunc() {
 
 
 ## What are the differences between variables created using let, var or const?
+`var`는 현재 context에 변수를 만든다는것을 의미한다. `var`키워드가 없으면 전역변수를 생성한다. 기본적으로 자바스크립트에서는 function내부에서 새로운 context가 생성된다. 따라서 function 내부의 선언된 변수만이 지역변수였다.  
+`var`와 달리 `let`는 block Scope를 제공한다. 블럭으로 변수를 구분한다. 또 같은 Context안에서 같은 이름의 변수를 선언할 수 없다.
+`const`는 기본적으로 `let`의 기능을 모두 포함하지만 재할당이 불가능한 기능이 덫붙는다. 하지만 자료형이 객체일 경우 객체 속성에 대한 수정은 할 수 있다.
+
+
 
 
 ## What are the differences between ES6 class and ES5 function constructors?
+
+**기능** | **ES5** | **ES6** 
+:---:|:---:|:---:
+ constructor를 함수로 실행| O |  X
+ spuerClass의 constructor 호출| X(유사 연출) |  O
+ method 상속 | O | O
+ methods를 생성자함수로 싱행| O |  X
+ static methods:상속 | O | X
+ stric method를 생성자함수로 실행 | O  |  X
+ methods:superClass의메소드호출| X(유사 연출) | O 
+ hoisting | O  |  O
+ TDZ | X  | O
+
+
 
 ## Can you offer a use case for the new arrow => function syntax? How does this new syntax differ from other functions?
 
@@ -984,13 +1003,42 @@ Object.defineProperties(newObject, {
 
 
 ## What is a thunk function?
+`thunk`는 원하는 동작을 하기 전에 미들웨어같은 어떤 작업을 끼워넣는 랩퍼 함수라고 볼 수 있다.
 
+```js
+const add = (x,y) => x + y;
+const thunk = () => add(2,3);
+
+thunk();    //5
+```
 
 ## What are asynchronus thunk?
+비동기 `thunk`는 네트워크 요청시 유용하다. 
+
+```js
+function fetchData(fn){
+  fetch('https://jsonplaceholder.typicode.com/todos/1')
+  .then(response => response.json())
+  .then(json => fn(json))
+}
+
+const asyncThunk = function (){
+   return fetchData(function getData(data){
+      console.log(data)
+  })
+}
+
+asyncThunk()
+
+```
+`getData`함수는 즉시 호출되지 않고 `fetch`API로 데이터를 조회해와서 데이터가 준비되었을때 프로미스 체인에 의해 호출된다. 비동기 `thunk`를 이해하기위한 가장 좋은 예는 `redux`라고 하는 상태관리 라이브러리를 사용해보는거이다. `redux`에서는 비동기 `thunk`를 액션을 전달하는것을 지연하기위해 사용된다.
 
 ## What is the output of below function calls?
 
 ## What is the difference between reflow and repaint?
+`repaint`는 요소의 가시성에 영향을 미치지만 요소의 레이아웃에는 영향을 미치지 않는 변경이 있을 때 발생한다. (예를 들면 outline, visibility, 배경색 변경같은 상황)  
+`relfow`는 페이지의 레이아웃에 영향을 미치는 변경사항이 포함된다. 브라우져의 윈도우를 리사이즈하거나 폰트를 변경하는 것, 컨텐트를 변경하는것 스타일을 계산하는 자바스크립트 메서드를 사용했을때, 돔요소를 지웠을때나 엘리먼트 클래스를 변경하는 작업들이 `reflow`를 발생시킨다. 
+엘리먼트의 `reflow`는 자신의 부모 엘리먼트나 자식 엘리먼트에 후속적인 `reflow`를 만든다.
 
 
 ## What is the difference between Shallow and Deep Copy?
