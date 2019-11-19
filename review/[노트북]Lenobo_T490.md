@@ -15,7 +15,7 @@ M471A1K43BB1
 
 ## 디스플레이
 1. Info
-    - Lenovo
+    - Lenovo  
     - LPM140M420
 
 WQHD IPS (2460x1440) 
