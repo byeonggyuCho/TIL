@@ -159,7 +159,6 @@ function foo2()
 ## What is IndexedDB?
 
 
-## Explain event delegation.
 
 ## Explain how this works in JavaScript.
 
@@ -258,6 +257,8 @@ name = 'cater';
 
 
 ## What is prototype chain?
+자바스크립트에서 객체는 자신의 원형이되는 Prototype Object에 대한 link를 갖습니다.  
+프로토타입 체인이란 객체의 속성이나 메서드에 접근할때 prototype link를 참조하여 prototype object의 속성과 메서드를 함께 탐색하는 것을 말하빈다.
 
 ## What is a first class function?
 
@@ -268,19 +269,82 @@ name = 'cater';
 ## What is Temporal Dead Zone?
 
 ## What is the benefit of using moudules?
+js파일의 호출순서와 namespace문제에서 벗어날 수 있습니다.
+
+## What is an evnet flow?
+Event Flow는 웹 페이지에서 이벤트를 수신하는 순서이다. 
+
+### Ref
+- [javascript evnet flow](tutorialspark.com/javascript/JavaScript_Event_Flow.php) 
+
+
+## What is event bubbling?
+![](/resource/img/javascript/bubbling.png)  
+이벤트가 돔 트리에서 최하위 노드에서 시작했을 때 이벤트는 최상위 노드까지 확산된다. 브라우저는 특정 화면 요소에서 이벤트가 발생했을 때 이벤트를 최상위 요소까지 이벤트를 전파한다(버블링)
+
+## What is event capturing?
+![](/resource/img/javascript/capturing.png)  
+event Bubbling의 반대의 경우를 event capturing이라고 한다.  최상위 노드에서 이벤트가 발생하고 최하위 노드까지 이벤트를 전달한다.  현대 브라우저에서는 event capturing이 막혀 있다. 따라서 이런 동작을 해야할 때는 event bubbling으로 구현해야 한다. 
+
+## How to prevent event bubbling?
+`e.stopPropagation()`를 사용하면 이벤트 전달을 중단한다. 이벤트 버블링의 경우에는 클릭한 요소의 이벤트만 발생시키고 상위 요소로 전달하지 않는다.
+
+
+## What is event delegation.
+Event delegation(이벤트 위임), 하위 요소에 각각 이벤트를 붙이지 않고 상위 요소에서 하위 요소의 이벤트들을 제어하는 방식.  
+하위 노드에서 발생하는 이벤트를 상위 노드에서 감지하여 처리하는 방식을 말한다. 하위 노드에 각각 이벤트를 할당해야하는 상황에서 상위노드로 이벤트를 위임함으로써 공통으로 제어할 수 있다.
+
+```html
+<html>
+	<head>
+		<style>
+			html{border:5px solid red;padding:30px;}
+			body{border:5px solid green;padding:30px;}
+			fieldset{border:5px solid blue;padding:30px;}
+			input{border:5px solid black;padding:30px;}
+		</style>
+	</head>
+	<body>
+		<fieldset>
+			<legend>event propagation</legend>
+			<input type="button" id="target" value="target">			
+		</fieldset>
+		<script>
+		function handler(event){
+			var phases = ['capturing', 'target', 'bubbling']
+			console.log(event.target.nodeName, this.nodeName, phases[event.eventPhase-1]);
+		}
+		document.getElementById('target').addEventListener('click', handler, false);
+		document.querySelector('fieldset').addEventListener('click', handler, false);
+		document.querySelector('body').addEventListener('click', handler, false);
+		document.querySelector('html').addEventListener('click', handler, false);
+		</script>
+	</body>
+</html>
+```
 
 
 
-## Describe event bubbling.
 
-## Describe event capturing.
 
 ## What's the difference between an "attribute" and a "property"?
 
 ## What are the pros and cons of extending built-in JavaScript objects?
+
 ## What is the difference between == and ===?
+`===`은 추가적으로 자료형을 비교하여 자동 형변환에 의한 모호함을 제거할 수 있다.
+```js
+var a = 1;
+var b = '1';
+
+console.log(a == b);    //true
+console.log(a === b);   //false
+```
 
 ## Explain the same-origin policy with regards to JavaScript.
+same orgin policy는 같은 도메인 주소에서만 요청해야한다는 정책이다.  
+
+
 
 ## Why is it called a Ternary operator, what does the word "Ternary" indicate?
 
@@ -289,6 +353,7 @@ name = 'cater';
 ## What are some of the advantages/disadvantages of writing JavaScript code in a language that compiles to JavaScript?
 
 ## What tools and techniques do you use debugging JavaScript code?
+브라우저 개발자 도구에서 브레이크포인트를 찍거나 `debugger`연산자를 이용하여 실행문맥을 확인하는 방법을 가장 좋아합니다.
 
 ## Explain the difference between mutable and immutable objects.
 - What is an example of an immutable object in JavaScript?
@@ -298,9 +363,52 @@ name = 'cater';
 ## What is event loop?
 - What is the difference between call stack and task queue?
 ## What are the differences between variables created using let, var or const?
+
+
 ## What are the differences between ES6 class and ES5 function constructors?
+
 ## Can you offer a use case for the new arrow => function syntax? How does this new syntax differ from other functions?
+
+언제 `function`키워드를 쓰고 언제 Arrow function을 사용할까?
+
+1. 생성자 함수로 사용해야 할떄는 `function`을 사용해야한다.
+```js
+const Person = () => {
+  this.name = 'cater'
+}
+
+var p1 = new Person();
+//Uncaught TypeError: Person is not a constructor
+```
+
+2. Arrow function을 이용하면 상위 스코프의 `this`를 Arrow function의 `this`가 참조한다.
+```js
+function Person (){
+
+	this.name = 'cater';
+	this.sayHello = ()=>setTimeout(()=>{
+		console.log(this.name);
+    },0)
+}
+```
+
+- [arrowFunction](https://happycording.tistory.com/entry/Arrow-function-%EB%B9%84%EB%B0%80%EC%9D%84-%ED%8C%8C%ED%97%A4%EC%B3%90%EB%B3%B4%EC%9E%90-ES6)
+
 ## What advantage is there for using the arrow syntax for a method in a constructor?
+`this`에 대한 참조를 명시적으로 선언하지 않아도 된다.
+ES6이전에 메서드에서 `this`를 참조하기 위해서
+```js
+
+var self = this;
+function Person () {
+
+  this.sayHello
+
+}
+
+
+```
+
 ## What is the definition of a higher-order function?
 
 
@@ -325,11 +433,47 @@ console.log(firstSkill)
 ## What are the benefits of using spread syntax and how is it different from rest syntax?
 Spread는 ES5에서 `apply`로 대체될 수 있습니다. 
 
+```js
+function sum(x,y,z){
+  return x + y + z;
+}
+
+const numbers = [1,2,3];
+
+console.log(sum(...numbers))
+console.log(sum.apply(null, numbers)
+```
+`Function.prototype.apply`를 이용하는 것 보다 직관적이고 쉽게 이해가 가능합니다.  
+
+
+Rest문법은 Spread와 비슷하지만 여러 인자들을 하나의 배열로 반환합니다. 그리고 반드시 매개변수에서 가장 마지막에 사용해야합니다.
+```js
+function sum(...args) {
+  return args.reduce((prev, cur) => {
+    return prev+cur;
+  })
+}
+
+console.log(sum(1,2,3))
+console.log(sum(1,2,4))
+
+```
+
 ## How can you share code between files?
 
 ## Why you might want to create static class members?
 
 ## What is the difference between while and do-while loops in JavaScript?
+
+## What is the difference between naive, host user object?
+
+
+
+
+
+
+
+
 
 
 ## Coding Qeustions
