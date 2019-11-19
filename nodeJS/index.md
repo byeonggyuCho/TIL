@@ -71,4 +71,5 @@ Node.js 의 특징을 살펴보면 짧은 시간에 대량의 클라이언트 �
 
 
 ## Ref
+- [about Node.js](https://huni.org/node-js%EC%97%90-%EB%8C%80%ED%95%98%EC%97%AC-48d0a5af438b)
 - [Understanding NodeJs](https://programmingsummaries.tistory.com/328?category=604662)

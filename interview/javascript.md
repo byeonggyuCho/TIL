@@ -77,7 +77,20 @@ new Promise(function(resolve, reject) {
 
 ```
 
-## ## What is strict mode? What are some of the advantages/disadvantages of using it?
+## What ar the pros and cons of promisses over callback?
+
+1. 장점  
+- callback hell을 피할 수 있다.
+- `then()`메서드를 이용해서 순차적인 비동기 코드를 작성하기 쉽다.
+- `Pomiseall()`을 이용해서 병렬적으로 실행되는 비동기코드를 작성하기 쉽다.
+- 콜백의 몇가지 문제를 해결할 수 있다. (콜백 요청이 너무 늦는것, 너무 빠른것, 에러가 여러번 호출되는 것)
+
+2. 단점  
+- 코드가 약간 복잡하다.
+- ES6를 지원하는 환경아 아니라면 polyfill이 필요하다.
+
+
+## What is strict mode? What are some of the advantages/disadvantages of using it?
 Strict Mode는 ES5에서 새로 나온 기능으로 함수나 JS프로그램이 보다 엄격한 문맥에서 동작하도록 하는 기능이다. 
 Strict Mode를 사용하면 에러가 발생하는 동작을 막을 수 있다.  
 String Mode는 나쁜 구문을 실제 에러로 알려주어 안전한 자바스크립트를 작성하는데 도움을준다. 
@@ -324,10 +337,84 @@ Event delegation(이벤트 위임), 하위 요소에 각각 이벤트를 붙이�
 ```
 
 
+## What are PWA?
+Progressive web applications은 웰을 통해 전달된 모바일 앱의 한 종류입니다. pwa는 일반적인 웹기술(HTML, CSS, javascript)을 사용해 만들어집니다. 이런 PWA들을 서버로 배포되어 URL로 접근 가능하고 검색엔진에서 검색이 가능합니다.
+
+
+## What is an arguments object?
+`arguments`객체는 함수에 전달된 인자에 접근할 수 있는 유사배열 객체입니다.  
+```js
+function sum(){
+  var total = 0;
+  for (var i = 0;, length = arguments.length; i< length; i++) {
+
+  }
+  return total;
+}
+
+sum(1,2,3)
+```
+
+
+## What are thre pros and cons of for loop?
+
+1. 장점
+- 모든 환경에서 작동합니다.  
+- `continue`, `break` 연산자 사용가능.
+
+2. 단점  
+- 너무 장황합니다.
+
+## What are the benefits of keeping declarations aat the top?
+변수나 함수 선언은 스크립트 테그 최상단이나 함수 최상단에 선언하는 것을 추천합니다. 이에 대한 이점은 다음과 같습니다.  
+
+
+1. 클린코드
+2. 지역변수를 한눈에 볼 수 있음.
+3. 글로벌 변수를 의도치않게 생성하는 걸 방지함.
+4. 변수를 재선언하는 실수를 막을 수 있음.
+
+
+## What are benefits of initializing variables?
+1. 클린코드
+2. 초기화된 변수를 한눈에 볼 수 있음.
+3. 선언 안된 변수를피할 수 있음.
 
 
 
-## What's the difference between an "attribute" and a "property"?
+## How do get query string values in javascript?
+`URLSearchParams`객체를 사용하면 queryString을 얻을 수 있습니다.
+```js
+const urlParams = new URLSearchParams(window.location.search);
+const clientCode = urlParams.get('clientCode');
+```
+
+## What is tree shaking?
+`tree shaking`은 불필요한 코드를 제거하는 하나의 양식입니다. 프로세스를 빌드할 때 사용하지 않는 모듈을 번들에 포함되지 않으며, 이를 위해 ES6 모듈 구문은 Static 구조를 가져야합니다. 
+
+
+## What is the need of tree shaking?
+애플리케이션의 코드 사이즈를 줄일 수 있습니다. 축소된 애플리케이션은 성능향상으로 이어집니다.
+
+
+## What's the difference between an "attribute" and a "property"?  
+`Attribute`는 HTML 마크업에 정의되어있는 반면 `property`는 DOM에 정의되어있다. 예를 들어 아래 HTML 엘리먼트는 2개의 `attribute`와 `value`를 가진다.
+```html
+<input type="text" value="Name:">
+```
+이 엘리먼트에 아래처럼 접근 가능하다.
+```js
+const input = document.querySelector('input');
+console.log(input.getAttribute('value')); 
+console.log(input.value); 
+```
+정리하자면 `attribute`는 HTML문서에 정의된 테그의 속성을 나타내는 요소이고, `property`는 HTML이 DOM으로 파싱되었을 떄 테그에 해당하는 DOM 노드의 속성을 의미한다.
+
+
+## What is the difference between proto and ptototyupe?
+`__proto__`는 객체의 메소드나 속성을 찾기 위해 prototype chaine을 하기 위해 사용되는 객체다.  
+반면 `prototype`은 새로운 객체를 만들 때 `__proto__`를 부여하기 위한 속성이다.
+
 
 ## What are the pros and cons of extending built-in JavaScript objects?
 
@@ -342,8 +429,63 @@ console.log(a === b);   //false
 ```
 
 ## Explain the same-origin policy with regards to JavaScript.
-same orgin policy는 같은 도메인 주소에서만 요청해야한다는 정책이다.  
+`same orgin policy`는 자바스크립트가 다른 도메인에 요청하는 것을 막는 정책이다. 여기서 `origin`이란 URI스키마, hostname과 포트번호의 조합을 말한다. 이 정책은 다른 페이지의 악의적인 스크립트가 DOM을 이용하여 다른 사이트의 데이터를 얻는 것을 막을 수 있다.
 
+
+## What is the purpose of void 0?
+Void(0)은 페이지가 리프레쉬 되는것을 막기위해 사요오딘다. `void(0)`은 사이드 이팩트를 막는데 도움이 된다. 이 코드는 일반적으로 HTML document 엘리먼트에 `herf=JavaScript:Vide(0);`를 넣어서 사용된다. 아래 예는 이 코드를 사용하여 브라우저 리프레쉬를 막는 예이다.
+```js
+<a href="JavaScript:void(0);" onclick="alert('Well done!')">Click Me!</a>
+```
+
+
+## Is JavaScript a compiled or interpreted language?
+자바스크립트는 컴파일언어가 아닌 인터프린트 언어다. 브라우저에서 인터프린터는 자바스크립트 코드를 읽고 각 라인을 해석한 뒤 실행한다.  
+요즘 현대 브라우저는 `Just-In-Time(JIT)`라고 불리는 기술을 사용한다. 이 기술은 자바스크립트를 실행할 때, 자바스크립트 소스를 실행가능 한 바이트코드로 컴파일한따.
+
+## Is Javascript a case-sensitive language?
+자바스크립트는 case-senitive 언어이다. 키워드 변수, 함수와 객체이름, 그리고 식별자는 항상 일관된 문자로 입력되어야한다.
+
+
+## What is the use of preventDefault method?
+`preveentDefault()`메소드는 이벤트를 취소할 수 있다. 예를들면 submit 버튼을 클릭했을떄 submission되는 걸 막을 수 있다. 
+
+```js
+var linkElem = document.getElementById("link");
+
+linkElem.addEventListener("click", function(event){
+  event.preventDefault();
+});
+```
+
+
+## What is the use of stopPropagation method?
+`stopTpropagation`은 이벤트 체인에서 `event bubbling`을 막는데 사용된다. 말 그대로 이벤트가 전달되는 것을 막는다.
+내부의 div를 클릭했을때 외부 Div에 이벤트 전파가 되는것을 막는 예제이다.
+```html
+<p>Click DIV1 Element</p>
+<div onclick="secondFunc()">DIV 2
+  <div onclick="firstFunc(event)">DIV 1</div>
+</div>
+
+<script>
+function firstFunc(event) {
+  alert("DIV 1");
+  event.stopPropagation();
+}
+
+function secondFunc() {
+  alert("DIV 2");
+}
+</script>
+```
+
+
+## What are the steps involved in return false usage?
+이벤트 핸들러에서 `return false;`는 아래 단계를 수행합니다.  
+1. 브라우저의 기본 동작을 멈춥니다.
+2. 이벤트가 DOM에 전달되는걸 막습니다.
+3. 콕백이 실행되는걸 막고 호출됐을때 바로 종료됩니다.
 
 
 ## Why is it called a Ternary operator, what does the word "Ternary" indicate?
@@ -466,7 +608,9 @@ console.log(sum(1,2,4))
 ## What is the difference between while and do-while loops in JavaScript?
 
 ## What is the difference between naive, host user object?
-
+`Native objects`는 ECMAScript 명세서에 정의된 자바스크립트 객체다. 예를들면 String Math, RegExp, Object, Function등의 중요 객체등이 있다.
+`Host objects`는 브라우져나 NodeJs같은 실해환경에서 제공하는 객체다. 예를 들면 window,XmlHttpRequeset DOM nodes등이 있다.  
+`User objects`는 자바스크립트 코드로 정의된 객체를 말한다.
 
 
 
