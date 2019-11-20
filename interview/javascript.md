@@ -171,8 +171,6 @@ function foo2()
 
 ## What is IndexedDB?
 
-
-
 ## Explain how this works in JavaScript.
 
 ## Can you give an example of one of the ways that working with this has changed in ES6?
@@ -181,6 +179,25 @@ function foo2()
 
 ## What's the difference between a variable that is: null, undefined or undeclared?
 - How would you go about checking for any of these states?
+
+우선 `undefined`는 변수는 선언됐지만 값이 할당되지 않음을 의미한다. 즉 초기화를 하지 않은 상태이다.  
+`null`은 변수가 참조하는 값이 없다는 것을 명시적으로 나타낸다. `undefined`와 달리 초기화가 되어있다.  
+`undeclared`는 변수자체가 선언되지 않음을 의미한다.
+
+```js
+
+let b;
+let c = null;
+//undeclared
+console.log(a);     // Uncaught ReferenceError: a is not defined
+// undefined
+console.log(b);     // undefined
+// null
+console.log(c);     // null
+
+
+
+```
 
 ## What is a closure, and how/why would you use one?
 closure는 외부 함수의 문맥을 참조하는 내부함수를 의미한다. 변수 밀실화를 위해 사용될 수 있다.
@@ -195,8 +212,6 @@ function delaySayHello(msg){
   },0)
 }
 ```
-
-## What's the difference between host objects and native objects?
 
 
 ## Explain the difference between: function Person(){}, var person = Person(), and var person = new Person()?
@@ -515,7 +530,13 @@ function secondFunc() {
 
 
 ## Explain the difference between synchronous and asynchronous functions.
+![](/resource/img/javascript/async.jpeg)
 
+동기반식은 요청을 보낸 후 응답을 받아야지만 다음 동작이 이루어지는 방식이다. 어떤 일을 처리할 동안 다른 프로그램이 정지한다. 
+싱글 스레드인 자바스크립트에서 어떤 동기함수의 처리시간이 길어지면 병목현상이 생길 수 있다.  
+
+요청을 보낸 후 응답과는 상관없이 다음 방식을 동작하는 방식이다. 겨로가가 주어지는데 시간이 걸리더라도 그 시간 동안 다른 작업을 할 수 있다. 비동기방식은 비동기식 처리를 요청할 때 할일이 끝난 후 처리 결과를 알려주는 콜백함수를 통해 제어흐름을 되찾는다.
+이때 제어흐름을 컨트롤하는것이 `event loop`이다. 비동기 함수의 처리가 끝났을 때 콜백함수의 처리순서를 `call stack`에 끼워넣는 역할을 한다.
 
 ## What is event loop?
 - What is the difference between call stack and task queue?  
@@ -605,6 +626,15 @@ console.log(firstSkill)
 ```
 
 ## Can you give an example of generating a string with ES6 Template Literals?
+템플릿 리터럴(`Template Literals`)은 백틱(backtick)무자 ``\`를 이용한 문자 표기법이다.
+일반적인 문자열과 달리 여러 줄에 걸쳐 문자열을 작성할 수 있으며 문자열과 변수를 혼용하여 사용하는 새로운 방법을 제공한다.
+이를 문자열 인터폴레이션(String Interpolation)이라고 한다.
+```js
+let name = 'Cater'
+
+console.log(`My name is ${name}`);
+
+```
 
 ## Can you give an example of a curry function and why this syntax offers an advantage?
 
@@ -799,6 +829,19 @@ switch (expression)
 이터레이터는 순차적으로 값을 반환하면서 종료여부를 확인할 수 있는 객체 프로토콜입니다. `next()`메서드를 호출하면 `value`와 `done`속성을 가진 객체를 반환합니다. 
 
 ## What is an event loop?
+
+### TODO
+![](/resource/img/javascript/browerEnv.png)  
+
+단일 스레드인 자바스크립트에서 동시성(Concurrency)를 지원하기 위한 장치이다. 
+자바스크립트에는 이벤트 루프가 없다. 이벤트 루프는 자바스크립트 엔진을 구동하는 환경(브라우저, node.js)에서 제공한다. 위 그림은 브라우저 환경을 간단하게 도식화한 것이다.
+
+
+![](/resource/img/javascript/nodeEnv.jpg)
+
+
+#### Ref
+- [toast](https://meetup.toast.com/posts/89)
 
 ## What is an event queue?
 

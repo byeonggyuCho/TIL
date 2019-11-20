@@ -55,6 +55,6 @@
 
 ## Ref
 - [How to use cmder](https://webdir.tistory.com/548)
-- [https://cmder.net/](https://cmder.net/)
+- [cmder](https://cmder.net/)
 - [ConEmu](https://conemu.github.io/)
 - [감성프로그래밍](https://programmingsummaries.tistory.com/352)
