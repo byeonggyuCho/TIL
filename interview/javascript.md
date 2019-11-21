@@ -830,18 +830,19 @@ switch (expression)
 
 ## What is an event loop?
 
-### TODO
 ![](/resource/img/javascript/browerEnv.png)  
 
 단일 스레드인 자바스크립트에서 동시성(Concurrency)를 지원하기 위한 장치이다. 
-자바스크립트에는 이벤트 루프가 없다. 이벤트 루프는 자바스크립트 엔진을 구동하는 환경(브라우저, node.js)에서 제공한다. 위 그림은 브라우저 환경을 간단하게 도식화한 것이다.
+자바스크립트에는 이벤트 루프가 없다. 이벤트 루프는 자바스크립트 엔진을 구동하는 환경(브라우저, node.js)에서 제공한다. 위 그림은 브라우저 환경을 간단하게 도식화한 것이다. 
 
+자바스크립트가 단일 스레드 기반의 언어라는 말은 자바스크립트 엔진이 단일 호출 스택을 사용한다는 관점에서만 사실이다. 실제 자바스크립트가 구동되는 환경(브라우저,node.js)에서는 여러 개의 스레드가 사용되며 이러한 구동 환경이 단일 호출 스택을 사용하는 자바스크립트 엔진과 상호 연동하기 위해 사용하는 장치가 이벤트 루프다.
 
-![](/resource/img/javascript/nodeEnv.jpg)
 
 
 #### Ref
 - [toast](https://meetup.toast.com/posts/89)
+- [Task, mcrotasks, queues](https://jakearchibald.com/2015/tasks-microtasks-queues-and-schedules/)
+- [Concurrency model and the event loop](https://developer.mozilla.org/en-US/docs/Web/JavaScript/EventLoop)
 
 ## What is an event queue?
 
