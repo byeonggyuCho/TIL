@@ -2,10 +2,13 @@
 - Today I Learned (TIL)
 - one day one commit.
 
-## Info
-프로그래머로서 성장의 기록을 이곳에 남긴다. 어느 개발자 블로그에서 봤던 이 말이 참 와닿는다.
-    배운 것을 기록할 것!
-    기록하는 과정은 기록의 가치 이상으로 의미있다.
+## Intro
+프로그래머로서 성장의 기록을 이곳에 남긴다. 어느 개발자 블로그에서 봤던 이 말이 참 와닿는다.  
+
+    배운 것을 기록할 것!  
+    기록하는 과정은 기록의 가치 이상으로 의미있다.  
+
+
 확실히 내가 편하게 사용하는 단어와 표현으로 바꾸어 정리하는 작업이 '내 지식이다.'라는 느낌을 받게 하는 것 같다.  
 SI프로젝트를 경험하면서 조금만 수정해도 실타래처럼 얽혀버리는 스파게티 소스를 겪으며 보기쉽고 견고한 프로그래밍에 대해 관심을 갖게되어 정리하기 시작했다. 이 작업들이 견고하고 아름다운 코드를 짜는데 도움이 되길빈다.
 
@@ -63,13 +66,13 @@ SI프로젝트를 경험하면서 조금만 수정해도 실타래처럼 얽혀�
 - [gulp](./nodeJS/gulp.md)
 
 
-## 5. TypeScript
+## 5.TypeScript
 
 
-## 6. HTML
+## 6.HTML
 - [web Storage](./html/webStorage.md)
 
-## 7. Lisux
+## 7.Linux
 - [Why Lisux is Better for Developer](./linux/WhyLinuxIsBetterForDeveloper.md)
 
 ## 8.NetWork
