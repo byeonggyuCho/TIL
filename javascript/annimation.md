@@ -16,6 +16,90 @@ Web Animations API는 표준 기반의 접근 방식이며, 복잡한 객체 지
 
 ## CSS로 애니메이션 만들기.
 
+클릭을하면 `move`클래스를 토글하면서 엘리먼트를 이동시키는 예제입니다. `transition`은 동작시간에 대한 옵션입니다. 이동시간은 `500ms`가 걸리도록 해보겠습니다.
+```css
+.box {
+  -webkit-transform: translate(0, 0);
+  -webkit-transition: -webkit-transform 500ms;
+
+  transform: translate(0, 0);
+  transition: transform 500ms;
+}
+
+.box.move {
+  -webkit-transform: translate(100px, 100px);
+  transform: translate(100px, 100px);
+}
+```
+
+```js
+function move(element){
+
+    if(element.classList.contains('move'))
+        element.classList.remove('move');
+    else
+        element.classList.add('move');
+}
+
+var box = document.querySelector('.box');
+box.addEventListener('transitionend', onTransitionEnd, false);
+
+function onTransitionEnd() {
+  // Handle the transition finishing.
+}
+
+
+```
+CSS 애니메이션을 이용하면 애니메이션 `keyframes`, 기간 및 반복을 훨씬 세밀하게 제어할 수 있습니다.
+
+
+```css
+/**
+ * This is a simplified version without
+ * vendor prefixes. With them included
+ * (which you will need), things get far
+ * more verbose!
+ */
+.box {
+  /* Choose the animation */
+  animation-name: movingBox;
+
+  /* The animation’s duration */
+  animation-duration: 1300ms;
+
+  /* The number of times we want
+      the animation to run */
+  animation-iteration-count: infinite;
+
+  /* Causes the animation to reverse
+      on every odd iteration */
+  animation-direction: alternate;
+}
+
+@keyframes movingBox {
+  0% {
+    transform: translate(0, 0);
+    opacity: 0.3;
+  }
+
+  25% {
+    opacity: 0.9;
+  }
+
+  50% {
+    transform: translate(100px, 100px);
+    opacity: 0.2;
+  }
+
+  100% {
+    transform: translate(30px, 30px);
+    opacity: 0.8;
+  }
+}
+```
+css애니메이션으로 애니메이션 자체를 대상 요소와 독립적으로 정의하고 animation-name속성을사용하여 필요한 애니메이션을 선택할 수 있습니다.
+
+
 
 ## 자바스크립트로 애니메이션 만들기.
 
