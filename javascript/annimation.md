@@ -107,6 +107,7 @@ css애니메이션으로 애니메이션 자체를 대상 요소와 독립적으
 
 
 ## Ref
+- [Web Animation](https://drafts.csswg.org/web-animations/)
 - [애니메이션 성능비교](https://developers.google.com/web/fundamentals/design-and-ux/animations/animations-and-performance?hl=ko#css-vs-javascript-performance)
 - [CSS와 자바스크립트 애니메이션](https://developers.google.com/web/fundamentals/design-and-ux/animations/css-vs-javascript?hl=ko)
 - [JavaScript animations](https://javascript.info/js-animation)
