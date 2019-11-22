@@ -73,7 +73,14 @@ while (queue.waitFormessage()) {
 }
 ```
 이런 식으로 이벤트 루프는 현재 실행중인 타스크가 없는지와 `Task Queue`에 타스크가 있는지를 반복적으로 확인한다.
-`Task Queue`에 처리해야할 작업이 존재하면 While루프안으로 들어가서 해당하는 이벤트를 처리하거나 작업을 수행한다 그리고 다시 `Task Queue`로 돌아와 새로운 이벤트가 존재하는지 파악하는 것이다. Task Queue에서 대기하고 있는 작업들은 한번에 하나씩 콜스택에 호출되어 처리된다.
+`Task Queue`에 처리해야할 작업이 존재하면 While루프안으로 들어가서 해당하는 이벤트를 처리하거나 작업을 수행한다 그리고 다시 `Task Queue`로 돌아와 새로운 이벤트가 존재하는지 파악하는 것이다. Task Queue에서 대기하고 있는 작업들은 한번에 하나씩 콜스택에 호출되어 처리된다.  
+
+위 코드의 `waiteForMessage()`는 현재 실행중인 Task가 없을 때 다음 Task가 Task Queue에 추가될 떄까지 대기하는 역할을한다. 이런 식으로 이벤트 루프는 현재 실행중인 Task가 없는지, TaskQueue에 Task가있는지를 반복적으로 확인한다. 
+
+- 모든 비동기 API들은 작업이 완료되면 콜백 함수를 Task Queue에 추가한다.
+- 이벤트 루프는 현재 실행중이 Task가 없을때 주로 호출 스택이 비워졌을 떄 Task Queue의 첫번째 Task를 꺼내와 실행한다.
+
+
 
 ### 1.4 Event Loop
 **특징**
@@ -120,6 +127,23 @@ while (queue.waitFormessage()) {
 ### 4.Micro Task Queue
 - 프로미스의 then() 메소드는 콜백메서드를 `Micro Task Queue`에 추가한다. `Event Loop`는 `Task Queue`전에 `Micro Task Queue`가 비었는지 확인한다. 즉 `Task Queue`보다 실행 우선순위가 높다.(HTML 스펙의 perform a microtask checkpoint 참조.)
  프로미스는 자바스크립트의 스펙이지만 `Micro Task Queue`는 Html의 스펙이다. 이 연관관계는 불명확하다.
+
+
+```js
+setTimeout(function callbackA() { 
+    console.log('A');
+}, 0);
+
+Promise.resolve()
+.then(function callbackB() { 
+    console.log('B');
+}).then(function callbackC() { 
+    console.log('C');
+});
+```
+
+쉽게 말해 일반 타스크보다 더 높은 우선순위를 갖는 타스크라고 할 수 있다. 즉 `Task Queue`에 대기중인 타스크가 있더라도 `Micro Task`가 먼저 실행된다.
+이벤트 루프는 `Task Queue`대신 `Micro Queue`가 비었는지 먼저 확인하고 큐에 있는 콜백B을 실행한다. 콜백B가 실행되고 나면 두번째 `then()`메소드가 콜백C를 `Micro Task Queue`에 추가한다. 이벤트 루프는 다시 `Micro Task Queue`를 확인하고 큐에 있는 콜백C를 실행한다. 이후에 `Micro Task Queue`가 비었는지 확인한다음 `Task Queue`에서 콜백A를 꺼내 실행한다.
 
 
 ### Message Polling

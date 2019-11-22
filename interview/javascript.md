@@ -1095,6 +1095,11 @@ asyncThunk()
 ~~
 ```
 
+## What is the difference between Shallow and Deep copy?
+
+
+
+
 
 ## What is ArrayBuffer?
 
