@@ -1,57 +1,110 @@
-# GuideBook
-- TIL (Today I Learned)
+# Today I Lean
+- Today I Learned (TIL)
 - one day one commit.
+
+## Info
+프로그래머로서 성장의 기록을 이곳에 남긴다. 어느 개발자 블로그에서 봤던 이 말이 참 와닿는다.
+    배운 것을 기록할 것!
+    기록하는 과정은 기록의 가치 이상으로 의미있다.
+확실히 내가 편하게 사용하는 단어와 표현으로 바꾸어 정리하는 작업이 '내 지식이다.'라는 느낌을 받게 하는 것 같다.  
+SI프로젝트를 경험하면서 조금만 수정해도 실타래처럼 얽혀버리는 스파게티 소스를 겪으며 보기쉽고 견고한 프로그래밍에 대해 관심을 갖게되어 정리하기 시작했다. 이 작업들이 견고하고 아름다운 코드를 짜는데 도움이 되길빈다.
+
+
+
+
 
 ## &#128204; 목차
 
-# 1.DB
 
-
-## 1.   Oracle
-- [dataBasePlanning](./db/oracle/dataBasePlanning.md)
-- [dataIntegrity](./db/oracle/dataIntegrity.md)
-- [errorCode](./db/oracle/errorCode.md)
-- [function](./db/oracle/function.md)
-- [jdbc](./db/oracle/jdbc.md)
-- [join](./db/oracle/join.md)
-- [paginaion](./db/oracle/paginaion.md)
-- [procedure](./db/oracle/procedure.md)
-- [query_DCL](./db/oracle/query_DCL.md)
-- [query_DLL](./db/oracle/query_DLL.md)
-- [query_DML](./db/oracle/query_DML.md)
-- [query_QL](./db/oracle/query_QL.md)
-- [queryOptimizaion](./db/oracle/queryOptimizaion.md)
-- [seqence](./db/oracle/seqence.md)
-- [transaction](./db/oracle/transaction.md)
-- [trigger](./db/oracle/trigger.md)
-- [view](./db/oracle/view.md)
-
-
-
-## 2.Mysql
-- [install](./db/mysql/install.md)
-
-
-
-#  Java
+## 1.Java
 - [ClassPart1](./java/class_part_1.md)
 - [ClassPart2](./java/class_part_2.md)
 - [ClassPart3](./java/class_part_3.md)
 
 
 
-# JavaScript
-
+## 2.JavaScript
 - [Array](./javascript/array.md)
+- [ajax](./javascript/ajax.md)
 - [Json](./javascript/json.md)
 - [StrictMode](./javascript/strictMode.md)
+- [Closure](./javascript/closure.md)
+- [Iterater](./javascript/Iterator.md)
+- [Generator](./javascript/Generator.md)
+- [ptototype](./javascript/protoType.md)
+- [promise](./javascript/promise.md)
+- [function](./javascript/function.md)
+- [event Loop](./javascript/eventLoop.md)
+- [excution Context](./javascript/excutionContext.md)
+- [this](./javascript/this.md)
+- [object](./javascript/object.md)
+- [class](./javascript/class.md)
+- [event bubble](./javascript/eventBubble.md)
+- [runtime Evironment](./javascript/runtimeEnvironment.md)
+- [scope](./javascript/scope.md)
+- [server send evnet](./javascript/severSendEvnet.md)
+- [spead](./javascript/spread.md)
 
 
-# React
+
+
+## 3.React
 - [react_redux](./react/react_redux.md)
 - [redux_action](./react/redux_action.md)
 - [redux_thunk](./react/redux_thunk.md)
+- [Life Cycle](./react/lifeCycle.md)
+- [Hook](./react/hook.md)
+- [Redux](./react/redux.md)
+- [Server side rendering](./react/serverSideRendering.md)
 
+
+## 4.Node.js
+- [express](./nodeJS/express.md)
+- [gulp](./nodeJS/gulp.md)
+
+
+## 5. TypeScript
+
+
+## 6. HTML
+- [web Storage](./html/webStorage.md)
+
+## 7. Lisux
+- [Why Lisux is Better for Developer](./linux/WhyLinuxIsBetterForDeveloper.md)
+
+## 8.NetWork
+- [webApplication server](./network/webApplicationServer.md)
+- [CORS](./network/CORS.md)
+
+## DB
+
+
+### 1.Oracle
+- [dataBasePlanning](./db/oracle/dataBasePlanning.md)
+- [dataIntegrity](./db/oracle/dataIntegrity.md)
+- [errorCode](./db/oracle/errorCode.md)
+- [function](./db/oracle/function.md)
+- [jdbc](./db/oracle/jdbc.md)
+- [join](./db/oracle/join.md)
+- [pagination](./db/oracle/pagination.md)
+- [procedure](./db/oracle/procedure.md)
+- [query_DCL](./db/oracle/query_DCL.md)
+- [query_DLL](./db/oracle/query_DLL.md)
+- [query_DML](./db/oracle/query_DML.md)
+- [query_QL](./db/oracle/query_QL.md)
+- [queryOptimization](./db/oracle/queryOptimization.md)
+- [transaction](./db/oracle/transaction.md)
+- [trigger](./db/oracle/trigger.md)
+- [view](./db/oracle/view.md)
+
+
+
+### 2.Mysql
+- [install](./db/mysql/install.md)
+
+
+## Interview
+- [Javascript](./interview/javascript.md)
 
 
 ## 관심분야
