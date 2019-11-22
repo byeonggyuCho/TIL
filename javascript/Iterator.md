@@ -113,26 +113,11 @@ console.log(gen.next().done);  // true
 ```
 ## REF
 
-[https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Iteration_protocols](https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Iteration_protocols)
+- [https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Iteration_protocols](https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Iteration_protocols)
 
-제너레이터를 이용하면 커스텀 이터레이터를 쉽게 만들 수 있다.
 
-[https://github.com/qodot/wiki/blob/master/js/es6-iterator.md](https://github.com/qodot/wiki/blob/master/js/es6-iterator.md)
+- [https://github.com/qodot/wiki/blob/master/js/es6-iterator.md](https://github.com/qodot/wiki/blob/master/js/es6-iterator.md)
 
-[http://hacks.mozilla.or.kr/2015/08/es6-in-depth-generators/](http://hacks.mozilla.or.kr/2015/08/es6-in-depth-generators/)
+- [http://hacks.mozilla.or.kr/2015/08/es6-in-depth-generators/](http://hacks.mozilla.or.kr/2015/08/es6-in-depth-generators/)
 
-[http://hacks.mozilla.or.kr/2016/02/es6-in-depth-generators-continued/](http://hacks.mozilla.or.kr/2016/02/es6-in-depth-generators-continued/)
-
-자바스크립트에서는 왜 비동기 함수를 사용할까?
-
-비동기함수를 동기함수처럼 사용하기 위해서 어떤 기술이 나왔을까?
-
-map, set 데이터구조의 필요성
-
-for-of  루프
-
-simbol
-
-map, set
-
-Object.entries
+- [http://hacks.mozilla.or.kr/2016/02/es6-in-depth-generators-continued/](http://hacks.mozilla.or.kr/2016/02/es6-in-depth-generators-continued/)
