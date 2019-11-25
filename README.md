@@ -23,8 +23,14 @@ SI프로젝트를 경험하면서 조금만 수정해도 실타래처럼 얽혀�
 - [ClassPart1](./java/class_part_1.md)
 - [ClassPart2](./java/class_part_2.md)
 - [ClassPart3](./java/class_part_3.md)
+- [MVC](./java/MVCpattern.md)
+- [servlet](./java/servlet.md)
+- [jsp](./java/JSP.md)
+- [garbageCollection](./java/garbageCollectio.md)
+- [Maven](./etc/maven.md)
+- [Thread](./java/thread.md)
 
-
+<br><br>
 
 ## 2.JavaScript
 - [Array](./javascript/array.md)
@@ -47,7 +53,7 @@ SI프로젝트를 경험하면서 조금만 수정해도 실타래처럼 얽혀�
 - [scope](./javascript/scope.md)
 - [server send evnet](./javascript/severSendEvnet.md)
 - [spead](./javascript/spread.md)
-
+<br><br>
 
 
 
@@ -60,24 +66,27 @@ SI프로젝트를 경험하면서 조금만 수정해도 실타래처럼 얽혀�
 - [Redux](./react/redux.md)
 - [Server side rendering](./react/serverSideRendering.md)
 
-
+<br><br>
 ## 4.Node.js
 - [express](./nodeJS/express.md)
 - [gulp](./nodeJS/gulp.md)
-
+<br><br>
 
 ## 5.TypeScript
 
-
+<br><br>
 ## 6.HTML
 - [web Storage](./html/webStorage.md)
-
+<br><br>
 ## 7.Linux
 - [Why Lisux is Better for Developer](./linux/WhyLinuxIsBetterForDeveloper.md)
-
+<br><br>
 ## 8.NetWork
 - [webApplication server](./network/webApplicationServer.md)
 - [CORS](./network/CORS.md)
+
+
+<br><br>
 
 ## DB
 
@@ -105,9 +114,19 @@ SI프로젝트를 경험하면서 조금만 수정해도 실타래처럼 얽혀�
 ### 2.Mysql
 - [install](./db/mysql/install.md)
 
+<br><br>
+
+
+
+
 
 ## Interview
 - [Javascript](./interview/javascript.md)
+
+## ETC
+- [What is Jenkins?](./etc/jenkins.md)
+- [How to link Project in Jenkins](./etc/jenkinsLinkProject.md)
+- [How to write Build Process in Jenkins](./etc/jenkinsBuildProcess.md)
 
 
 ## 관심분야
