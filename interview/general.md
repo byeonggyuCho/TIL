@@ -18,6 +18,7 @@
 
 ## What actions have you personally taken on recent projects to increase maintainability of your code?
 - 유지보수를 위해 내가 하는 노력.
+- 변수명, 리펙토링,
 
 ## Talk about your preferred development environment.
 - 내가 다뤄본 개발환경에 대해 설명
@@ -69,7 +70,7 @@
 
 
 ## What does CORS stand for and what issue does it address?
-- CORS에 대한 설명과 댕으
+- CORS에 대한 설명과 대응방법
 
 ## How did you handle a disagreement with your boss or your collaborator?
 - 상사와 불화를 처리하는 방법.
