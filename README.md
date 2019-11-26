@@ -18,7 +18,6 @@ SI프로젝트를 경험하면서 조금만 수정해도 실타래처럼 얽혀�
 
 ## &#128204; 목차
 
-
 ## 1.Java
 - [ClassPart1](./java/class_part_1.md)
 - [ClassPart2](./java/class_part_2.md)
@@ -54,7 +53,6 @@ SI프로젝트를 경험하면서 조금만 수정해도 실타래처럼 얽혀�
 - [server send evnet](./javascript/severSendEvnet.md)
 - [spead](./javascript/spread.md)
 <br><br>
-
 
 
 ## 3.React
