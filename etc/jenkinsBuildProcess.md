@@ -16,48 +16,15 @@ CI(Continuous Integration) Server를 이용해
 5. 배포 후 웹서버 재기동.
 
 
-## Build Setting
 
-
-### 1. 플러그인 설치하기.
-CI서버에서 빌드를 하기위한 플러그인을 설치한다.  
-
-1. Jenkins> Jenkins관리 > 플러그인 관리 > 설치가능 탭
-2. 필터에서 `nodejs`검색
-
-### 2. 플러그인 설정
-1. Jenkins > Jenkins관리 > Global Tool Configuration
-2. NodeJS
-	- 설치할 버전 선택
-3. `Save`버튼 클릭.
-
-
-### 3. Job 설정.
-1. Jenkins > `target Project` > 구성
-2. `빌드 환경` 탭으로 이동
-3. `Provide Node & npm bin/folder to PATH` 옵션 체크
-4. `Build`탭으로 이동
-5. Bild > Add build step > Execute shell
-```shell
-cd ${WORKSPACE}/src/main/webpack
-npm install
-npm run build
-```
-
-
-
-## Deploy Setting
-웹 서버로 헤로쿠를 사용한다. 헤로쿠에서는 젠킨스처럼 Build 프로세스를 만들 수 있는 기능을 제공한다. 빌드 및 테스트를 두 군데 가능하지만 이 글에서는 Jekins에서 빌드 및 테스트를 한뒤에 빌드 산출물을 헤로쿠서버에 배포하는 설정을 다루기로 한다.  
-
-
-
-### Source Code Management
+### 1.Source Code Management
 
 ![](/resource/img/jenkins/Jenkins_SourceCodeManagement2.png)  
 
 
 우리는 2개의 깃허브 레포지토리를 등록해야하는데 
-소스데이터를 pull할 형상관리서버(github)의 레포지토리와 빌드 산출물을 push할 웹 서버(heroku)레포지토리를 등록해야한다.  
+소스데이터를 pull할 형상관리서버(github)의 레포지토리와 빌드 산출물을 push할 웹 서버(heroku)레포지토리를 등록해야한다. 
+여기서 Name을 등록해야 `Post actions Build`에서 레포지토리 이름을 입력할 수 있다.
 
 등록 방법은 간단하다.
 `Repository URL`에 레포지토리의 경로를 넣어준 뒤 
@@ -84,8 +51,58 @@ Heroku의 경우 `SSH key`가 필요한데 키를 얻기 위해선 몇가지 설
 그 다음 우리는 빌드를 테스트를 해야한다. 
 
 
+### 2. Build Trigger
 
-### Post-build Actions
+![](/resource/img/jenkins/jenkins_buildTrigger.png)
+
+빌드를 시작하기위한 조건을 설정하는 곳이다. 이 글에서는 깃허브에 연동하여 master브런치에 커밋이 되면 자동빌드를 할 것임으로 `GitHub hook trigger for GitScm polling`을 체크한다.
+
+
+### 3. Build Evironment
+
+![](/resource/img/jenkins/Jenkins_BuildEnvironment.png)  
+
+빌드를 위해 자바 애플리케이션의 경우 Maven같은 빌드툴을 설정해야한다. 이 글에서는 reactJS를 빌드하기 위해서 NPM이 필요하다.
+
+
+![](/resource/img/jenkins/Jenkins_manager.png)  
+
+#### 1. 플러그인 설치하기.
+CI서버에서 빌드를 하기위한 플러그인을 설치한다.  
+
+1. Jenkins> Jenkins관리 > Plugin Manager > 설치가능 탭
+2. Filter에서 `nodejs`검색
+3. 설치.
+
+#### 2. 플러그인 설정
+1. Jenkins > Jenkins관리 > Global Tool Configuration
+2. NodeJS
+	- 설치할 버전 선택
+3. `Save`버튼 클릭.
+
+
+위와 같이 플러그인을 설치한 뒤 `Provide Node & npm bin/forder to PATH`를 체크하고 설치된 버전을 선택해 주면 된다.   
+
+추가적으로 빌드가 반영이 안되는 오류를 막기위해서 
+`Delete workspace before build starts`항목을 체크하는걸 추천한다.
+
+
+
+### 4.Build
+빌드를 위한 쉘스크립트를 입력하는 구간이다.
+
+가장 기본적으로   
+```shell
+cd ${WORKSPACE}/src/main/webpack
+npm install
+npm run build
+```
+와 같이 설정했다.  
+이때  `${WORKSPACE}`는 CI서버의 환경변수인데 추가로 필요한 환경변수를 등록해줄 필요가 있다.
+
+
+
+### 5.Post-build Actions
 
 ![](/resource/img/jenkins/Jenkins_postActionBuild.png)  
 Post-bild Actions는 빌드가 끝난 뒤에 이뤄지는 작업을 하는 곳인데 이곳에서 헤로쿠에 푸쉬를 하며 된다.
@@ -96,8 +113,6 @@ Post-bild Actions는 빌드가 끝난 뒤에 이뤄지는 작업을 하는 곳�
 
 2. `Bransh`항목에서 타겟 레포지토리를 등록해준다.
 3. `Target remote name`이란 항목은 `Source Code ManageMent`에 등록한 이름을 넣어주면 된다.
-
-
 
 
 
@@ -115,8 +130,5 @@ Post-bild Actions는 빌드가 끝난 뒤에 이뤄지는 작업을 하는 곳�
 - [Automating our Heroku deployments from Jenkins](https://www.paulfurley.com/automating-heroku-deployments-from-jenkins/)
 - [Create An SSH Key](https://installfest.railsbridge.org/installfest/create_an_ssh_key#generate-key)
 - [How to generate and Add SSH key](https://devcenter.heroku.com/articles/keys#adding-keys-to-heroku)
-- [Setting up jenkins to deploy heroku](https://dzone.com/articles/setting-up-jenkins-to-deploy-to-heroku)
-- https://velog.io/@vies00/React-Hooks
-- https://velog.io/@velopert/series/redux-or-mobx
 
 
