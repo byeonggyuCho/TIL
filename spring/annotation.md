@@ -1,5 +1,3 @@
-
-
 # Annotation(어노테이션,애노테이션)
 
 1) @Component, @Controller, @Repository, @Service, @Configuration
