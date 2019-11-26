@@ -1,5 +1,4 @@
-# Class
-## how to different between ES5 function and ES6 Classes
+# Class : How to different between ES5 function and ES6 Classes?
 
 ## Info
 Class 문법은 prototype 상속과 어떻게 다른가? 단지 prototype 상속의 `Syntatic Sugar`일까? 지금부터 차이를 알아보자.
@@ -13,35 +12,41 @@ Class 문법은 prototype 상속과 어떻게 다른가? 단지 prototype 상속
 ## Constructor
 
 
-### 1. new Operater
+### 1) new Operater
 ES6의 `constructor`는 기존 생성자 함수와 동일하게 동작합니다.
 ```js
 function ES5(name) {
   this.name = name;
 }
+
 class ES6 {
   constructor(name) {
     this.name = name;
   }
 }
+
 const es5 = new ES5('ES5');
 const es6 = new ES6('ES6');
 console.log(es5.name, es6.name);    // ES5 ES6
 ```
 
-하지만 ES5에서는 일반 함수로서 동작했던것과 달리 `class`는 반드시 `new`연산자와 함께 호출해야합니다.  생성자함수로 설계된 함수는 오직 생성자함수로 사용되도록 강제한다고 볼 수 있습니다.
+하지만 ES5에서는 생성자 함수를 직접 호출해서 일반 함수로서 동작했던 것과 달리 
+`class`는 반드시 `new`연산자와 함께 호출해야합니다.  
+생성자함수로 설계된 함수는 오직 생성자함수로 사용되도록 강제한다고 볼 수 있습니다.
 
 ```js
 function ES5(name) {
   this.name = name;
   return name + ' es5';
 }
+
 class ES6 {
   constructor(name) {
     this.name = name;
     return name + ' es6';
   }
 }
+
 console.log(ES5('ES5'));                        // ES5 es5
 console.log(ES5.prototype.constructor('ES5'));  // ES5 es5
 console.log(ES6('ES6'));                        // Uncaught TypeError
@@ -49,13 +54,14 @@ console.log(ES6.prototype.constructor('ES6'));  // Uncaught TypeError
 
 //Uncaught TypeError: Class constructor ES6 cannot be invoked without ‘new’(…)
 ```
-따라서 `constructor`함수에서 `return`연산자로 값을 반환할 수 없습니다.(이에 대한 내용은 new연산자의 동작원리를 이해하면 도움이 됩니다.)
+따라서 `constructor`함수에서 `return`연산자로 값을 반환할 수 없습니다. (이에 대한 내용은 new연산자의 동작원리를 이해하면 도움이 됩니다.)
 
 
 
-### 2. super and extends 
-프로토타입 상속에서는 자식클래스의 생성자함수가 부모클래스의 생성자 함수의 내용을 덮어씌우는 식으로 동작합니다. 
-따라서 부모클래스의 생성자함수를 자식클래스의 생성자함수에서 호출한 것 같은 효과를 얻을 수 없습니다.
+### 2) 'super' and 'extends'
+프로토타입 상속에서는 자식클래스의 생성자 함수가 부모클래스의 생성자 함수의 내용을 덮어씌우는 식으로 동작합니다. 
+따라서 부모클래스의 생성자함수를 자식클래스의 생성자함수에서 호출한 것 같은 효과를 얻을 수 없습니다. 
+
 ```js
 function Parent() {
   this.a = 1;
@@ -63,6 +69,7 @@ function Parent() {
 function Child() {
   this.b = 2;
 }
+
 Child.prototype = new Parent();
 Child.prototype.constructor = Child;
 var obj = new Child();
@@ -70,12 +77,15 @@ console.log(obj.a, obj.b);              // 1 2
 console.log(obj.hasOwnProperty('a'));   // false
 console.log(obj.hasOwnProperty('b'));   // true
 ```
-만약 자식 클래스에서 부모 클래스의 생성자함수를 그대로 차용하여 실행하기를 원한다면 다음과 같이 해야합니다.
+prototype chain에 의해 `a`프로퍼티를 참조하지만 `hasOwnProperty`를 통해 `obj`에 `a`프로퍼티가 없다는걸 확인할 수 있습니다. 
+이건 정확히 따지자면 상속이라고 보긴 어렵습니다. prototype chain에 의해 참조를 하고 있을 뿐이죠. 상속의 포인트는 소유권에 있습니다. 
+그럼 실제로 부모 클래스의 속성을 상속받기 위해선 어떻게 해야할까요? 자식 클래스에서 부모 클래스의 생성자함수를 그대로 차용하여 실행하기를 원한다면 다음과 같이 해야합니다.
 
 ```js
 function Parent(){
   this.a = 1;
 }
+
 function Child(){
   var parentObj = Object.getPrototypeOf(this);
   for(let i in parentObj){
@@ -83,6 +93,7 @@ function Child(){
   }
   this.b = 2;
 }
+
 Child.prototype = new Parent();
 Child.prototype.constructor = Child;
 var obj = new Child();
@@ -90,7 +101,7 @@ console.log(obj.a, obj.b);              // 1 2
 console.log(obj.hasOwnProperty('a'));   // true
 console.log(obj.hasOwnProperty('b'));   // true
 ```
-하지만 이런 표현마저도 부모 클래스의 값을 복제한 것이지 부모 클래스의 생성자함수를 차용한 것과는 다릅니다.  
+하지만 이런 표현 마저도 부모 클래스의 값을 복제한 것이지 부모 클래스의 생성자함수를 차용한 것과는 다릅니다.  
 ES6에서는 `extends`키워드와 `super`키워드를 사용하면 부모 클래스의 생성자함수를 자식클래스에서 호출하는게 가능합니다.
 
 ```js
@@ -112,12 +123,12 @@ console.log(obj.a, obj.b);              // 1 2
 console.log(obj.hasOwnProperty('a'));   // true
 console.log(obj.hasOwnProperty('b'));   // true
 ```
-여기서 Child는 Parent의 인스턴스를 상속받은 것이 아니라 Parent의 메소드만 상속받는 것으로 Child 인스턴스의 포로토타입 체인에서 Parent constructor의 실행 결과는 존재하지 않게 됩니다.
+여기서 Child는 Parent의 인스턴스를 상속받은 것이 아니라 Parent의 메소드만 상속받는 것으로 Child 인스턴스의 프로토타입 체인에서 Parent constructor의 실행 결과는 존재하지 않게 됩니다.  
 
 ```js
-let targetPrototype = Object.getPrototypeOf(obj);
-console.log(targetPrototype.a );  // undefined
-console.log(targetPrototype.hasOwnProperty('a'));  // false
+let childPrototype = Object.getPrototypeOf(obj);
+console.log(childPrototype.a );  // undefined
+console.log(childPrototype.hasOwnProperty('a'));  // false
 ```
 
 ES5에서 좀 더 정확한 subClass를 구현하기 위해선 임시생성자를 활용하는 방법이 있습니다.
@@ -125,15 +136,17 @@ ES5에서 좀 더 정확한 subClass를 구현하기 위해선 임시생성자�
 function Parent() { this.a = 1; }
 function Child() { this.a = 2; }
 function Proxy() { }
+
 Proxy.prototype = new Parent();
 Child.prototype.constructor = Child;
 Child.superClass = Parent.prototype;
 ```
 
-위 프록시 패턴에서 프록시 객체를 재활용하기 위해 클로저 패턴을 적용했습니다.
+위 프록시 패턴에서 프록시 객체를 재활용하기 위해 모듈 패턴을 적용했습니다.
 ```js
 var inherit = (function() {
   function F(){ }
+
   return function(C, P) {
     F.prototype = P.prototype;
     C.prototype = new F();
@@ -141,17 +154,25 @@ var inherit = (function() {
     C.superClass = P.prototype;
   }
 })();
-function Parent() { this.a = 1; }
-function Child() { this.a = 2; }
+
+function Parent() { 
+    this.a = 1; 
+}
+function Child() { 
+    this.a = 2; 
+}
+
 inherit(Child, Parent);
 ```
-
 <br><br>
+
+
 
 ## Method
 
-### 1.static method
-ES5에서 Static method를 구현하면 다음과 같이 작성해야합니다.
+### 1) static method
+ES5에서 Static method를 구현하면 다음과 같이 작성해야합니다.  
+
 ```js
 function Parent() {}
 Parent.staticMethod = function() {
@@ -183,6 +204,7 @@ class Parent {
     return 'method';
   }
 }
+
 class Child extends Parent { }
 const obj = new Child();
 ```
@@ -206,7 +228,7 @@ console.log(Child.staticMethod());           // 'static'
 console.log(Parent.staticMethod());          // 'static'
 ```
 
-ES5환경에서 Static Method상속을 구현하기 위해서는 Parent의 메소드를 Child에 복사해야한다. Child와 같은 이름의 static이 있는 경우 OverWtring되는 것을 방지하기 위해 접두어나 접미어를 붙여야합니다. 혹은 프로토타입 체이닝을 통해 직접 superClass에 접근할 수 있습니다.  
+ES5환경에서 static Method상속을 구현하기 위해서는 Parent의 메소드를 Child에 복사해야합니다. Child와 같은 이름의 static이 있는 경우 OverWtring되는 것을 방지하기 위해 접두어나 접미어를 붙여야합니다. 혹은 프로토타입 체이닝을 통해 직접 superClass에 접근해야합니다.
 
 ```js
 var inherit = (function() {
@@ -221,6 +243,7 @@ var inherit = (function() {
     }
   }
 })();
+
 function Parent() { this.a = 1; }
 Parent.method = function(){ console.log('super static'); };
 function Child() { this.a = 2; }
@@ -234,7 +257,7 @@ Child.superClass.constructor.method();  // super static method
 클래스간 상속관계가 복잡해질 수록 상황이 복잡해집니다.
 
 
-### 2.생성자 함수.
+### 2) 생성자 함수.
 
 ES5의 static method 및 method는 그 자체로 함수이기 때문에 별개의 생성자함수를 사용할 수 없습니다.
 ```js
@@ -257,7 +280,7 @@ ES5에서 일반함수로 method의 기능을 연출했던것과 달리 태생�
 
 
 
-### 3.superClass 메소드 차용.
+### 3) superClass 메소드 차용.
 
 ```js
 function Parent() { }
@@ -425,9 +448,12 @@ let a = 'global';
 function A(){
     this.a = 1;
 }
+
 {
-  console.log(new A());  // A {a: 2}
-  function A(){ this.a = 2; }
+    console.log(new A());  // A {a: 2}
+    function A(){ 
+      this.a = 2;   
+    }
 }
 
 ```
@@ -439,8 +465,11 @@ class A {
 }
 {
   console.log(new A());  // Uncaught ReferenceError: A is not defined
+
   class A {
-    constructor(){ this.a = 2; }
+    constructor(){ 
+        this.a = 2; 
+    }
   }
 }
 ```
@@ -452,6 +481,7 @@ class A {
 
 
 ## Ref
+- [ES6 Overview in 350 Bullet Points](https://github.com/bevacqua/es6#classes)
 - [class](https://poiemaweb.com/es6-class)
 - [es6 class](https://gomugom.github.io/is-class-only-a-syntactic-sugar/)
 - [ES6 Classes in Depth](https://ponyfoo.com/articles/es6-classes-in-depth)
