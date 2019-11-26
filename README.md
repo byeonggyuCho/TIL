@@ -63,9 +63,12 @@ SI프로젝트를 경험하면서 조금만 수정해도 실타래처럼 얽혀�
 - [Hook](./react/hook.md)
 - [Redux](./react/redux.md)
 - [Server side rendering](./react/serverSideRendering.md)
+- [8Thing to Lean in ReactJS before using redux](./react/8ThingsToLeanInReactBeforUsingRedux.md)
+- [middleware](./react/middleware.md)
 
 <br><br>
 ## 4.Node.js
+- [intro](./nodeJS/index.md)
 - [express](./nodeJS/express.md)
 - [gulp](./nodeJS/gulp.md)
 <br><br>
@@ -122,6 +125,7 @@ SI프로젝트를 경험하면서 조금만 수정해도 실타래처럼 얽혀�
 - [Javascript](./interview/javascript.md)
 
 ## ETC
+- [webpack](./webpack/index.md)
 - [What is Jenkins?](./etc/jenkins.md)
 - [How to link Project in Jenkins](./etc/jenkinsLinkProject.md)
 - [How to write Build Process in Jenkins](./etc/jenkinsBuildProcess.md)
@@ -195,7 +199,6 @@ SI프로젝트를 경험하면서 조금만 수정해도 실타래처럼 얽혀�
 2. 모듈 번들러 (webpack, gulp)
 4. 브라우져
 5. Rest API 서버 개발
-6. function 과 class 의 차이.
 7. 프론트엔드 보안코딩.
 8. 렌더링을 최적화하기위한 방법.
 9. 개발환경을 구성하고 이유, 개발환경 설계
