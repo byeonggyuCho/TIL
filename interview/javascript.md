@@ -4,6 +4,16 @@ var foo = {n: 1};
 var bar = foo;
 foo.x = foo = {n: 2};
 ```
+답은  `undefined`이다. 편의상 최초 foo에 할당된 객체를 A로 하자.
+문제는  line3인데 이걸 풀어서 보면  
+```js
+foo.x = {n:2};
+foo = {n:2};
+```
+로 볼 수 있다. 따라서 foo는 새롭게 생성된 객체 `{n:2}`를 참조하고 
+`foo.x = {n:2}`에서  이 시점에 foo가 참조하는 객체는 객체A임으로 객체 A에 프로퍼티 x를 추가한다. 
+다음 실행에서 foo의 참조값이 새로운 객체로 바뀜으로 결과적으로 `foo.x`는 undefined다. 여기서 bar.x와 foo가 독립적인 객체를 참조하고 있음을 기억하자.
+
 
 ## What is a promise?
 promise는 값이 resloved인지 not resolved인지 상태를 반환해주는 객체다. not resolved인 경우에는 그 이유를 함께 반환한다.

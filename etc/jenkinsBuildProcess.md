@@ -70,12 +70,12 @@ Heroku의 경우 `SSH key`가 필요한데 키를 얻기 위해선 몇가지 설
 #### 1. 플러그인 설치하기.
 CI서버에서 빌드를 하기위한 플러그인을 설치한다.  
 
-1. Jenkins> Jenkins관리 > Plugin Manager > 설치가능 탭
+1. Jenkins> Manage Jenkins > Plugin Manager > 설치가능 탭
 2. Filter에서 `nodejs`검색
 3. 설치.
 
 #### 2. 플러그인 설정
-1. Jenkins > Jenkins관리 > Global Tool Configuration
+1. Jenkins > Manage Jenkins > Global Tool Configuration
 2. NodeJS
 	- 설치할 버전 선택
 3. `Save`버튼 클릭.
@@ -98,7 +98,10 @@ npm install
 npm run build
 ```
 와 같이 설정했다.  
-이때  `${WORKSPACE}`는 CI서버의 환경변수인데 추가로 필요한 환경변수를 등록해줄 필요가 있다.
+이때  `${WORKSPACE}`는 CI서버의 환경변수이다. 
+
+*c.f.*  
+추가 환경변수는 어디에서 하는지?
 
 
 
