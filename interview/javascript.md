@@ -4,15 +4,26 @@ var foo = {n: 1};
 var bar = foo;
 foo.x = foo = {n: 2};
 ```
-답은  `undefined`이다. 편의상 최초 foo에 할당된 객체를 A로 하자.
-문제는  line3인데 이걸 풀어서 보면  
+
+이 예제를 이해하기 위해선 할당연산자(Assignment operator)의 결합성 우선순위를 알아야한다.
+할당 연산자는 우결합성 즉 연속해서 사용됐을때 우측부터 실행된다.
+풀어서 보면 다음과 같이 생각해 볼 수 있다.
 ```js
-foo.x = {n:2};
-foo = {n:2};
+foo.x = (foo = {n:2})
 ```
-로 볼 수 있다. 따라서 foo는 새롭게 생성된 객체 `{n:2}`를 참조하고 
-`foo.x = {n:2}`에서  이 시점에 foo가 참조하는 객체는 객체A임으로 객체 A에 프로퍼티 x를 추가한다. 
-다음 실행에서 foo의 참조값이 새로운 객체로 바뀜으로 결과적으로 `foo.x`는 undefined다. 여기서 bar.x와 foo가 독립적인 객체를 참조하고 있음을 기억하자.
+우측의 연산이 끝나면 할당 연산자의 반환값인 `{n:2}`가 foo.x에 할당된다. 할당 연산자는 할당한 값을 반환하기 때문에 풀어서 생각해보면 다음처럼 생각할 수 있다.
+```js
+foo = {n:2}
+foo.x = {n:2}
+```
+하지만 실제 연산은 이것과 다르다. 두번째 줄에서 foo가 참조하는 객체가 `{n:1}`이기 때문이다. 두번째 줄의 연산은 `bar`를 통해 콘솔에서 확인할 수있다.  
+
+연산을 여러번 해보면 차이를 좀 더 쉽게 알 수있다.
+![](/javascript_operatorPrecedence)
+
+
+연산자의 우선순위를 나타나는 결합성은 연산자마다 다르다.  
+(c.f.[Operator_Precedence](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Operator_Precedence))
 
 
 ## What is a promise?
@@ -20,7 +31,7 @@ promise는 값이 resloved인지 not resolved인지 상태를 반환해주는 �
 문법은 아래와 같음
 
 ```js
-const promise = new Promise(function(reslove, reject) {
+const promise = new Promise((reslove, reject) => {
 
 })
 
@@ -114,16 +125,18 @@ Server-sent events는 브라우저가 polling에 의존하지 않고 HTTP를 통
 
 ##  What does the following code print?
 ```js
-console.log('one');
+console.log('1');
 setTimeout(function() {
-  console.log('two');
+  console.log('2');
 }, 0);
 Promise.resolve().then(function() {
-  console.log('three');
+  console.log('3');
 })
-console.log('four');
-
+console.log('4');
 ```
+
+답은 1,4,3,2다. 이 순서를 설명하기 위해선 micro task Queue에 대해 설명해야한다. 간단히 설명하자면 Task Queue에도 우선순위가 존재하는데
+Micro TaskQueue가 일반 Task Queue보다 높으며 `promise`체인의 실행시점은 Micro TaskQueque가 담당한다.
 
 
 ###  What is the difference between these four promises?
@@ -155,6 +168,26 @@ doSomething().then(doSomethingElse);
 console.log("a defined? " + (typeof a !== 'undefined'));
 console.log("b defined? " + (typeof b !== 'undefined'));
 ```
+
+
+
+결과는 b에만 3에 할당되어있다. 
+결합성(Associativity)은 같은 우선순위를 가진 연산자의 처리 순서를 결정합니다. 
+```
+a 연산자 b 연산자 c
+```
+연산자별로 우결함성, 좌결합성이 나뉘며 할당 연산자의 경우 우 결합성이다.
+
+할당 연산자(assignment operator) 풀어서 생각해보면
+```js
+b = 3;
+a = (b = 3);
+```
+로 볼 수 있는데 할당 연산자는 할당한값이 반환된다는걸 기억해야한다. 즉 a에는 3이 반환된다.
+이때 b가 `var`없이 생성됨으로 `b`는 글로벌 변수로 선언되어 함수 스코프 밖에서 참조가 가능하다.
+
+
+- ref : [Operator precedence](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Operator_Precedence)
 
 
 ###  Consider the two functions below. Will they both return the same thing? Why or why not?
