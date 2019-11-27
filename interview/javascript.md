@@ -313,7 +313,7 @@ Web storage는 Cookie보다 안전하고 더 많은 데이터를 저장할 수 �
 ## What's the difference between feature detection, feature inference, and using the UA string?
 
 ## Explain "hoisting".
-호이스팅은 변수와 함수 선언이 코드 실행전에 해당 스코프의 최상단으로 이동하는 것을 말합니다. 호이스팅은 선언만 이동하고 초기화는 되지 않습니다. 따라서 호이스팅된 변수와 함수는 `undefinded`상태 입니다. 
+호이스팅은 `Lexical Context`생성시 내부에서 사용된 변수와 함수를  생성하는 것을 말한다. 이떄 각 변수는 `undefined`로 초기화되며 실제 초기화된 위치에 인터프린터가 이동했을 때 재할당된다.
 
 ```js
 
@@ -322,7 +322,7 @@ var name = 'cater';
 ```
 위 코드는 실제 실행에서 아래 코드처럼 동작합니다.
 ```js
-var name;
+var name = undefined;
 console.log(name);
 name = 'cater';
 ```
@@ -349,6 +349,27 @@ console.log(typeof a, typeof b, b); // string, number, NaN
 ## How do you redeclare variables in switch block without an error?
 
 ## What is Temporal Dead Zone?
+```js
+console.log(name); // Uncaught ReferenceError: Cannot access 'name' before initialization
+let name = 'cater'
+```
+
+프로그래밍 언어에서는 변수를 생성할때 변수를 담을 메모리공간을 확보해야한다. 
+
+자바스크립트에서 변수는 3가지 단계를 걸쳐 생성된다.
+1. 선언(Declaration) : 스코프와 변수 객체가 생성되고 스코프가 변수 객체를 참조한다.
+2. 초기화(Initalization) : 변수 객체가 가질 값을 위해 메모리에 공간을 할당한다. 이떄 할당되는 값은 `undefined`이다.
+3. 할당(Assignment) : 변수 객체에 값을 할당한다.
+
+`var`키워드는 선언과 초기화가 동시에 이루어진다. 선언이 되자마자 `undefined`로 값이 초기화된다.  
+`let`키워드나 `const`키워드로 생성된 변수는 선언만 되고 초기화되지 않는다. 소스코드상 선언위치로 이동했을 떄 초기화되는것이다. 
+이때 초기화되기전까지의 갭이 존재하게 되는데 이것을 TDZ라고 한다.  
+
+정리하자면 선언은 되었지만 아직 초기화 되지않아 변수에 담길 값을 위한 공간이 메모리에 할당되지 않은 상태를 말한다.
+
+
+- [TDZ](https://evan-moon.github.io/2019/06/18/javascript-let-const/)
+
 
 ## What is the benefit of using moudules?
 js파일의 호출순서와 namespace문제에서 벗어날 수 있습니다.
