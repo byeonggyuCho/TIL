@@ -19,7 +19,7 @@ foo.x = {n:2}
 하지만 실제 연산은 이것과 다르다. 두번째 줄에서 foo가 참조하는 객체가 `{n:1}`이기 때문이다. 두번째 줄의 연산은 `bar`를 통해 콘솔에서 확인할 수있다.  
 
 연산을 여러번 해보면 차이를 좀 더 쉽게 알 수있다.
-![](/javascript_operatorPrecedence)
+![](./javascript_operatorPrecedence)
 
 
 연산자의 우선순위를 나타나는 결합성은 연산자마다 다르다.  
