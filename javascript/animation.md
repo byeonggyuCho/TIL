@@ -484,12 +484,10 @@ CSS코드가 자바스크립트보다 간단한 코드로 구현할 수 있는�
 ## Ref
 - [JavaScript animations](https://javascript.info/js-animation)
 - [Simple Javascript Animation](https://medium.com/allenhwkim/animate-with-javascript-eef772f1f3f3)
-
+- [CSS and JavaScript Animation Tips with Examples](https://levelup.gitconnected.com/css-and-javascript-animation-tips-with-an-example-in-angular-678246901752)
 
 - [애니메이션 성능비교](https://developers.google.com/web/fundamentals/design-and-ux/animations/animations-and-performance?hl=ko#css-vs-javascript-performance)
 - [CSS와 자바스크립트 애니메이션](https://developers.google.com/web/fundamentals/design-and-ux/animations/css-vs-javascript?hl=ko)
 - [JavaScript animations](https://www.tutorialspoint.com/javascript/javascript_animation.htm)
-- [CSS Animation vs Javascript Animation](https://frontdev.tistory.com/entry/Animation-CSS-Animation-vs-Javascript-Animation)
 - https://daybrush.com/scenejs/release/latest/doc/
-- [CSS and JavaScript Animation Tips with Examples](https://levelup.gitconnected.com/css-and-javascript-animation-tips-with-an-example-in-angular-678246901752)
 - [Web Animation](https://drafts.csswg.org/web-animations/)
