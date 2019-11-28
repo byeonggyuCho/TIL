@@ -191,18 +191,29 @@ a = (b = 3);
 
 ###  Consider the two functions below. Will they both return the same thing? Why or why not?
 ```js
-function foo1()
+function foo()
 {
   return {
-      bar: "hello"
+      foo: "hello"
   };
 }
 
-function foo2()
+function bar()
 {
   return
   {
       bar: "hello"
+  };
+}
+```
+위 차이는 자바스크립트의 세미콜론 삽입 규칙에 따라 개행을 했을떄 세미콜론이 삽입되기 때문이다. 실제 코드가 실행될떄는 다음과 같이 파싱되어 실행된다.
+
+```js
+function bar()
+{
+  return;
+  {
+    bar: "hello"
   };
 }
 
@@ -216,6 +227,25 @@ function foo2()
 ## Explain how this works in JavaScript.
 
 ## Can you give an example of one of the ways that working with this has changed in ES6?
+
+대표적으로 arrow function이 있다.
+```js
+
+function outerFn(){
+
+  const spot = 'global';
+
+  const innerFn = () =>{
+    
+    console.log(this.spot);
+  }
+
+  return innerFn();
+
+}
+
+```
+
 
 ## Explain how prototypal inheritance works.
 
