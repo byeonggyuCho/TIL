@@ -112,8 +112,10 @@ new Promise(function(resolve, reject) {
 - ES6를 지원하는 환경아 아니라면 polyfill이 필요하다.
 
 
-## What is strict mode? What are some of the advantages/disadvantages of using it?
-Strict Mode는 ES5에서 새로 나온 기능으로 함수나 JS프로그램이 보다 엄격한 문맥에서 동작하도록 하는 기능이다. 
+## What is strict mode? 
+- What are some of the advantages/disadvantages of using it?
+
+Strict Mode는 ES5에서 새로 나온 기능으로 함수나 JS프로그램이 보다 엄격한 문맥에서 동작하도록 하는 기능이다.  
 Strict Mode를 사용하면 에러가 발생하는 동작을 막을 수 있다.  
 String Mode는 나쁜 구문을 실제 에러로 알려주어 안전한 자바스크립트를 작성하는데 도움을준다. 
 
@@ -142,11 +144,9 @@ Micro TaskQueue가 일반 Task Queue보다 높으며 `promise`체인의 실행�
 
 ###  What is the difference between these four promises?
 ```js
-doSomething().then(function () {
-  return doSomethingElse();
-});
+doSomething().then( () => doSomethingElse());
 
-doSomething().then(function () {
+doSomething().then(() => {
   doSomethingElse();
 });
 
@@ -155,10 +155,10 @@ doSomething().then(doSomethingElse());
 doSomething().then(doSomethingElse);
 ```
 
-첫번째는 `doSomethingElse`의 반환값이 Promise value로 전달된다.
-두번째는 `doSomethingElse`이 실행되고 반환값은 null이다.
-세번째는 `doSomethingElse`이 함수를 를 반환하고 반환된 함수가 then 메서드의 콜백으로 실행된다.
-네번째는 `doSomethingElse`가 실행되며 매개변수로 `doSomething`의 결과값이 전달된다.
+첫번째는 `doSomethingElse`의 반환값이 Promise value로 전달된다.  
+두번째는 `doSomethingElse`이 실행되고 반환값은 null이다.  
+세번째는 `doSomethingElse`이 함수를 반환하고 반환된 함수가 then 메서드의 콜백으로 실행된다.  
+네번째는 `doSomethingElse`가 실행되며 매개변수로 `doSomething`의 결과값이 전달된다.  
 
 ###  What will the code below output to the console and why?
 ```js
@@ -169,22 +169,20 @@ doSomething().then(doSomethingElse);
 console.log("a defined? " + (typeof a !== 'undefined'));
 console.log("b defined? " + (typeof b !== 'undefined'));
 ```
+b에만 3에 할당된다. 할당 연산자(assignment operator)의 결합성 우선순위와 자바스크립트의 변수선언에 대한 개념을 묻는 질문이다.  
 
-
-
-결과는 b에만 3에 할당되어있다. 
 결합성(Associativity)은 같은 우선순위를 가진 연산자의 처리 순서를 결정합니다. 
 ```
 a 연산자 b 연산자 c
 ```
-연산자별로 우결함성, 좌결합성이 나뉘며 할당 연산자의 경우 우 결합성이다.
+연산자별로 우결함성, 좌결합성이 나뉘며 할당 연산자의 경우 우결합성이다.
 
-할당 연산자(assignment operator) 풀어서 생각해보면
+할당 연산자(assignment operator) 풀어서 생각해보면 다음과 같다.
 ```js
 b = 3;
 a = (b = 3);
 ```
-로 볼 수 있는데 할당 연산자는 할당한값이 반환된다는걸 기억해야한다. 즉 a에는 3이 반환된다.
+할당 연산자는 할당한값이 반환된다는걸 기억해야한다. 즉 a에는 3이 반환된다.
 이때 b가 `var`없이 생성됨으로 `b`는 글로벌 변수로 선언되어 함수 스코프 밖에서 참조가 가능하다.
 
 
