@@ -228,26 +228,54 @@ function bar()
 
 ## Can you give an example of one of the ways that working with this has changed in ES6?
 
-대표적으로 arrow function이 있다.
+대표적으로 arrow function이 있다. 일반함수에서 this는 전역객체인 window를 참조한다.  
+그렇기 때문에 아래같은 예제에서 this참조에대한 오류가 있었다.
 ```js
-
-function outerFn(){
-
-  const spot = 'global';
-
-  const innerFn = () =>{
-    
-    console.log(this.spot);
-  }
-
-  return innerFn();
-
+function Person(){
+	this.name = 'cater'
 }
 
+Person.prototype.sayHello = function(){
+
+	console.log(1,this.name)
+
+
+	setTimeout(function(){
+		console.log(2,this.name)
+  },0)
+}
+
+var p1 = new Person();
+
+p1.sayHello();
+```
+
+화살표 함수에서는 this가 상위 스코프의 this를 참조하기 떄문에 콜백을 화살표함수로 바꾸는것만으로 해결이 된다.
+
+```js
+function Person(){
+	this.name = 'cater'
+}
+
+Person.prototype.sayHello = function(){
+
+	console.log(1,this.name)
+
+
+	setTimeout(() => {
+		console.log(2,this.name)
+  },0)
+}
+
+var p1 = new Person();
+
+p1.sayHello();
 ```
 
 
+
 ## Explain how prototypal inheritance works.
+
 
 ## What's the difference between a variable that is: null, undefined or undeclared?
 - How would you go about checking for any of these states?
@@ -938,6 +966,8 @@ switch (expression)
 - [Concurrency model and the event loop](https://developer.mozilla.org/en-US/docs/Web/JavaScript/EventLoop)
 
 ## What is an event queue?
+Task Queue라고도 불린다. 자바스크립트 엔진은 싱글스레드로 실행되는데 동시성을 제공하기위해 자바스크립트 실행환경에서 백그라운드에서 실행한 함수의 콜백함수를 자바스크립트 엔진이 처리하기 전에 대기하는 영역이 있는데 그곳이 Task Queue이다. 이곳에 대기중인 Task를 이벤트 루프가 콜스택이 비워졌을때 채워넣는다.
+
 
 ## How do you get meta data of a module?
 `import.meta`는 자바스크립트 모듈에 대한 메타데이터 정보를 볼 수 있는 객체이다. 현재 모듈(모듈의 URL같은 )에 대한 정보를 볼 수 있다. 
@@ -1179,19 +1209,26 @@ asyncThunk()
 
 
 ## What is the difference between Shallow and Deep Copy?
+얕은복사란 리터럴타입이 아닌 객체의 주소값을 복사하는것을 말한다. 얕은 복사의 경우 참조주소에 의해 연동되어 있기떄문에 원본 객체가 수정되면 참조값에도 영향을 받는다. 반면 깊은복사는 같은 값을 가지는 새로운 객체를 메모리에 생성하는 것을 말한다.
+
+```js
+var obj = {
+  name : 'cater',
+  age : 29
+}
+
+var p1 = obj;   //Shallow copy
+
+p1.age = 30;
+
+console.log(obj.age)
+```
+
+
 
 ## What is the purpose of Error object?
 
 ## What is the purpose of double tilde operator?
-
-```js
-~~
-```
-
-## What is the difference between Shallow and Deep copy?
-
-
-
 
 
 ## What is ArrayBuffer?
