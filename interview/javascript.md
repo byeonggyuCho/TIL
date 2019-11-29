@@ -226,6 +226,51 @@ function bar()
 ## What is IndexedDB?
 
 ## Explain how `this` works in JavaScript.
+자바스크립트에서 this는 함수의 호출방식에 따라서 바인딩되는 값이 달라진다.
+
+
+1. 일반함수가 참조하는 this
+```js
+var spot = 'global'
+function foo (){
+  var spot = 'local'
+  console.log(`${this.spot}`);
+}
+
+console.log(foo());
+```
+가장 기본적으로 일반함수에서 this는 전역변수에 바인딩된다. 이게 가장 기본값으로 생각하고 출발한다.
+
+
+2. 메소드가 참조하는 this
+```js
+var person = {
+  name : 'cater',
+  age : 29,
+  sayHello : function (){
+    console.log(`Hi I am ${this.name}.`)
+  }
+}
+console.info(person.sayHello());
+```
+객체의 메소드에서  this 해당 메소드를 호출하는 객체에 바인딩된다.
+
+
+3. 이벤트 리스너 콜백에서 참조하는 this
+
+```js
+var cancelElememt = document.getElementById("btn_cancel");
+
+cancelElememt.addEventListener("click", function(event){
+  
+  console.log(`${this}`);
+});
+```
+이벤트 리스너의 콜백에서 this는 해당 이벤트가 바인딩된 엘리먼트이다.
+
+
+
+
 
 
 ## Can you give an example of one of the ways that working with this has changed in ES6?
@@ -441,7 +486,7 @@ js파일의 호출순서와 namespace문제에서 벗어날 수 있습니다.
 ## What is an evnet flow?
 Event Flow는 웹 페이지에서 이벤트를 수신하는 순서이다. 
 
-### Ref
+### ref
 - [javascript evnet flow](tutorialspark.com/javascript/JavaScript_Event_Flow.php) 
 
 
