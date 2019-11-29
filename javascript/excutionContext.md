@@ -367,6 +367,5 @@ scope의 범위는 선언시점에 생긴 context의 Scope Chain을 따른다.
 
 
 
-## 참조
-https://poiemaweb.com/js-execution-context   
-이 포스팅 위 블로그의 자료를 개인적으로 정리한 자료임을 밝힌다.
+## ref
+- [Javascript Execution context](https://poiemaweb.com/js-execution-context)

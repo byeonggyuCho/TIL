@@ -253,7 +253,10 @@ var person = {
 }
 console.info(person.sayHello());
 ```
-객체의 메소드에서  this 해당 메소드를 호출하는 객체에 바인딩된다.
+객체의 메소드에서  this 해당 메소드를 호출하는 객체에 바인딩된다.  
+부연 설명을 하자면 `var person = {};`은 `var person = new Object();`의 리터럴 표현으로 볼 수 있다. 
+자바스크립트에서 객체를 생성하려면 `new`연산자를 사용해야하는데 이 연산자를 사용하면 새로운 객체를 생성하고 생성자 함수에서 사용된 `this`를 새로 생성된 객체에 바인딩한다. 즉 `this`의 바인딩 타겟인 `window`에서 새로 생성한 객체로 바인딩됨을 알 수 있다.
+
 
 
 3. 이벤트 리스너 콜백에서 참조하는 this
@@ -782,7 +785,12 @@ function Person () {
 
 ## Can you give an example for destructuring an object or an array?
 ```js
-let person = {name : 'cater', age:29, gender: 'M', skill : ['javascript','reactJs','Typescript']}
+let person = {
+  name : 'cater', 
+  age:29, 
+  gender: 'M', 
+  skill : ['javascript','reactJs','Typescript']
+}
 
 // destructuring object
 let {name, skill} = person;
