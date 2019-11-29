@@ -31,6 +31,8 @@ SI프로젝트를 경험하면서 조금만 수정해도 실타래처럼 얽혀�
 <br><br>
 
 ## 2.JavaScript
+- [arrow Function](./javascript/arrowFunction.md)
+- [animation](./javascript/animation.md)
 - [Array](./javascript/array.md)
 - [ajax](./javascript/ajax.md)
 - [Json](./javascript/json.md)
@@ -48,11 +50,13 @@ SI프로젝트를 경험하면서 조금만 수정해도 실타래처럼 얽혀�
 - [class](./javascript/class.md)
 - [event bubble](./javascript/eventBubble.md)
 - [runtime Evironment](./javascript/runtimeEnvironment.md)
+- [requestAnimationFrame](./javascript/requestAnimationFrame.md)
 - [scope](./javascript/scope.md)
 - [server send evnet](./javascript/severSendEvnet.md)
 - [spead](./javascript/spread.md)
 - [set map](./javascript/SET-MAP.md)
 - [same origin policy](./javascript/sameOriginPolicy.md)
+- [new](./javascript/new.md)p
 <br><br>
 
 
@@ -152,7 +156,6 @@ SI프로젝트를 경험하면서 조금만 수정해도 실타래처럼 얽혀�
 2. 클린코드
     - 미학적인 코드.
 3. 성능 최적화
-    - request animation fram
     - requestidlecallback
     - pwa
     - 렌더링
@@ -202,9 +205,6 @@ SI프로젝트를 경험하면서 조금만 수정해도 실타래처럼 얽혀�
       - esLint
       - maven
 
-4. 기술의 변천사 특집
-    - 데이터베이스 연동모듈
-    - Build Tool[Maven, Gradle]
 
 
 
@@ -217,5 +217,4 @@ SI프로젝트를 경험하면서 조금만 수정해도 실타래처럼 얽혀�
 7. 프론트엔드 보안코딩.
 8. 렌더링을 최적화하기위한 방법.
 9. 개발환경을 구성하고 이유, 개발환경 설계
-10. css animation과 자바스크립트 애니메이션
-11. 내가 원하는 역할에 대한 정리.
+10. 내가 원하는 역할에 대한 정리.

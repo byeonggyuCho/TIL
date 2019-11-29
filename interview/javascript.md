@@ -19,7 +19,6 @@ foo.x = {n:2}
 하지만 실제 연산은 이것과 다르다. 두번째 줄에서 foo가 참조하는 객체가 `{n:1}`이기 때문이다. 두번째 줄의 연산은 `bar`를 통해 콘솔에서 확인할 수있다.  
 
 연산을 여러번 해보면 차이를 좀 더 쉽게 알 수있다.  
-
 ![](/resource/img/javascript/javascript_operatorPrecedence.png)  
 
 
@@ -35,7 +34,6 @@ promise는 값이 resloved인지 not resolved인지 상태를 반환해주는 �
 const promise = new Promise((reslove, reject) => {
 
 })
-
 ```
 
 ## Why do you need a promsie?
@@ -62,7 +60,7 @@ secondFunction();
 // Second function called
 // First function called
 ```
-만약 자바스크립트에서 callback함수를 사용하지 않고 모든 함수가 동기적으로 실행됐다면 `secondFunction`은 `firstFunction`이 종료된 뒤에 실행되어야한다. 하지만 비동기실행환경에서 `firstFunction`의 응답이 오기전에 `secondFunction`이 실행됐음을 알 수 있다.
+만약 자바스크립트에서 callback함수를 사용하지 않고 모든 함수가 동기적으로 실행됐다면 `secondFunction`은 `firstFunction`이 종료된 뒤에 실행되어야한다. 하지만 비동기 실행환경에서 `firstFunction`의 응답이 오기전에 `secondFunction`이 실행됐음을 알 수 있다.
 
 ## What are thre main rules of promise?
 1. promise는 thenable 객체이어야한다.
@@ -132,9 +130,12 @@ console.log('1');
 setTimeout(function() {
   console.log('2');
 }, 0);
-Promise.resolve().then(function() {
+
+Promise.resolve()
+.then(function() {
   console.log('3');
 })
+
 console.log('4');
 ```
 
@@ -142,7 +143,7 @@ console.log('4');
 Micro TaskQueue가 일반 Task Queue보다 높으며 `promise`체인의 실행시점은 Micro TaskQueque가 담당한다.
 
 
-###  What is the difference between these four promises?
+##  What is the difference between these four promises?
 ```js
 doSomething().then( () => doSomethingElse());
 
@@ -160,7 +161,7 @@ doSomething().then(doSomethingElse);
 세번째는 `doSomethingElse`이 함수를 반환하고 반환된 함수가 then 메서드의 콜백으로 실행된다.  
 네번째는 `doSomethingElse`가 실행되며 매개변수로 `doSomething`의 결과값이 전달된다.  
 
-###  What will the code below output to the console and why?
+##  What will the code below output to the console and why?
 ```js
 (function(){
   var a = b = 3;
@@ -224,7 +225,8 @@ function bar()
 
 ## What is IndexedDB?
 
-## Explain how this works in JavaScript.
+## Explain how `this` works in JavaScript.
+
 
 ## Can you give an example of one of the ways that working with this has changed in ES6?
 
@@ -261,7 +263,6 @@ Person.prototype.sayHello = function(){
 
 	console.log(1,this.name)
 
-
 	setTimeout(() => {
 		console.log(2,this.name)
   },0)
@@ -294,9 +295,6 @@ console.log(a);     // Uncaught ReferenceError: a is not defined
 console.log(b);     // undefined
 // null
 console.log(c);     // null
-
-
-
 ```
 
 ## What is a closure, and how/why would you use one?
@@ -327,8 +325,19 @@ function delaySayHello(msg){
 
 ## Can you explain what Function.call and Function.apply do? What's the notable difference between the two?
 
-`Function.prototype.call`
-`Function.prototype.apply`
+실행문맥에서 this바인딩을 셋팅한다는 기능은 같으나 인자전달 방식이 다르다.  
+`call`의 경우 개별적인 n개의 인자를 전달하고 `apply`의 경우 인자 배열을 전달한다. 
+`argument`객체같은 유사배열도 가능하기 때문에 인자갯수가 동적으로 변할때 사용하면 편리하다.
+
+```js
+function sum (x,y,z){
+  return x + y + z;
+}
+
+console.info('call',sum.call(null,1,2,3));
+console.info('apply',sum.apply(null,[1,2,3]));
+```
+
 
 
 ## Explain Function.prototype.bind.
@@ -346,7 +355,6 @@ var personInfo = {
 var newFoo = foo.bind(personInfo);
 
 newFoo.sayHelloe();
-
 ```
 
 ## What are the differences between cookie, local storage and session storage?
