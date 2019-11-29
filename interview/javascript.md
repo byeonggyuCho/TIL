@@ -273,7 +273,7 @@ cancelElememt.addEventListener("click", function(event){
 
 
 
-## Can you give an example of one of the ways that working with this has changed in ES6?
+## Can you give an example of one of the ways that working with `this` has changed in ES6?
 
 대표적으로 arrow function이 있다. 일반함수에서 this는 전역객체인 window를 참조한다.  
 그렇기 때문에 아래같은 예제에서 this참조에대한 오류가 있었다.
@@ -288,7 +288,7 @@ Person.prototype.sayHello = function(){
 
 
 	setTimeout(function(){
-		console.log(2,this.name)
+		console.log(2, this.name)
   },0)
 }
 
@@ -712,9 +712,6 @@ function secondFunc() {
 요청을 보낸 후 응답과는 상관없이 다음 방식을 동작하는 방식이다. 겨로가가 주어지는데 시간이 걸리더라도 그 시간 동안 다른 작업을 할 수 있다. 비동기방식은 비동기식 처리를 요청할 때 할일이 끝난 후 처리 결과를 알려주는 콜백함수를 통해 제어흐름을 되찾는다.
 이때 제어흐름을 컨트롤하는것이 `event loop`이다. 비동기 함수의 처리가 끝났을 때 콜백함수의 처리순서를 `call stack`에 끼워넣는 역할을 한다.
 
-## What is event loop?
-- What is the difference between call stack and task queue?  
-
 
 ## What are the differences between variables created using let, var or const?
 `var`는 현재 context에 변수를 만든다는것을 의미한다. `var`키워드가 없으면 전역변수를 생성한다. 기본적으로 자바스크립트에서는 function내부에서 새로운 context가 생성된다. 따라서 function 내부의 선언된 변수만이 지역변수였다.  
@@ -778,8 +775,6 @@ function Person () {
   this.sayHello
 
 }
-
-
 ```
 
 ## What is the definition of a higher-order function?
@@ -807,7 +802,6 @@ console.log(firstSkill)
 let name = 'Cater'
 
 console.log(`My name is ${name}`);
-
 ```
 
 ## Can you give an example of a curry function and why this syntax offers an advantage?
@@ -903,8 +897,44 @@ console.log(returnedTarget); // { a: 1, b: 3, c: 5 }
 
 ## What are the applicaations of assign method?
 
-1. 객체 복사.
-2. 객체 병합.
+`assign`메소드는 서로다른 두개의 객체를 병합하여 새로운 객체를 반환한다.
+```js
+var obj1 = {
+  a: 1,
+  b: 2
+}
+
+var obj2 = {
+  b: 3,
+  d: 4,
+  e: 5
+}
+
+var mergedObj = Object.assign(obj1,obj2);
+console.log(mergedObj)
+```
+만약 위 예제와 같이 동일한 프로퍼티가 있다면 두번째 객체를 기준으로 덮어쓴다.  이 메소드는 새로운 객체를 반환하기때문에 
+객체의 얕은 복사에 사용될 수 있다.
+
+```js
+class Person {
+
+  constructor(name){
+    this.name = name
+  }
+}
+
+var p1 = new Person('cater');
+var newP1 = Object.assign({},p1);
+
+console.log(newP1.name);
+
+newP1.name = 'Jake';
+
+console.log(newP1.name);
+console.log(p1.name);
+```
+
 
 
 ## How do you create an object with prototype?
