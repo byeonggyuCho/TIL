@@ -1,12 +1,11 @@
 # Object create
 
 ## Intro
-같은 구조를 가지는 객체를 만들기 위해선 어떻게 해야할까?  
-Factory Function과 Constructor Function을 이용한 방법이 있다.
+객체를 정의하는 다양한 방법과 각 상황에서 어떻게 정의하는 것이 좋은지 비교해본다.
 
 
 
-## Object literal
+## 1.Object literal
 ```js
 const circle = {
     radius : 1,
@@ -21,12 +20,137 @@ const circle = {
 
 ```
 - 키와 값으로 이뤄져있다.
+- 속성과 메서드는 콤마로 부분한다.
+- key와 value는 세미콜론으로 구분한다.
 - 속성은 dot notation으로 접근한다.
+- 객체를 변수에 할당할때는 마지막에 세미콜론을 붙인다.
 - property와 method를 정의한다.
     - 프로퍼티의 경우 값을 가지고 있는 경우 사용되고 로직을 정의하는 경우 메소드라고 한다.
 
+## 2. new Object()
+```js
+var obj = new object();
+console.log(o.constructor === Object);      //true
 
-## Factory Functoin
+var obj2 = new Object(1);
+console.log(obj2.constructor === Number);   //true
+console.log(obj2.toFixed(2))
+
+var obj3 = new Object("I'm not wearing hockey pads");
+console.log(obj3.constructor === String);   // true
+console.log(typeof obj3.substring);         //function
+
+var obj4 = new Object(true);
+console.log(o.constructor === Boolean);     //true
+```
+객체 생성자를 이용한 방법과 맅터럴을 이용한 방법에는 차이가 있다.  
+
+
+
+## 3. 사용자 정의함수.
+```js
+var Person = function(name){
+    this.name = name;
+    this.say = function(){
+        return `I am ${this.name}..`
+    };
+}
+
+var tony = new Person("IronMan");
+tony.say();
+```
+동작원리는 이렇다.
+ 
+1. 빈객가 생성딘다. 이 객체는 this라는 변수로 차조할수 있고 해당함수의 프로토타입을 상속받는다.
+2. this로 참조되는 객체에 속성과 메서드가 추가된다.
+3. 마지막에 다른 객체가 명시적으로 반환되지 않는 경우 this로 참조된 이 객체가 반환된다.
+
+```js
+var Person = function(name){
+    var this = Object.create(Person.prototype); //Person의 프로토타입을 상속받는다.
+
+    this.name = name;
+    this.say = function(){
+        return `I am ${this.name}..`
+    };
+
+    //return this;
+}
+```
+처럼 생략된걸로 생각할 수있다. 이때 say메서드는 인스턴스마다 생성이 됨으로 프로토타입객체에 등록하는것이 낫다.
+
+```js
+Person.prototype.say = function(){
+    return `I am ${this.name}`;
+}
+```
+
+
+**생성자의 반환값**  
+생성자 함수를 new와 함께 호출하면 항상 객체가 반환된다. 기본값은 this로 참조되는 객체다. 함수 내의 return문을 쓰지 안ㅇㅎ더라도 생성자는 암묵적으로 this를 반환한다. 그러나 반환값이 될 객체를 따로 정할 수 도 있다.
+
+```js
+var Objectmaker = function(){
+    this.name = "This is it";
+    var that = {};
+    that.name = "And that's that";
+    return that;
+}
+
+var obj = new Objectmaker();
+console.log(obj.name);
+```
+
+
+
+
+## 4.new연산자 없이 생성자 함수 호출하기.
+
+
+### 4.1 that 사용하기.
+
+```js
+var testA = new Waffle();
+console.log(testA);
+
+var testB = Waffle();
+testB.tastes = "change Value";
+
+console.log(testA.tastes); // yummy
+console.log(testB.tastes); // change Value
+
+var testC = Waffle();
+console.log(testC.tastes); // yummy
+```
+
+### 4.2 재귀호출이용하기.
+생성자 내부에서 this가 해당 생성자 인스턴스인지 확인하고 그렇지 않은 경우 new와 함께 스스로를 재호출하는 패턴이다.
+```js
+function Waffle() {
+  if(!(this instanceof Waffle)) {
+    return new Waffle();
+  }
+  this.tastes = "yummy";
+}
+Waffle.prototype.wantAnother = true;
+
+var first = new Waffle(),
+  second = Waffle();
+
+console.log(first.tastes); // "yummy"
+console.log(second.tastes); // "yummy"
+
+console.log(first.wantAnother); // true
+console.log(second.wantAnother); // true
+```
+
+
+## 5.같은 양식의 객체를 만드는 방법.
+같은 구조의 객체를 여러개 생성해야할 떄 사용하는 방법이다.  
+Factory Function과 사용자정의함수 (Constructor Function)을 이용한 방법이 있다.
+
+
+### 5.1 Factory Functoin
 ```js
 function createCircle(radius){
     return {
@@ -42,7 +166,7 @@ var circle2 = createCircle(2);
 ```
 
 
-## Constructor Function
+### 5.2 Constructor Function
 ```js
 function Circle(radius){
     this.radius = radius;
@@ -70,3 +194,4 @@ var circle = new Circle(1);
 
 ### ref
 - [velog](https://velog.io/@imacoolgirlyo/JS-Object-Constructors)
+- [코드 재활용패턴](http://frontend.diffthink.kr/2016/05/blog-post_42.html)
