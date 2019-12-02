@@ -21,7 +21,7 @@ inherit(Child, Parent);
 
 
 ## 1. 기본패턴.
-부모 생성자 함수를 사용해 객체를 생성하고 나서, 이 객체를 자식의 프로토타입에 할당하는 방법.
+부모 생성자 함수를 사용해 객체를 생성하고 나서, 이  객체를 자식의 프로토타입에 할당하는 방법.
 
 ```js
 function inherit(C, P) {
@@ -390,3 +390,4 @@ var kids = new Child();
 
 ## ref
 - [코드 재사용패턴](http://frontend.diffthink.kr/2016/06/blog-post_29.html)
+- [자바스크립트 프로토타입](https://muckycode.blogspot.com/2015/05/javascript-prototype.html)
