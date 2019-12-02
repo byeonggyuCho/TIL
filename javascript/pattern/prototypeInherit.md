@@ -273,6 +273,59 @@ console.log( Child.prototype.name)  //Jake
 이 패턴은 생성자함수의 속성도 개별적으로 복사하면서 prototype또 상속받는 패틴이다.  
 부모의 속성을 덮어쓰지 않는다.
 
+
+### 3.1 Objcet.create를 이용해 프로토타입 복제
+```js
+function Person(name) {
+  this.name = name;
+}
+
+Person.prototype.say = function(){
+  console.log(`I'm ${this.name}.`)
+}
+
+var tony = new Person('Iron Man');
+tony.say();   // I'm Iron Man
+
+
+function Employee(name, type, career){
+  Person.apply(this, arguments)   //(A) 부모의 속성을 받아온다. 현재 문맥의 this에 추가함.
+  this.type = type;
+  this.career = career;
+  this.working = false;
+}
+
+Employee.prototype = Object.create(Person.prototype);   // (B) 부모의 프로토타입 객체를 복제함.
+Employee.prototype.constructor = Employee;              // (C) 생성자 함수를 수정함.(B에서 덮어써서 지워졌기 때문)
+Employee.prototype.work = function(){
+  this.working = true;
+  console.log(`${this.name} Start work!`)
+}
+Employee.prototype.getOffWork = function(){
+  this.working = false;
+  console.log(`${this.name} are leaving the office!`)
+}
+
+var emp1 = new Employee('cater','front-end',2);
+emp1.say();
+emp1.work();
+emp1.getOffWork();
+```
+
+1. A: 부모객체의 this에 추가된 속성과 메소드를 자식 객체에 추가합니다.
+2. B: 부모객체의 프로토타입과 자식객체의 프로토타입을 연결시킴, 부모객체의 프로토타입 객체에 등록된 속성과 함수를 사용할 수 있음.
+  - 이때 `Object.create(Persion.prototype)`의 의미는 `Person.prototype`을 상속하는 새로운 객체를 만든다는 것임
+  - 부모객체의 `Prototype Object`를 상속한 객체를 `Prototype Object`로 설정해서 부모의 프로토타입 속성과 메서드를 사용가능함.
+  - `Employee.prototype = new Person()`과 `Employee.prototype = Object.crate(Person.prototype)`의 차이는 객체를 만들지만 생성자를 실행하지 않는 차이가 있음
+
+  - ![](../../resource/img/javascript/object.create.png)
+  - 위 결과처럼 생성자 함수의 속성이 없는 걸 볼 수 있음, `prototype Object`에 생성자 함수의 속성이 추가되는걸 막음.
+3. C: B단게에서 `Prototype Object`를 변경했으니 당연히 `constructor`도 `Person`이 되었음. 생성자함수는  `Employee`이어햐 함으로 수정함.
+
+
+
+
+
 <br><br>
 
 

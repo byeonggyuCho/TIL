@@ -47,6 +47,11 @@ console.log(o.constructor === Boolean);     //true
 
 
 
+### 3 Object.create()
+
+
+
+
 ## 3. 사용자 정의함수.
 ```js
 var Person = function(name){
@@ -193,5 +198,6 @@ var circle = new Circle(1);
 
 
 ### ref
+- [객체의 생성](https://velog.io/@doondoony/JavaScript-Object)
 - [velog](https://velog.io/@imacoolgirlyo/JS-Object-Constructors)
 - [코드 재활용패턴](http://frontend.diffthink.kr/2016/05/blog-post_42.html)
