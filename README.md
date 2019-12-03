@@ -56,7 +56,8 @@ SI프로젝트를 경험하면서 조금만 수정해도 실타래처럼 얽혀�
 - [spead](./javascript/spread.md)
 - [set map](./javascript/SET-MAP.md)
 - [same origin policy](./javascript/sameOriginPolicy.md)
-- [new](./javascript/new.md)p
+- [new](./javascript/new.md)
+- [Prototype Ingerit](./javascript/pattern/prototypeInherit.md)
 <br><br>
 
 

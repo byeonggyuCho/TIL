@@ -276,6 +276,7 @@ console.log( Child.prototype.name)  //Jake
 
 ### 3.1 Objcet.create를 이용해 프로토타입 복제
 ```js
+// 상위 클래스
 function Person(name) {
   this.name = name;
 }
@@ -287,14 +288,15 @@ Person.prototype.say = function(){
 var tony = new Person('Iron Man');
 tony.say();   // I'm Iron Man
 
-
+// 하위클래스.
 function Employee(name, type, career){
-  Person.apply(this, arguments)   //(A) 부모의 속성을 받아온다. 현재 문맥의 this에 추가함.
+  Person.apply(this, arguments)   //(A) 부모 생성자함수 호출, super()
   this.type = type;
   this.career = career;
   this.working = false;
 }
 
+// 하위클래스 확장.
 Employee.prototype = Object.create(Person.prototype);   // (B) 부모의 프로토타입 객체를 복제함.
 Employee.prototype.constructor = Employee;              // (C) 생성자 함수를 수정함.(B에서 덮어써서 지워졌기 때문)
 Employee.prototype.work = function(){
@@ -321,9 +323,6 @@ emp1.getOffWork();
   - ![](../../resource/img/javascript/object.create.png)
   - 위 결과처럼 생성자 함수의 속성이 없는 걸 볼 수 있음, `prototype Object`에 생성자 함수의 속성이 추가되는걸 막음.
 3. C: B단게에서 `Prototype Object`를 변경했으니 당연히 `constructor`도 `Person`이 되었음. 생성자함수는  `Employee`이어햐 함으로 수정함.
-
-
-
 
 
 <br><br>

@@ -47,12 +47,12 @@ console.log(o.constructor === Boolean);     //true
 
 
 
-### 3 Object.create()
+## 3. Object.create()
 
 
 
 
-## 3. 사용자 정의함수.
+## 4. 사용자 정의함수.
 ```js
 var Person = function(name){
     this.name = name;
@@ -109,10 +109,10 @@ console.log(obj.name);
 
 
 
-## 4.new연산자 없이 생성자 함수 호출하기.
+## 5.new연산자 없이 생성자 함수 호출하기.
 
 
-### 4.1 that 사용하기.
+### 5.1 that 사용하기.
 
 ```js
 var testA = new Waffle();
@@ -128,7 +128,7 @@ var testC = Waffle();
 console.log(testC.tastes); // yummy
 ```
 
-### 4.2 재귀호출이용하기.
+### 5.2 재귀호출이용하기.
 생성자 내부에서 this가 해당 생성자 인스턴스인지 확인하고 그렇지 않은 경우 new와 함께 스스로를 재호출하는 패턴이다.
 ```js
 function Waffle() {
@@ -150,12 +150,12 @@ console.log(second.wantAnother); // true
 ```
 
 
-## 5.같은 양식의 객체를 만드는 방법.
+## 6.같은 양식의 객체를 만드는 방법.
 같은 구조의 객체를 여러개 생성해야할 떄 사용하는 방법이다.  
 Factory Function과 사용자정의함수 (Constructor Function)을 이용한 방법이 있다.
 
 
-### 5.1 Factory Functoin
+### 6.1 Factory Functoin
 ```js
 function createCircle(radius){
     return {
@@ -171,7 +171,7 @@ var circle2 = createCircle(2);
 ```
 
 
-### 5.2 Constructor Function
+### 6.2 Constructor Function
 ```js
 function Circle(radius){
     this.radius = radius;
@@ -197,7 +197,93 @@ var circle = new Circle(1);
 3. 그 후 함수에서 해당 객체를 반환한다.
 
 
+
+## 정리 
+각 방법으로 각각 객체를 선언해봄.
+
+```js
+
+//변수 선언
+var o;
+
+//1. 프로토타입이 null인 객체 생성.
+// __proto__ 속성이 없음.
+o = Obecjt.create(null);
+
+
+//2. 객체 리터럴 타입 생성.
+o = {};
+
+
+//3. Object.prototype을 prototype으로하는 객체 생성.
+o = Object.create(Object.prototype);
+
+
+//4. 속성 두개를 갖는 객체를 생성.
+// (2)와 동일함.
+Object.create(Object.prototype);
+
+o = Object.create(Object.prototype, {
+    foo : {
+        writable : true,        // 할당 연산자를 이용해 재할당가능여부.
+        configurable : true,    // 삭제및수정 가능여부
+        enumeralbe,: false,     // 열거가능 여부
+        value: 'hello'          // 값
+    },
+    bar : {
+        configurable : true,
+        get : function(){
+            return 10;
+        },
+        set: function(vale){
+            console.log('Setting `o.bar` to ', value);
+        }
+
+    }
+})
+
+// 5. 생성자 함수를 이용한 객체생성.
+function Constructor(){}
+o = new Constructor();
+//위와 같은 결과, 하지만 생성자함수에 초기화 코드와 속성이 있으면 Object.create 사용 불가능함.
+o = Object.create(Constructor.prototype);
+
+
+// 6. {}가 프로토타입인 새로운 객체를 생성하고 속성하나를 추가함.
+//  enumeralbe, configurable 기본값은 false임, 
+o = Object.create({}, 
+        {p: {value: 42}
+    });
+
+
+
+// configurable = false, 수정안됨.
+o.p = 99;
+console.log(o.p);       //42
+
+// writeable = true, 할당 가능함.
+o.k = 33;
+console.log(o.k);
+
+
+console.log(o.hasOwnProperty('p'))
+console.log('p' in o)
+// enumeralbe = false, 열거 안됨
+console.log(Object.keys(o))
+
+
+for (prop in o) {
+    console.log(prop);
+
+}
+
+delete o.p;     //false
+```
+
+
 ### ref
+- [MDN_Object.defineProperty](https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty)
+- [MDN](https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/Object/create)
 - [객체의 생성](https://velog.io/@doondoony/JavaScript-Object)
 - [velog](https://velog.io/@imacoolgirlyo/JS-Object-Constructors)
 - [코드 재활용패턴](http://frontend.diffthink.kr/2016/05/blog-post_42.html)
