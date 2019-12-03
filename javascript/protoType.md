@@ -110,41 +110,95 @@ A.prototype.x = function () {
 
 
 ```js
-//#예제 1.
+//#예제 1 : 함수객체의 속성등록.
 var A = function () {
     this.x = function () {
-         console.log('hello');
+         console.log('orign');
     };
 };
 
 A.x = function() {
-    console.log('world');
+    console.log('changed');
 };
 
 var B = new A();
 var C = new A();
-B.x(); //hello
-C.x(); //hello
+B.x(); //orign
+C.x(); //orign
+```
 
-//#예제 2.
+```js
+//#예제 2: 생성자함수의 속성추가와 프로토타입 함수 등록 비교.
 var A = function () { };
-A.x=function() {
-    console.log('hello');
+A.x = function() {
+    console.log('orign');
 };
 A.prototype.x = function () {
-     console.log('world');
+     console.log('changed');
 };
 var B = new A();
 var C = new A();
-B.x(); //world
-C.x(); //world
+B.x(); //changed
+C.x(); //changed
 ```
+
+
+
 
 위 예제에서 B,C를 생성하기 위한 객체 원형 프로토타입은 A다. 여기서 중요한 것은 B,C는 A를 프로토타입으로 사용하기 위해서 A의 `Prototype Object`를 사용한다. 그리고 이 `Prototype Object`는 A(Host Object)가 생성될 당시의 정보만 가진다. 따라서 에제1에서 x 호출결과가 hello가 된다. B,C는 `Prototype Object`를 참조하기 때문이다. 예제2에서는 `prototype property`로 `Prototype Oeject`에 접근해 수정했기 때문에 world가 된것을 알 수 있다.
 
 ![](/resource/img/javascript/prototypeExample.png)
 이 도식에서 볼 수 있듯이 객체 B,C는 `__proto__`(프로토타입링크)를 통해 A의 `Prototype Oject`를 참조하고 있다.  
 `Prototype Obejct`에 접근하기 위해서는 원형함수 객체 가지고 있는 `prototype property`를 이용해야한다.
+
+
+
+```js
+// 예제3: 프로토타입 체인에 따른 속성을 찾는 우선순위.
+var fooPrototype = {
+    write: function(){
+        return "[prototype] write";
+    },
+    read: function(){
+        return "[prototype] read"
+    }
+};
+
+function Foo() {
+    this.write = function(){
+        return "no write";
+    }
+}
+
+Foo.prototype = fooPrototype;
+
+foo = new Foo();
+
+console.log(foo.write());
+console.log(foo.read());
+
+too = new Foo();
+too.read = function() {         // (A)
+    return "No read";
+}
+
+console.log(too.write());
+console.log(too.read());
+
+console.log('hasOwnProperty',too.hasOwnProperty('read'));
+console.log('in','read' in too)
+
+delete too.read;                //(B)
+
+console.log('hasOwnProperty',too.hasOwnProperty('read'));
+console.log('in','read' in too) //(C)
+
+
+console.log(too.read());
+```
+- (A): 예제를 통해 확인 가능하듯 객체의 속성을 호춯하면 가장 먼저 해당 객체가 가진 속성을 검색하고 찾지 못하면 `prototype link`를 쫒아 프로퍼티를 찾는다.  
+- (B): 객체의 프로퍼티를 지우니 프로토타입의 메서드가 호출되는게 확인된다.
+- (C): in프로퍼티는 프로토타입 체인을 탐색하기 떄문에 true가 나온다.
 
 
 
