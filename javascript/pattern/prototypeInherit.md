@@ -1,5 +1,7 @@
 # Prototype_inherit
 
+
+
 ## 프로토타입 상속
 
 
@@ -17,35 +19,162 @@ function Child(name) {}
 inherit(Child, Parent); 
 ```
 
-
+1. 자식 클래스의 인스턴스는 부모 클래스의 인스턴스이어야한다.
+2. 자식 클래스의 속성과 메서드가 부모클래스에 영향을 주며 안된다.
+3. 자식 클래스는 부모의 속성과 메서드를 모두 물려받으며 새로운 속성과 메서드를 추가할 수있다.
+4. 자식 클래스는 부모 클래스의 메서드를 오버라이드할 수 있다.
 
 
 ## 1. 기본패턴.
-부모 생성자 함수를 사용해 객체를 생성하고 나서, 이  객체를 자식의 프로토타입에 할당하는 방법.
 
 ```js
-function inherit(C, P) {
-  C.prototype = new P();    //(A)
+function Person(name,age){
+  this.name = name;
+  this.age = age
+}
+Person.prototype.say = function(){
+  console.log("Hi I'm " + this.name)
 }
 
-function Parent(name) {
-  this.name = name || 'Adam';
+function Employee(name, age, job,career){
+
+  var obj = new Person();
+  obj.name = name
+  obj.age = age
+  obj.job = job
+  obj.career = career;
+
+  return obj;
 }
 
-Parent.prototype.say = function() {
-  return this.name;
+Employee.prototype.introduce = function(){
+  console.log('My job is '+ this.job + "\n")
 }
 
-function Child(name) {}
+var worker = new Employee('cater',29,'programer',2)
 
-inherit(Child, Parent);
-console.log( '자식의 say 함수 : ' + Child.prototype.say() );
+console.log('worker is instance of Employee ', worker instanceof Employee)
+console.log('worker is instance of Person ', worker instanceof Person)
 
-var kids = new Child();
-console.log( kids.say() );
+worker.say()
+worker.introduce()    //Typeerror: worker.introduce is not a function
 ```
-포인트는 `(A)`에서 자식객체의 프로토타입이 부모 생성자함수가 아니라 생성자 함수로 생성한 인스턴스라는 점이다. 
-new 연산자를 이용해서 부모의 복제 객체를 생성하고, 그 객체의 물리적 메모리 주소를 자식 `prototype`이 참조한다. 또 new연산자를 통해 자식의 복제 객체를 생성하고 그 객체의 물리적 메모리 주소를 kids가 받고 있다.
+가장 초기에 사용했던 상속방법이다. this를 반환하는 대신 새로운 obj를 반환하는 방식으로 상속을 구현했다.  
+이 방법의 단점은 worker가 Employee의 인스턴스라는 걸 알 수 없다는 것이다. 이건 객체지향 관점에서 치명적인 점이다.  
+또 introduce같은 메서드를 프로토타입 객체에 등록할 수 없다. 이를 위해선 크래스의 메서드로 등록해야하는데 이럴 경우 각 인스턴스마다 새로운 메서드가 생성된다.
+
+
+
+## 2. 생성자함수의 프로토타입을 새로운 객체로 설정한다.
+```js
+var person = {
+  name: "anonymous",
+  age:"99",
+  say: function(){
+    console.log("Hi i'm "+ this.name);
+  }
+}
+
+function Interviewer(name,age, dep, position){
+  this.name = name;
+  this.age = age;
+  this.dep = dep;
+  this.position = position;
+}
+
+Interviewer.prototype = person;
+
+Interviewer.prototype.pass = function(empl){
+  console.log(empl.name + " You are passed")
+}
+
+
+function Applicant(name,age,major, gender){
+  name && (this.name = name);     //(A)
+  age && (this.age = age);
+
+  this.major = major;
+  this.gender = gender;
+
+  this.introduce = function(){
+    console.log('My major is ' + this.major);
+  }
+}
+
+Applicant.prototype = person;
+
+
+var app1 = new Applicant('cater', 29, 'programmer');
+
+person.say()
+app1.say();
+app1.introduce();
+
+console.log(app1 instanceof Applicant);   //true
+```
+이후 자바스크립트는 function에 기본으로 들어있는 프로토타입 속성을 새로운 객체로 설정하여 상속하는 방식을 사용했다.
+새로운 객체로 선언하듯이 상속하고자 하는 객체를 하위 객체의 프로토타입 속성으로 설정하면 된다.  
+
+이 방법에도 여전히 문제가 남아있는데 부모의 생성자 함수를 실행하는 것이 아니기 때문에 Applicant에서 부모 클래스의 속성인 (name, age)에 대해서 다시 작성했다. 이것을 우리가 통상적으로 알고 있는 객체지향 언어의 상속과는 다르다. 부모클래스의 속성을 오버라이딩할 목적이 아니라면 부모 클래스의 생성자를 실행하여 초기화작업이 이뤄져야한다.  인스턴스가 참조하는 공통 메서드를 작성할 수 없다는것도 여전히 문제다.
+
+
+
+
+### 3. 자식 클래스의 프로토타입을 부모 클래스의 인스턴스로 설정하는 방법.
+
+```js
+function Person(name) {
+  this.name = name || 'anonymous';
+}
+
+Person.prototype.say = function() {
+  console.log("Hi I'm ", this.name);
+}
+
+function Interviewer(name, dep) {
+  this.name = name;
+  this.dep = dep;
+}
+
+Interviewer.prototype = new Person();     //(A)
+
+Interviewer.prototype.introduce = function(){
+  console.log('My job is '+ this.dep)
+}
+
+
+//console.log( '자식의 say 함수 : ' + Interviewer.prototype.say() );
+
+var interviewer = new Interviewer('cater','R&D');
+console.log('interviewer is instance of Interviewer ', interviewer instanceof Interviewer)
+console.log('interviewer is instance of Person ', interviewer instanceof Person)
+console.log('prototype of interviewer is ', Object.getPrototypeOf(interviewer))
+interviewer.say();
+interviewer.introduce();
+
+var p1 = new Person('Jake');
+p1.say();
+p1.introduce()
+```
+포인트는 `(A)`에서 자식객체의 프로토타입이 부모의 생성자함수가 아니라 부모의 인스턴스라는 점이다. 
+new 연산자를 이용해서 부모의 복제 객체를 생성하고, 그 객체의 물리적 메모리 주소를 자식 `prototype`이 참조한다. 또 new 연산자를 통해 자식의 복제 객체를 생성하고 그 객체의 물리적 메모리 주소를 interviewer 받고 있다.
+
+
+### 4. Object.create
+자식 클래스의 내부에서 부모 클래스의 생성자로 객체를 생성하면 연결이 인스턴스와 자식 클래스와의 연결이 깨진다. 
+(위 예제에서 `Object.getPrototypeOf`를 통해 프트토타입 객체를 확인해보면 Person의 `Protptype Object`가 나온다. )
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -176,9 +305,8 @@ Article.prototype.name = function() {
     console.log(this.tags); 
 }
 
-var article = new Article();
 function BlogPost() {}
-BlogPost.prototype = article;
+BlogPost.prototype = new Article();
 
 var blog = new BlogPost();
 
@@ -188,11 +316,11 @@ function StaticPage() {
 
 var page = new StaticPage();
 
-console.log(article.tags);
+console.log(BlogPost.prototype .tags);
 console.log(blog.tags);
 console.log(page.tags);
 
-console.log(article.hasOwnProperty('tags')); // true
+console.log(BlogPost.prototype .hasOwnProperty('tags')); // true
 console.log(blog.hasOwnProperty('tags')); // false
 console.log(page.hasOwnProperty('tags')); // true
 ```
@@ -249,6 +377,9 @@ console.log( kids.name );
 
 
 <br><br>
+
+
+
 
 ## 3. 생상자 빌려쓰고 프로토타입 지정해주기.
 
@@ -443,3 +574,4 @@ var kids = new Child();
 ## ref
 - [코드 재사용패턴](http://frontend.diffthink.kr/2016/06/blog-post_29.html)
 - [자바스크립트 프로토타입](https://muckycode.blogspot.com/2015/05/javascript-prototype.html)
+- [자바스크릅티 상속](https://frontierdev.tistory.com/31)
