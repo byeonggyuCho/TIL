@@ -16,35 +16,39 @@ Parent.prototype.say = function() {
 
 function Child(name) {}
 
-inherit(Child, Parent); 
+Child.prototype = new Parent();
 ```
 
 1. 자식 클래스의 인스턴스는 부모 클래스의 인스턴스이어야한다.
 2. 자식 클래스의 속성과 메서드가 부모클래스에 영향을 주며 안된다.
 3. 자식 클래스는 부모의 속성과 메서드를 모두 물려받으며 새로운 속성과 메서드를 추가할 수있다.
 4. 자식 클래스는 부모 클래스의 메서드를 오버라이드할 수 있다.
+5. 인스턴스를 통해 클래스를 확인 가능해야한다.
 
 
-## 1. 기본패턴.
+## 1. 생성자 빌려쓰기 패턴.
 
 ```js
 function Person(name,age){
   this.name = name;
   this.age = age
 }
+
 Person.prototype.say = function(){
   console.log("Hi I'm " + this.name)
 }
 
 function Employee(name, age, job,career){
+  
+  var obj = new Person();   //obj의 프로토타입은 Peson
 
-  var obj = new Person();
+  //덮어쓴다.
   obj.name = name
   obj.age = age
   obj.job = job
   obj.career = career;
 
-  return obj;
+  return obj;  
 }
 
 Employee.prototype.introduce = function(){
@@ -61,13 +65,15 @@ worker.introduce()    //Typeerror: worker.introduce is not a function
 ```
 가장 초기에 사용했던 상속방법이다. this를 반환하는 대신 새로운 obj를 반환하는 방식으로 상속을 구현했다.  
 이 방법의 단점은 worker가 Employee의 인스턴스라는 걸 알 수 없다는 것이다. 이건 객체지향 관점에서 치명적인 점이다.  
-또 introduce같은 메서드를 프로토타입 객체에 등록할 수 없다. 이를 위해선 크래스의 메서드로 등록해야하는데 이럴 경우 각 인스턴스마다 새로운 메서드가 생성된다.
+또 introduce같은 메서드를 프로토타입 객체에 등록할 수 없다. 이를 위해선 크래스의 메서드로 등록해야하는데 이럴 경우 각 인스턴스마다 새로운 메서드가 생성된다.  
 
 
 
-## 2. 생성자함수의 프로토타입을 새로운 객체로 설정한다.
+
+
+## 2. 부모의 프로토타입 참조.
 ```js
-var person = {
+var person_Prototype = {
   name: "anonymous",
   age:"99",
   say: function(){
@@ -82,11 +88,14 @@ function Interviewer(name,age, dep, position){
   this.position = position;
 }
 
-Interviewer.prototype = person;
+Interviewer.prototype = person_Prototype;
 
-Interviewer.prototype.pass = function(empl){
-  console.log(empl.name + " You are passed")
+Interviewer.prototype.pass = function(){
+  console.log(" You are passed")
 }
+
+var interviewer = new Interviewer('Jake');;
+interviewer.pass()
 
 
 function Applicant(name,age,major, gender){
@@ -101,7 +110,7 @@ function Applicant(name,age,major, gender){
   }
 }
 
-Applicant.prototype = person;
+Applicant.prototype = person_Prototype;
 
 
 var app1 = new Applicant('cater', 29, 'programmer');
@@ -115,7 +124,9 @@ console.log(app1 instanceof Applicant);   //true
 이후 자바스크립트는 function에 기본으로 들어있는 프로토타입 속성을 새로운 객체로 설정하여 상속하는 방식을 사용했다.
 새로운 객체로 선언하듯이 상속하고자 하는 객체를 하위 객체의 프로토타입 속성으로 설정하면 된다.  
 
-이 방법에도 여전히 문제가 남아있는데 부모의 생성자 함수를 실행하는 것이 아니기 때문에 Applicant에서 부모 클래스의 속성인 (name, age)에 대해서 다시 작성했다. 이것을 우리가 통상적으로 알고 있는 객체지향 언어의 상속과는 다르다. 부모클래스의 속성을 오버라이딩할 목적이 아니라면 부모 클래스의 생성자를 실행하여 초기화작업이 이뤄져야한다.  인스턴스가 참조하는 공통 메서드를 작성할 수 없다는것도 여전히 문제다.
+이 방법에도 여전히 문제가 남아있는데 부모의 생성자 함수를 실행하는 것이 아니기 때문에 Applicant에서 부모 클래스의 속성인 (name, age)에 대해서 다시 작성했다. 이것을 우리가 통상적으로 알고 있는 객체지향 언어의 상속과는 다르다. 부모클래스의 속성을 오버라이딩할 목적이 아니라면 부모 클래스의 생성자를 실행하여 초기화작업이 이뤄져야한다.  인스턴스가 참조하는 공통 메서드를 작성할 수 없다는것도 여전히 문제다.  
+
+`pass`같은 상속받은 클래스의 메서드를 등록할때 `parent`를 직접 참조하고 있기때문에 프로토타입이 변형된다. 객체 복사를 통해 불변성을 유지할 필요성이 있다.
 
 
 
@@ -162,7 +173,127 @@ new 연산자를 이용해서 부모의 복제 객체를 생성하고, 그 객�
 
 ### 4. Object.create
 자식 클래스의 내부에서 부모 클래스의 생성자로 객체를 생성하면 연결이 인스턴스와 자식 클래스와의 연결이 깨진다. 
-(위 예제에서 `Object.getPrototypeOf`를 통해 프트토타입 객체를 확인해보면 Person의 `Protptype Object`가 나온다. )
+(위 예제에서 `Object.getPrototypeOf`를 통해 프트토타입 객체를 확인해보면 Person의 `Protptype Object`가 나온다. Interviewer가 프로토타입이 아니라는 점에서 모호함이 남는다.)  
+이런 이유로 만들어진 것이 `Object.create`이다. 이 함수는 객체와 객체간의 상속을 시켜주는 함수이다. 
+내부적 구조의 불완정성 이외에도 new라는 키워드 자체가 자바스크립트 답지 않다는 의견에 의해 객체의 상속하여 생성할 수 있는 함수를 별도로 제공하게 된것이다. 
+
+`Object.create`의 기본적인 동작은 다음과 같다.
+```js
+Object.create = function(obj){
+  function F(){
+    F.prototype = obj;
+    return new F();
+  }
+}
+```
+인자로 넘겨받은 객체를 프로토타입으로 하는 객체를 생성하여 반환한다.
+
+
+```js
+function Person(name) {
+  this.name;
+}
+
+Person.prototype = {
+  say : function(){
+    console.log("Hi I'am ", this.name);
+  }
+};
+
+var interviewer = Object.create(Person.prototype);
+interviewer.name = "Cater";   //(A)
+interviewer.say();
+```
+`Object.create`의 인자가 Person의 생성자 함수가 아니라 프로토타입 객체이다. 생성자함수가 아닌 객체를 전달하는 것은 `Object.create`에서 임의의 Froxy객체의 프로토타입 객체로 사용되기 떄문이다.  `(A)`를 보면 객체의 속성을 부가적으로 추가했는데 이런점은 `Object.create`의 두번째 속성을 이용해 속성을 정의할 수 있다.  
+소스코드를 보면 new 키워드가 사라졌다. 이는 함수호출로 객체를 생성하여 소스에서 생성자의 개념이 약해지고 객체의 인스턴스 간의 상속을 강조하는 것이 `Object.create`의 특징이다.  
+
+`Object.create`함수를 통해 만든 객체의 상속여부를 확인하는 방법을 소개한다. new 연산자를 통한 객체 생성과 만찬가지로 `instanceof`를 통해 확인가능한데 `instanceof`의 표준명세를 살펴보면 생성자를 비교하는것이 아니라 프로토타입을 비교하기 떄문에 new 여난자와 동일하게 확인 가능하다.
+하지만 인자로 `Person.prototype`을 받고 `instanceof`로 생성자함수를 비교하는 것이 직관성이 떨어져보인다.
+
+```js
+var p1 = Object.create(Person.prototype);
+console.log(p1 instanceof Person);   
+
+// 생성을 위한 인자값과 생성후 비교를 위한 인자가 다르기 때문에 동작원리가 바로 이해가지 않을 수 있다.
+```
+이것을 위해 `prototype Object`를 넘기고 `prototype Object`를 꺼내봐 비교하기 위해서 `Object.getPrototypeOf()`함수가 등장했다. 
+객체의 프로토타입이 반환된다.
+
+
+```js
+var person_Prototype = {
+  say: function(){
+    console.log("Hi I'm "+ this.name)
+  }
+}
+
+var p1 = Object.create(person_Prototype)
+console.log(Object.getPrototypeOf(p1))
+console.log(p1 instanceof personPrototypeObject)    
+// TypeError
+// instanceof 는 인자로 함수를 전달해야한다.
+```
+
+반대로 프로토타입의 입장에서 생성된 객체를 확인하기 위해선 `Object.isPrototypeOf`를 사용할 수 있따.
+```js
+console.log(person_Prototype.isPrototypeOf(p1))
+```
+
+
+#### Obeject.create 초기화.
+`Object.create`를 이용해 객체를 생성할 때 프로퍼티를 정의하는 방법에 대해 소개한다.  
+
+```js
+function Person(name) {
+  this.name = name;
+}
+
+Person.prototype.say = function(){
+  console.log("Hi I'm "+ this.name)
+}
+
+var cater = Object.create(Person.prototype,{
+  name: {
+    value: "Cater"
+  }
+});
+
+
+cater.say();
+cater.name = "Cater Cho"
+cater.say()     // 기본속성을 읽기전용이기떄문에 값을 수정할 수 없다.
+```
+
+
+#### Obeject.create와 new 연산자 조합.
+```js
+function Person(name){
+  this.name = "anonymous"
+}
+
+function Interviewer(name){
+  this.name = name;
+}
+
+/*
+이것보다 수정 불가 속성을 추가하기위해 Object.create의 두번째 인자로 속성을 정의하는것이 낫다.
+Interviewer.prototype = Object.create(Person.prototype);
+Interviewer.constructor = Interviewer;
+*/
+
+Interviewer.prototype = Object.create(Person.prototype,{
+  constructor:{
+    value: Interviewer,
+    writable : false      //기본값이 false이지만 애해를 위한 명시적인 이유로 써놓음.
+  }
+});
+
+var interviewer = new Interviewer("cater");
+console.log(interviewer instanceof Interviewer)
+console.log(interviewer instanceof Person)
+console.log(interviewer.constructor);
+```
+
 
 
 
