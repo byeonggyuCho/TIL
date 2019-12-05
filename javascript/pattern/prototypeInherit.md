@@ -26,7 +26,7 @@ Child.prototype = new Parent();
 5. 인스턴스를 통해 클래스를 확인 가능해야한다.
 
 
-## 1. 생성자 빌려쓰기 패턴.
+## 1. 부모 인스턴스에 속성과 메서드를 추가하는 방식.
 
 ```js
 function Person(name,age){
@@ -48,54 +48,69 @@ function Employee(name, age, job,career){
   obj.job = job
   obj.career = career;
 
+  obj.introduce = function(){
+    console.log('My job is '+ this.job + "\n")
+  }
+
   return obj;  
 }
 
-Employee.prototype.introduce = function(){
-  console.log('My job is '+ this.job + "\n")
-}
+
 
 var worker = new Employee('cater',29,'programer',2)
 
 console.log('worker is instance of Employee ', worker instanceof Employee)
 console.log('worker is instance of Person ', worker instanceof Person)
+console.log(Object.getPrototypeOf(worker))
 
 worker.say()
-worker.introduce()    //Typeerror: worker.introduce is not a function
+worker.introduce()
 ```
 가장 초기에 사용했던 상속방법이다. this를 반환하는 대신 새로운 obj를 반환하는 방식으로 상속을 구현했다.  
 이 방법의 단점은 worker가 Employee의 인스턴스라는 걸 알 수 없다는 것이다. 이건 객체지향 관점에서 치명적인 점이다.  
-또 introduce같은 메서드를 프로토타입 객체에 등록할 수 없다. 이를 위해선 크래스의 메서드로 등록해야하는데 이럴 경우 각 인스턴스마다 새로운 메서드가 생성된다.  
+부모 클래스의 인스턴스에 속성과 메서드를 추가하기 때문에 introduce같은 메서드를 프로토타입 객체에 등록할 수 없다. 
 
 
 
-
-
-## 2. 부모의 프로토타입 참조.
+## 2. prototype 공유 패턴.
 ```js
-var person_Prototype = {
+/* var person_Prototype = {
   name: "anonymous",
   age:"99",
   say: function(){
     console.log("Hi i'm "+ this.name);
-  }
+
 }
+ */
+var Person = function(name,age){
+  this.name = name || 'default_name';
+  this.age = age || 'default_age';
+};
+
+Person.prototype.name = "anonymous";
+Person.prototype.age = "-1"
+Person.prototype.say = function(){
+  console.log("Hi i'm "+ this.name);
+}
+
+
 
 function Interviewer(name,age, dep, position){
   this.name = name;
   this.age = age;
   this.dep = dep;
   this.position = position;
+  this.pass = function(){
+    console.log("You are passed")
+  }
+
 }
 
-Interviewer.prototype = person_Prototype;
+Interviewer.prototype = Person.prototype;
 
-Interviewer.prototype.pass = function(){
-  console.log(" You are passed")
-}
 
 var interviewer = new Interviewer('Jake');;
-interviewer.pass()
+interviewer.pass();
 
 
 function Applicant(name,age,major, gender){
@@ -110,31 +125,39 @@ function Applicant(name,age,major, gender){
   }
 }
 
-Applicant.prototype = person_Prototype;
+Applicant.prototype = Person.prototype;
 
 
 var app1 = new Applicant('cater', 29, 'programmer');
 
-person.say()
+person.say();
 app1.say();
 app1.introduce();
 
-console.log(app1 instanceof Applicant);   //true
+console.log("app1 is instance of Applicant", app1 instanceof Applicant);   //true
+console.log("app1 is instance of Person", app1 instanceof Person);   
+console.log("Prototype of app1  is", Object.getPrototypeOf(app1));   
 ```
-이후 자바스크립트는 function에 기본으로 들어있는 프로토타입 속성을 새로운 객체로 설정하여 상속하는 방식을 사용했다.
-새로운 객체로 선언하듯이 상속하고자 하는 객체를 하위 객체의 프로토타입 속성으로 설정하면 된다.  
+하위 객체의 생성자 함수의 `prototype Property`에 상위 객체의 `prototype Property`를 참조하여 상속하는 방식이다.
 
-이 방법에도 여전히 문제가 남아있는데 부모의 생성자 함수를 실행하는 것이 아니기 때문에 Applicant에서 부모 클래스의 속성인 (name, age)에 대해서 다시 작성했다. 이것을 우리가 통상적으로 알고 있는 객체지향 언어의 상속과는 다르다. 부모클래스의 속성을 오버라이딩할 목적이 아니라면 부모 클래스의 생성자를 실행하여 초기화작업이 이뤄져야한다.  인스턴스가 참조하는 공통 메서드를 작성할 수 없다는것도 여전히 문제다.  
+이 방법의 문제는 부모의 생성자 함수를 실행하는 것이 아니기 때문에 Applicant에서 부모 클래스의 속성인 (name, age)에 대해서 다시 작성했다. 이것을 우리가 통상적으로 알고 있는 객체지향 언어의 상속과는 다르다. 부모클래스의 속성을 오버라이딩할 목적이 아니라면 부모 클래스의 생성자를 실행하여 초기화작업이 이뤄져야한다.  
 
-`pass`같은 상속받은 클래스의 메서드를 등록할때 `parent`를 직접 참조하고 있기때문에 프로토타입이 변형된다. 객체 복사를 통해 불변성을 유지할 필요성이 있다.  이 방법에서 클래스의 메서드를 추가하려면 생성자함수에 등록해야한다. 이 경우 인스턴스마다 똑같은 함수가 복제되는 단점이 생긴다.
+**문제점**  
+- 부모의 생성자함수를 실행하지 않기 때문에 부모의 속성을 상속받지 못함. 중복 코드발생.
+- 부모의 prototype object를 공유하기 때문에 prototype 메서드 선언 못함.
+- 자식 클래스가 생성한 인스턴스의 prototype Object이 부모의 prototype object임. 인스턴스를 생성한 생성자 함수의 prototype object가 되는게 맞음.
+
+
+<br><br>
 
 
 
 
-### 3. 자식 클래스의 프로토타입을 부모 클래스의 인스턴스로 설정하는 방법.
+### 3. 부무 객체의 인스턴스를 prototype으로 사용
 
 ```js
 function Person(name) {
+  this.type = "Human"
   this.name = name || 'anonymous';
 }
 
@@ -160,23 +183,191 @@ var interviewer = new Interviewer('cater','R&D');
 console.log('interviewer is instance of Interviewer ', interviewer instanceof Interviewer)
 console.log('interviewer is instance of Person ', interviewer instanceof Person)
 console.log('prototype of interviewer is ', Object.getPrototypeOf(interviewer))
+console.log('Type of interviewer is '+interviewer.type);    //조회됨
+console.log("Does interviewer have a 'type' property? "+ interviewer.hasOwnProperty("type"));  //false
 interviewer.say();
 interviewer.introduce();
 
+
+
 var p1 = new Person('Jake');
 p1.say();
-p1.introduce()
+p1.introduce();   //Type Error: 부모 프로토타입과 자식 부로토타입이 분리됨.
 ```
-부모의 
-포인트는 `(A)`에서 자식객체의 프로토타입이 부모의 생성자함수가 아니라 부모의 인스턴스라는 점이다. 
-new 연산자를 이용해서 부모의 복제 객체를 생성하고, 그 객체의 물리적 메모리 주소를 자식 `prototype`이 참조한다. 또 new 연산자를 통해 자식의 복제 객체를 생성하고 그 객체의 물리적 메모리 주소를 interviewer 받고 있다.
+`(A)`에서 자식객체의 프로토타입이 부모의 생성자함수가 아니라 부모의 인스턴스이다.
+new 연산자를 이용해서 부모의 인스턴스를 생성하고, 그 객체의 물리적 메모리 주소를 자식의 `prototype`이 참조한다. 
+또 new 연산자를 통해 자식의 복제 객체를 생성하고 그 객체의 물리적 메모리 주소를 interviewer가 받고 있다.
 
 
-### 4. Object.create
-자식 클래스의 내부에서 부모 클래스의 생성자로 객체를 생성하면 연결이 인스턴스와 자식 클래스와의 연결이 깨진다. 
-(위 예제에서 `Object.getPrototypeOf`를 통해 프트토타입 객체를 확인해보면 Person의 `Protptype Object`가 나온다. Interviewer가 프로토타입이 아니라는 점에서 모호함이 남는다.)  
+**해결**  
+1. 참조가 아닌 새로운 객체를 `prototype`으로 사용하기 떄문에 자식의 `prototype`과 부모의 `prototype`이 분리됨.
+2. 부모의 속성을 물려받음.
+  
+
+**문제점**   
+1. 자식의 인스턴스와 부모의 `prototype`이 연결되어 있음.
+  - 따라서 부모의 속성에 대해서 `hasOwnProperty`로 속성 탐색이 안됨.
+  - type 속성을 보면 프로토타입 체인에 의해 조회는 되지만 인스턴스의 직속 속성이 아니기 때문에 `hasOwnProperty`로 조회가 안됨.
+2. 부모의 생성자 함수 실행시점때문에 부모 생성자 함수의 초기값이 필요한경우 전달을 따로 해줘야함.
+  - (A) 시점에 생성자함수에 파라미터를 전달해야해서 직관성이 떨어짐.
+
+<br><br>
+
+
+### 4. 부모 생성자 함수 빌려쓰기.
+
+이 패턴의 기본 골격은 이런 구조임
+```js
+function Parent(name) {
+  this.name = name || 'Adam';
+}
+
+Parent.prototype.say = function() {
+  return this.name;
+}
+
+function Child(name) {
+  Parent.apply(this, arguments);    //속성 상속.
+}
+
+var kids = new Child('세호');
+console.log( kids.name );
+```
+부모의 생성자함수를 호출해서 속성을 상속받음.
+
+```js
+function Article() {
+  this.tags = ['js', 'css'];
+}
+Article.prototype.name = function() { 
+    console.log(this.tags); 
+}
+
+function BlogPost() {}
+BlogPost.prototype = new Article();
+
+var blog = new BlogPost();
+
+
+function StaticPage() {
+  Article.call(this);
+}
+
+var page = new StaticPage();
+
+console.log(BlogPost.prototype .tags);
+console.log(blog.tags);
+console.log(page.tags);
+
+console.log(BlogPost.prototype .hasOwnProperty('tags')); // true
+console.log(blog.hasOwnProperty('tags')); // false    (A)
+console.log(page.hasOwnProperty('tags')); // true
+console.log('blog name \n',blog.name)
+console.log('page.naem \n', page.name)    //(B)
+
+blog.tags.push('HTML');   //(C)
+
+var blog2 = new BlogPost();
+
+console.log(blog2.tags)  
+```
+blog객체는 tags를 자기 자신의 속성으로 가진 것이 아니라 prototype을 통해 접근하기 떄문에, hasOwnProperty()는 false이고 
+생성자만 빌려쓰는 방식으로 상속받은 page객체는 부모의 tags멤버에 대한 참조를 얻는 것이 아니라 복사본을 얻게 되므로 자기 자신의 tags속성을 가지게 된다.  
+
+즉 `(C)`에서 처럼 인스턴스의 속성에 값을 변경했는데 프로토타입 객체를 변경하여 다른 인스턴스의 속성도 함께 변경된다.
+
+**해결**  
+1. 부모의 속성을 상속받음
+  - `page.hasOwnProperty('tags')`가 true
+  - 프로토타입 체인이 아님.
+
+
+**미해결**  
+1. 부모의 프로토타입 속성 및 메서드를 상속 못함.
+  - `(B)`프로토타입을 상속받지 못했기 때문에 프로토타입에 포함된 메서드를 사용못함.
+
+
+이 방법에서 부모의 메서드를 전달하기 위해선 아래 코드의 `(A)`처럼 생성자 함수의 속성으로 등록해야함.
+```js
+function Article() {
+  this.tags = ['js', 'css'];
+  this.name = function() {  // (A)
+    console.log(this.tags); 
+  }
+}
+
+var article = new Article();
+function BlogPost() {}
+BlogPost.prototype = article;
+
+var blog = new BlogPost();
+
+function StaticPage() {
+  Article.call(this);
+}
+
+var page = new StaticPage();
+page.tags = ['change Value'];
+
+console.log( article.name() ); // ['js', 'css']
+console.log( blog.name() ); // ['js', 'css']
+console.log( page.name() ); // ['change Value']
+```
+
+
+### 5. 생성자를 빌려쓰기 && 부모의 인스턴스를 프로토타입으로 정의하기.
+```js
+function Person(name) {
+  this.name = name || 'anonymous';
+}
+
+Person.prototype.say = function() {
+  return this.name;
+}
+
+function Employee(name, job) {
+  Person.apply(this, arguments);
+  
+  this.job = job;
+}
+Employee.prototype = new Person();
+
+Employee.prototype.introduce = function(){
+  console.log("My job is " + this.job)
+}
+
+var emp1 = new Employee('Cater', 'programmer'); 
+console.log( emp1.name );              // cater
+console.log( Employee.prototype.name)  //anonymous
+
+emp1.say();
+emp1.introduce();
+console.log('Check1: Is it Person Instance? ',emp1 instanceof Person);
+console.log('Check2: Is it Person Instance? ',emp1 instanceof Employee);
+console.log('Check3: prototype ',Object.getPrototypeOf(emp1))
+console.log('Check4: hasOwnProperty', emp1.hasOwnProperty('name'))
+```
+
+**해결**
+1. 부모의 인스턴스인지 확인가능.
+2. 자식의 인스턴스인지 확인가능.
+3. 부모로부터 속성 상속받음.
+4. 부모의 프로토타입 상속받음.
+
+**미해결**
+1. 인스턴스의 프로토타입이 부모임.
+  - `Object.getPrototypeOf(emp1)`가 Person이 나옴.
+
+<br><br>
+
+
+
+
+### 6. Object.create
+자식의 `prototype`을 부모의 인스턴스로 사용하면 자식의 인스턴스와 자식 클래스간의 연결이 깨진다. 
+(위 예제에서 `Object.getPrototypeOf`를 통해 프트토타입 객체를 확인해보면 Person의 `Protptype Object`가 나온다. Employee가 프로토타입이 아니라는 점에서 모호함이 남는다.)  
 이런 이유로 만들어진 것이 `Object.create`이다. 이 함수는 객체와 객체간의 상속을 시켜주는 함수이다. 
-내부적 구조의 불완정성 이외에도 new라는 키워드 자체가 자바스크립트 답지 않다는 의견에 의해 객체의 상속하여 생성할 수 있는 함수를 별도로 제공하게 된것이다. 
+내부적 구조의 불완정성 이외에도 new라는 키워드 자체가 자바스크립트 답지 않다는 의견에 의해 객체의 상속하여 생성할 수 있는 함수를 별도로 제공하게 되었다.
 
 `Object.create`의 기본적인 동작은 다음과 같다.
 ```js
@@ -194,17 +385,15 @@ Object.create = function(obj){
 function Person(name) {
   this.name;
 }
-
-Person.prototype = {
-  say : function(){
-    console.log("Hi I'am ", this.name);
-  }
-};
+Person.prototype.say = function(){
+  console.log("Hi I'am ", this.name);
+}
 
 var interviewer = Object.create(Person.prototype);
 interviewer.name = "Cater";   //(A)
 interviewer.say();
 ```
+
 `Object.create`의 인자가 Person의 생성자 함수가 아니라 프로토타입 객체이다. 생성자함수가 아닌 객체를 전달하는 것은 `Object.create`에서 임의의 Froxy객체의 프로토타입 객체로 사용되기 떄문이다.  `(A)`를 보면 객체의 속성을 부가적으로 추가했는데 이런점은 `Object.create`의 두번째 속성을 이용해 속성을 정의할 수 있다.  
 소스코드를 보면 new 키워드가 사라졌다. 이는 함수호출로 객체를 생성하여 소스에서 생성자의 개념이 약해지고 객체의 인스턴스 간의 상속을 강조하는 것이 `Object.create`의 특징이다.  
 
@@ -268,38 +457,150 @@ cater.say()     // 기본속성을 읽기전용이기떄문에 값을 수정할 
 
 #### Obeject.create와 new 연산자 조합.
 ```js
+//상위 클래스
 function Person(name){
   this.name = "anonymous"
 }
 
-function Interviewer(name){
+Person.prototype.say = function(){
+  console.log("Hi I'm ", this.name)
+}
+
+//하위 클래스 정의
+function Employee(name,job){
+  Person.apply(this, arguments)   // (A)부모 생성자함수 호출 super()
   this.name = name;
+  this.job = job;
+  this.working = false;
 }
 
 /*
-이것보다 수정 불가 속성을 추가하기위해 Object.create의 두번째 인자로 속성을 정의하는것이 낫다.
-Interviewer.prototype = Object.create(Person.prototype);
-Interviewer.constructor = Interviewer;
+  이것보다 수정 불가 속성을 추가하기위해 Object.create의 두번째 인자로 속성을 정의하는것이 낫다.
+  Employee.prototype = Object.create(Person.prototype);
+  Employee.constructor = Employee;
 */
 
-Interviewer.prototype = Object.create(Person.prototype,{
+//하위클래스 확장.
+Employee.prototype = Object.create(Person.prototype,{   // (B) 부모의 프로토타입 복제 및 하위클래스의 prototype 정의
   constructor:{
-    value: Interviewer,
+    value: Employee,
     writable : false      //기본값이 false이지만 애해를 위한 명시적인 이유로 써놓음.
+  },
+  work:{
+    value: function(){
+      console.log(this.name, "work!")
+      this.working = true;
+    }
+  },
+  stop:{
+    value: function(){
+      console.log(this.name, "stop!")
+      this.working = false;
+    }
   }
 });
 
-var interviewer = new Interviewer("cater");
-console.log(interviewer instanceof Interviewer)
-console.log(interviewer instanceof Person)
-console.log(interviewer.constructor);
+var emp = new Employee("Cater", "programmer");
+
+emp.say();
+emp.work();
+emp.stop();
+
+console.log("Is it Employee instance", emp instanceof Employee)
+console.log("Is it Person instance", emp instanceof Person)
+console.log("super property inherit ", emp.hasOwnProperty("name"))
+console.log("Prototype", Object.getPrototypeOf(emp))
+console.log(emp.constructor);
+```
+1. 부모객체의 this에 추가된 속성과 메서드를 자식 객체에 추가합니다.
+2. 부모객체의 프로토타입과 자식객체의 프로토타입을 연결시킴, 부모객체의 프로토타입 객체에 등록된 속성과 함수를 사용할 수 있음.
+- `Employee.prototype = new Person()`과 `Employee.prototype = Object.crate(Person.prototype)`의 차이는 객체를 만들지만 생성자를 실행하지 않는 차이가 있음
+- ![](../../resource/img/javascript/object.create.png)
+- 위 결과처럼 생성자 함수의 속성이 없는 걸 볼 수 있음, `prototype Object`에 생성자 함수의 속성이 추가되는걸 막음.
+
+
+
+**미해결**  
+- Object.create()로 생성했지만 여전히 Person이 프로토타입임 그럼 왜 Object.create를 씀? new Person()과 다른게 뭐임..?
+- Object.create를 왜씀..?
+
+
+<br><br>
+### 7.임시생성자.
+```js
+function Parent(name) {
+  this.name = name || 'Adam';
+}
+
+Parent.prototype.say = function() {
+  return this.name;
+}
+
+function Child() {}
+
+var F = function() {}
+F.prototype = Parent.prototype;
+Child.prototype = new F();
+
+var kids = new Child();
+
+console.log( kids.say );
+Child.prototype.say = function() { console.log('change'); }
+
+console.log( kids.say ); // 자식 영향 안받음.
+console.log( Parent.prototype.say ); // Parent 교체 안됨.
+```
+
+프록시 패틴으로도 불리는 패턴이다. 프로토타입 체인의 장점을 유지하면서 실제 Child.prototype의 직접 링크는 끊어버리는 방법이다.
+
+### 7.1 상위 클래스 저장
+프록시 패턴을 기반으로 부모 원본에 대한 참조 추가도 가능하다. 즉 상위 클래스에 대한 접근 경로를 가지는 것이다. 
+경우에 따라 매우 편리할 수 있지만, 접근해서 무엇인가를 변경하면 상속받고 있는 모든 객체들이 변경되기 때문에 위험한 방법이다.
+
+```js
+function Parent(name) {
+  this.name = name || 'Adam';
+}
+
+Parent.prototype.say = function() {
+  return this.name;
+}
+
+function Child() {}
+
+var F = function() {}
+F.prototype = Parent.prototype;
+Child.prototype = new F();
+Child.super_prototype = Parent.prototype;
+
+var kids = new Child();
 ```
 
 
+### 7.2 생성자 재설정
+생성자 포인터를 재설정하지 않으면 모든 자식객체들의 생성자는 Parent()로 지정되기 때문에 보완을 할 필요가 있다.
 
+```js
+function Parent(name) {
+    this.name = name || 'Cater';
+}
 
+Parent.prototype.say = function(){
+    return this.name;
+}
 
+function Child() {}
 
+var Froxy = function(){}
+Froxy.prototype = Parent.prototype;
+Child.prototype = new Froxy();
+Child.super_prototype = Parent.prototype;
+Child.prototype.constructor = Child;
+
+var kids = new Child();
+```
+
+상속패턴은 재사용이 목적이다. 물려받는 기능이나 속성들의 값이 어떤 일에 의해 훼손되는 것은 위험하다.
 
 
 
@@ -318,7 +619,7 @@ var foo = new Foo();
 !(/resource/img/javascript/JavaScript_Protoytpe_Constructor_Relationship.png)  
 위 패턴에서는 부모 객체의 프로토타입에 추가된 속성과 메서드들과 함께 부모 객체 자신의 속성도 모두 물려받는다.  
 `prototype`은 어떤 객체든 만들어 질 때 `prototype Object`가 생성되는데 function에서 `prototype Property`로 접근이 가능하다.  
-enw Foo();가 하는 일은   
+new Foo();가 하는 일은   
 1. 새로운 객체를 생성한다.
 2. 그 객체에 `__proto__`라는 속성을 추가한다.
 3. `__proto__`는 Foo.prototype을 참조한다.
@@ -428,282 +729,7 @@ s.say();        //Adam
 
 <br><br>
 
-## 2. 생성자 빌려쓰기.
-```js
-function Article() {
-  this.tags = ['js', 'css'];
-}
-Article.prototype.name = function() { 
-    console.log(this.tags); 
-}
-
-function BlogPost() {}
-BlogPost.prototype = new Article();
-
-var blog = new BlogPost();
-
-function StaticPage() {
-  Article.call(this);
-}
-
-var page = new StaticPage();
-
-console.log(BlogPost.prototype .tags);
-console.log(blog.tags);
-console.log(page.tags);
-
-console.log(BlogPost.prototype .hasOwnProperty('tags')); // true
-console.log(blog.hasOwnProperty('tags')); // false
-console.log(page.hasOwnProperty('tags')); // true
-```
-
-기본 패턴을 적용한 blog객체는 tags를 자기 자신의 속성으로 가진 것이 아니라 prototype을 통해 접근하기 떄문에,
-hasOwnProperty()는 false이고 생성자만 빌려쓰는 방식으로 상속받은 page객체는 부모의 tags멤버에 대한 참조를 얻는 것이 아니라 복사본을 얻게 되므로 자기 자신의 tags속성을 가지게 된다.
-
-즉 blog.tags를 변경하면 article.tags도 변경되지만 page.tags는 변경되지 않는다.  
-이것은 page가 Article함수와 프로토타입링크(__proto__)로 연결되지 않기 때문에, Article의 name함수를 사용할 수 없다.
-포인트는 prototype의 속성과 메서드는 사용할 수 없지만 부모의 속성(tags)이 복사 된다는 것이다.
-이 패턴에서 prototype의 메서드를 사용하고자 하려면 Article함수의 메서드로 추가해야한다.
-
-```js
-function Article() {
-  this.tags = ['js', 'css'];
-  this.name = function() { console.log(this.tags); }
-}
-
-var article = new Article();
-function BlogPost() {}
-BlogPost.prototype = article;
-
-var blog = new BlogPost();
-
-function StaticPage() {
-  Article.call(this);
-}
-
-var page = new StaticPage();
-page.tags = ['change Value'];
-
-console.log( article.name() ); // ['js', 'css']
-console.log( blog.name() ); // ['js', 'css']
-console.log( page.name() ); // ['change Value']
-```
-
-```js
-function Parent(name) {
-  this.name = name || 'Adam';
-}
-
-Parent.prototype.say = function() {
-  return this.name;
-}
-
-function Child(name) {
-  Parent.apply(this, arguments);
-}
-
-var kids = new Child('세호');
-console.log( kids.name );
-```
-사용자 빌려쓰기 패턴은 생성자함수의 속성은 복제가 되지만 프로토타입은 상속되지 않는다.
-
-
-<br><br>
-
-
-
-
-## 3. 생상자 빌려쓰고 프로토타입 지정해주기.
-
-```js
-function Parent(name) {
-  this.name = name || 'Jake';
-}
-
-Parent.prototype.say = function() {
-  return this.name;
-}
-
-function Child(name) {
-  Parent.apply(this, arguments);
-}
-Child.prototype = new Parent();
-
-var kids = new Child('cater'); 
-console.log( kids.name );           // cater
-console.log( Child.prototype.name)  //Jake
-```
-이 패턴은 생성자함수의 속성도 개별적으로 복사하면서 prototype또 상속받는 패틴이다.  
-부모의 속성을 덮어쓰지 않는다.
-
-
-### 3.1 Objcet.create를 이용해 프로토타입 복제
-```js
-// 상위 클래스
-function Person(name) {
-  this.name = name;
-}
-
-Person.prototype.say = function(){
-  console.log(`I'm ${this.name}.`)
-}
-
-var tony = new Person('Iron Man');
-tony.say();   // I'm Iron Man
-
-// 하위클래스.
-function Employee(name, type, career){
-  Person.apply(this, arguments)   //(A) 부모 생성자함수 호출, super()
-  this.type = type;
-  this.career = career;
-  this.working = false;
-}
-
-// 하위클래스 확장.
-Employee.prototype = Object.create(Person.prototype);   // (B) 부모의 프로토타입 객체를 복제함.
-Employee.prototype.constructor = Employee;              // (C) 생성자 함수를 수정함.(B에서 덮어써서 지워졌기 때문)
-Employee.prototype.work = function(){
-  this.working = true;
-  console.log(`${this.name} Start work!`)
-}
-Employee.prototype.getOffWork = function(){
-  this.working = false;
-  console.log(`${this.name} are leaving the office!`)
-}
-
-var emp1 = new Employee('cater','front-end',2);
-emp1.say();
-emp1.work();
-emp1.getOffWork();
-```
-
-1. A: 부모객체의 this에 추가된 속성과 메소드를 자식 객체에 추가합니다.
-2. B: 부모객체의 프로토타입과 자식객체의 프로토타입을 연결시킴, 부모객체의 프로토타입 객체에 등록된 속성과 함수를 사용할 수 있음.
-  - 이때 `Object.create(Persion.prototype)`의 의미는 `Person.prototype`을 상속하는 새로운 객체를 만든다는 것임
-  - 부모객체의 `Prototype Object`를 상속한 객체를 `Prototype Object`로 설정해서 부모의 프로토타입 속성과 메서드를 사용가능함.
-  - `Employee.prototype = new Person()`과 `Employee.prototype = Object.crate(Person.prototype)`의 차이는 객체를 만들지만 생성자를 실행하지 않는 차이가 있음
-
-  - ![](../../resource/img/javascript/object.create.png)
-  - 위 결과처럼 생성자 함수의 속성이 없는 걸 볼 수 있음, `prototype Object`에 생성자 함수의 속성이 추가되는걸 막음.
-3. C: B단게에서 `Prototype Object`를 변경했으니 당연히 `constructor`도 `Person`이 되었음. 생성자함수는  `Employee`이어햐 함으로 수정함.
-
-
-<br><br>
-
-
-## 4. 프로토타입 공유.
-```js
-function Parent(name) {
-  this.name = name || 'Jake';
-}
-
-Parent.prototype.say = function() {
-  return this.name;
-}
-
-function Child(name) {}
-Child.prototype = Parent.prototype;     //프로토타입 참조.
-
-var kids = new Child('Cater');
-
-console.log( kids.say() );
-Child.prototype.say = function() { 
-    console.log('change'); 
-}
-
-console.log( kids.say() ); 
-console.log( Parent.prototype.say() ); // Parent 교체됨.
-```
-prototype을 공유해 버리면 모든 객체가 동일한 프로토타입을 공유하기 때문에 프로토타입 객체는 공유가 되지만 생성자함수의 속성은 복사가 안된다.
-
-
-
-## 5. 임시 생성자.
-```js
-function Parent(name) {
-  this.name = name || 'Adam';
-}
-
-Parent.prototype.say = function() {
-  return this.name;
-}
-
-function Child() {}
-
-var F = function() {}
-F.prototype = Parent.prototype;
-Child.prototype = new F();
-
-var kids = new Child();
-
-console.log( kids.say );
-Child.prototype.say = function() { console.log('change'); }
-
-console.log( kids.say ); // 자식 영향 안받음.
-console.log( Parent.prototype.say ); // Parent 교체 안됨.
-```
-
-프록시 패틴으로도 불리느 패턴이다. 프로토타입 체인의 장점을 유지하면서 실제 Child.prototype의 직접 링크는 끊어버리는 방법이다.
-
-### 5.1 상위 클래스 저장
-프록시 패턴을 기반으루 부모 원본에 대한 참조 추가도 가능하다. 즉 상위 클래스에 대한 접근 경로를 가지는 것이다. 
-경우에 따라 매우 편리할 수 있지만, 접근해서 무엇인가를 변경하면 상속받고 있는 모든 객체들이 변경되기 때문에 위험한 방법이다.
-
-```js
-function Parent(name) {
-  this.name = name || 'Adam';
-}
-
-Parent.prototype.say = function() {
-  return this.name;
-}
-
-function Child() {}
-
-var F = function() {}
-F.prototype = Parent.prototype;
-Child.prototype = new F();
-Child.super_prototype = Parent.prototype;
-
-var kids = new Child();
-
-```
-
-
-### 5.2 생성자 재설정
-생성자 포인터를 재설정하지 않으면 모든 자식객체들의 생성자는 Parent()로 지정되기 때문에 보완을 할 필요가 있다.
-
-```js
-function Parent(name) {
-    this.name = name || 'Cater';
-}
-
-Parent.prototype.say = function(){
-    return this.name;
-}
-
-function Child() {}
-
-var Froxy = function(){}
-Froxy.prototype = Parent.prototype;
-Child.prototype = new Froxy();
-Child.super_prototype = Parent.prototype;
-Child.prototype.constructor = Child;
-
-var kids = new Child();
-```
-
-상속패턴은 재사용이 목적이다. 물려받는 기능이나 속성들의 값이 어떤 일에 의해 훼손되는 것은 위험하다.
-
-
-
-
-
-
-- 프로토타입 상속과정 자세히 풀어보기.
-- new연산자.
-
-## ref
+## Ref
 - [코드 재사용패턴](http://frontend.diffthink.kr/2016/06/blog-post_29.html)
 - [자바스크립트 프로토타입](https://muckycode.blogspot.com/2015/05/javascript-prototype.html)
 - [자바스크릅티 상속](https://frontierdev.tistory.com/31)
