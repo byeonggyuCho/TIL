@@ -153,7 +153,7 @@ console.log("Prototype of app1  is", Object.getPrototypeOf(app1));
 
 
 
-### 3. 부무 객체의 인스턴스를 prototype으로 사용
+## 3. 부무 객체의 인스턴스를 prototype으로 사용
 
 ```js
 function Person(name) {
@@ -214,7 +214,7 @@ new 연산자를 이용해서 부모의 인스턴스를 생성하고, 그 객체
 <br><br>
 
 
-### 4. 부모 생성자 함수 빌려쓰기.
+## 4. 부모 생성자 함수 빌려쓰기.
 
 이 패턴의 기본 골격은 이런 구조임
 ```js
@@ -315,7 +315,7 @@ console.log( page.name() ); // ['change Value']
 ```
 
 
-### 5. 생성자를 빌려쓰기 && 부모의 인스턴스를 프로토타입으로 정의하기.
+## 5. 생성자를 빌려쓰기 && 부모의 인스턴스를 프로토타입으로 정의하기.
 ```js
 function Person(name) {
   this.name = name || 'anonymous';
@@ -363,7 +363,7 @@ console.log('Check4: hasOwnProperty', emp1.hasOwnProperty('name'))
 
 
 
-### 6. Object.create
+## 6. Object.create
 자식의 `prototype`을 부모의 인스턴스로 사용하면 자식의 인스턴스와 자식 클래스간의 연결이 깨진다. 
 (위 예제에서 `Object.getPrototypeOf`를 통해 프트토타입 객체를 확인해보면 Person의 `Protptype Object`가 나온다. Employee가 프로토타입이 아니라는 점에서 모호함이 남는다.)  
 이런 이유로 만들어진 것이 `Object.create`이다. 이 함수는 객체와 객체간의 상속을 시켜주는 함수이다. 
@@ -430,7 +430,7 @@ console.log(person_Prototype.isPrototypeOf(p1))
 ```
 
 
-#### Obeject.create 초기화.
+### 6.1 Obeject.create 초기화.
 `Object.create`를 이용해 객체를 생성할 때 프로퍼티를 정의하는 방법에 대해 소개한다.  
 
 ```js
@@ -455,7 +455,7 @@ cater.say()     // 기본속성을 읽기전용이기떄문에 값을 수정할 
 ```
 
 
-#### Obeject.create와 new 연산자 조합.
+###  6.2 Obeject.create와 new 연산자 조합.
 ```js
 //상위 클래스
 function Person(name){
@@ -526,7 +526,8 @@ console.log(emp.constructor);
 
 
 <br><br>
-### 7.임시생성자.
+
+## 7.임시생성자.
 ```js
 function Parent(name) {
   this.name = name || 'Adam';
@@ -616,14 +617,15 @@ var kids = new Child();
 function Foo(){}
 var foo = new Foo();
 ```
-!(/resource/img/javascript/JavaScript_Protoytpe_Constructor_Relationship.png)  
-위 패턴에서는 부모 객체의 프로토타입에 추가된 속성과 메서드들과 함께 부모 객체 자신의 속성도 모두 물려받는다.  
-`prototype`은 어떤 객체든 만들어 질 때 `prototype Object`가 생성되는데 function에서 `prototype Property`로 접근이 가능하다.  
-new Foo();가 하는 일은   
+![](../../resource/img/javascript/JavaScript_Protoytpe_Constructor_Relationship.png)  
+
+
+`prototype`은 객체가 만들어 질 때 `prototype Object`가 생성되는데 function에서 `prototype Property`로 접근이 가능하다.  
+여기서 `new Foo();`가 하는 일은   
 1. 새로운 객체를 생성한다.
 2. 그 객체에 `__proto__`라는 속성을 추가한다.
 3. `__proto__`는 Foo.prototype을 참조한다.
-4. `__proto__`에 있는 contructor를 실행한다. (이때 constructor함수 내부에서의 this는 방금 생성한 객체임)
+4. `__proto__`에 있는 contructor를 실행한다. (이때 constructor함수 내부의 this는 방금 생성한 객체임)
 
 따라서 변수 `foo`는 위 과정을 거쳐 생성된 객체를 잠조한다. 모든 객체는 `__proto__`속성을 가지는데 이 속성은 `prototype Object`를 참조하기 때문에 메소드나 속성에 접근할 수있다.(프로토타입 체인)  
 
@@ -633,12 +635,7 @@ new Foo()를 하면 새로운 객체에 `__proto__`라는 속성이 생성자함
 이건 복제가 아니라 물리적 메모리 주소를 참조하고 있는것임.
 
 
-다시 예제로 돌아와서 
 ```js
-function inherit(C, P) {
-  C.prototype = new P();
-}
-
 function Parent(name) {
   this.name = name || 'Adam';
 }
@@ -649,25 +646,25 @@ Parent.prototype.say = function() {
 
 function Child(name) {}
 
-inherit(Child, Parent);
+Child.prototype = new Parent();
+
 console.log( '자식의 say 함수 : ' + Child.prototype.say() );
 
 var kids = new Child();
 console.log( kids.say() );
 ```
 
-1. Child의 `prototype Property`에 new Parent()를 했기 때문에, `Child.prototype.__proto__`에 `Parent.prototype`이 참조된다. 
-즉 Child.prototype이 Parent.prototye에 접근할 수 있게 된다.
-2. kids = new Child();를 하면 new연산자 과정을 거치고 kids.__proto__에는 `Child.prototype`을 참조하게 된다.
+1. `Child.prototype `에 new Parent()를 할당했기 때문에  `Child.prototype.__proto__`에는 `Parent.prototype`이 참조된다. 
+2. `kids = new Child();`를 하면 new 연산자 과정을 거치고 kids.__proto__에는 `Child.prototype`을 참조하게 된다.
 3. `Child.propertype`를 `kids.__proto__`가 참조함으로 `Parent`의 속성에 프로토타입체인을 통해 접근이 가능하다.
 
 **프로토타입 체인**  
 여기서의 프로토타입 체인에 대해 설명하면  
-1. kids.__proto__는  Child.prototype을 참조한다.
+1. `kids.__proto__`는  Child.prototype을 참조한다.
 2. Child.prototype.__proto__는 Parent.prototype을 참조한다.
 이렇게 볼 수있다. 즉 `kids.__proto__.__proto__.constructor`가 되기 때문에 프로토타입 체인이라 부르는 거임
 
-
+**참조 우선순위**
 ```js
 var underInherit = {};
 underInherit.__proto__ = {
@@ -717,7 +714,8 @@ underInherit = {
 console.log(underInherit.hasOwnProperty('z'));      //true
 console.log(underInherit.hasOwnProperty('x'));      //false
 ```
-여기서는 z속성이 underIngerit바로 아래에 있는데 프로토타입 객체가 아닌 나 자신에게 추가됐음을 알 수있다.
+
+여기서는 z속성이 underIngerit 바로 아래에 있는데 프로토타입 객체가 아닌 나 자신에게 추가됐음을 알 수있다.
 
 
 이 패턴에는 단점이 있는데 부모객체의 this에 추가된 속성과 `prototype`을 모두 그대로 받기 때문에 재사용 방법이 꽤 불편하다.
