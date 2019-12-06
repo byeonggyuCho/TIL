@@ -502,12 +502,14 @@ Employee.prototype = Object.create(Person.prototype,{   // (B) 부모의 프로�
     value: function(){
       console.log(this.name, "work!")
       this.working = true;
+      return true;
     }
   },
   stop:{
     value: function(){
       console.log(this.name, "stop!")
       this.working = false;
+      return true;
     }
   }
 });
@@ -518,9 +520,19 @@ emp.say();
 emp.work();
 emp.stop();
 
-console.log("Is it Employee instance", emp instanceof Employee)
-console.log("Is it Person instance", emp instanceof Person)
-console.log("super property inherit ", emp.hasOwnProperty("name"))
+//프로토타입 메서드 수정 테스트
+emp.__proto__.work = function(){
+  console.log('method changed');
+  return false;
+}
+
+console.log("Check1","Is it Employee instance", emp instanceof Employee)
+console.log("Check2","Is it Person instance", emp instanceof Person)
+console.log("Check3","Parent Class property is inherit ", emp.hasOwnProperty("name"))
+console.log("Check4","Parnent Class prototype object isinheited", typeof emp.say === 'function');
+console.log("Check5","Prototype object Don't inherit Parent Property", emp.__proto__.hasOwnProperty("name") === false)
+console.log("Check6","It can't change Prototype object method", emp.work());
+
 console.log("Prototype", Object.getPrototypeOf(emp))
 console.log(emp.constructor);
 ```
