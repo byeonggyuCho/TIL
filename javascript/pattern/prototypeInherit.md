@@ -372,10 +372,10 @@ console.log('Check4: hasOwnProperty', emp1.hasOwnProperty('name'))
 `Object.create`의 기본적인 동작은 다음과 같다.
 ```js
 Object.create = function(obj){
-  function F(){
-    F.prototype = obj;
-    return new F();
-  }
+  function F(){}
+  F.prototype = obj;
+
+  return new F();
 }
 ```
 인자로 넘겨받은 객체를 프로토타입으로 하는 객체를 생성하여 반환한다.
@@ -527,85 +527,6 @@ console.log(emp.constructor);
 
 <br><br>
 
-## 7.임시생성자.
-```js
-function Parent(name) {
-  this.name = name || 'Adam';
-}
-
-Parent.prototype.say = function() {
-  return this.name;
-}
-
-function Child() {}
-
-var F = function() {}
-F.prototype = Parent.prototype;
-Child.prototype = new F();
-
-var kids = new Child();
-
-console.log( kids.say );
-Child.prototype.say = function() { console.log('change'); }
-
-console.log( kids.say ); // 자식 영향 안받음.
-console.log( Parent.prototype.say ); // Parent 교체 안됨.
-```
-
-프록시 패틴으로도 불리는 패턴이다. 프로토타입 체인의 장점을 유지하면서 실제 Child.prototype의 직접 링크는 끊어버리는 방법이다.
-
-### 7.1 상위 클래스 저장
-프록시 패턴을 기반으로 부모 원본에 대한 참조 추가도 가능하다. 즉 상위 클래스에 대한 접근 경로를 가지는 것이다. 
-경우에 따라 매우 편리할 수 있지만, 접근해서 무엇인가를 변경하면 상속받고 있는 모든 객체들이 변경되기 때문에 위험한 방법이다.
-
-```js
-function Parent(name) {
-  this.name = name || 'Adam';
-}
-
-Parent.prototype.say = function() {
-  return this.name;
-}
-
-function Child() {}
-
-var F = function() {}
-F.prototype = Parent.prototype;
-Child.prototype = new F();
-Child.super_prototype = Parent.prototype;
-
-var kids = new Child();
-```
-
-
-### 7.2 생성자 재설정
-생성자 포인터를 재설정하지 않으면 모든 자식객체들의 생성자는 Parent()로 지정되기 때문에 보완을 할 필요가 있다.
-
-```js
-function Parent(name) {
-    this.name = name || 'Cater';
-}
-
-Parent.prototype.say = function(){
-    return this.name;
-}
-
-function Child() {}
-
-var Froxy = function(){}
-Froxy.prototype = Parent.prototype;
-Child.prototype = new Froxy();
-Child.super_prototype = Parent.prototype;
-Child.prototype.constructor = Child;
-
-var kids = new Child();
-```
-
-상속패턴은 재사용이 목적이다. 물려받는 기능이나 속성들의 값이 어떤 일에 의해 훼손되는 것은 위험하다.
-
-
-
-
 
 
 
@@ -654,7 +575,7 @@ var kids = new Child();
 console.log( kids.say() );
 ```
 
-1. `Child.prototype `에 new Parent()를 할당했기 때문에  `Child.prototype.__proto__`에는 `Parent.prototype`이 참조된다. 
+1. `Child.prototype`에 new Parent()를 할당했기 때문에  `Child.prototype.__proto__`에는 `Parent.prototype`이 참조된다. 
 2. `kids = new Child();`를 하면 new 연산자 과정을 거치고 kids.__proto__에는 `Child.prototype`을 참조하게 된다.
 3. `Child.propertype`를 `kids.__proto__`가 참조함으로 `Parent`의 속성에 프로토타입체인을 통해 접근이 가능하다.
 
