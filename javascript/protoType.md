@@ -209,13 +209,6 @@ console.log(too.read());
 
 
 
-
-
-	
-
-
-
-
 ### Prototype Property
 	모든 함수 객체의 Contructor는 prototype이란 프로퍼티를 가지고 있다. 이 prototype프로퍼티는 객체가 생성될 당시 만들어지는 객체 자신의 원형이될 prototype객체를 가리킨다. 즉 자신을 만든 원형이 아닌 자신을 통해 만들어질 객체들이 원형으로 사용할 객체를 말한다. prototype object는 default로 empty Object를 가리킨다.
 

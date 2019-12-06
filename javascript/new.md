@@ -4,7 +4,7 @@ new 연산자를 사용할때 다음의 4가지 일이 순차적으로 일어난
 **new연산자를 이용한 객체 생성**
 1. 빈 객체(plain Object)를 생성한다.
 2. 생성자 함수의 this를 새로 만들어진 객체에 binding한다.
-3. 새로 만들어진 객체에 생성자 함수의 prototype 객체를 참조하는 \_\_proto\_\_  property를 추가한다. (즉 생성자함수의 Prototype을 상속받는다.)
+3. 새로 만들어진 객체에 생성자 함수의 prototype 객체를 참조하는 \_\_proto\_\_  property를 추가한다.
 4. 생성자함수에 별도의 반환값이 없으면 마지막에 'return this'를 추가하여 새로 생성한 객체를 반환한다.
 
 ```js
@@ -45,16 +45,27 @@ constructor와 함께 호출될 값 목록.
     
 
 **Example**  
-new Foo()를 실행하면 다음의 일이 일어난다.
+new Person()를 실행하면 다음의 일이 일어난다.
 ```js
-new Foo();
+function Person (name){
+
+	this.name = name || "anonymous"
+}
+
+var p1 = new Person;
+var p2 = new Person('Cater');
+
+console.log(p1.name)  //anonymous
+console.log(p2.name)  //Cater
 ```
-1. Foo.prototype을 상속하는 새로운 객체가 하나 생성된다.
-2. 생성자 함수 Foo는 매개변수 그리고 this가 바인딩된 새로운 객체와 함께 호출된다.
-new Foo는 new Foo()와 동일한데 차이는 매개변수의 유무이다.
-3. 생성자 함수에 의해 반환된 객체는 전체 new 호출 결과가 된다.  
+1. Person.prototype을 참조하는 새로운 객체가 하나 생성된다.
+2. 생성자 함수 Person은 매개변수 그리고 this가 바인딩된 새로운 객체와 함께 호출된다.
+`new Person`는 `new Person()`와 동일한데 차이는 매개변수의 유무이다.
+3. 생성자 함수에 의해 반환된 객체가 new 호출 결과가 된다.  
 생성자 함수가 명시적으로 객체를 리턴하지 않으면, STEP1에서 생성된 객체가 대신 사용된다.
 (일반적으로 생성자는 값을 리턴하지 않는다. 그러나 일반적인 객체 생성을 재정의 하기 위해 생성자함수가 값을 리턴하기도 한다.)
+
+
 
 
 이렇게 new연산자로 생성된 객체에 속성을 추가할 수 있다.

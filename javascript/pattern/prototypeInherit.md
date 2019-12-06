@@ -129,7 +129,7 @@ console.log("Prototype of app1  is", Object.getPrototypeOf(app1));
 
 **미해결**  
 1. 부모와 프로토타입을 공유함.
-  - 부모와 공유하기 때문에 하위클래스의 프로토타입객체를 수정 못함.
+    - 부모와 공유하기 때문에 하위클래스의 프로토타입객체를 수정 못함.
 2. 부모의 생성자함수를 실행하지 않기 때문에 부모의 속성을 상속받지 못함.
 <br><br>
 
@@ -189,10 +189,10 @@ new 연산자를 이용해서 부모의 인스턴스를 생성하고, 그 객체
 
 **미해결**  
 1. 자식의 인스턴스와 부모의 `prototype`이 연결되어 있음.
-  - 따라서 부모의 속성에 대해서 `hasOwnProperty`로 속성 탐색이 안됨.
-  - type 속성을 보면 프로토타입 체인에 의해 조회는 되지만 인스턴스의 직속 속성이 아니기 때문에 `hasOwnProperty`로 조회가 안됨.
+    - 따라서 부모의 속성에 대해서 `hasOwnProperty`로 속성 탐색이 안됨.
+    - type 속성을 보면 프로토타입 체인에 의해 조회는 되지만 인스턴스의 직속 속성이 아니기 때문에 `hasOwnProperty`로 조회가 안됨.
 2. 부모의 생성자 함수 실행시점때문에 부모 생성자 함수의 초기값이 필요한경우 전달을 따로 해줘야함.
-  - (A) 시점에 생성자함수에 파라미터를 전달해야해서 직관성이 떨어짐.
+    - (A) 시점에 생성자함수에 파라미터를 전달해야해서 직관성이 떨어짐.
 
 <br><br>
 
@@ -263,13 +263,13 @@ blog객체는 tags를 자기 자신의 속성으로 가진 것이 아니라 prot
 
 **해결**  
 1. 부모의 속성을 상속받음
-  - `page.hasOwnProperty('tags')`가 true
-  - 프로토타입 체인이 아님.
+    - `page.hasOwnProperty('tags')`가 true
+    - 프로토타입 체인이 아님.
 
 
 **미해결**  
 1. 부모의 프로토타입 속성 및 메서드를 상속 못함.
-  - `(B)`프로토타입을 상속받지 못했기 때문에 프로토타입에 포함된 메서드를 사용못함.
+    - `(B)`프로토타입을 상속받지 못했기 때문에 프로토타입에 포함된 메서드를 사용못함.
 
 
 이 방법에서 부모의 메서드를 전달하기 위해선 아래 코드의 `(A)`처럼 생성자 함수의 속성으로 등록해야함.
@@ -368,7 +368,7 @@ console.log('Check5: Property inherit', emp1.hasOwnProperty('name'))
 **미해결**
 1. 인스턴스의 프로토타입을 바꿀 수 있음.
 2. 부모의 프로토타입 상속시 인스턴스를 받아오기 때문에 부모의 생성자함수가 실행되어 속성이 딸려온다. 
-  - 이 경우 `emp1.__proto__.name`이 나옴
+    - 이 경우 `emp1.__proto__.name`이 나옴
 
 
 궁금한점. `(A)`를 해주는 이유가 뭐임?  
@@ -538,9 +538,13 @@ console.log(emp.constructor);
 ```
 1. 부모객체의 this에 추가된 속성과 메서드를 자식 객체에 추가합니다.
 2. 부모객체의 프로토타입과 자식객체의 프로토타입을 연결시킴, 부모객체의 프로토타입 객체에 등록된 속성과 함수를 사용할 수 있음.
-- `Employee.prototype = new Person()`과 `Employee.prototype = Object.crate(Person.prototype)`의 차이는 객체를 만들지만 생성자를 실행하지 않는 차이가 있음
-- ![](../../resource/img/javascript/object.create.png)
-- 위 결과처럼 생성자 함수의 속성이 없는 걸 볼 수 있음, `prototype Object`에 생성자 함수의 속성이 추가되는걸 막음.
+    - `Employee.prototype = new Person()`과 `Employee.prototype = Object.crate(Person.prototype)`의 차이는 객체를 만들지만 생성자를 실행하지 않는 차이가 있음
+    - ![](../../resource/img/javascript/object.create.png)
+    - 위 결과처럼 생성자 함수의 속성이 없는 걸 볼 수 있음, `prototype Object`에 생성자 함수의 속성이 추가되는걸 막음.
+
+
+
+
 
 
 **부모인스턴스 상속과 Obect.create 비교**  
@@ -589,14 +593,14 @@ var Employee2 = function(name, job){
 Employee2.prototype = Object.create(Person.prototype,{
 
 	constructor:{
-		value : Employee2
-    },
+    value : Employee2
+  },
 	instroduce:{
 		value : function value(){
-              console.log(this.job);
-              return true;
-            }
+        console.log(this.job);
+        return true;
     }
+  }
 });
 
 
@@ -621,8 +625,6 @@ console.log("======================[Compare]=====================")
 
 console.log('Check1:', 'Its prototype object is inherited Parent property', emp2.__proto__.hasOwnProperty('name'))
 console.log('Check2: ','It can overwirte prototype method ', emp2.__proto__.instroduce() === false)
-
-
 ```
 
 ![](../../resource/img/javascript/prototypeInherit_Object.create.png)  
@@ -633,9 +635,81 @@ console.log('Check2: ','It can overwirte prototype method ', emp2.__proto__.inst
 2. 프로토타입 오브젝트의 속성이나 메서드에 readOnldy등의 설저을 부여할 수 있다.
 
 
-
-
 <br><br>
+
+
+**prototype.constructor**  
+```js
+//상위 클래스
+function Person(name){
+
+console.log('Person class')
+  this.name = "anonymous"
+
+	
+}
+
+Person.prototype.say = function(){
+  console.log("Hi I'm ", this.name)
+}
+
+//하위 클래스 정의
+function Employee(name,job){
+
+	console.log('Employee Class')
+  Person.apply(this, arguments)   // (A)부모 생성자함수 호출 super()
+   this.job = job;
+ 	
+}
+
+
+Employee.prototype = Object.create(Person.prototype,{   // (B) 부모의 프로토타입 복제 및 하위클래스의 prototype 정의
+  constructor:{
+    value: Employee,
+    writable : false      //기본값이 false이지만 애해를 위한 명시적인 이유로 써놓음.
+  },
+ introduce:{
+    value: function(){
+      console.log(this.job) 
+      
+    }
+  }
+});
+
+
+
+
+
+//construcotr 비교
+function Employee2(name,job){
+
+	console.log('Employee2 Class')
+  Person.apply(this, arguments)   // (A)부모 생성자함수 호출 super()
+  
+  this.job = job;
+}
+
+
+
+//하위클래스 확장.
+Employee2.prototype = Object.create(Person.prototype,{   // (B) 부모의 프로토타입 복제 및 하위클래스의 prototype 정의
+  
+  introduce:{
+    value: function(){
+      console.log(this.job) 
+    }
+  }
+});
+
+
+var emp1 = new Employee('Cater', 'programmer')
+var emp2 = new Employee2('Jake', 'designer')
+```
+constructor등록 차이를 보기 위한 예제
+
+- 결론: 안 써도 기능적 차이는 없는데 프로토타입의 생성자를 명시하기 위함임.
+
+
 
 
 
