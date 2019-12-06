@@ -1,24 +1,5 @@
 # Prototype_inherit
 
-
-
-## 프로토타입 상속
-
-
-```js
-function Parent(name) {
-  this.name = name || 'cater';
-}
-
-Parent.prototype.say = function() {
-  return this.name;
-}
-
-function Child(name) {}
-
-Child.prototype = new Parent();
-```
-
 1. 자식 클래스의 인스턴스는 부모 클래스의 인스턴스이어야한다.
 2. 자식 클래스의 속성과 메서드가 부모클래스에 영향을 주며 안된다.
 3. 자식 클래스는 부모의 속성과 메서드를 모두 물려받으며 새로운 속성과 메서드를 추가할 수있다.
@@ -59,8 +40,8 @@ function Employee(name, age, job,career){
 
 var worker = new Employee('cater',29,'programer',2)
 
-console.log('worker is instance of Employee ', worker instanceof Employee)
-console.log('worker is instance of Person ', worker instanceof Person)
+console.log('worker is instance of Employee ', worker instanceof Employee)    //false
+console.log('worker is instance of Person ', worker instanceof Person)    // true
 console.log(Object.getPrototypeOf(worker))
 
 worker.say()
@@ -70,16 +51,20 @@ worker.introduce()
 이 방법의 단점은 worker가 Employee의 인스턴스라는 걸 알 수 없다는 것이다. 이건 객체지향 관점에서 치명적인 점이다.  
 부모 클래스의 인스턴스에 속성과 메서드를 추가하기 때문에 introduce같은 메서드를 프로토타입 객체에 등록할 수 없다. 
 
+**미해결**
+1. worker가 Employee의 인스턴스라는걸 확인할 수 없음.
+2. 부모와 프로토타입 공유.
+
 
 
 ## 2. prototype 공유 패턴.
 ```js
-/* var person_Prototype = {
+/* 
+var person_Prototype = {
   name: "anonymous",
   age:"99",
   say: function(){
     console.log("Hi i'm "+ this.name);
-
 }
  */
 var Person = function(name,age){
@@ -142,12 +127,10 @@ console.log("Prototype of app1  is", Object.getPrototypeOf(app1));
 
 이 방법의 문제는 부모의 생성자 함수를 실행하는 것이 아니기 때문에 Applicant에서 부모 클래스의 속성인 (name, age)에 대해서 다시 작성했다. 이것을 우리가 통상적으로 알고 있는 객체지향 언어의 상속과는 다르다. 부모클래스의 속성을 오버라이딩할 목적이 아니라면 부모 클래스의 생성자를 실행하여 초기화작업이 이뤄져야한다.  
 
-**문제점**  
-- 부모의 생성자함수를 실행하지 않기 때문에 부모의 속성을 상속받지 못함. 중복 코드발생.
-- 부모의 prototype object를 공유하기 때문에 prototype 메서드 선언 못함.
-- 자식 클래스가 생성한 인스턴스의 prototype Object이 부모의 prototype object임. 인스턴스를 생성한 생성자 함수의 prototype object가 되는게 맞음.
-
-
+**미해결**  
+1. 부모와 프로토타입을 공유함.
+  - 부모와 공유하기 때문에 하위클래스의 프로토타입객체를 수정 못함.
+2. 부모의 생성자함수를 실행하지 않기 때문에 부모의 속성을 상속받지 못함.
 <br><br>
 
 
@@ -204,7 +187,7 @@ new 연산자를 이용해서 부모의 인스턴스를 생성하고, 그 객체
 2. 부모의 속성을 물려받음.
   
 
-**문제점**   
+**미해결**  
 1. 자식의 인스턴스와 부모의 `prototype`이 연결되어 있음.
   - 따라서 부모의 속성에 대해서 `hasOwnProperty`로 속성 탐색이 안됨.
   - type 속성을 보면 프로토타입 체인에 의해 조회는 되지만 인스턴스의 직속 속성이 아니기 때문에 `hasOwnProperty`로 조회가 안됨.
@@ -234,6 +217,8 @@ var kids = new Child('세호');
 console.log( kids.name );
 ```
 부모의 생성자함수를 호출해서 속성을 상속받음.
+
+
 
 ```js
 function Article() {
@@ -331,43 +316,70 @@ function Employee(name, job) {
   this.job = job;
 }
 Employee.prototype = new Person();
-
+Employee.prototype.constructor = Employee;   //(A)
 Employee.prototype.introduce = function(){
   console.log("My job is " + this.job)
 }
+
+
+
+
 
 var emp1 = new Employee('Cater', 'programmer'); 
 console.log( emp1.name );              // cater
 console.log( Employee.prototype.name)  //anonymous
 
+var p1 = new Person('Jake');
+
+
+function Employee2(name, job) {
+  Person.apply(this, arguments);
+  
+  this.job = job;
+}
+Employee2.prototype = new Person();
+//Employee.prototype.constructor = Employee;   // 차이를 알아보기 위해 생략함.
+Employee2.prototype.introduce = function(){
+  console.log("My job is " + this.job)
+}
+
+var emp2 = new Employee2('Jake', 'Designer');
+
+
+
 emp1.say();
 emp1.introduce();
-console.log('Check1: Is it Person Instance? ',emp1 instanceof Person);
-console.log('Check2: Is it Person Instance? ',emp1 instanceof Employee);
-console.log('Check3: prototype ',Object.getPrototypeOf(emp1))
-console.log('Check4: hasOwnProperty', emp1.hasOwnProperty('name'))
+console.log('Check1: Is it referring to prototype of a parent? ',typeof p1.__proto__.introduce === 'function');
+console.log('Check2: Is it Person Instance? ',emp1 instanceof Person);
+console.log('Check3: Is it Person Employee? ',emp1 instanceof Employee);
+console.log('Check4: Prototype inherit', typeof emp1.__proto__.say === 'function')
+console.log('Check5: Property inherit', emp1.hasOwnProperty('name'))
+//console.log('Check3: prototype ',Object.getPrototypeOf(emp1))
 ```
+
 
 **해결**
 1. 부모의 인스턴스인지 확인가능.
 2. 자식의 인스턴스인지 확인가능.
-3. 부모로부터 속성 상속받음.
-4. 부모의 프로토타입 상속받음.
+3. 부모의 프로토타입 상속받음.
+4. 부모로부터 속성 상속받음.
+
 
 **미해결**
-1. 인스턴스의 프로토타입이 부모임.
-  - `Object.getPrototypeOf(emp1)`가 Person이 나옴.
+1. 인스턴스의 프로토타입을 바꿀 수 있음.
+2. 부모의 프로토타입 상속시 인스턴스를 받아오기 때문에 부모의 생성자함수가 실행되어 속성이 딸려온다. 
+  - 이 경우 `emp1.__proto__.name`이 나옴
 
+
+궁금한점. `(A)`를 해주는 이유가 뭐임?  
+`var emp2 = new Employee('Jake','Designer');`에서 `emp2.job`이 나오는 이유를 모르겠음.
 <br><br>
 
 
 
 
 ## 6. Object.create
-자식의 `prototype`을 부모의 인스턴스로 사용하면 자식의 인스턴스와 자식 클래스간의 연결이 깨진다. 
-(위 예제에서 `Object.getPrototypeOf`를 통해 프트토타입 객체를 확인해보면 Person의 `Protptype Object`가 나온다. Employee가 프로토타입이 아니라는 점에서 모호함이 남는다.)  
-이런 이유로 만들어진 것이 `Object.create`이다. 이 함수는 객체와 객체간의 상속을 시켜주는 함수이다. 
-내부적 구조의 불완정성 이외에도 new라는 키워드 자체가 자바스크립트 답지 않다는 의견에 의해 객체의 상속하여 생성할 수 있는 함수를 별도로 제공하게 되었다.
+`Object.create`는 객체와 객체간의 상속을 시켜주는 함수이다.   
 
 `Object.create`의 기본적인 동작은 다음과 같다.
 ```js
@@ -519,10 +531,96 @@ console.log(emp.constructor);
 - 위 결과처럼 생성자 함수의 속성이 없는 걸 볼 수 있음, `prototype Object`에 생성자 함수의 속성이 추가되는걸 막음.
 
 
+**부모인스턴스 상속과 Obect.create 비교**  
+```js
+var Person = function(name){
 
-**미해결**  
-- Object.create()로 생성했지만 여전히 Person이 프로토타입임 그럼 왜 Object.create를 씀? new Person()과 다른게 뭐임..?
-- Object.create를 왜씀..?
+	this.name = name;
+}
+
+Person.prototype.say = function(){
+	console.log(this.name)
+}	
+
+
+var Employee = function(name, job){
+	Person.apply(this,arguments)
+
+	this.job = job
+}
+
+Employee.prototype = new Person();
+Employee.prototype.constructor = Employee;
+
+Employee.prototype.introduce = function(){
+  console.log(this.job)
+  return true
+}
+
+var emp1 = new Employee('Cater', 'programmer');
+
+
+emp1.__proto__.instroduce = function(){
+  console.log('changed');
+  return false;
+}
+
+
+
+
+var Employee2 = function(name, job){
+	Person.apply(this,arguments)
+
+	this.job = job
+}
+
+Employee2.prototype = Object.create(Person.prototype,{
+
+	constructor:{
+		value : Employee2
+    },
+	instroduce:{
+		value : function value(){
+              console.log(this.job);
+              return true;
+            }
+    }
+});
+
+
+var emp2 = new Employee2('Jake', "Designer");
+
+
+console.log(emp1)
+console.log(emp2)
+
+emp2.__proto__.instroduce = function(){
+  console.log('changed');
+  return false;
+}
+
+
+
+
+console.log('Check1:', 'Its prototype object is inherited Parent property', emp1.__proto__.hasOwnProperty('name'))
+console.log('Check2: ','It can overwirte prototype method ', emp1.__proto__.instroduce() === false)
+
+console.log("======================[Compare]=====================")
+
+console.log('Check1:', 'Its prototype object is inherited Parent property', emp2.__proto__.hasOwnProperty('name'))
+console.log('Check2: ','It can overwirte prototype method ', emp2.__proto__.instroduce() === false)
+
+
+```
+
+![](../../resource/img/javascript/prototypeInherit_Object.create.png)  
+
+위 비교를 보면 `Object.create`를 쓰면서 개선된 점을 정리해보면
+
+1. 프로토타입 오브젝트에 부모의 속성이 상속되지 않는다.
+2. 프로토타입 오브젝트의 속성이나 메서드에 readOnldy등의 설저을 부여할 수 있다.
+
+
 
 
 <br><br>
