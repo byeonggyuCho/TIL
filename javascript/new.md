@@ -173,4 +173,36 @@ car2.owner.name
 ```
 
 
+
+## 왜 new 연산자를 통해서 객체를 생성해야할까?
+- 프로토타입 체인을 이용하기 위해서임.
+- 프로토타입체인을 이용해 중복로직을 줄이고 참조를 이용해 메모리 관리를 할 수 있음.
+
+
+### 객체생성
+```js
+var Test = function(){};
+Test.prototype = {
+  constructor:Test
+};
+
+var instance = new Test();
+ 
+instance = {
+  __proto__:Test.prototype
+};
+var result = Test.apply( instance, arguments );
+if( result && typeof result == 'object' ) instance = result;
+```
+
+1. 객체를 만들되 그 안에 proto등의 속성에 함수의 프로토타입객체를 지정한다.
+2. 생성자 함수의 컨텍스트를 방금 만든 객체(instance)로 해서 aruguments를 전달하여 호출한다.
+3. 반환값이 없는 경우 instance가 반환값이 된다.
+
+![](http://www.ecma-international.org/ecma-262/5.1/#sec-13.2.2)
+
+
+### Ref
+- [new를 이용한 객체생성.](https://www.bsidesoft.com/?p=1865)
+
 ### 이 문서는 MDN의 문서를 번역했음을 밝힙니다.

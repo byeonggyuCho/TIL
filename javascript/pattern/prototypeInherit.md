@@ -379,6 +379,7 @@ console.log('Check5: Property inherit', emp1.hasOwnProperty('name'))
 
 
 ## 6. Object.create
+new 없이 `__proto__` 속성을 추가하여 프로토타입 체인을 이용할 수 있다.
 `Object.create`는 객체와 객체간의 상속을 시켜주는 함수이다.   
 
 `Object.create`의 기본적인 동작은 다음과 같다.
