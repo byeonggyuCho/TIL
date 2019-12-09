@@ -486,3 +486,4 @@ class A {
 - [es6 class](https://gomugom.github.io/is-class-only-a-syntactic-sugar/)
 - [ES6 Classes in Depth](https://ponyfoo.com/articles/es6-classes-in-depth)
 - [classes just syntatic sugar for prototypeal pattern in javascript?](https://stackoverflow.com/questions/36419713/are-es6-classes-just-syntactic-sugar-for-the-prototypal-pattern-in-javascript)
+- [ES6의 class가 문법설탕이 아닌 이유](https://www.bsidesoft.com/?p=5370)
