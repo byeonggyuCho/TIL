@@ -40,20 +40,20 @@ var Person = (function(){
     //스태틱 변수.
     var counter = 0;
     var lastOne = null;
-    var __Person__ = function(name){
+    var Person = function(name){
         counter++;
         lastOne = name;
         this.name = name || 'anonymous'
     }
 
-    __Person__.getCount = function(){
+    Person.getCount = function(){
         return counter;
     }
 
-    __Person__.getLastOne = function(){
+    Person.getLastOne = function(){
         return lastOne;
     }
-    return __Person__;
+    return Person;
 }())
 
 var p1 = new Person("Janny");
@@ -65,6 +65,9 @@ Person.getLastOne();
 ```
 
 
+
+## QnA
+- static 메서드를 수정 불가능하게 할순 없을까???
 
 ## Ref
 - [](http://frontend.diffthink.kr/2016/06/blog-post.html)

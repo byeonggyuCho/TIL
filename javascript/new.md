@@ -1,10 +1,14 @@
 # new
-new 연산자는 사용자 정의 객체(user-defined object) 또는 내장 객체(built-in object)의 인스턴스를 생성한다.   
+
+
+## Intro
+new 연산자는 사용자 정의 객체(user-defined object) 또는 내장 객체(built-in object)의 인스턴스를 생성한다. 
+생성하는 객체에 `__proto__`속성을 부여하여 프로토타입 체인을 사용할 수 있다.  
 new 연산자를 사용할때 다음의 4가지 일이 순차적으로 일어난다.    
 **new연산자를 이용한 객체 생성**
 1. 빈 객체(plain Object)를 생성한다.
 2. 생성자 함수의 this를 새로 만들어진 객체에 binding한다.
-3. 새로 만들어진 객체에 생성자 함수의 prototype 객체를 참조하는 \_\_proto\_\_  property를 추가한다.
+3. 새로 만들어진 객체에 생성자 함수의 prototype 객체를 참조하는 `__proto__` property를 추가한다.
 4. 생성자함수에 별도의 반환값이 없으면 마지막에 'return this'를 추가하여 새로 생성한 객체를 반환한다.
 
 ```js
@@ -20,6 +24,25 @@ var car1 = new Car('Eagle', 'Talon TSi', 1993);
 console.log(car1.make);
 // console> "Eagle"
 ```
+
+```js
+var car =  new Car("Hyundai", "Sonata", "2017");
+
+//1
+car = {};
+
+//2
+car.__proto__ = Car.prototype;
+
+//3
+temp = Car.apply(car, arguments);
+
+if(typeof temp === 'object' || typeof temp === 'function'){
+a = temp;
+}
+
+```
+
 
 ## 1.구문
 
