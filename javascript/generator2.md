@@ -41,13 +41,13 @@ setTimeout(action);
 
 
 ```js
-
 var Generator = (function(){
 
+    //Private Member
     var callbackList = [];
     var id = [];
     var DEFAULT_RESULT = {value: undefined,    done:true};
-
+    
     function Generator(fn){
         id.push(this);
         callbackList.push(fn);
@@ -62,15 +62,23 @@ var Generator = (function(){
         var v;
         var r = DEFAULT_RESULT;
 
-        if(fn) v = fn();
-        else return DEFAULT_RESULT;
-        
+        console.log('[Prototype] next')
 
-        if(v){
-            r = {value: v,       done:false};;
-        }else{
-            delete id[idx];
-            delete callbackList[idx];
+        if(fn) {
+            v = fn();
+
+            if(v) {
+                r = {value: v,       done:false};
+            }else{
+                delete id[idx];
+                delete callbackList[idx];
+
+                //연산비용 절감을 위해 재정의
+                this.next =  function(){
+                    console.log('[intance] next')
+                    return DEFAULT_RESULT;
+                };
+            }
         }
 
         return r;
@@ -86,12 +94,8 @@ var generator = function(data){
 
         var item;
         while(item = data.pop())     return item;
-
     });
-
 }
-
-
 
 var iterator = generator([1,2,3]);
 
