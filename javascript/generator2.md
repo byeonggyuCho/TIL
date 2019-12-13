@@ -43,15 +43,15 @@ setTimeout(action);
 ```js
 var Generator = (function(){
 
-    //Private Member
+    //[Private Member] Intance Information
     var callbackList = [];
     var id = [];
     var DEFAULT_RESULT = {value: undefined,    done:true};
     
-    function Generator(fn){
+    function Generator(data,fn){
         id.push(this);
         callbackList.push(fn);
-
+        this.data = data;
         this.next = Generator.prototype.next;
     }
 
@@ -65,7 +65,7 @@ var Generator = (function(){
         console.log('[Prototype] next')
 
         if(fn) {
-            v = fn();
+            v = fn.call(this);
 
             if(v) {
                 r = {value: v,       done:false};
@@ -86,16 +86,26 @@ var Generator = (function(){
 
     return Generator;
 })()
+/* 
 
 var generator = function(data){
 
-
     return new Generator(function(){
 
+        console.log("[GEN]",this)
         var item;
         while(item = data.pop())     return item;
     });
-}
+}  */
+
+var generator = new Generator(data,function(){
+
+        console.log("[GEN]",this)
+        var item;
+        while(item = this.data.pop())     return item;
+    });
+} 
+
 
 var iterator = generator([1,2,3]);
 
