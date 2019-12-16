@@ -93,3 +93,4 @@ p1('c')
 
 ### REF
 - [javascript Basic](http://insanehong.kr/post/javascript-scope/)
+- [scope](https://www.bsidesoft.com/?p=320)
