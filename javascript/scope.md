@@ -12,12 +12,12 @@
 ```js
 var x = 1;
 
-function foo() {
+function foo(z) {
     var y = 10;
-    return x + y;
+    return x + y + z;
 }
 
-foo();
+foo(100);
 ```
 위 예제코드에서 foo()함수객체가 생성딜 떄의 `[[Scope]]`와 `Scope Chain`에 대한 연결은 아래 다이어그램을 보면 이해할 수 있다.
 
@@ -27,22 +27,31 @@ foo();
 함수의 스코프를 코드로 표현해보면 다음과 같다.
 ```js
 foo.[[SCOPE]] = {
-    arguments: [],
-    locals: ['y'],
-    [[Parent]]: global
+    arguments: ['z'],       //인자
+    locals: ['y'],          //지역변수
+    [[Parent]]: global      //생성당시 EC
 }
 ```
-함수 foo가 호출이 될때 실행 컨텍스트가 생성되는데 함수 내부의 코드가 실행되면서 등장하는 변수 이름을 찾는 메모리 공간으로 사용됩니다. 이때 실행 컨텍스트는 호출된 함수객체에 내장된 스코프 객체`foo.[[SCOPE]]`를 이용해 만들어집니다. 이때 부모함수의 실행 문맥이 `[[Parent]]`속성에 기록되어 스코프 체인시에 참조된다.  
+함수 foo가 호출이 될때 실행 컨텍스트가 생성되는데 함수 내부의 코드가 실행되면서 등장하는 변수 이름을 찾는 메모리 공간으로 사용됩니다. 이때 실행 컨텍스트는 호출된 함수객체에 내장된 스코프 객체`foo.[[SCOPE]]`를 이용해 만들어집니다. 이때 부모함수의 실행 컨텍스트가 `[[Parent]]`속성에 기록되어 스코프 체인시에 참조된다.  
 `foo()`의 실행시 생성되는 실행 컨텍스트는 다음과 같다.
 
 ```js
-foo_EXECUTE_CONTEXT = {
-  this: global,
-  arguments: { length:0},
-  y: 10,
-  [[Parent]]:global
+EC_foo = {
+  this: window,
+  arguments: {0:100, length:1},
+  z: 100                    //인수에 arguments값 할당.
+  y: undefined,            //지역변수에 undefined 할당하여 초기화.
+  [[Parent]]:global        //생성시 EC.
 }
 ```
+
+1. `this`: 컨텍스트 객체가 참조된다.
+2. `arguments`: 인자의 리스트가 생성된다.
+3. 인수에 `arguments`를 순서대로 할당한다.
+4. 지역변수가 키로 정리되고 `undefined`가 할당된다.
+5. `[[Parent]]`: 함수 생성당시 부모함수의 실행컨텍스트가 할당된다.
+
+
 
 
 
