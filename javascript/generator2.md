@@ -27,6 +27,12 @@ next를 호출했을때 이전 프레임의 종료여부를 체크하고 종료�
 현재 프레임이 종료되면 대기열에 있는 프레임을 실행시킨다.
 
 
+
+
+
+-  비동기로직이 끼어있으면 반환값을 콜백으로 받을수 밖에 없음.
+
+
 ```js
 var generator = function* (data){
   let item;
@@ -494,125 +500,187 @@ var HashMap = (function(){
 ```js
 var Generator = (function(){
 
-    var STORE_MAP = new HashMap();
+    //var STORE_MAP = new HashMap();
     var DEFAULT_RESULT = {value: undefined,    done:true};
+    var PENDING = "PENDING"
+    var RESOLVE = "RESOLVE"
 
     //해당 프레임이 끝났다는것을 할리는 함수.
     //각 함수에서 호출한다.
-	var exfired = function(){
+	var Yeild = function(){
+
+        
+		++this.yeildCnt
+		var args = Array.prototype.slice.call(arguments);
+        var fn;
+        //var store = STORE_MAP.get(this);
+
+        //현재프레임 종료여부 확인후 미종료시 wating에 추가한다.
+        //현재 프레임의 실행여부 확인.
+        debugger;
+		if(this.yeildCnt <= this.currentFrmae){
+			return PENDING;
+        }
+
+		if( typeof arguments[0]  === 'function'){
+            fn = args.shift();
+			args.push(this);		//해당 인스턴스 전달
+            args.push(exfired);		//인스턴스 종료 함수 전달.
+
+            this.store.Yeild[this.currentFrame] = this.store.Yeild[this.currentFrame] || {};
+            
+            //이전 프레임 종료여부 확인.
+            if(this.store.Yeild[this.currentFrame].end){
+                this.waitingList.push({
+                    fn: fn,
+                    args : args
+                });
+            }else{
+                
+                fn.apply(this, args);
+            }
+        }
+        
+        ++this.currentFrmae;
+        return RESOLVE
+    }
+
+	//인스턴스 종료함수.
+	//반환값을 어떻게ㅔ 전달할것인지?
+	var exfired = function(self,param){
 
         //인덱스로 구분해야한다.
         /**
          * 각 함수에서 콜백으로 호출을하기 때문에 스코프체인으로 찾아야한다.
          * 여기선 this를 사용해서 인스턴스에 접근할 수 없음.
          */
-        var store = STORE_MAP.get(this);
-        if(store.Yeild[this.currentFrame].end == false){
+        //var store = STORE_MAP.get(self);
+        var store = self.store;
 
-        }
+
+        self.store.Yeild[self.currentFrame].end = true;
 
         // 대기중인 함수가 있으면 실행한다.
-		var nextTask = this.waitingList.shift(); 
+		var nextTask = self.waitingList.shift(); 
 		if(nextTask)
-            this.Yeild.apply(this,nextTask.fn, nextTask.args);
-    }
-
-	var Yeild = function(){
-
-		++this.yeildCnt
-		var args = Array.prototype.slice.call(arguments);
-        var fn;
-        var store = STORE_MAP.get(this);
-
-        //현재프레임 종료여부 확인후 미종료시 wating에 추가한다.
-		//현재 프레임의 실행여부 확인.
-		if(this.yeildCnt <= this.currentFrmae){
-			return false;
-        }
-
-		if( typeof arguments[0]  === 'function'){
-            fn = args.shift();
-            args.push(exfired);
-            
-            //이전 프레임 종료여부 확인.
-            if(store.Yeild[this.currentFrame].end == false){
-                this.waitingList.push({
-                    fn: fn,
-                    args : args
-                });
-            }else{
-                fn.apply(this, args);
-            }
-        }
-
-        ++this.currentFrmae;
+            self.Yeild.apply(self, nextTask.args ,nextTask.fn);
     }
 
 
     function Generator(data,_fn){
 
-		var instance = (this instanceof Generator) ? this : new Generator(data,fn);
+		var instance = (this instanceof Generator) ? this : new Generator(data,_fn);
 		instance.Yeild = Yeild;
         instance.yeildCnt = 0;  // next호출시마다 매번 실행마다 카운트
         instance.waitingList = [];
-        instance.currentFrmae = 0;
+        instance.currentFrame = 0;
         
-        STORE_MAP.setAll(instance, {
+        // STORE_MAP.setAll(instance, {
+		// 	fn : _fn,
+		// 	Yeild : {}//현재 실행 위치, 종료여부.
+        // });
+        instance.store = (instance, {
 			fn : _fn,
 			Yeild : {}//현재 실행 위치, 종료여부.
-        });
+        })
 
-
-        callbackList.push(fn);
-
+        //callbackList.push(fn);
         instance.data = data;
         instance.next = Generator.prototype.next;
 
 		return instance;
     }
 
-    Generator.prototype.next = function(){
+    //해당함수의 반환값이 리턴되어야한다.
+    Generator.prototype.next = function(conf, cb){
 
-        var fn = STORE_MAP.get(this,'fn');
+        //var fn = STORE_MAP.get(this,'fn');
+        var fn = this.store.fn;
         var v;
         var r = DEFAULT_RESULT;
+        var callback = arguments[arguments.length-1];
 
 		this.yeildCnt = 0;
 
-        
         if(fn) {
             v = fn.call(this);
 
-            if(v) {
-                r = {value: v,       done:false};
-            }else{
-                STORE_MAP.remove(this);
+            // if(v) {
+            //     r = {value: v,       done:false};
+            // }else{
+            //     //STORE_MAP.remove(this);
+            //     delete this.store;
 
-                //연산비용 절감을 위해 재정의
-                this.next =  function(){
-                    console.log('[intance] next')
-                    return Object.assign({},DEFAULT_RESULT);
-                };
-            }
+            //     //연산비용 절감을 위해 재정의
+            //     this.next =  function(){
+            //         console.log('[intance] next')
+            //         return Object.assign({},DEFAULT_RESULT);
+            //     };
+            // }
         }
 
         return r;
     }
 
     return Generator;
-})();
+})()
+
+
+function sayMaker (msg){
+
+    return function(instance, resolve){
+        console.log(msg);
+
+        //종료시점을 알린다. 반드시 마지막 파라미터로 해야함.
+        resolve(instance);
+    }
+}
+
+function asyncMaker(fn,args){
+    setTimeout(fn,0,args);
+}
+
+var $say1       = sayMaker(1);
+var $asyncSay2  = asyncMaker(sayMaker,2);
+var $say3       = sayMaker(3);
+
+
+var works = [
+    $say1,
+    $asyncSay2,
+    $say3
+];
+
+
+var gen = Generator(works, function(){
+
+    var item;
+    while(item = this.data.pop()){
+        this.Yeild(item);
+    }
+    // this.Yeild($say1);
+    // this.Yeild($asyncSay2);
+    // this.Yeild($say3); 
+})
+
+gen.next();
 ```
+
+
+
+
+
 
 
 ```js
 //test
 function sayMaker (msg){
 
-    return function(resolve){
+    return function(instance, resolve){
         console.log(msg);
 
         //종료시점을 알린다. 반드시 마지막 파라미터로 해야함.
-        resolve();
+        resolve(instance);
     }
 }
 
