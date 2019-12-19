@@ -92,7 +92,7 @@ var Generator = (function(){
         console.log('[Prototype] next')
 
         if(fn) {
-            v = fn.call(this);
+            v = fn.call(this,this.data);
 
             if(v) {
                 r = {value: v,       done:false};
@@ -443,7 +443,7 @@ var HashMap = (function(){
         return STORE[idx][key];
     }
 
-    var set = function(context,key, value){  
+    var put = function(context,key, value){  
 
         var idx = ID.push(context);
 
@@ -467,7 +467,7 @@ var HashMap = (function(){
 
     }
 
-    var setAll = function(context, obj){
+    var putAll = function(context, obj){
 
         var idx = ID.indexOf(context);
         
@@ -481,15 +481,15 @@ var HashMap = (function(){
 
     return function HashMap(){
 
-        this.set = set;
+        this.put = put;
         this.get = get;
         this.remove = remove;
-        this.setAll = setAll;
+        this.putAll = putAll;
     }
 
 })()
 ```
-
+  
 
 
 
@@ -497,57 +497,67 @@ var HashMap = (function(){
 비동기 연산 제어를 위한 버전.
 이전 함수가 종료되지 않았을때 호출을하면 대기열에 올렸다가 콜백으로 호출을한다.
 모든 함수 마지막 인자에 콜백함수를 디폴트로 전다하고 종료가 되는 시점에 실행을 해야한다.
+
+
+- next를 호출했을때 다음번 yeild가 수행된다.
+- next의 파라미터로 yeild에 전달한 인자를 전달할 수 있다.
+- next의 결과는 콜백으로 받는다.
 ```js
+
 var Generator = (function(){
 
     //var STORE_MAP = new HashMap();
     var DEFAULT_RESULT = {value: undefined,    done:true};
+    var WAITING = "WAITING"
     var PENDING = "PENDING"
     var RESOLVE = "RESOLVE"
 
     //해당 프레임이 끝났다는것을 할리는 함수.
     //각 함수에서 호출한다.
 	var Yeild = function(){
-
         
-		++this.yeildCnt
+        ++this.yeildCnt
+        console.log('[Yeild]',this.yeildCnt)
 		var args = Array.prototype.slice.call(arguments);
         var fn;
         //var store = STORE_MAP.get(this);
 
         //현재프레임 종료여부 확인후 미종료시 wating에 추가한다.
         //현재 프레임의 실행여부 확인.
-        debugger;
-		if(this.yeildCnt <= this.currentFrmae){
-			return PENDING;
-        }
+       
+// 		if(this.yeildCnt > this.currentFrame){
+// 			return PENDING;
+//         }
 
 		if( typeof arguments[0]  === 'function'){
             fn = args.shift();
 			args.push(this);		//해당 인스턴스 전달
-            args.push(exfired);		//인스턴스 종료 함수 전달.
+            args.push(resolve);		//인스턴스 종료 함수 전달.
 
             this.store.Yeild[this.currentFrame] = this.store.Yeild[this.currentFrame] || {};
             
             //이전 프레임 종료여부 확인.
-            if(this.store.Yeild[this.currentFrame].end){
+			debugger;
+            if(this.store.Yeild[this.currentFrame].state === PENDING){
+                console.log('[Yeild]',this.currentFrame,'is Pending');
+                this.store.Yeild[this.currentFrame+1] = {state: WAITING};
                 this.waitingList.push({
                     fn: fn,
                     args : args
                 });
             }else{
-                
+                this.store.Yeild[this.currentFrame] = {state: PENDING};
+             
                 fn.apply(this, args);
             }
         }
         
-        ++this.currentFrmae;
-        return RESOLVE
+        //return RESOLVE
     }
 
 	//인스턴스 종료함수.
 	//반환값을 어떻게ㅔ 전달할것인지?
-	var exfired = function(self,param){
+	var resolve = function(self,param){
 
         //인덱스로 구분해야한다.
         /**
@@ -557,13 +567,15 @@ var Generator = (function(){
         //var store = STORE_MAP.get(self);
         var store = self.store;
 
-
-        self.store.Yeild[self.currentFrame].end = true;
+        console.log("[Resolve]",self.currentFrame,"is done");
+        debugger;
+        self.store.Yeild[self.currentFrame].state = RESOLVE;     //종료처리.
+        ++self.currentFrame;
 
         // 대기중인 함수가 있으면 실행한다.
 		var nextTask = self.waitingList.shift(); 
 		if(nextTask)
-            self.Yeild.apply(self, nextTask.args ,nextTask.fn);
+            nextTask.fn.apply(self, nextTask.args);
     }
 
 
@@ -573,7 +585,7 @@ var Generator = (function(){
 		instance.Yeild = Yeild;
         instance.yeildCnt = 0;  // next호출시마다 매번 실행마다 카운트
         instance.waitingList = [];
-        instance.currentFrame = 0;
+        instance.currentFrame = 1;
         
         // STORE_MAP.setAll(instance, {
 		// 	fn : _fn,
@@ -603,7 +615,7 @@ var Generator = (function(){
 		this.yeildCnt = 0;
 
         if(fn) {
-            v = fn.call(this);
+            v = fn.call(this,this.data);
 
             // if(v) {
             //     r = {value: v,       done:false};
@@ -618,8 +630,6 @@ var Generator = (function(){
             //     };
             // }
         }
-
-        return r;
     }
 
     return Generator;
@@ -637,11 +647,14 @@ function sayMaker (msg){
 }
 
 function asyncMaker(fn,args){
-    setTimeout(fn,0,args);
+    return function(instance, resolve){
+        setTimeout(fn,0,instance, resolve);
+    }
 }
 
 var $say1       = sayMaker(1);
-var $asyncSay2  = asyncMaker(sayMaker,2);
+var $say2       = sayMaker(2);
+var $asyncSay2  = asyncMaker($say2);
 var $say3       = sayMaker(3);
 
 
@@ -652,10 +665,15 @@ var works = [
 ];
 
 
-var gen = Generator(works, function(){
+var gen = Generator(works, function(data){
 
     var item;
-    while(item = this.data.pop()){
+    var cnt = 0;
+    console.log("Full Item", data)
+    while(item = data.pop()){
+		
+        console.log('[Then]',++cnt);
+		debugger;
         this.Yeild(item);
     }
     // this.Yeild($say1);
@@ -685,7 +703,9 @@ function sayMaker (msg){
 }
 
 function asyncMaker(fn,args){
-    setTimeout(fn,0,args);
+    return function(){
+        setTimeout(fn,0,args);
+    }
 }
 
 var $say1       = sayMaker(1);
