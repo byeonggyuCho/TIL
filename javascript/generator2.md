@@ -494,6 +494,63 @@ var HashMap = (function(){
 
 
 
+
+
+
+```js
+//test
+function sayMaker (msg){
+
+    return function(instance, resolve){
+        console.log(msg);
+
+        //종료시점을 알린다. 반드시 마지막 파라미터로 해야함.
+        resolve(instance);
+    }
+}
+
+function asyncMaker(fn,args){
+    return function(){
+        setTimeout(fn,0,args);
+    }
+}
+
+var $say1       = sayMaker(1);
+var $asyncSay2  = asyncMaker(sayMaker,2);
+var $say3       = sayMaker(3);
+
+
+var works = [
+    $say1,
+    $asyncSay2,
+    $say3
+];
+
+
+var gen = Generator(works, function(){
+
+    var item;
+    while(itme = this.data.pop()){
+        this.Yeild(item);
+    }
+    // this.Yeild($say1);
+    // this.Yeild($asyncSay2);
+    // this.Yeild($say3); 
+})
+
+gen.next();
+gen.next();
+gen.next();
+```
+이게 순서대로 나오면 성공임.
+
+
+
+
+
+
+
+
 비동기 연산 제어를 위한 버전.
 이전 함수가 종료되지 않았을때 호출을하면 대기열에 올렸다가 콜백으로 호출을한다.
 모든 함수 마지막 인자에 콜백함수를 디폴트로 전다하고 종료가 되는 시점에 실행을 해야한다.
@@ -502,6 +559,7 @@ var HashMap = (function(){
 - next를 호출했을때 다음번 yeild가 수행된다.
 - next의 파라미터로 yeild에 전달한 인자를 전달할 수 있다.
 - next의 결과는 콜백으로 받는다.
+- 제너레이터가 아니라 스탭을 나눠놓은 타스크 러너.
 ```js
 
 var Generator = (function(){
@@ -514,10 +572,14 @@ var Generator = (function(){
 
     //해당 프레임이 끝났다는것을 할리는 함수.
     //각 함수에서 호출한다.
+    //next가 호출될때마다 프레임이 생성된다.
+    // Yeild에서는 현재 프레임의 타겟을 설정하고 반환되어야한다.
+    // 이전 프레임이 완료가 되지 않으면 대기열에 올린다.
+    // 이전 프레임이 종료되는 시점에 대기열에 올라온 모든 프레임을 실행한다.
 	var Yeild = function(){
         
         ++this.yeildCnt
-        console.log('[Yeild]',this.yeildCnt)
+        
 		var args = Array.prototype.slice.call(arguments);
         var fn;
         //var store = STORE_MAP.get(this);
@@ -525,9 +587,8 @@ var Generator = (function(){
         //현재프레임 종료여부 확인후 미종료시 wating에 추가한다.
         //현재 프레임의 실행여부 확인.
        
-// 		if(this.yeildCnt > this.currentFrame){
-// 			return PENDING;
-//         }
+		if(this.yeildCnt > this.currentFrame) return WAITING;
+        
 
 		if( typeof arguments[0]  === 'function'){
             fn = args.shift();
@@ -537,9 +598,8 @@ var Generator = (function(){
             this.store.Yeild[this.currentFrame] = this.store.Yeild[this.currentFrame] || {};
             
             //이전 프레임 종료여부 확인.
-			debugger;
             if(this.store.Yeild[this.currentFrame].state === PENDING){
-                console.log('[Yeild]',this.currentFrame,'is Pending');
+                console.log('[Runner]','pending,',this.currentFrame);
                 this.store.Yeild[this.currentFrame+1] = {state: WAITING};
                 this.waitingList.push({
                     fn: fn,
@@ -547,7 +607,10 @@ var Generator = (function(){
                 });
             }else{
                 this.store.Yeild[this.currentFrame] = {state: PENDING};
-             
+                console.log('[Runner]','start,',this.yeildCnt);
+
+                //next로 넘어온 현재 프레임의 파라미터를 넘긴다.
+                args.push(this.args);
                 fn.apply(this, args);
             }
         }
@@ -567,10 +630,14 @@ var Generator = (function(){
         //var store = STORE_MAP.get(self);
         var store = self.store;
 
-        console.log("[Resolve]",self.currentFrame,"is done");
-        debugger;
+        console.log("[Runner]","done,",self.currentFrame);
         self.store.Yeild[self.currentFrame].state = RESOLVE;     //종료처리.
         ++self.currentFrame;
+
+        //next Callback 실행.
+        if(self.callback){
+            self.callback(param);
+        }
 
         // 대기중인 함수가 있으면 실행한다.
 		var nextTask = self.waitingList.shift(); 
@@ -579,43 +646,51 @@ var Generator = (function(){
     }
 
 
-    function Generator(data,_fn){
+    function Generator(arr,_fn){
 
 		var instance = (this instanceof Generator) ? this : new Generator(data,_fn);
 		instance.Yeild = Yeild;
-        instance.yeildCnt = 0;  // next호출시마다 매번 실행마다 카운트
-        instance.waitingList = [];
-        instance.currentFrame = 1;
+        instance.yeildCnt = 0;      //next호출시마다 매번 실행마다 카운트
+        instance.currentFrame = 1;  //현재 실행중인 프레임.
+        instance.waitingList = [];  //현재프레임이 실행중에 요청이 들어온 프레임.
         
         // STORE_MAP.setAll(instance, {
 		// 	fn : _fn,
 		// 	Yeild : {}//현재 실행 위치, 종료여부.
         // });
-        instance.store = (instance, {
+        instance.store =  {
 			fn : _fn,
 			Yeild : {}//현재 실행 위치, 종료여부.
-        })
+        }
 
-        //callbackList.push(fn);
-        instance.data = data;
+        //프레임에 대한 정보를 기록한다. instance.store.Yeild를 이걸로 치환하자.
+        instance.frame = {};
+
+        instance.data = arr;
         instance.next = Generator.prototype.next;
 
 		return instance;
     }
 
     //해당함수의 반환값이 리턴되어야한다.
-    Generator.prototype.next = function(conf, cb){
+    //next를 호출할때 다음 frame을 실행한다.
+    //현재 frame이 PENDING 상태일때 대기열에 올리고 콜백으로 실행한다.
+    //결과값은 next메서드의 콜백으로 넘겨준다.
+    Generator.prototype.next = function(){
 
         //var fn = STORE_MAP.get(this,'fn');
+        var args = Array.prototype.slice.call(arguments)
         var fn = this.store.fn;
-        var v;
         var r = DEFAULT_RESULT;
-        var callback = arguments[arguments.length-1];
-
+        
+        if(typeof args[args.length-1] === 'function') {
+            this.callback   = args.pop();       //현재 프레임으 콜백
+        }
+        this.args       = args;         //현재 프레임의 인자.
 		this.yeildCnt = 0;
 
         if(fn) {
-            v = fn.call(this,this.data);
+            fn.call(this,this.data);
 
             // if(v) {
             //     r = {value: v,       done:false};
@@ -669,10 +744,8 @@ var gen = Generator(works, function(data){
 
     var item;
     var cnt = 0;
-    console.log("Full Item", data)
     while(item = data.pop()){
 		
-        console.log('[Then]',++cnt);
 		debugger;
         this.Yeild(item);
     }
@@ -681,61 +754,18 @@ var gen = Generator(works, function(data){
     // this.Yeild($say3); 
 })
 
-gen.next();
+var  nextCb = function(msg){
+    console.log("[Next_callback]",msg)
+}
+
+gen.next(nextCb);
+gen.next(nextCb); //pending
+gen.next(nextCb); 
 ```
 
 
 
 
-
-
-
-```js
-//test
-function sayMaker (msg){
-
-    return function(instance, resolve){
-        console.log(msg);
-
-        //종료시점을 알린다. 반드시 마지막 파라미터로 해야함.
-        resolve(instance);
-    }
-}
-
-function asyncMaker(fn,args){
-    return function(){
-        setTimeout(fn,0,args);
-    }
-}
-
-var $say1       = sayMaker(1);
-var $asyncSay2  = asyncMaker(sayMaker,2);
-var $say3       = sayMaker(3);
-
-
-var works = [
-    $say1,
-    $asyncSay2,
-    $say3
-];
-
-
-var gen = Generator(works, function(){
-
-    var item;
-    while(itme = this.data.pop()){
-        this.Yeild(item);
-    }
-    // this.Yeild($say1);
-    // this.Yeild($asyncSay2);
-    // this.Yeild($say3); 
-})
-
-gen.next();
-gen.next();
-gen.next();
-```
-이게 순서대로 나오면 성공임.
 
 
 
