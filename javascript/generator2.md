@@ -597,14 +597,14 @@ var Generator = (function(){
             //이전 프레임 종료여부 확인.
 
             if(state === RESOLVE){
-                console.log('[Runner]',idx,'resolve');
+                //console.log('[Runner]',idx,'resolve');
                 return;
             }else if(state === PENDING){
                 console.log('[Runner]',idx,'pending');
                 this.frame[idx+1] = {state: WAITING};
                 this.workList.push({
-                    fn: work,
-                    args : args
+                    do    : work,
+                    args  : args
                 });
             }else if(state === WAITING){
                 this.frame[idx] = {state: PENDING};
@@ -616,14 +616,12 @@ var Generator = (function(){
             }
         }
         
-        //return RESOLVE
     }
 
     //인스턴스 종료함수.
-    //반환값을 어떻게ㅔ 전달할것인지?
     var resolve = function resolve(self,param){
 
-        /**
+        /*
           각 함수에서 콜백으로 호출을하기 때문에 스코프체인으로 찾아야한다.
           여기선 this를 사용해서 인스턴스에 접근할 수 없음.
          */
@@ -640,10 +638,10 @@ var Generator = (function(){
             currentFrame.callback(param);
         }
 
-        // 대기중인 함수가 있으면 실행한다.
+        // 대기중인 작업이 있으면 실행한다.
         if(self.workList.length > 0){
             work = self.workList.shift(); 
-            work.fn.apply(self, work.args);
+            work.do.apply(self, work.args);
         }   
     }
 
@@ -653,24 +651,18 @@ var Generator = (function(){
         var instance = (this instanceof Generator) ? this : new Generator(data,_fn);
         instance.Yeild = Yeild;
         instance.currentFrame = 0;
-        instance.workList = [];  //현재프레임이 실행중에 요청이 들어온 프레임.
+        instance.workList = [];   //현재프레임이 실행중에 요청이 들어온 프레임.
           
-        // STORE_MAP.setAll(instance, {
-        //  fn : _fn,
-        //  Yeild : {}//현재 실행 위치, 종료여부.
-        // });
         instance.store =  {
           fn : _fn
         }
 
 
-        //fn을 돌려서 Yeild와 파라미터를 대기열에 담는다.
-        //이렇게 할경우 이전 프레임의 반환값을 기준으로 다음 프레임의 동작이 결정되는경우 문제가 생긴다.
-        //매번 루프를 돌면서 처리를 하는것이 나을듯....
-        //해당 프레임이 종료됐는지 확인하고 종료가 된경우 반환값을 해당 인스턴스의 속성으로 this.result[0]와 같은 식으로 저장한다.
-        // 두번째 프레임에 첫번째 프레임의 반환값을 인자로 넘길경우 `this.Yeild(this.result[0])` 이 된다.
+      
 
         /*
+          //해당 프레임이 종료됐는지 확인하고 종료가 된경우 반환값을 해당 인스턴스의 속성으로 this.result[0]와 같은 식으로 저장한다.
+        // 두번째 프레임에 첫번째 프레임의 반환값을 인자로 넘길경우 `this.Yeild(this.result[0])` 이 된다.
             function(){
 
                 this.Yeild();
@@ -705,13 +697,10 @@ var Generator = (function(){
     Generator.prototype.next = function next(){
 
 
-        debugger;
-
         var args = Array.prototype.slice.call(arguments)
         var fn = this.store.fn;
         var r = DEFAULT_RESULT;
         var currentFrame;
-
 
         this.yeildCnt   = 0;            //Yeild 호출횟수
         //프레임 생성.
@@ -731,19 +720,6 @@ var Generator = (function(){
         if(fn) {
             var copy_data = this.data.slice();
             fn.call(this, copy_data);
-
-            // if(v) {
-            //     r = {value: v,       done:false};
-            // }else{
-            //     //STORE_MAP.remove(this);
-            //     delete this.store;
-
-            //     //연산비용 절감을 위해 재정의
-            //     this.next =  function(){
-            //         console.log('[intance] next')
-            //         return Object.assign({},DEFAULT_RESULT);
-            //     };
-            // }
         }
     }
 
