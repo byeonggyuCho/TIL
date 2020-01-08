@@ -664,6 +664,33 @@ var Generator = (function(){
 			Yeild : {}//현재 실행 위치, 종료여부.
         }
 
+
+        //fn을 돌려서 Yeild와 파라미터를 대기열에 담는다.
+        //이렇게 할경우 이전 프레임의 반환값을 기준으로 다음 프레임의 동작이 결정되는경우 문제가 생긴다.
+        //매번 루프를 돌면서 처리를 하는것이 나을듯....
+        //해당 프레임이 종료됐는지 확인하고 종료가 된경우 반환값을 해당 인스턴스의 속성으로 this.result[0]와 같은 식으로 저장한다.
+        // 두번째 프레임에 첫번째 프레임의 반환값을 인자로 넘길경우 `this.Yeild(this.result[0])` 이 된다.
+
+        /*
+            function(){
+
+                this.Yeild();
+                this.Yeild(this.result[0])
+            }
+
+            function(){
+                
+                var item = null
+                var cnt = 0;
+                whild(item = this.data.pop()){
+
+                    this.Yeild(this.result[cnt++])
+                }
+            }
+
+        */
+
+
         //프레임에 대한 정보를 기록한다. instance.store.Yeild를 이걸로 치환하자.
         instance.frame = {};
         instance.data = data;
