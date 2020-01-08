@@ -570,13 +570,12 @@ var Generator = (function(){
     var PENDING = "PENDING"
     var RESOLVE = "RESOLVE"
 
-    //해당 프레임이 끝났다는것을 할리는 함수.
-    //각 함수에서 호출한다.
-    //next가 호출될때마다 프레임이 생성된다.
-    // Yeild에서는 현재 프레임의 타겟을 설정하고 반환되어야한다.
-    // 이전 프레임이 완료가 되지 않으면 대기열에 올린다.
-    // 이전 프레임이 종료되는 시점에 대기열에 올라온 모든 프레임을 실행한다.
-	var Yeild = function(){
+
+    /*
+        Yeild가 실행되면 전달받은 함수와 매개변수를 임시저장소에 보관한다.
+        next가 호출될때 대기중인 작업을 실행한다.
+    */
+	var Yeild = function Yeild(){
         
         ++this.yeildCnt
         
@@ -596,17 +595,19 @@ var Generator = (function(){
             args.push(resolve);		//인스턴스 종료 함수 전달.
 
             this.store.Yeild[this.currentFrame] = this.store.Yeild[this.currentFrame] || {};
+
+            var state = this.store.Yeild[this.currentFrame].state;
             
             //이전 프레임 종료여부 확인.
-            if(this.store.Yeild[this.currentFrame].state === PENDING){
+            if(state === PENDING){
                 console.log('[Runner]','pending,',this.currentFrame);
                 this.store.Yeild[this.currentFrame+1] = {state: WAITING};
                 this.waitingList.push({
                     fn: fn,
                     args : args
                 });
-            }else{
-                this.store.Yeild[this.currentFrame] = {state: PENDING};
+            }else if(state === WAITING){
+                this.store.Yeild[this.currentFrame] = {state: RESOLVE};
                 console.log('[Runner]','start,',this.yeildCnt);
 
                 //next로 넘어온 현재 프레임의 파라미터를 넘긴다.
@@ -646,7 +647,7 @@ var Generator = (function(){
     }
 
 
-    function Generator(arr,_fn){
+    function Generator(data,_fn){
 
 		var instance = (this instanceof Generator) ? this : new Generator(data,_fn);
 		instance.Yeild = Yeild;
@@ -665,29 +666,33 @@ var Generator = (function(){
 
         //프레임에 대한 정보를 기록한다. instance.store.Yeild를 이걸로 치환하자.
         instance.frame = {};
-
-        instance.data = arr;
+        instance.data = data;
         instance.next = Generator.prototype.next;
 
 		return instance;
     }
 
-    //해당함수의 반환값이 리턴되어야한다.
-    //next를 호출할때 다음 frame을 실행한다.
-    //현재 frame이 PENDING 상태일때 대기열에 올리고 콜백으로 실행한다.
-    //결과값은 next메서드의 콜백으로 넘겨준다.
-    Generator.prototype.next = function(){
+    /*
+        next를 호출할때 WAITE 상태의 프레임을 생성한다.
+        프레임을 생성하고 대기열에 오른 작업을 실행하며 이전 프레임이 작업중일떄는 대기열에 올린다.=
+        콜백함수의 인자로 결과값을 반환해야한다.
+    */
+    Generator.prototype.next = function next(){
 
         //var fn = STORE_MAP.get(this,'fn');
         var args = Array.prototype.slice.call(arguments)
         var fn = this.store.fn;
         var r = DEFAULT_RESULT;
+
+
+        //프레임 생성.
+        this.store.Yeild[this.currentFrame] = {state: WAITING};
         
         if(typeof args[args.length-1] === 'function') {
             this.callback   = args.pop();       //현재 프레임으 콜백
         }
         this.args       = args;         //현재 프레임의 인자.
-		this.yeildCnt = 0;
+		this.yeildCnt   = 0;            //실행 타겟 작업을 구분하기 위한 인자. 현재프레임과 비교한다.
 
         if(fn) {
             fn.call(this,this.data);
@@ -754,11 +759,13 @@ var gen = Generator(works, function(data){
     // this.Yeild($say3); 
 })
 
-var  nextCb = function(msg){
-    console.log("[Next_callback]",msg)
+var  nextCb = function(){
+    console.log("[Next_callback]")
 }
 
 gen.next(nextCb);
+
+
 gen.next(nextCb); //pending
 gen.next(nextCb); 
 ```
