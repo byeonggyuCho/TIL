@@ -575,93 +575,92 @@ var Generator = (function(){
         Yeild가 실행되면 전달받은 함수와 매개변수를 임시저장소에 보관한다.
         next가 호출될때 대기중인 작업을 실행한다.
     */
-	var Yeild = function Yeild(){
+    var Yeild = function Yeild(){
         
-        ++this.yeildCnt
-        
-		var args = Array.prototype.slice.call(arguments);
-        var fn;
+        var idx = this.yeildCnt++;      
+        var args = Array.prototype.slice.call(arguments);
+        var work;
+        var state;
         //var store = STORE_MAP.get(this);
 
-        //현재프레임 종료여부 확인후 미종료시 wating에 추가한다.
-        //현재 프레임의 실행여부 확인.
+        //프레임 미생성.
+        if(this.frame[idx] === undefined) return
+
        
-		if(this.yeildCnt > this.currentFrame) return WAITING;
-        
+        if( typeof arguments[0]  === 'function'){
+            work = args.shift();
+            args.push(this);        //해당 인스턴스 전달
+            args.push(resolve);     //인스턴스 종료 함수 전달.
 
-		if( typeof arguments[0]  === 'function'){
-            fn = args.shift();
-			args.push(this);		//해당 인스턴스 전달
-            args.push(resolve);		//인스턴스 종료 함수 전달.
-
-            this.store.Yeild[this.currentFrame] = this.store.Yeild[this.currentFrame] || {};
-
-            var state = this.store.Yeild[this.currentFrame].state;
+            state = this.frame[idx].state;
             
             //이전 프레임 종료여부 확인.
-            if(state === PENDING){
-                console.log('[Runner]','pending,',this.currentFrame);
-                this.store.Yeild[this.currentFrame+1] = {state: WAITING};
-                this.waitingList.push({
-                    fn: fn,
+
+            if(state === RESOLVE){
+                console.log('[Runner]',idx,'resolve');
+                return;
+            }else if(state === PENDING){
+                console.log('[Runner]',idx,'pending');
+                this.frame[idx+1] = {state: WAITING};
+                this.workList.push({
+                    fn: work,
                     args : args
                 });
             }else if(state === WAITING){
-                this.store.Yeild[this.currentFrame] = {state: RESOLVE};
-                console.log('[Runner]','start,',this.yeildCnt);
+                this.frame[idx] = {state: PENDING};
+                console.log('[Runner]',idx,'start');
 
                 //next로 넘어온 현재 프레임의 파라미터를 넘긴다.
                 args.push(this.args);
-                fn.apply(this, args);
+                work.apply(this, args);
             }
         }
         
         //return RESOLVE
     }
 
-	//인스턴스 종료함수.
-	//반환값을 어떻게ㅔ 전달할것인지?
-	var resolve = function(self,param){
+    //인스턴스 종료함수.
+    //반환값을 어떻게ㅔ 전달할것인지?
+    var resolve = function resolve(self,param){
 
-        //인덱스로 구분해야한다.
         /**
-         * 각 함수에서 콜백으로 호출을하기 때문에 스코프체인으로 찾아야한다.
-         * 여기선 this를 사용해서 인스턴스에 접근할 수 없음.
+          각 함수에서 콜백으로 호출을하기 때문에 스코프체인으로 찾아야한다.
+          여기선 this를 사용해서 인스턴스에 접근할 수 없음.
          */
-        //var store = STORE_MAP.get(self);
         var store = self.store;
+        var work = null;
+        var currentFrame = self.frame[self.currentFrame];
 
-        console.log("[Runner]","done,",self.currentFrame);
-        self.store.Yeild[self.currentFrame].state = RESOLVE;     //종료처리.
+        console.log("[Runner]",self.currentFrame,"done");
+        currentFrame.state = RESOLVE;     //종료처리.
         ++self.currentFrame;
 
         //next Callback 실행.
-        if(self.callback){
-            self.callback(param);
+        if(currentFrame.callback){
+            currentFrame.callback(param);
         }
 
         // 대기중인 함수가 있으면 실행한다.
-		var nextTask = self.waitingList.shift(); 
-		if(nextTask)
-            nextTask.fn.apply(self, nextTask.args);
+        if(self.workList.length > 0){
+            work = self.workList.shift(); 
+            work.fn.apply(self, work.args);
+        }   
     }
 
 
     function Generator(data,_fn){
 
-		var instance = (this instanceof Generator) ? this : new Generator(data,_fn);
-		instance.Yeild = Yeild;
-        instance.yeildCnt = 0;      //next호출시마다 매번 실행마다 카운트
-        instance.currentFrame = 1;  //현재 실행중인 프레임.
-        instance.waitingList = [];  //현재프레임이 실행중에 요청이 들어온 프레임.
-        
+        var instance = (this instanceof Generator) ? this : new Generator(data,_fn);
+        instance.Yeild = Yeild;
+        instance.currentFrame = 0;
+        instance.workList = [];  //현재프레임이 실행중에 요청이 들어온 프레임.
+          
         // STORE_MAP.setAll(instance, {
-		// 	fn : _fn,
-		// 	Yeild : {}//현재 실행 위치, 종료여부.
+        //  fn : _fn,
+        //  Yeild : {}//현재 실행 위치, 종료여부.
         // });
         instance.store =  {
-			fn : _fn,
-			Yeild : {}//현재 실행 위치, 종료여부.
+          fn : _fn
         }
 
 
@@ -691,12 +690,11 @@ var Generator = (function(){
         */
 
 
-        //프레임에 대한 정보를 기록한다. instance.store.Yeild를 이걸로 치환하자.
-        instance.frame = {};
+        instance.frame = [];
         instance.data = data;
         instance.next = Generator.prototype.next;
 
-		return instance;
+        return instance;
     }
 
     /*
@@ -706,23 +704,33 @@ var Generator = (function(){
     */
     Generator.prototype.next = function next(){
 
-        //var fn = STORE_MAP.get(this,'fn');
+
+        debugger;
+
         var args = Array.prototype.slice.call(arguments)
         var fn = this.store.fn;
         var r = DEFAULT_RESULT;
+        var currentFrame;
 
 
+        this.yeildCnt   = 0;            //Yeild 호출횟수
         //프레임 생성.
-        this.store.Yeild[this.currentFrame] = {state: WAITING};
+        this.frame[this.currentFrame] = {
+            state: WAITING,
+            args : args           //현재 프레임의 인자.
+        };
+
+        currentFrame = this.frame[this.currentFrame];
+
         
         if(typeof args[args.length-1] === 'function') {
-            this.callback   = args.pop();       //현재 프레임으 콜백
+            currentFrame.callback   = args.pop();       //현재 프레임으 콜백
         }
-        this.args       = args;         //현재 프레임의 인자.
-		this.yeildCnt   = 0;            //실행 타겟 작업을 구분하기 위한 인자. 현재프레임과 비교한다.
+        
 
         if(fn) {
-            fn.call(this,this.data);
+            var copy_data = this.data.slice();
+            fn.call(this, copy_data);
 
             // if(v) {
             //     r = {value: v,       done:false};
@@ -777,8 +785,7 @@ var gen = Generator(works, function(data){
     var item;
     var cnt = 0;
     while(item = data.pop()){
-		
-		debugger;
+        
         this.Yeild(item);
     }
     // this.Yeild($say1);
@@ -791,8 +798,6 @@ var  nextCb = function(){
 }
 
 gen.next(nextCb);
-
-
 gen.next(nextCb); //pending
 gen.next(nextCb); 
 ```
