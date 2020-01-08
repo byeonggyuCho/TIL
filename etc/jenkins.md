@@ -84,4 +84,4 @@ SVN에 있는 최신의 소스로 빌드하여 따끈따끈한 결과물이 나�
 
 ## ref
 https://plus4070.github.io/new%20things/Jenkins.html
-        
+         
