@@ -566,7 +566,8 @@ var Generator = (function(){
 
     //var STORE_MAP = new HashMap();
     var DEFAULT_RESULT = {value: undefined,    done:true};
-    var WAITING = "WAITING"
+    var INIT    = "INIT";
+    var WAITING = "WAITING"     //이전 프레임이 팬딩일 경우
     var PENDING = "PENDING"
     var RESOLVE = "RESOLVE"
 
@@ -580,18 +581,39 @@ var Generator = (function(){
         var idx = this.yeildCnt++;      
         var args = Array.prototype.slice.call(arguments);
         var work;
+        var prevFrame;
         var currentFrame =  this.frame[idx];
         var state =  currentFrame && currentFrame.state
 
-        //프레임 미생성.
-        if(currentFrame === undefined) return
+        
+        if(currentFrame === undefined) return               //프레임 미생성.
+        else if(currentFrame.state === RESOLVE) return      //프레임 만료
+        else if(currentFrame.state === PENDING) return      //프레임 실행중
+        else if(currentFrame.state === WAITING) return      //이전 프레임 미완료 현재 프레임 등록.
 
         //이전프레임 미완료
         if(this.frame.length >1 && idx>0){
 
-            if(this.frame[idx-1].state === PENDING && state === WAITING){
-                return
+            prevFrame = this.frame[idx-1];
+
+            if(prevFrame.state === PENDING){
+
+                if(currentFrame.state === INIT){
+
+                    work = args.shift();
+                    args.push(this);        //해당 인스턴스 전달
+                    args.push(resolve);     //인스턴스 종료 함수 전달.
+                    //존재하지 않으면 등록.
+                    console.log('[Runner]',idx-1,'pending');
+                    currentFrame.state = WAITING;
+                    this.workList.push({
+                        do    : work,
+                        args  : args
+                    });
+                    return;
+                }
             }
+
         }
 
        
@@ -600,22 +622,7 @@ var Generator = (function(){
             args.push(this);        //해당 인스턴스 전달
             args.push(resolve);     //인스턴스 종료 함수 전달.
 
-            
-            //이전 프레임 종료여부 확인.
-
-            if(state === RESOLVE){
-                //console.log('[Runner]',idx,'resolve');
-                return;
-            }else if(state === PENDING){
-                console.log('[Runner]',idx,'pending');
-                this.workList.push({
-                    do    : work,
-                    args  : args
-                });
-
-                debugger;
-                return;
-            }else if(state === WAITING){
+            if(state === INIT){
                 currentFrame.state = PENDING;
                 console.log('[Runner]',idx,'start');
 
@@ -718,7 +725,7 @@ var Generator = (function(){
             currentFrame.callback   = args.pop();       //현재 프레임으 콜백
         }
         
-        currentFrame.state =  WAITING;
+        currentFrame.state = INIT;
         currentFrame.args  = args;   //현재 프레임의 인자.
 
         //프레임 생성.
@@ -737,12 +744,8 @@ var Generator = (function(){
 
         var frameCnt = this.frame.length -1;
 
-
         console.log('[Runner]',frameCnt, 'next')
-
         
-       
-
         if(fn) {
             var copy_data = this.data.slice();
             fn.call(this, copy_data);
@@ -805,6 +808,32 @@ gen.next(function(){
     console.log('next_2 Callback')
 }); //pending
 gen.next(nextCb); 
+
+
+
+/*
+[Runner] 0 next
+[Runner] 0 start
+
+3
+
+[Runner] 0 done
+[Next_callback]
+[Runner] 1 next
+[Runner] 1 start
+[Runner] 2 next
+[Runner] 1 pending
+
+2
+
+[Runner] 1 done
+next_2 Callback
+
+1
+
+[Runner] 2 done
+[Next_callback]
+*/
 ```
 
 
