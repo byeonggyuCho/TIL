@@ -580,11 +580,19 @@ var Generator = (function(){
         var idx = this.yeildCnt++;      
         var args = Array.prototype.slice.call(arguments);
         var work;
-        var state;
-        //var store = STORE_MAP.get(this);
+        var currentFrame =  this.frame[idx];
+        var state =  currentFrame && currentFrame.state
 
         //프레임 미생성.
-        if(this.frame[idx] === undefined) return
+        if(currentFrame === undefined) return
+
+        //이전프레임 미완료
+        if(this.frame.length >1 && idx>0){
+
+            if(this.frame[idx-1].state === PENDING && state === WAITING){
+                return
+            }
+        }
 
        
         if( typeof arguments[0]  === 'function'){
@@ -592,7 +600,6 @@ var Generator = (function(){
             args.push(this);        //해당 인스턴스 전달
             args.push(resolve);     //인스턴스 종료 함수 전달.
 
-            state = this.frame[idx].state;
             
             //이전 프레임 종료여부 확인.
 
@@ -601,18 +608,21 @@ var Generator = (function(){
                 return;
             }else if(state === PENDING){
                 console.log('[Runner]',idx,'pending');
-                this.frame[idx+1] = {state: WAITING};
                 this.workList.push({
                     do    : work,
                     args  : args
                 });
+
+                debugger;
+                return;
             }else if(state === WAITING){
-                this.frame[idx] = {state: PENDING};
+                currentFrame.state = PENDING;
                 console.log('[Runner]',idx,'start');
 
                 //next로 넘어온 현재 프레임의 파라미터를 넘긴다.
                 args.push(this.args);
                 work.apply(this, args);
+                return;
             }
         }
         
@@ -700,22 +710,38 @@ var Generator = (function(){
         var args = Array.prototype.slice.call(arguments)
         var fn = this.store.fn;
         var r = DEFAULT_RESULT;
-        var currentFrame;
+        var currentFrame = {};
 
         this.yeildCnt   = 0;            //Yeild 호출횟수
-        //프레임 생성.
-        this.frame[this.currentFrame] = {
-            state: WAITING,
-            args : args           //현재 프레임의 인자.
-        };
 
-        currentFrame = this.frame[this.currentFrame];
-
-        
         if(typeof args[args.length-1] === 'function') {
             currentFrame.callback   = args.pop();       //현재 프레임으 콜백
         }
         
+        currentFrame.state =  WAITING;
+        currentFrame.args  = args;   //현재 프레임의 인자.
+
+        //프레임 생성.
+        if(this.data.length > this.frame.length){
+            this.frame.push(currentFrame);
+        }else{
+            //이터레이블 객체 사이즈보다 next호출이 많이 된경우.
+            this.workList.push({
+                do : function(args){
+                    console.log(args)
+                },
+                args: DEFAULT_RESULT
+            })
+        }
+        
+
+        var frameCnt = this.frame.length -1;
+
+
+        console.log('[Runner]',frameCnt, 'next')
+
+        
+       
 
         if(fn) {
             var copy_data = this.data.slice();
@@ -729,7 +755,7 @@ var Generator = (function(){
 
 function sayMaker (msg){
 
-    return function(instance, resolve){
+    return function say(instance, resolve){
         console.log(msg);
 
         //종료시점을 알린다. 반드시 마지막 파라미터로 해야함.
@@ -738,8 +764,9 @@ function sayMaker (msg){
 }
 
 function asyncMaker(fn,args){
-    return function(instance, resolve){
-        setTimeout(fn,0,instance, resolve);
+    return function asyncFn(instance, resolve){
+        debugger;
+        setTimeout(fn,1000,instance, resolve);
     }
 }
 
@@ -774,7 +801,9 @@ var  nextCb = function(){
 }
 
 gen.next(nextCb);
-gen.next(nextCb); //pending
+gen.next(function(){
+    console.log('next_2 Callback')
+}); //pending
 gen.next(nextCb); 
 ```
 
