@@ -551,6 +551,9 @@ gen.next();
 
 
 
+
+### 최종 결과
+
 비동기 연산 제어를 위한 버전.
 이전 함수가 종료되지 않았을때 호출을하면 대기열에 올렸다가 콜백으로 호출을한다.
 모든 함수 마지막 인자에 콜백함수를 디폴트로 전다하고 종료가 되는 시점에 실행을 해야한다.
@@ -561,10 +564,17 @@ gen.next();
 - next의 결과는 콜백으로 받는다.
 - 제너레이터가 아니라 스탭을 나눠놓은 타스크 러너.
 ```js
+/*
+
+Yeild에 파라미터 전달하기.
+Yeild의 반환값을 다음 Yeild에 전달하기.
+
+제너레이터가 종료된다음 메모리를 비우는 처리.
+*/
+
 
 var Generator = (function(){
 
-    //var STORE_MAP = new HashMap();
     var DEFAULT_RESULT = {value: undefined,    done:true};
     var INIT    = "INIT";
     var WAITING = "WAITING"     //이전 프레임이 팬딩일 경우
@@ -584,6 +594,7 @@ var Generator = (function(){
         var prevFrame;
         var currentFrame =  this.frame[idx];
         var state =  currentFrame && currentFrame.state
+        var bindResolve = resolve.bind(this);
 
         
         if(currentFrame === undefined) return               //프레임 미생성.
@@ -592,39 +603,42 @@ var Generator = (function(){
         else if(currentFrame.state === WAITING) return      //이전 프레임 미완료 현재 프레임 등록.
 
         //이전프레임 미완료
-        if(this.frame.length >1 && idx>0){
+        if(this.frame.length>1 && idx>0){
 
             prevFrame = this.frame[idx-1];
 
-            if(prevFrame.state === PENDING){
+            if(currentFrame.state === INIT){
+                if([PENDING,WAITING].includes(prevFrame.state)){
 
-                if(currentFrame.state === INIT){
+                    console.log('[System]', idx-1,'pending');
+
+                    currentFrame.state = WAITING;
 
                     work = args.shift();
-                    args.push(this);        //해당 인스턴스 전달
-                    args.push(resolve);     //인스턴스 종료 함수 전달.
-                    //존재하지 않으면 등록.
-                    console.log('[Runner]',idx-1,'pending');
-                    currentFrame.state = WAITING;
+                    //args.push(this);        //해당 인스턴스 전달
+                    args.push(bindResolve);     //인스턴스 종료 함수 전달.
+                    
                     this.workList.push({
                         do    : work,
                         args  : args
                     });
                     return;
                 }
+
             }
+           
 
         }
 
        
         if( typeof arguments[0]  === 'function'){
             work = args.shift();
-            args.push(this);        //해당 인스턴스 전달
-            args.push(resolve);     //인스턴스 종료 함수 전달.
+            //args.push(this);        //해당 인스턴스 전달
+            args.push(bindResolve);     //인스턴스 종료 함수 전달.
 
             if(state === INIT){
                 currentFrame.state = PENDING;
-                console.log('[Runner]',idx,'start');
+                console.log('[System]',idx,'start');
 
                 //next로 넘어온 현재 프레임의 파라미터를 넘긴다.
                 args.push(this.args);
@@ -636,71 +650,49 @@ var Generator = (function(){
     }
 
     //인스턴스 종료함수.
-    var resolve = function resolve(self,param){
+    var resolve = function resolve(){
 
         /*
           각 함수에서 콜백으로 호출을하기 때문에 스코프체인으로 찾아야한다.
           여기선 this를 사용해서 인스턴스에 접근할 수 없음.
-         */
-        var store = self.store;
+        */
+        var args = Array.prototype.slice.call(arguments)
         var work = null;
-        var currentFrame = self.frame[self.currentFrame];
+        var idx = this.targetFrameIndex;
+        var currentFrame = this.frame[idx];
 
-        console.log("[Runner]",self.currentFrame,"done");
+
+        console.log("[System]",idx,"done");
         currentFrame.state = RESOLVE;     //종료처리.
-        ++self.currentFrame;
+        currentFrame.value = args;
+        ++this.targetFrameIndex;
+
 
         //next Callback 실행.
-        if(currentFrame.callback){
-            currentFrame.callback(param);
-        }
+        if(currentFrame.callback)
+            currentFrame.callback({
+                done    : this.targetFrameIndex === this.data.length,
+                value   : args
+            });
+        
 
         // 대기중인 작업이 있으면 실행한다.
-        if(self.workList.length > 0){
-            work = self.workList.shift(); 
-            work.do.apply(self, work.args);
+        if(this.workList.length > 0){
+            work = this.workList.shift(); 
+            work.do.apply(this, work.args);
         }   
     }
 
 
-    function Generator(data,_fn){
+    function Generator(data, constructor){
 
-        var instance = (this instanceof Generator) ? this : new Generator(data,_fn);
-        instance.Yeild = Yeild;
-        instance.currentFrame = 0;
+        var instance = (this instanceof Generator) ? this : new Generator(data, constructor);
+        instance.targetFrameIndex = 0;
         instance.workList = [];   //현재프레임이 실행중에 요청이 들어온 프레임.
-          
-        instance.store =  {
-          fn : _fn
-        }
-
-
-      
-
-        /*
-          //해당 프레임이 종료됐는지 확인하고 종료가 된경우 반환값을 해당 인스턴스의 속성으로 this.result[0]와 같은 식으로 저장한다.
-        // 두번째 프레임에 첫번째 프레임의 반환값을 인자로 넘길경우 `this.Yeild(this.result[0])` 이 된다.
-            function(){
-
-                this.Yeild();
-                this.Yeild(this.result[0])
-            }
-
-            function(){
-                
-                var item = null
-                var cnt = 0;
-                whild(item = this.data.pop()){
-
-                    this.Yeild(this.result[cnt++])
-                }
-            }
-
-        */
-
-
         instance.frame = [];
         instance.data = data;
+        instance.fn =  constructor;
+        instance.Yeild = Yeild;
         instance.next = Generator.prototype.next;
 
         return instance;
@@ -713,38 +705,40 @@ var Generator = (function(){
     */
     Generator.prototype.next = function next(){
 
-
         var args = Array.prototype.slice.call(arguments)
-        var fn = this.store.fn;
-        var r = DEFAULT_RESULT;
-        var currentFrame = {};
+        var fn = this.fn;
+        var callback = (typeof args[args.length-1] === 'function')
+                                ? args.pop()
+                                : null;
 
-        this.yeildCnt   = 0;            //Yeild 호출횟수
+        this.yeildCnt   = 0;            //Yeild 호출횟수            
 
-        if(typeof args[args.length-1] === 'function') {
-            currentFrame.callback   = args.pop();       //현재 프레임으 콜백
-        }
         
-        currentFrame.state = INIT;
-        currentFrame.args  = args;   //현재 프레임의 인자.
-
         //프레임 생성.
         if(this.data.length > this.frame.length){
-            this.frame.push(currentFrame);
-        }else{
-            //이터레이블 객체 사이즈보다 next호출이 많이 된경우.
-            this.workList.push({
-                do : function(args){
-                    console.log(args)
-                },
-                args: DEFAULT_RESULT
-            })
+            this.frame.push({
+                state       : INIT,
+                args        : args,
+                callback    : callback
+            });
+        }//모든 프레임 생성.
+        else if (callback){
+
+          
+            //모든 프로엠 종료 여부
+            if(this.targetFrameIndex === this.data.length)
+                return callback(DEFAULT_RESULT);
+            else 
+                this.workList.push({
+                    do  : callback,
+                    args: [DEFAULT_RESULT]
+                })
         }
         
 
-        var frameCnt = this.frame.length -1;
+        var frameIdx = this.frame.length -1;
 
-        console.log('[Runner]',frameCnt, 'next')
+        console.log('[System]',frameIdx, 'next')
         
         if(fn) {
             var copy_data = this.data.slice();
@@ -758,82 +752,63 @@ var Generator = (function(){
 
 function sayMaker (msg){
 
-    return function say(instance, resolve){
-        console.log(msg);
+    return function say( resolve){
+        console.log('say');
 
         //종료시점을 알린다. 반드시 마지막 파라미터로 해야함.
-        resolve(instance);
+        resolve(msg);
     }
 }
 
 function asyncMaker(fn,args){
-    return function asyncFn(instance, resolve){
-        debugger;
-        setTimeout(fn,1000,instance, resolve);
+    return function asyncFn( resolve){
+        setTimeout( fn,1000, resolve);
     }
 }
 
-var $say1       = sayMaker(1);
-var $say2       = sayMaker(2);
+var $say1       = sayMaker('Apple');
+var $say2       = sayMaker('Banana');
 var $asyncSay2  = asyncMaker($say2);
-var $say3       = sayMaker(3);
-
+var $say3       = sayMaker('Chrrey');
+var $say4       = sayMaker('Diamond Plum');
 
 var works = [
     $say1,
     $asyncSay2,
-    $say3
+    $say3,
+    $say4
 ];
 
 
-var gen = Generator(works, function(data){
+var gen = Generator(works, function(list){
 
-    var item;
-    var cnt = 0;
-    while(item = data.pop()){
-        
-        this.Yeild(item);
+    var work;
+    while(work = list.shift()){
+        this.Yeild(work);
     }
-    // this.Yeild($say1);
-    // this.Yeild($asyncSay2);
-    // this.Yeild($say3); 
 })
 
-var  nextCb = function(){
-    console.log("[Next_callback]")
-}
 
-gen.next(nextCb);
-gen.next(function(){
-    console.log('next_2 Callback')
-}); //pending
-gen.next(nextCb); 
+gen.next(function(rtn){
+    console.log("[callback]", rtn)
+});
+gen.next(function(rtn){
+    console.log('[callback]',rtn)
+}); //async Function
 
+gen.next(function(rtn){
+    console.log("[callback]",rtn)
+}); 
 
+gen.next(function(rtn){
+    console.log("[callback]",rtn)
+}); 
 
-/*
-[Runner] 0 next
-[Runner] 0 start
-
-3
-
-[Runner] 0 done
-[Next_callback]
-[Runner] 1 next
-[Runner] 1 start
-[Runner] 2 next
-[Runner] 1 pending
-
-2
-
-[Runner] 1 done
-next_2 Callback
-
-1
-
-[Runner] 2 done
-[Next_callback]
-*/
+//종료
+gen.next(function(rtn){
+      debugger;
+    console.log("[callback]",rtn)
+}); 
 ```
 
 
