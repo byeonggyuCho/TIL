@@ -578,7 +578,6 @@ var Generator = (function(){
                 currentFrame.state = PENDING;
                 console.log('[System]',idx,'start');
 
-                this.frame[idx] = {state: PENDING};
                 //next로 넘어온 현재 프레임의 파라미터를 넘긴다.
                 args.push(this.args);
                 work.apply(this, args);
