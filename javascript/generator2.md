@@ -607,9 +607,9 @@ var Generator = (function(){
                     args  : args
                 });
             }else if(state === WAITING){
-                this.frame[idx] = {state: PENDING};
                 console.log('[Runner]',idx,'start');
 
+                this.frame[idx] = {state: PENDING};
                 //next로 넘어온 현재 프레임의 파라미터를 넘긴다.
                 args.push(this.args);
                 work.apply(this, args);
