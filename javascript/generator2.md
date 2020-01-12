@@ -511,7 +511,7 @@ var HashMap = (function(){
 
 TODO
 (o) 프레임간 반환값 전달. 
-- 제너레이터를 루프 로직
+(o) 제너레이터를 루프 로직
 - 제너레이터가 종료된다음 메모리를 비우는 처리.
 */
 
@@ -695,6 +695,26 @@ var Generator = (function(){
         }
     }
 
+
+    /**
+      콜백이 계속 호출되는 구조.
+    */
+    Generator.prototype.forEach = function(fn, initParam){
+
+      var generator = this;
+      function selfCall (callbackFn,param){
+        generator.next(function next_CB(obj){
+
+          var re = callbackFn(obj);
+          if(!obj.done){
+            selfCall(callbackFn,re)
+          }
+        },param);
+      }
+
+      selfCall(fn,initParam);
+    }
+
     return Generator;
 })()
 
@@ -741,6 +761,13 @@ var gen = Generator(works, function(list){
     var re4 = this.Yeild($say4,re3);
     
 })
+
+
+//example 1 반복문
+gen.forEach(function(re){
+    console.log(re.value)
+})
+
 
 var defaultCallback =  function(rtn){
     console.log("[callback]", rtn)
