@@ -510,10 +510,11 @@ var HashMap = (function(){
 /*
 
 TODO
-- 프레임간 반환값 전달.
-- 제너레이터를 루프돌리려면 어떻게?
+(o) 프레임간 반환값 전달. 
+- 제너레이터를 루프 로직
 - 제너레이터가 종료된다음 메모리를 비우는 처리.
 */
+
 var Generator = (function(){
 
     var DEFAULT_RESULT = {value: undefined,    done:true};
@@ -535,13 +536,14 @@ var Generator = (function(){
         var prevFrame;
         var currentFrame =  this.frame[idx];
         var state =  currentFrame && currentFrame.state
-        var bindResolve = resolve.bind(this);
+        var boundResolve = resolve.bind(this);
+        var item =  arguments[0];
 
         
-        if(currentFrame === undefined) return               //프레임 미생성.
-        else if(currentFrame.state === RESOLVE) return      //프레임 만료
-        else if(currentFrame.state === PENDING) return      //프레임 실행중
-        else if(currentFrame.state === WAITING) return      //이전 프레임 미완료 현재 프레임 등록.
+        if(currentFrame === undefined) return {}               //프레임 미생성.
+        else if(currentFrame.state === RESOLVE) return currentFrame.value     //프레임 만료
+        else if(currentFrame.state === PENDING) return currentFrame.value    //프레임 실행중
+        else if(currentFrame.state === WAITING) return currentFrame.value  //이전 프레임 미완료 현재 프레임 등록.
 
         //이전프레임 미완료
         if(this.frame.length>1 && idx>0){
@@ -557,58 +559,63 @@ var Generator = (function(){
 
                     work = args.shift();
                     //args.push(this);        //해당 인스턴스 전달
-                    args.push(bindResolve);     //인스턴스 종료 함수 전달.
+                    args.push(boundResolve);     //인스턴스 종료 함수 전달.
                     
                     this.workList.push({
                         do    : work,
                         args  : args
                     });
-                    return;
+                    return {};
                 }
             }
         }
 
        
-        if( typeof arguments[0]  === 'function'){
+        if( typeof item  === 'function'){
             work = args.shift();
             //args.push(this);        //해당 인스턴스 전달
-            args.push(bindResolve);     //인스턴스 종료 함수 전달.
+            
 
             if(state === INIT){
                 currentFrame.state = PENDING;
                 console.log('[System]',idx,'start');
 
-                //next로 넘어온 현재 프레임의 파라미터를 넘긴다.
-                args.push(this.args);
+
+                if(args.length === 0) args.push({});
+                //next로 파라미터 전달은 보류한다.
+                //next로 전달된 파라미터를 추가한다.
+                //args = args.concat(currentFrame.args)
+                args.push(boundResolve);     //인스턴스 종료 함수 전달.
+                
                 work.apply(this, args);
-                return;
+                return currentFrame.value;
             }
         }
         
     }
 
     //프레임 종료를 알리는 함수.
-    var resolve = function resolve(){
+    var resolve = function resolve(re){
 
         /*
           각 함수에서 콜백으로 호출을하기 때문에 스코프체인으로 찾아야한다.
           여기선 this를 사용해서 인스턴스에 접근할 수 없음.
         */
-        var args = Array.prototype.slice.call(arguments)
+        //var args = Array.prototype.slice.call(arguments)
         var work = null;
         var idx = this.targetFrameIndex;
         var currentFrame = this.frame[idx];
 
         console.log("[System]",idx,"done");
         currentFrame.state = RESOLVE;     //종료처리.
-        currentFrame.value = args;
+        currentFrame.value.value = re;
         ++this.targetFrameIndex;
 
         //next Callback 실행.
         if(currentFrame.callback)
             currentFrame.callback({
                 done    : this.targetFrameIndex === this.data.length,
-                value   : args
+                value   : re
             });
         
 
@@ -646,8 +653,8 @@ var Generator = (function(){
 
         var args = Array.prototype.slice.call(arguments)
         var fn = this.fn;
-        var callback = (typeof args[args.length-1] === 'function')
-                                ? args.pop()
+        var callback = (typeof args[0] === 'function')
+                                ? args.shift()
                                 : null;
 
         this.yeildCnt   = 0;            //Yeild 호출횟수            
@@ -655,14 +662,17 @@ var Generator = (function(){
         
         //프레임 생성.
         if(this.data.length > this.frame.length){
+
             this.frame.push({
                 state       : INIT,
                 args        : args,
-                callback    : callback
+                callback    : callback,
+                value       : {
+                    value: undefined
+                }
             });
         }//모든 프레임 생성.
         else if (callback){
-
           
             //모든 프로엠 종료 여부
             if(this.targetFrameIndex === this.data.length)
@@ -691,25 +701,29 @@ var Generator = (function(){
 
 function sayMaker (msg){
 
-    return function say( resolve){
-        console.log('say');
+    return function say( conf, resolve){
+        
+        console.log('say',conf);
 
-        // 프레임의 종료를 알린다. 반드시 마지막 파라미터로 해야함.
-        resolve(msg);
+        //비지니스 로직.
+        var re = (conf.value) ? conf.value + " " + msg : msg;
+
+        resolve(re);
     }
 }
 
-function asyncMaker(fn,args){
-    return function asyncFn( resolve){
-        setTimeout( fn,1000, resolve);
+function asyncMaker(fn){
+    return function asyncFn( conf, resolve){
+        
+        setTimeout( fn,1000, conf, resolve);
     }
 }
 
-var $say1       = sayMaker('Apple');
-var $say2       = sayMaker('Banana');
+var $say1       = sayMaker('Pen');
+var $say2       = sayMaker('Pineapple');
 var $asyncSay2  = asyncMaker($say2);
-var $say3       = sayMaker('Cherrey');
-var $say4       = sayMaker('Diamond Plum');
+var $say3       = sayMaker('Apple');
+var $say4       = sayMaker('Pen!!');
 
 var works = [
     $say1,
@@ -721,10 +735,11 @@ var works = [
 
 var gen = Generator(works, function(list){
 
-    var work;
-    while(work = list.shift()){
-        this.Yeild(work);
-    }
+    var re1 = this.Yeild($say1);
+    var re2 = this.Yeild($asyncSay2, re1);
+    var re3 = this.Yeild($say3,re2);
+    var re4 = this.Yeild($say4,re3);
+    
 })
 
 var defaultCallback =  function(rtn){
