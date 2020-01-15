@@ -649,22 +649,32 @@ var Generator = (function(){
     }
 
 
-    function Generator(data, constructor){
+    function Generator(constructor){
 
-        var instance = (this instanceof Generator) ? this : new Generator(data, constructor);
+        var instance = (this instanceof Generator) 
+                        ? this 
+                        : new Generator().instance
 
         // property
         instance.targetFrameIndex = 0;
         instance.workList = [];     // 현재프레임이 실행중에 요청이 들어온 프레임.
         instance.frame = [];        // 프레임 진행정보를 보관한다.
-        instance.data = data;       // 이터레이블 객체
         instance.fn =  constructor; // 제너레이터 정의함수.
+        //instance.data = data;       // 이터레이블 객체
 
         // method
         instance.Yield = Yield;
         instance.next = Generator.prototype.next;
 
-        return instance;
+
+        var genMaker = function genMaker(arr){
+          instance.data = arr;
+          return instance
+        }
+
+        genMaker.instance = instance;
+
+        return genMaker;
     }
 
     /**
@@ -795,17 +805,26 @@ var works = [
 ];
 
 
-var gen = Generator (works, function(list){
+var generator = Generator ( function(list){
 
-    var re1 = this.Yield($say1);
-    var re2 = this.Yield($asyncSay2, re1);
-    var re3 = this.Yield($say3,re2);
-    var re4 = this.Yield($say4,re3);
+    // var re1 = this.Yield($say1);
+    // var re2 = this.Yield($asyncSay2, re1);
+    // var re3 = this.Yield($say3,re2);
+    // var re4 = this.Yield($say4,re3);
+
+    var item;
+    var preVal;
+    while(item = list.shift()){
+      
+      preVal = this.Yield(item, preVal);
+    }
+
 })
 
+var iter = generator(works);
 
 //example 1 반복문
-gen.forEach(function(prev, cur, idx){
+iter.forEach(function(prev, cur, idx){
     
     var result = prev 
                 ? [prev, cur].join(" ")
@@ -822,13 +841,13 @@ var defaultCallback =  function(rtn){
 }
 
 
-gen.next(defaultCallback);
-gen.next(defaultCallback); //async Function
-gen.next(defaultCallback); 
-gen.next(defaultCallback); 
+iter.next(defaultCallback);
+iter.next(defaultCallback); //async Function
+iter.next(defaultCallback); 
+iter.next(defaultCallback); 
 
 //종료
-gen.next(defaultCallback); 
+iter.next(defaultCallback); 
 */
 
 ```
