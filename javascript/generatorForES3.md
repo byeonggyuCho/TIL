@@ -234,7 +234,7 @@ Generator.prototype.next = function(){
   else this.value = this.result;
   return this;
 };
-
+ 
 
 var Gene = function(f){
   if(typeof f != 'function') throw new TypeError();
