@@ -667,10 +667,15 @@ var Generator = (function(){
         return instance;
     }
 
-    /*
+    /**
         next를 호출할때 WAITE 상태의 프레임을 생성한다.
         콜백함수의 인자로 프레임의 실행 결과를 반환한다.
         - next의 인자는 이전 프레임의 반환값이 된다.
+        @example 
+        iter.next(function(result){
+
+          console.log(result.value);
+        })
     */
     Generator.prototype.next = function next(){
 
@@ -691,8 +696,8 @@ var Generator = (function(){
                 args        : args,
                 callback    : callback,
                 result      : {
-                    value: undefined,
-                    Symbol: this
+                    value  : undefined,
+                    Symbol : this
                 }
             }
 
@@ -725,16 +730,23 @@ var Generator = (function(){
     /**
       제너레이터를 연속실행하기 위한 헬퍼함수.
       이전 프레임의 반환값을 다음 프레임에 전달한다.
+      @example 
+        iter.forEach(function(prev, current, idx){
+
+          return 
+        })
     */
     Generator.prototype.forEach = function(fn, initParam){
 
-      var generator = this;
+      var iter = this;
       var idx = 0;
 
       function resumIter (callbackFn, prev){
-        generator.next(function next_CB(result){
+        iter.next(function next_CB(result){
 
-          var curVal = callbackFn(prev, result.value, idx++);
+          var curVal = result.value;
+          curVal = callbackFn(prev, curVal, idx++);
+
           if(!result.done)
             resumIter(callbackFn, curVal)
           
