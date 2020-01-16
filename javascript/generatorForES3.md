@@ -531,14 +531,13 @@ var Generator = (function(){
     */
     var Yield = function Yield(){
         
-        var idx = this.yieldCnt++;      
         var args = Array.prototype.slice.call(arguments);
-        var work;
-        var currentFrame = this.frame[idx];
-        var prevFrame    = this.frame[idx-1];
-        var state =  currentFrame && currentFrame.state
         var boundDone = done.bind(this);
         var item =  arguments[0];
+        var idx = this.yieldCnt++;  
+        var currentFrame = this.frame[idx];
+        var prevFrame    = this.frame[idx-1];
+        var work = args.shift();
         
         if(currentFrame === undefined) return {}               //프레임 미생성.
         else if(currentFrame.state === DONE   ) return currentFrame.result  //프레임 만료
@@ -546,44 +545,37 @@ var Generator = (function(){
         else if(currentFrame.state === WAITING) return currentFrame.result  //이전 프레임 미완료 현재 프레임 등록.
 
         //이전프레임 미완료
-        if(prevFrame){
+        if(prevFrame && prevFrame.state !== DONE){
 
-            if(currentFrame.state === INIT && prevFrame.state !== DONE){
+            console.log('[System]', idx-1,'pending');
+            currentFrame.state = WAITING;
 
-                console.log('[System]', idx-1,'pending');
-                currentFrame.state = WAITING;
-
-                work = args.shift();
-                args.push(boundDone);     //인스턴스 종료 함수 전달.
-                
-                this.workList.push({
-                    do    : work,
-                    args  : args
-                });
-                return {};
-            }
+            args.push(boundDone);     //인스턴스 종료 함수 전달.
+            
+            this.workList.push({
+                do    : work,
+                args  : args
+            });
+            return {};
         }
 
        
         if( typeof item  === 'function'){
-            work = args.shift();
 
-            if(state === INIT){
-                currentFrame.state = PENDING;
-                console.log('[System]',idx,'start');
+            console.log('[System]',idx,'start');
+            currentFrame.state = PENDING;
 
-                //next메서드의 파라미터는 이전 프레임의 반환값이 된다.
-                if(prevFrame)
-                    prevFrame.result.value = currentFrame.args[0];
+            //next메서드의 파라미터는 이전 프레임의 반환값이 된다.
+            if(prevFrame)
+                prevFrame.result.value = currentFrame.args[0];
 
-                args = argmuentFormatter(args,this);
+            args = argmuentFormatter(args,this);
 
-                if(args.length === 0) args.push(null);
+            if(args.length === 0) args.push(null);
 
-                args.push(boundDone);     //인스턴스 종료 함수 전달.
-                work.apply(this, args);
-                return currentFrame.result;
-            }
+            args.push(boundDone);     //인스턴스 종료 함수 전달.
+            work.apply(this, args);
+            return currentFrame.result;
         }
         
     }
@@ -610,10 +602,6 @@ var Generator = (function(){
     //프레임 종료를 알리는 함수.
     var done = function done (re){
 
-        /*
-          각 함수에서 콜백으로 호출을하기 때문에 스코프체인으로 찾아야한다.
-          여기선 this를 사용해서 인스턴스에 접근할 수 없음.
-        */
         var work = null;
         var idx = this.targetFrameIndex;
         var currentFrame = this.frame[idx];
@@ -643,7 +631,6 @@ var Generator = (function(){
 
             //object형태의 전달값을 value만 전달한다.
             work.args = argmuentFormatter(work.args, this);
-
             work.do.apply(this, work.args);
         }   
     }
@@ -652,7 +639,7 @@ var Generator = (function(){
     function Generator(constructor){
 
         var instance = (this instanceof Generator) 
-                        ? this 
+                        ? this
                         : new Generator().instance
 
         // property
@@ -690,9 +677,9 @@ var Generator = (function(){
     Generator.prototype.next = function next(){
 
         var args = Array.prototype.slice.call(arguments);
-        var hasNext      = this.data.length > this.frame.length;
         var allFrameDone = this.targetFrameIndex === this.data.length;
         var fn = this.fn;
+        var hasNext      = this.data.length > this.frame.length;
         var callback = (typeof args[0] === 'function')
                           ? args.shift()
                           : null;
@@ -815,7 +802,6 @@ var generator = Generator ( function(list){
     var item;
     var preVal;
     while(item = list.shift()){
-      
       preVal = this.Yield(item, preVal);
     }
 
