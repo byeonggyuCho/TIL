@@ -33,7 +33,7 @@ Node.js를 강력하게 만드는 요소중 하나는 Npm(node package manager)�
 - Single Thread 기반이기에 쓰레드간 동기화 처리를 할필요가 없다. (서버 프로그래밍이 단순해진다.)
 - Event-Driven 이벤트 기반의 모델링.
 - Package Ecosystem 
-
+- 코드를 모듈화하여 재사용하기 수월하다.
 
 
 ##  장점
