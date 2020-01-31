@@ -180,3 +180,61 @@ let mySquare = createSquare(squareOptions);
 하지만 이런 방식으로 타입체크를 우회하는 것은 추천하는 방식은 아니다.  
 대부분의 경우에서 `colour`같은 속성은 버그이다.
 
+
+### Function Types
+지금까지 속성을 가진 객체를 정의하는 인터페이스만 다뤄왔지만 함수 타입도 정의할 수 있다.  
+함수 타입을 정의하기 위해서 함수 선언과 마찬가지로 파라미터의 목록과 파라미터의 이름, 타입을 정의해야하고 반환값의 유형을 정의해야한다.
+
+```ts
+interface SearchFunc {
+    (source:string, subString: stirng): boolean;
+}
+```
+
+아래는 인터페이스를 이용해서 함수를 정의한 예제이다.
+```ts
+let mySearch: SearchFunc;
+mySearch = function(source: string, subString: string): boolean {
+    let result = source.search(subString);
+    return result > -1;
+}
+```
+
+인터페이스로 정의한 함수는 매개변수의 자료형과 함수 반환값의 자료형을 정의하지 않아도 암묵적으로 인터페이스의 정의를 따라간다.
+```ts
+let mySearch: SearchFunc;
+mySearch = function(source, subString) {
+    let result = source.search(subString);
+    return result > -1;
+}
+```
+
+당연한 얘기만 반환값이나 매개변수의 자료형을 다르게 사용하면 오류가 난다.  
+아래는 반환값의 자료형을 문자열로 했을때의 상황이다.
+```ts
+let mySearch: SearchFunc;
+
+// error: Type '(src: string, sub: string) => string' is not assignable to type 'SearchFunc'.
+// TYpe 'string' is not assignable to type 'boolean'
+mySearch = function(src, sub) {
+    let result = src.search(sub);
+    return 'string';
+};
+```
+
+
+### Inedxalbe Types
+
+배열과 같이 인덱스로 요소를 접근하는 자료형에서 인덱스의 자료형과 반환값의 자료형을 지정할 수 있다.
+```ts
+interface StringArray {
+    [index: number]: string;
+}
+
+let myArray: StringArray;
+myArray = ['Bod', 'Fred'];
+
+let myStr: string = myArray[0];
+```
+위 예제에서 `StringArray`는 number타입으로 인덱싱하면 문자열을 반환한다고 설명하고있다.
+인덱스로 지원하는 자료형은 숫자와 문자열이 있다.
