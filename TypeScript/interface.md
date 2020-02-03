@@ -237,4 +237,261 @@ myArray = ['Bod', 'Fred'];
 let myStr: string = myArray[0];
 ```
 위 예제에서 `StringArray`는 number타입으로 인덱싱하면 문자열을 반환한다고 설명하고있다.
-인덱스로 지원하는 자료형은 숫자와 문자열이 있다.
+인덱스로 지원하는 자료형은 숫자와 문자열이 있다.  두가지 유형의 인덱서를 모두 지원할 수는 있지만 숫자로 인덱싱하는 경우 문자열 인덱서에서 반환되는 유형의 하위 유형이어야한다.  
+왜냐하면 자바스크립트에서 숫자로 인덱싱하면 내부적으로 숫자를 문자열로 치환하여 인덱시하기 때문이다. 가령 0인덱스가 '0'인덱스로 치환되는 것이다.  때문에
+아래 예제처럼 숫자 인덱싱이 문자인덱싱위 상위 유형이면 안된다.  
+
+```ts
+class Animal {
+    name: string;
+}
+
+class Dog extends Animal {
+    breed: string;
+}
+
+
+// Error
+interface NotOkay {
+    [x: number]: Animal;
+    [x: string]: Dog;
+}
+```
+
+다음과 같은 경우 반환타입이 숫자로 한정되어 문자열을 반환할 수 없다.
+```ts
+interface NumberDictionary {
+    [index: string]: number;
+    length: number;
+    name: string;       // 문자열을 반환할 수 없다.
+}
+```
+
+그러나 다음 예제처럼 인덱싱 시그니쳐에 자료형을 추가로 등록하면 사용가능하다.
+```ts
+interface NumberDictionary {
+    [index: string]: number | string;
+    length: number;
+    name: string;       // 문자열을 반환할 수 없다.
+}
+```
+
+마지막으로 인덱싱 시그니쳐에 `readonly`를 부여하는 방법을 알아보자.
+```ts
+interface ReadonlyStringArray {
+    readonly [index: number]: string;
+}
+let myArray: ReadonlyStringArray = ["Alice", "Bob"];
+myArray[2] = "Mallory"; // error
+```
+
+
+### Class Types
+타입스크립트에서도 자바나 C#같은 언어 처럼  인터페이스를 이용해서 Class의 구조를 명시적으로 강제하는 것이 가능 하다.
+
+```ts
+interface ClockInterface {
+    crrentTime: Date;
+}
+
+class Clock implements ClockInterface {
+    currentTime: Date = new Date();
+    constructor(h: number, m: number) { }
+}
+```
+
+클래스에서 구현할 메서드도 인터페이스에서 선언할 수 있다.
+```ts
+interface ClockInterface {
+    currentTime: Date;
+    setTime(d: Date): void;
+}
+
+class Clock implements ClockInterface {
+    currentTime: Date = new Date();
+    setTime(d: Date) {
+        this.currentTime = d;
+    }
+    constructor(h: number, m:number){}
+}
+```
+
+인터페이스는 private한 부분 보다는 public한 부분을 묘사한다. 
+
+
+#### static과 클래스의 인스턴스의 차이
+클래스와 인터페이스로 작업을 할때는 클래스가 static side와 intance side 타입 두가지 타입을 가진다는 것을 주의해야한다.  
+생성자 시그니처가 있는 인터페이스를 만들고 인터페이스를 구현한 클래스를 만들려고 하면 에러가 난다.
+
+```ts
+interface ClockConstructor {
+    new (hour: number, minute: number)
+}
+
+class Clock implements ClockConstructor {
+    currentTime: Date,
+    constructor(h: number, m: number) { }
+}
+```
+왜냐하면 클래스가 인터페이스를 구현하려고 할때 클래스의 인터페이스 쪽만 정검하는데
+생성자는 static 쪽에 위치하기 때문에 정검에서 벗어난다.  
+
+대신에 클래스의 static side를 직접 작업할 필요가 있다.  
+예를 들어 생성자에 대한 인터페이스(`ClockConstructor`)를 만들고 인스턴스 메서드(`ClockInterface`)를 위한 인터페이스를 생성하는 식이다.
+그 다음에 편의를 위해 전달되는 유형의 인스턴스를 생성하는 생성자함수(`createClock`)를 정의한다.
+
+```ts
+// static side
+interface ClockConstructor {
+    new (hour: number, minute:number): CockInterface;
+}
+
+// interface side
+interface ClockInterface {
+    tick(): void;
+}
+
+function createClock(ctor: ClockConstructor, hour: number, minute: number): ClockInterface {
+    return new ctor(hour, minute)
+}
+
+class DigitalClock implements ClockInterface {
+    constructor(h: number, m: number) { }
+    tick() {
+        console.log("beep beep");
+    }
+}
+
+class AnalogClock implements ClockInterface {
+    constructor(h: number, m: number) {}
+    tick() {
+        console.log("tick tick");
+    }
+}
+
+let disital = createClock(DigitalClock, 12, 17);
+let analog = createClock(AnalogClock, 7, 32);
+```
+
+ `createClock`의 첫번째 파라미터의 타입이 `ClockConstructor`이기 때문에 `AnalogClock`이 올바른 생성자 시그니쳐를 가지고 있는지 확인한다.  
+ 다른 방법은 클래스 표현을 사용하는 것이다.
+
+ ```ts
+interface ClockConstructor {
+    new (hour: number, minute: number);
+}
+
+interface ClockInterface {
+    tick();
+}
+
+const Clock: ClockConstructor = class Clock implements ClockInterface {
+    constructor(h: number, m: number) {}
+    tick() {
+        console.log("beep beep")
+    }
+}
+ ```
+
+
+ ### Extending Interfaces
+ 클래스처럼 인터페이스는 서로 확장할 수 있다. 확장을 통해 다른 인터페이스의 멤버를 복사할 수 있다.  
+ 이 기능은 인터페이스를 재사용 가능한 요소로 분리할 때 유연함을 제공한다.
+
+ ```ts
+interface Shape {
+    color: string
+}
+
+interface Square extends Shape {
+    sideLength: number;
+}
+
+let square = {} as Square;
+square.color = "blue";
+square.sideLength = 10;
+ ```
+
+ 한번에 여러개의 인터페이스를 확장할 수 있다.
+ ```ts
+interface Shape {
+    color: string;
+}
+
+interface PenStroke {
+    penWidth: number;
+}
+
+interface Square extends Shape, PenStroke {
+    sideLength: number;
+}
+
+let square = {} as Square;
+square.color = "blue";
+square.color = 10;
+square.color = 5.0;
+ ```
+
+
+ ### Hybrid Types
+ ```ts
+interface Counter {
+    (start: number): string;
+    interval: number;
+    reset(): void;
+}
+
+function getCounter(): Counter {
+    let counter = (function (start: number) {}) as Counter;
+    counter.interval = 123;
+    counter.reset = function () {};
+    return counter;
+}
+
+let c = getCounter;
+c(10);
+c.reset();
+c.interval = 5.0;
+
+ ```
+ 서드파티 자바스크립트와 인터페이싱을 할때  유형의 shape를 완전히 묘사하기 위해서 위와 같은 패턴을 사용해야한다.  
+
+
+ ### Interface Extending Classes 
+클래스 타입으로 인터페이스를 확장할 때 클래스의 요소는 상속되지만 구현은 상속되지 않는다.  인터페이스는 클래스의 private멤버와 protected 멤버까지 상속받는다.  
+이 말은 클래스를 상속받은 인터페이스를 상속받을 때, 인터페이스 타입이 인터페이스 타입이 클래스나 그 하위 클래스에 의해서만 구현될 수 있다는 얘기다.
+이 기느은 상속 계층이 큰 경우에 유용하며 특정 속성을 가진 하위 클래스에서만 코드가 작동되려고 지정할 때 유용하다. 하위 계층은 기본 계층에서 상속되는 것외에 관련이 없다.  
+
+```ts
+class Control {
+    private state: any;
+}
+
+interface SelectableControl extends Control {
+    select(): void;
+}
+
+class Button extends Control implements SelectableControl {
+    select() { }
+}
+
+class TextBox extends Control {
+    select() { }
+}
+
+// Error: Property 'state' is missing in type 'Image'.
+class Image implements SelectableControl {
+    private state: any;
+    select() { }
+}
+
+class Location {
+
+}
+```
+위 에에서 `SelectableControl`은 private state속성을 포함해서 `Control`의 모든 멤버를가지고 있다.  
+`state`는 private member이기 때문에 `Control`의 후손만 `SelectableControl`을 구현할 수 있다.  이것 은 `Control`의 후손은 `state` private member를 가지고 있기 때문인데 이것은 pivate member의 양립조건이다.  
+
+
+`Control`클래스안에서 `SelectableControl`인스턴스를 통해서 `state member`에 접근할 수 있다. 효과적으로 `SelectableControl`은 `Control`처럼 동작한다.  
+`Button`과 `TextBox`클래스는 `SelectableControl`의 서브타입이지만 `Image`와 `Location`클래스는 아니다.
