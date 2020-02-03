@@ -147,6 +147,76 @@ class Animal {
     }
 }
 
+class Rhino extends Animal {
+    constructor() {
+        super("Rhino");
+    }
+}
+
+class Employee {
+    private name: string;
+    constructor (theName: string) {
+        this.name = theName;
+    }
+}
+
+let animal = new Animal("Goat");
+let rhino = new Rhino();
+let employee = new Employee("Bob");
+
+animal = rhino;
+animal = employee; // Error: 'Aniaml' 과 `Employee`는 호환되지 않는다.
+```
+
+예제에서 `Animal`를 상속받은 하위클래스 `Rhino`를 만들었다. 또 `Employee`라는 똑같은 모양의 클래스를 만들었다. 이 클래스들의 인스턴스들을 만들고 각각 할당했다.  
+ `Animal`과 `Rhino`는 `private` 사이드를 공유하기 때문에 호환된다. 하지만 `Employee`의 경우에는 다르다. `Employee`를 `Animal`로 할당하려 했을때 타입이 호환되지 않는다는 에러가 발생한다. `Emploee`가 `name`이라는 `private` 맴버를 가자ㅣ고 있어도 이건 `Animal`에 선언된것 이 아니다.
 
 
+### Understanding protected
+```ts
+class Person {
+    protected name: string;
+    constructor(name: string) {this.name = name }; 
+}
+
+class Employee entends Person {
+    private department: string;
+
+    constructor(name: string, deaprtment: string) {
+        super(name);
+        this.department = department;
+    }
+
+    public getElevatorPitch() {
+        return `Hello, my name is ${this.name} and I  work in ${this.department}.`;
+    }
+}
+
+let howard = new Employee("HOward", "Sales");
+console.log(howard.getElevatorPitch());
+console.log(howard.name);       // error
+```
+`Person`외부에서는 `name`을 사용할 수 없지만 `Person`을 상속받은 `Employee`의 메서드 안에서는 사용이 가능하다는 점을 주목해야한다.
+`Person`의 생성자 함수에 `protected`가 마크되는데 이 멤버는 클래스 밖에서는 사용이 불가능하지만 `extend`는 가능하다
+
+```ts
+class Person {
+    protected name: string;
+    protected constructor(theName: string) {
+        this.name = theName;
+    }
+}
+
+// Employee can extend Person
+class Employee extends Person {
+    private deaprtment: string;
+
+    constructor(name: string, department: string) {
+        super(name);
+        this.deaprtment = department;
+    }
+}
+
+let howard = new Employee("Howard", "Sales");
+let jogn = new Person("Jogn") // Error: Person constructor is protected
 ```
