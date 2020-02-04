@@ -17,20 +17,8 @@ SI프로젝트를 경험하면서 조금만 수정해도 실타래처럼 얽혀�
 
 ## &#128204; 목차
 
-## 1.Java
-- [ClassPart1](./java/class_part_1.md)
-- [ClassPart2](./java/class_part_2.md)
-- [ClassPart3](./java/class_part_3.md)
-- [MVC](./java/MVCpattern.md)
-- [servlet](./java/servlet.md)
-- [JSP](./java/JSP.md)
-- [garbageCollection](./java/garbageCollectio.md)
-- [Maven](./etc/maven.md)
-- [Thread](./java/thread.md)
 
-<br><br>
-
-## 2.JavaScript
+## 1.JavaScript
 - [arrow Function](./javascript/arrowFunction.md)
 - [animation](./javascript/animation.md)
 - [Array](./javascript/array.md)
@@ -61,7 +49,15 @@ SI프로젝트를 경험하면서 조금만 수정해도 실타래처럼 얽혀�
 <br><br>
 
 
+## 2.TypeScript
+- [basic type](./typescript/basicType.md)
+- [classes](./typescript/classes.md)
+- [functions](./typescript/functions.md)
+- [interface](./typescript/interface.md)
+
+
 ## 3.React
+- [JSX](./react/JSX.md) 
 - [react_redux](./react/react_redux.md)
 - [redux_action](./react/redux_action.md)
 - [redux_thunk](./react/redux_thunk.md)
@@ -80,23 +76,31 @@ SI프로젝트를 경험하면서 조금만 수정해도 실타래처럼 얽혀�
 - [gulp](./nodeJS/gulp.md)
 <br><br>
 
-## 5.TypeScript
-
-<br><br>
-
-## 6.HTML
+## 5.HTML
 - [web Storage](./html/webStorage.md)
 <br><br>
 
-## 7.Linux
+## 6.Linux
 - [Why Lisux is Better for Developer](./linux/WhyLinuxIsBetterForDeveloper.md)
 <br><br>
 
-## 8.NetWork
+## 7.NetWork
 - [web Application server](./network/webApplicationServer.md)
 - [CORS](./network/CORS.md)
 - [REST API](./network/REST.md)
+<br><br>
 
+
+## 8.Java
+- [ClassPart1](./java/class_part_1.md)
+- [ClassPart2](./java/class_part_2.md)
+- [ClassPart3](./java/class_part_3.md)
+- [MVC](./java/MVCpattern.md)
+- [servlet](./java/servlet.md)
+- [JSP](./java/JSP.md)
+- [garbageCollection](./java/garbageCollectio.md)
+- [Maven](./etc/maven.md)
+- [Thread](./java/thread.md)
 <br><br>
 
 ## 9.Spring
@@ -109,8 +113,10 @@ SI프로젝트를 경험하면서 조금만 수정해도 실타래처럼 얽혀�
 
 
 
+<br><br><br>
 
-## DB
+
+## DataBase
 
 
 ### 1.Oracle
@@ -130,20 +136,27 @@ SI프로젝트를 경험하면서 조금만 수정해도 실타래처럼 얽혀�
 - [transaction](./db/oracle/transaction.md)
 - [trigger](./db/oracle/trigger.md)
 - [view](./db/oracle/view.md)
-
+<br><br>
 
 
 ### 2.Mysql
 - [install](./db/mysql/install.md)
-
 <br><br>
 
+### 3.MongoDB
+- [intro](./db/mongoDB/index.md)
 
+<br><br><br><br>
 
+## Network
+- [REST](./network/REST.md)
+- [CORS](./network/CORS.md)
+- [Clustering](./network/Clustering.md)
 
 
 ## Interview
 - [Javascript](./interview/javascript.md)
+- [React](./interview/react.md)
 
 ## ETC
 - [webpack](./webpack/index.md)
@@ -152,34 +165,41 @@ SI프로젝트를 경험하면서 조금만 수정해도 실타래처럼 얽혀�
 - [How to write Build Process in Jenkins](./etc/jenkinsBuildProcess.md)
 
 
+
+커링
+리애트 인터뷰
+
 ## 관심분야
-1. TDD
-2. 클린코드
-    - 미학적인 코드.
-3. 성능 최적화
+1. javascript
+2. Typescript
+    - curring
+3. React
+    - next.js
+    - rx.js
+    - hooks
+4. open source
+    - developt library
+5. node.js
+6. TEST
+    - TDD
+7. Clean Code
+8. 성능 최적화
     - requestidlecallback
     - pwa
     - 렌더링
       - web workers
       - service workders
-4. 타입 스크립트
-5. 커뮤니케이션
+9. 커뮤니케이션
     - UX를 고려한 설계
     - 프로그래머 소통(코드)
     - 서비스 품질 개선
-6. 함수형프로그래밍
-7. 오픈소스
-    - 라이브러리 개발
-8. 토이프로젝트
-    - 3개이상
-9. 개인블로그 개설
-10. 협업습관 기르기
+10. 함수형프로그래밍
+11. 협업습관 기르기
     - (이슈관리, JIRA,Confluence, 프로젝트 보드)
-11. 디지털 노마드
-12. TIL
+12. 디지털 노마드
+13. TIL
     - https://www.slideshare.net/
-13. Web Assembly
-
+14. Web Assembly
 
 
 ## 컨텐츠 컨테이터
@@ -205,17 +225,3 @@ SI프로젝트를 경험하면서 조금만 수정해도 실타래처럼 얽혀�
       - jUnit
       - esLint
       - maven
-
-
-
-
-
-## TODO
-1. 함수형프로그래밍
-2. 모듈 번들러 (webpack, gulp)
-4. 브라우져
-5. Rest API 서버 개발
-7. 프론트엔드 보안코딩.
-8. 렌더링을 최적화하기위한 방법.
-9. 개발환경을 구성하고 이유, 개발환경 설계
-10. 내가 원하는 역할에 대한 정리.
