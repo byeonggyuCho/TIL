@@ -25,5 +25,7 @@
 
 
 ## ref
+- [우리가 TypeScript를 선택한 이유](https://medium.com/@constell99/%EC%9A%B0%EB%A6%AC%EA%B0%80-typescript%EB%A5%BC-%EC%84%A0%ED%83%9D%ED%95%9C-%EC%9D%B4%EC%9C%A0-b0a423654f1e)
+- [Typesciprt를 채택 두 프로세스 비교](https://blog.rhostem.com/posts/2017-06-11-adopting-flow-and-typescript)
 - [TypeScript와 Flow](https://www.slideshare.net/HeejongAhn/typescript-flow-81799404)
 - [안희종- why typescript](https://ahnheejong.gitbook.io/ts-for-jsdev/01-introducing-typescript/why-typescript)

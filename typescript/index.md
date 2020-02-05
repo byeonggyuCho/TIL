@@ -102,10 +102,10 @@ function getFirstThreeCharsSafe(arg: { x: string | null }) {
 }
 ```
 
-- 런타임에는 약타입이라는 약점.
+3. 런타임에는 약타입이라는 약점.
     - TypeGuard기능이나 io-ts fp-ts등 함수형 라이브러리를 통해 함수형으로 런타임 타이핑을 체크할수 있긶하다.
-- advanced Type, Utiliy Type등 숙련되는데 시간이 걸리는 기술때문에 초기 생성성이 떨어질 수 있다.
-
+4. advanced Type, Utiliy Type등 숙련되는데 시간이 걸리는 기술때문에 초기 생산성이 떨어질 수 있다.
+- 점진적인 도입을 하면 된다.
 
 ## 기타 기업에서 타입스크립트를 도입하지 않는 이유...
 1. 필요성을 못 느껴서
@@ -123,8 +123,22 @@ function getFirstThreeCharsSafe(arg: { x: string | null }) {
     - https://blog.rhostem.com/posts/2017-06-11-adopting-flow-and-typescript
 
 
+## 참고하면 좋은 글
+- [TypeScript-HandBook 번역](https://typescript-kr.github.io/) 
+- [타입스크립트 리소스 한국어 번역](https://github.com/typescript-kr/awesome-typescript-korean)
+- [asesome Typescript-ENG](https://github.com/dzharii/awesome-typescript)
+- [When should i use TypeScript](https://www.freecodecamp.org/news/when-should-i-use-typescript-311cb5fe801b/)
+- [Strict Types: Typescript, Flow, Javascript- to be or not to be](https://codeburst.io/strict-types-typescript-flow-javascript-to-be-or-not-to-be-959d2d20c007) 
+- [why use Typscript, good and bad reason](https://itnext.io/why-use-typescript-good-and-bad-reasons-ccd807b292fb)
+- [why you should't be scared of typescript](https://scotch.io/tutorials/why-you-shouldnt-be-scared-of-typescript)
+- [The broken promise of static typing](https://labs.ig.com/static-typing-promise)
+- [Functional Programmin with TypeScript](https://react-etc.net/entry/functional-programming-with-typescript)
+- [Why Typescript with Clean Architecture](https://www.slideshare.net/ssuser44df45/why-typescript-with-clean-architecture-82371194)
+
 ## ref
-- [](https://eng.lyft.com/typescript-at-lyft-64f0702346ea)
+- [typeScript를 왜 써야할까?](https://hyunseob.github.io/2018/08/12/do-you-need-to-use-ts/)
+- [달달한제안 Typesciprt](https://jbee.io/typescript/you_might_need_typescript/)
+- [Typescript at Lyft](https://eng.lyft.com/typescript-at-lyft-64f0702346ea)
 - [Typescript Design goals](https://github.com/Microsoft/TypeScript/wiki/TypeScript-Design-Goals)
 - [타입스크립트를 시작하기전에](https://velog.io/@dongwon2/TypeScript%EB%A5%BC-%EC%8B%9C%EC%9E%91%ED%95%98%EA%B8%B0-%EC%A0%84%EC%97%90-%EC%9D%B4%EC%A0%95%EB%8F%84%EB%8A%94-%ED%95%B4%EC%A4%98%EC%95%BC%EC%A7%80)
 - [Trade-offs in Control Flow Analysis](https://github.com/Microsoft/TypeScript/issues/9998) 
@@ -135,5 +149,3 @@ function getFirstThreeCharsSafe(arg: { x: string | null }) {
 - [우리가 타입스크립트를 채택한 이유](https://medium.com/@constell99/%EC%9A%B0%EB%A6%AC%EA%B0%80-typescript%EB%A5%BC-%EC%84%A0%ED%83%9D%ED%95%9C-%EC%9D%B4%EC%9C%A0-b0a423654f1e)
 - [타입스크립트 소개와 개발환경 구축](https://poiemaweb.com/typescript-introduction)
 - [달달한 제안 타입스크립트](https://jbee.io/typescript/you_might_need_typescript/) 
-https://medium.com/@constell99/%EC%9A%B0%EB%A6%AC%EA%B0%80-typescript%EB%A5%BC-%EC%84%A0%ED%83%9D%ED%95%9C-%EC%9D%B4%EC%9C%A0-b0a423654f1e
-https://doitnow-man.tistory.com/169
