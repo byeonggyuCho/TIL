@@ -52,6 +52,10 @@ SI프로젝트를 경험하면서 조금만 수정해도 실타래처럼 얽혀�
 - [classes](./typescript/classes.md)
 - [functions](./typescript/functions.md)
 - [interface](./typescript/interface.md)
+- [generics](./typescript/generics.md)
+- [generics](./typescript/generics.md)
+- [type Inference](./typescript/typeInference.md)
+- [type compatibility](./typescript/typeCompatibility.md)
 
 
 ## 3.React
