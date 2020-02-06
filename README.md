@@ -9,7 +9,11 @@
 
 
 확실히 내가 편하게 사용하는 단어와 표현으로 바꾸어 정리하는 작업이 '내 지식이다.'라는 느낌을 받게 하는 것 같다.  
-SI프로젝트를 경험하면서 조금만 수정해도 실타래처럼 얽혀버리는 스파게티 소스를 겪으며 보기쉽고 견고한 프로그래밍에 대해 관심을 갖게되어 정리하기 시작했다. 이 작업들이 견고하고 아름다운 코드를 짜는데 도움이 되길빈다.
+SI프로젝트를 경험하면서 조금만 수정해도 실타래처럼 얽혀버리는 스파게티 소스를 겪으며 보기쉽고 견고한 프로그래밍에 대해 관심을 갖게되어 정리하기 시작했다. 이 작업들이 견고하고 아름다운 코드를 짜는데 도움이 되길빈다.  
+
+- 도구 소개
+- 개념 정리 및 예제 정리.
+- 개발 관련 에세이(개발 일지)
 
 
 
@@ -173,19 +177,25 @@ SI프로젝트를 경험하면서 조금만 수정해도 실타래처럼 얽혀�
 
 ## 관심분야
 1. javascript
-2. Typescript
     - curring
+    - Symbol
+    - proxy
+    - web worker
+2. Typescript
+    - pattern
 3. React
+    - jest/ Enzyme
+    - redux-saga
+    - hooks
     - next.js
     - rx.js
-    - hooks
 4. open source
-    - developt library
+    - library development
 5. node.js
-6. TEST
+6. Test
     - TDD
 7. Clean Code
-8. 성능 최적화
+8. Optimizing
     - requestidlecallback
     - pwa
     - 렌더링
@@ -202,28 +212,7 @@ SI프로젝트를 경험하면서 조금만 수정해도 실타래처럼 얽혀�
 13. TIL
     - https://www.slideshare.net/
 14. Web Assembly
-
-
-## 컨텐츠 컨테이터
-
-1.  Practice Series
-  - 기본기  예제화 정리
-  - contents
-    - spring
-    - react
-    - javaScript
-
-2. For Architecture Series
-    - 브라우저 동작 원리
-    - 함수형 프로그래밍 
-
-3. Tool
-    - 이용중인 툴의 소개 및 응용방법
-    - contents
-      - 자스민.
-      - webpack
-      - babel
-      - mybatis
-      - jUnit
-      - esLint
-      - maven
+15. graphQL
+16. cavas, svg
+17. webpack
+18. sass
