@@ -111,7 +111,7 @@ y = x; // Error, because x() lacks a location prperty
 ## Function Parameter Bivariance 
 함수 파라미터들을 비교할 때, 소스 파라미터가 타겟파라미터를 할당할 수 있거나 그 반대인 경우 할당할 수 있다.  
 
-호출한 측에서 에게 더 더 특수화된 타입을 취하는 함수가 제공될 수 있지만 덜 특화된 타입의 함수를 호출할 수 있기 때문에 바람직하지 않습니다  
+호출한 측에서 에게 더 특수화된 타입을 취하는 함수가 제공될 수 있지만 덜 특화된 타입의 함수를 호출할 수 있기 때문에 바람직하지 않습니다  
 
 ```ts
 enum EventType { Mouse, Keyboard }
@@ -134,3 +134,122 @@ listenEvent(EventType.Mouse, ((e: MouseEvent) => console.log(e.x + "," + e.y)) a
 // Still disallowed (clear error). Type safety enforced for wholly incompatible types
 listenEvent(EventType.Mouse, (e: number) => console.log(e));
 ```
+
+컴파일러 플래그 `strincFunctionTypes`를 통해서 타입스크립트가 에러를 내게 할 수 있습니다.
+
+
+### Optional Parameters and Rest Parameters
+호환성을 위해 함수를 비교할 때 옵션 파라미터와 필수 파라미터는 교환할 수있습니다.  
+소스 타입의 추가 옵션 파라미터는 오류가 아니며 소스 타입에서 일치하는 파라미터가 없는 대상 타입의 옵션 파라미터는 오류가 아닙니다.  
+
+함수가 rest파라미터를 가지면 무한의 옵션 파라미터가 있는것 처럼 처리된다.  
+이는 타입 시스템의 관점에서 보면 중요하지 않지만 런타임 관점에서 선택적 파라미터의 개념은 일반적으로 잘 적용되지 않습니다.
+왜냐면 그 위치에 `undefined`가 통과하는 것이 대부분의 함수가 같기 때문입니다.  
+
+설명하는 예제는 콜백을 수행하고 일부 예측 가능하지만 알 수 없는 인수(`args`)를 사용하여 호출하는 함수의 일반적인 패턴입니다.
+```ts
+function invokeLater(args: any[], callback: (...args: any[]) => void) {
+    /* ... Invoke callback with 'args' ... */
+}
+
+// Unsound - invokeLater "might" provide any number of arguments
+invokeLater([1, 2], (x, y) => console.log(x + ", " + y));
+
+// Confusing (x and y are actually required) and undiscoverable
+invokeLater([1, 2], (x?, y?) => console.log(x + ", " + y));
+```
+
+
+### Functions with overloads
+함수에 오버로드가 있는 경우 각 오버로드는 대상 타입의 호환가능한 특징에 반드시 일치해야합니다.  
+대상 함수가 모든 같은 상황에서 원본 함수로 호출 될 수 있다는 것을 보장하게 됩니다. 
+
+## Enums
+Enums은 숫자와 오환되며 숫자는 enum과 호환됩니다. 다른 enum타입에서의 enum 값은 호환할 수 없는 것으로 간주됩니다.  
+
+```ts
+enum States { Ready, Waiting };
+enum Color { Red, Blue, Green };
+
+let status = Status.Ready;
+status = Color.Green; // Error
+```
+
+## Classes
+클래스는 한가지 예외만 빼면 객체 리터럴과 인터페이스와 비슷하게 작동한다.  
+클래스는 static과 인스턴스 타입이 있다. 두 클래스 타입 객체를 컴파일 할때 인스턴스 멤버들만 비교된다.  
+Static 멤머와 생성자는 호환성에 영향을 주지 않는다.  
+
+```ts
+ class Animal {
+    feet: number;
+    constructor(name: string, numFeet: number) { }
+}
+
+class Size {
+    feet: number;
+    constructor(numFeet: number) { }
+}
+
+let a: Animal;
+let s: Size;
+
+a = s;  // OK
+s = a;  // OK
+```
+
+### pravate and proteced members in classes
+클래스에서 private와 proteced 멤버는 호환성에 영향을 준다.  
+클래스의 인스턴스가 호환성 검증을 받을 때 대상 타입이 private 멤버를 가지고 있으면 원본 타입은 반드시 같은 클래스에서 파생된 private 멤버를 가지고 있어야한다.  
+비슷하게 protected 멤버에도 적용된다.   
+이렇게 하면 클래스가 상위 클래스와는 호환이 되지만 다른 모양을 가진 상속계층의 클래스와는 호환이 되지 않는다.  
+
+
+## Generics 
+타입스크립트는 구조적 타입 시스템이기 때문에 
+타입 파라미터는 멤버의 타입의 일부로서 사용될 때 결과 타입에만 영향을 준다.
+```ts
+interface Empty<T> {
+}
+let x: Empty<number>;
+let y: Empty<string>;
+
+x = y;  // OK, because y matches structure of x
+```
+위 예제에서 `x`와 `y`는  각각의 구조가 인수 타입을 차별화된 방식으로 사용하지 않기 때문에 호환된다.  
+`Empty<T>`에 멤버를 더해서 예제를 바꾸면 동작 원리가 이해됩니다.
+
+```ts
+interface NotEmpty<T> {
+    data: T;
+}
+let x: NotEmpty<number>;
+let y: NotEmpty<string>;
+
+x = y; // Error, beacouse x and y are not compatible
+```
+이 방법에서 타입 인자를 구체화 하는 제네릭 타입은 비 제네릭 타입 처럼 동작합니다.  
+인자들의 타입을 구체화하지 않는 제네릭 타입때문에 호환성은 정의되자 않은 타입 인자들을 `any`로 구체화 함으로서 검증합니다.  
+ 비 제네릭 타입처럼 산출된 타입은 호환성에 대해 검증됩니다.  
+
+ ```ts
+let identity = function<T>(x: T): T {
+    // ...
+}
+
+let reverse = function<U>(y: U): U {
+    // ...
+}
+
+identity = reverse;  // OK, because (x: any) => any matches (y: any) => any
+ ```
+
+
+ ## Advanced Topics
+ ### Subtype vs Assignment
+지금까지 "호환성(compatible)"이란 용어를 사용했지만 이건 타입스크립트 명세서에 정의된 용어가 아닙니다.  
+타입스크립트에서 두가지 종류의 호환성이 있는데 하위타입과 할당입니다.  
+이러한 설정은 해당 할당에서만 하위 타입 호환성을 확장하여 `any`에 대한할당과 해당 숫자 값의 `enum`에 대한 할당을 가능하게 합니다.
+
+언어의 다른 장소들은 상황에 따라 두 가지 호환성 메커지늠 중 하나를 사용합니다.  
+실제로 `implements`및 `extends`절의 경우에도 타입 호환성은 할당 호환성에 의해 결정됩니다.
