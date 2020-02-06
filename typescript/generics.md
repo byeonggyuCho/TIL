@@ -167,8 +167,132 @@ let myIdentity: GenericIdentityFn<number> = indentity;
 
 
 ## Generic Classes
+제네릭 클래스는 제네릭 인터페이스와 비슷합니다. 제네릭 클래스는 클래스 이름 다음에 꺽쇠(`<>`)안에 제네릭 파라미터 목록을 가집니다.
+```ts
+class GenricNumber<T> {
+    zeroValue: T;
+    add: (x: T, y: T) => T
+}
 
+let myGenricNumber = new GenericNumber<number>();
+myGenricNumber.zeroValue = 0;
+myGenricNumber.add = function(x,y) { 
+    return x + y;
+}
+```
+이 예제에서는 문자 그대로 `GenericNumber`클래스를 사용했지만 `number` 타입만 사용하도록 강제하진 않았다는걸 알 수 있습니다.  
+`string`타입이나 더 복잡한 객체를 사용해도 됐을겁니다.
+
+```ts
+let stringNumberic = new GenericNumber<string>();
+stringNumberic.zeroValue = "";
+stringNumberic.add = function(x,y) {
+    return x + y;
+}
+console.log(stringNumberic.add(stringNumberic.zeroValuem "test"));
+```
+단지 인터페이스로서 타입 파라미터를 클래스에 넣음으로서 이 클래스의 모든 속성이 같은 타입으로 동작하도록 할 수 있습니다.  
+클래스 섹션에서 다뤘던 것첨  클래스는 타입에 대해 두가지 면이 있습니다. 정적인 면과 인스턴스면이요.  
+제니릭 클래스는 static 측면이 아닌 인스턴스 측면입니다.  
+그래서 클래스와 함께 동작할때 static 멤버를 클래스의 타입 파라미터로 사용할 수 없습니다.
+
+
+### Generic Constraints
+타입들이 어떤 기능이 있는지 알고있는 타입에서 작동하는 제네릭함수를 작성하려는 경우가 있습니다.  
+`loggingIdentity`예제에서 `arg`를 `.length`속성으로 접근하고 싶었지만 컴파일러가 컴파일러는 모든 타입이 `.length`속성을 가진다는걸 알 수 없었습니다. 그래서 경고를 줬었죠.  
+
+```ts
+function loggingIdentity<T>(arg: T): T{
+    console.log(arg.length);    // Error: T dosen't have .length
+    return arg;
+}
+```
+모든 타입에 동작하는것 대신에 `.length`속성을 가지는 모든 타입에서 동작하게 하기 위해서 함수를 제한하고 싶습니다.  
+타입이 이 멤버를 가지고 있을때만 허용해야 합니다.  
+그러기 위해서 `T`가 될 수 있는 타입이라는 제약조건에 대한 요구조건 리스트가 필요합니다.  
+
+그러기 위해 제약조건을 설명하는 인스턴스를 만들어야 합니다.  
+제약조건을 설명하기 위해 `.length`속성 하나를 가지는 인터턴스를 만든 다음에 이 인스터스와 `extend`키워드를 사용해야합니다.
+```ts
+interface Lengthwise {
+    length: number;
+}
+
+function loggingIdentity<T extends Lengthwise>(arg: T) : T {
+    console.log(arg.length); // NOw we know it has a .length property, so no more error
+    return arg;
+}
+```
+이제 제네릭 함수에 제약이 걸렸기 때문에 더이상 모든 타입이 동작하지 않습니다.
+```ts
+loggingIdentity(3) // Error, number does't have a .length property
+```
+대신 필요한 속성을 모두 포함하는 값은 전달해야합니다.
+```ts
+loggingIdentity({length:10, value:3})
+```
+
+### Using Type Parameters in Generic Constraints
+다른 타입 파라미터에 의해 제약이 걸린 타입 파라미터를 선언할 수 있습니다.  
+예를 들어 객체에서 그 이름을 가진속성을 얻고 싶습니다.  obj에 없는 속성을 접근하지 못하게 하려고 합니다. 
+그래서 두 타입 사이에 제약조건을 넣을 것입니다.
+
+```ts
+function getProperty<T, K extends keyof T>(obj: T, key: K){
+    return obj[key];
+}
+
+let x = {
+    a: 1,
+    b: 2,
+    c: 3,
+    d: 4,
+};
+
+getProperty(x, "a"); // okay
+getProperty(x, "m"); // error: Argument of type 'm' isn't assginable to 'a' | 'b' | 'c' | 'd'
+```
+
+## Usding Class Types in Generic
+제네릭을 이용해서 타입스크립트에서 팩토리를 만들때 생성자 함수를 사용하여 클래스타입을 참조해야 합니다.  
+```ts
+function create<T>(c: {new(): T;}): T{
+    return new();
+}
+```
+
+더 응용된 예제는 프로토타입 프로퍼티를사용하여 생성자 함수와 클래스 타입의 인스턴스 측면 사이를 추론하고 제한 합니다
+```ts
+class BeeKeeper {
+    hasMask: boolean;
+}
+
+class ZooKeeper {
+    nametag: string;
+}
+
+class Animal {
+    numLegs: number;
+}
+
+class Bee extends Animal {
+    keeper: BeeKeeper;
+}
+
+class Lion extends Animal {
+    keeper: ZooKeeper;
+}
+
+function createInstance<A extends Animal>(c: new () => A): A {
+    return new c();
+}
+
+createInstance(Lion).keeper.nametag;  // typechecks!
+createInstance(Bee).keeper.hasMask;   // typechecks!
+
+
+```
 
 ## ref
-- https://www.typescriptlang.org/docs/handbook/generics.html
-- https://typescript-kr.github.io/pages/Generics.html
+- [typescript handbook, generic](https://www.typescriptlang.org/docs/handbook/generics.html)
+- [typescript handbook-KR]https://typescript-kr.github.io/pages/Generics.html

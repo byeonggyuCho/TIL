@@ -48,7 +48,9 @@ dog.bark()
 ```
 
 이 예제는 기본적인 상속의 기능을 보여줍니다.  클래스는 메서드와 속성을 상속받습니다.  
-`Dog`는 `Animal`로부터 메서드를 확장했습니다. 이제 `Animal`을 상속받은 `Dog`로 부터 `bark()`와 `move()`를 사용할 수 있는 인스턴스를 생성할 수 있습니다.
+`Dog`는 `Animal`에서 파생된 **파생클래스 입니다**.  
+파생클래스는 하위클래스(subClasses)라고 하며 기본 클래스는 슈퍼클래스(superclasses)라고도 합니다.  
+이제 `Animal`을 상속받은 `Dog`로 부터 `bark()`와 `move()`를 사용할 수 있는 인스턴스를 생성할 수 있습니다.
 
 
 ```ts
@@ -99,10 +101,12 @@ Tommy the Palomino moved 34m.
 
 ## Public, private, and proteced modifiers  
 ### Public by default
-지금까지 예제에서 자유롭게 멤버에 접근할 수 있었습니다. 클래스 문법을 사용하는 다른 언어를 해봤다면 `public`키워드가 사용되지 않았다고 생각할 수 있습니다. 
+지금까지 예제에서 자유롭게 멤버에 접근할 수 있었습니다.  
+클래스 문법을 사용하는 다른 언어를 해봤다면 `public`키워드가 사용되지 않았다고 생각할 수 있습니다.  
 타입스크립트에서는 각 멤버에대한 접근제한자는 `public`이 기본값입니다.  
 
-명확하게 `public`을 쓰고 싶으면 쓸 수 있습니다. 위에서 다뤄본 `Animal`을 다음 처럼 작성할 수 있습니다.
+명확하게 `public`을 쓰고 싶으면 쓸 수 있습니다.  
+위에서 다뤄본 `Animal`을 다음 처럼 작성할 수 있습니다.
 ```ts
 class Animal {
     public name: string;
@@ -391,7 +395,7 @@ department.generateReports(); // error: method doesn't exist on declared abstrac
 
 
 ### Constructor functions
-타입스크립트에서 클래스를 정의할 때 사실 동시에 여러개의 선언문을 만듭니다. 첫번째는 클래스의 인스턴스 유협입니다.
+타입스크립트에서 클래스를 정의할 때 사실 동시에 여러개의 선언문을 만듭니다. 첫번째는 클래스의 인스턴스 타입입니다.
 
 ```ts
 class Greeter {
@@ -409,8 +413,8 @@ greeter = new Greeter("world");
 console.log(greeter.greet()); // "Hello, world""
 ```
 `let greeter: Greeter`를 할때 `Greeter`클래스의 인스턴스 타입으로 `Greeter`를 사용하빈다.
-이건 다른 객체지향 언어를 하다가 온 사람들에게 두번의 사용입니다.  
-또 생성자 함수라고 부르는 다른 값을 생성하고 있습니다. 이 함수는 클래스의 인스턴스를 새로 만들때 호출되는 함수입니다.  
+이건 다른 객체지향 언어를 하다가 온 사람들 두 번 사용했다고 생각할겁니다.
+또 생성자 함수라고 부르는 다른 값을 생성하고 있습니다. 이 함수는 클래스의 인스턴스를 생성할 때 호출되는 함수입니다.  
 
 실제로 이 현상이 어떻게 보이는지 알아보기 위해 다음의 예제를 보겠습니다.
 ```ts
@@ -428,7 +432,10 @@ let greeter;
 greeter = new Greeter("world");
 console.log(greeter.greet()); // "Hello, world"
 ```
-`let Greeter`는 생성자 함수가 할당될 것입니다. `new`를 호출하고 생성자 함수를 실행할때, 클래스의 인스턴스가 나옵니다. 생성자 함수는 클래스의 모든 `static member`를 포함하고 있습니다. 각 클래스를 생각하는 다른 방법은 `instance`사이드와 `static`사이드입니다.  
+`let Greeter`는 생성자 함수가 할당될 것입니다.  
+`new`를 호출하고 생성자 함수를 실행할때, 클래스의 인스턴스를 얻습니다.  
+생성자 함수는 클래스의 모든 `static`멤버를 포함하고 있습니다.  
+각 클래스를 생각하는 다른 방법은 `instance`측면과 `static`측면 입니다.  
 
 차이를 알아보기 위해 다음 예제를 봅시다.
 ```ts
@@ -457,7 +464,13 @@ console.log(greeter2.greet()); // "Hey there!"
 ```
 이 예에서 `greeter`는 전과 비슷하게 동작합니다. `Greeter`클래스를 초기화했고 이 객체를 사용합니다. 이전에 예제에서 봤던것들입니다.  
 
-다음엔 클래스를 직접 사용합니다. 새로운 변수 `greeterMaker`를 생성합니다. 이 변수는 클래스를 참조합니다. `typeof Greeter`를 사용했는데 이건 인스턴스 타입이 아닌 "`Greeter`클래스의 타입"이라는 의미입니다. 보다 정확하게는 "Greeter라는 심볼의 타입"이 생성자 함수의 타입입니다. 이 유형에는 `Greeter`클래스의 인스턴스를 생성하는 생성자와 함꼐 `Greeter`의 모든 static멤버가 포함됩니다. `new`를 `greeterMaker`에 사용하고 `Greeter`의 새로운 인스턴스를 생성했고 이전 처럼 실행했습니다.
+다음엔 클래스를 직접 사용합니다. 새로운 변수 `greeterMaker`를 생성합니다.  
+이 변수는 클래스를 참조합니다.  
+
+`typeof Greeter`를 사용했는데 이건 인스턴스 타입이 아닌 "`Greeter`클래스의 타입"이라는 의미입니다.  
+보다 정확하게는 "Greeter라는 심볼의 타입"이 생성자 함수의 타입입니다.  
+이 타입에는 `Greeter`클래스의 인스턴스를 생성하는 생성자와 함꼐 `Greeter`의 모든 static멤버가 포함됩니다.  
+`new`를 `greeterMaker`에 사용하고 `Greeter`의 새로운 인스턴스를 생성했고 이전 처럼 실행했습니다.
 
 
 ### Using a class as an interface
