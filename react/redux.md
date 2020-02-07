@@ -123,9 +123,96 @@ store.dispatch(액션생성함수)로 알린다.
 (정확히는 컴포넌트를 리스너(랜더링하는 함수)를 스토어에 등록(구독)하고 상태값의 변화가 생겼을때 리스너를 실행시킨다.)
 
 
+## Redux QnA
 
 
-# 기술 발전 이력
+### reducer에서 dispatch를 하면 안되나요?
+reducer에서는 오직 명시된 액션에 대한 동작만 수행해야합니다.  reducer에선 액션을 보내는면 사이드 이펙트가 발생할 수 있습니다.
+
+### 컴포넌트 밖에서 Redux store에 접근하려면 어떻게 해야하나요?
+createStore()를 이용해서 store모듈을 외부로 보낼 수 있습니다.
+
+
+### 컴포넌트 오드시에 action을 전달하려면 어떻게 해야하나요?
+`componentDidMount`시점에 dispatch를 보내면 됩니다.
+```jsx
+class App extends Component {
+  componentDidMount() {
+    this.props.fetchData()
+  }
+
+  render() {
+    return this.props.isLoaded
+      ? <div>{'Loaded'}</div>
+      : <div>{'Not Loaded'}</div>
+  }
+}
+
+const mapStateToProps = (state) => ({
+  isLoaded: state.isLoaded
+})
+
+const mapDispatchToProps = { fetchData }
+
+export default connect(mapStateToProps, mapDispatchToProps)(App)
+```
+
+### 스토어를 컴포넌트와 연결하려면 어떻게 해야하나요?
+container에서 store를 사용하려면 react-redux 라이브러리의 `connect`함수를 사용하면 됩니다.  
+`connect`는 고차함수이며 `dispatch`를 연결하기 위한 `mapDispatchToProps`와 store에서 관리중인 상태값을 제공받기 위한 `mapStateToProps`를 인자로 제공받습니다. 
+
+```jsx
+import React from 'react'
+import { connect } from 'react-redux'
+
+class App extends React.Component {
+  render() {
+    return <div>{this.props.containerData}</div>
+  }
+}
+
+function mapStateToProps(state) {
+  return { containerData: state.data }
+}
+
+export default connect(mapStateToProps)(App)
+```
+
+
+### 이름이 왜 상태값을 변경하는 함수 이름이 reducer인가요?
+reducer는 항상 모든 action들을 기반으로 상태를 반환합니다.  
+reducer가 호출 될 때 마다 상태와 액션이 전달되는데 action에 따라서 store에서 관리중인 상태값이 변경한뒤 반환합니다.  
+상태값을 변경함에 있어 action단위와 store의 초기 상태값을 줄일 수 있기때문에 reducer입니다.
+(번역 이상..?)
+
+### redux에서 비동기요청을 하려면 어떻게 해야하나요?
+redux-thunk나 redux-saga같은 미들웨어를 사용하면 됩니다.  
+아래 예제에서 redux-thunk를 이용한 사례를 보여드리겠습니다.  
+
+```js
+export const fetchAccount = (id) => (dispatch) => {
+dispatch(setLoadingAccountState()) // Show a loading spinner
+fetch(`/account/${id}`, (response) => {
+    dispatch(doneFetchingAccount()) // Hide loading spinner
+    if (response.status === 200) {
+    dispatch(setAccount(response.json)) // Use a normal function to set the received state
+    } else {
+    dispatch(someError)
+    }
+})
+}
+
+
+function setAccount(data) {
+ return { type: 'SET_Account', data: data }
+}
+```
+
+### 어떤 상태값 redux store에 저장해야하나요?
+component 내부에서는 UI에 관련된 상태를 저장하고 그외 여러 컴포넌트에서 접근 가능한 상태값을 store에 보관하면 됩니다.
+
+
+## 기술 발전 이력
 
 ![](../resource/img/react/redux_cycle.png)
 
@@ -144,3 +231,4 @@ store.dispatch(액션생성함수)로 알린다.
 - [FLUX카툰으로이해하기](https://bestalign.github.io/2015/10/06/cartoon-guide-to-flux/)
 - [Redux를이용한데이터교류방법](https://velopert.com/1225)
 - [Flux and MVC](https://beomy.tistory.com/44)
+- [react interview list-kr](https://github.com/appear/reactjs-interview-questions-ko)
