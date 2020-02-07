@@ -7,7 +7,20 @@
 왜 파일을 하나로 만들까?  
 웹페이지에 필요한 CSS, Script등이 자원들을 받기 위해 서버에 요청하는 횟수를 줄이기 위해서 자원을 하나로 만들기로함!  
 또 최신 자바스크립트 문법을 구형 브라우저가 해석가능한 문법으로 변환하는 역할을 수행함.  
-이밖에 파일압축, 최적화를 할 수어 초기 로딩속도가 빨라진다.
+이밖에 파일압축, 최적화를 할 수있어 초기 로딩속도가 빨라진다.  
+웹팩은 기본적으로 필요한 자원은 미리 로딩하는게 아니라 필요한 시점에 요청하자는 컨셉이다.
+
+
+## 주요 기능
+
+### 자바스크립트 모둘화
+- ES6의 모듈화문법, 웹팩의 모듈 번들링 이용
+
+### HTTP 요청횟수 최적화
+- 리소스 압축을 통해 서버 요청횟수를 줄인다. 
+
+### Dynamic Loading & Lazy Loading
+- 코드 스플리팅을 이용해 모듈을 원하는 타이밍에 로딩한다.
 
 ## 주요개념
 
@@ -229,10 +242,12 @@ UglifyJsPlugin과는 다르게 로더쪽에 설정을 추가했다. 기존 로�
 
 
 ### ref
+- [이해하기 쉬운 webpack](https://haviyj.tistory.com/17)
 - [웹팩의 기본개념](http://jeonghwan-kim.github.io/js/2017/05/15/webpack.html)
 - [웹팩 옵션](https://trustyoo86.github.io/webpack/2018/01/10/webpack-configuration.html)
+- [웹팩 개념잡기](https://kdydesign.github.io/2017/07/27/webpack/)
 - [웹팩 정복하기](https://kdydesign.github.io/2017/11/04/webpack-tutorial/)
-
+- [웹팩 핸드북](https://joshua1988.github.io/webpack-guide/)
 ## 다뤄볼 내용
 청크
 캐시

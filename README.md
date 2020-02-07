@@ -181,6 +181,8 @@ SI프로젝트를 경험하면서 조금만 수정해도 실타래처럼 얽혀�
     - Symbol
     - proxy
     - web worker
+    - Shared Array Buffer (ES7)
+    - Atomics (ES7)
 2. Typescript
     - pattern
 3. React
@@ -194,25 +196,23 @@ SI프로젝트를 경험하면서 조금만 수정해도 실타래처럼 얽혀�
 5. node.js
 6. Test
     - TDD
-7. Clean Code
-8. Optimizing
+7. webpack
+8. Clean Code
+9. Optimizing
     - requestidlecallback
     - pwa
     - 렌더링
       - web workers
       - service workders
-9. 커뮤니케이션
+10. 커뮤니케이션
     - UX를 고려한 설계
     - 프로그래머 소통(코드)
     - 서비스 품질 개선
-10. 함수형프로그래밍
-11. 협업습관 기르기
+11. Functional Programming
+12. 협업습관 기르기
     - (이슈관리, JIRA,Confluence, 프로젝트 보드)
-12. 디지털 노마드
-13. TIL
-    - https://www.slideshare.net/
+13. Digital nomard
 14. Web Assembly
-15. graphQL
+15. GraphQL
 16. cavas, svg
-17. webpack
-18. sass
+17. sass
