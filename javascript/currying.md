@@ -27,20 +27,20 @@ curried( 1 )( 2 )( 3 ); // 6
 ```js
 const server = address => loginInfo => {
 
-    const loginToken;
-    return request => {
+    const loginToken = axios(address);
+    return ({url, data}) => {
         // loginToken을 사용해서 서버의 특정 requsest를 요청한다.
     }
 }
 
-const connect = server("/loginCheck");
+const connect = server("/getToken");
 
-const request = connect({"username": "kevin", "password": "1111"});
+const request = connect({"username": "kevin", "password": "1111"}); // loginToken 초기화.
 const request2 = connect({"username": "tom", "password": "1234"});
 ```
-`server`라는 함수에 urlRequest를 입력하여 사용자 정보를 입력하면 로그인 정보를 반환하는 `connect`를 만들었습니다.  
+`server`라는 함수에 urlRequest(/getToken)를 입력하여 사용자 정보를 입력하면 로그인토큰 반환하는 `connect`를 만들었습니다.  
 이렇게 인자를 하나씩 나눔으로서 일종의 단계를 구분할 수 있습니다. 데이터가 준비되면 하나씩 완성해 나가는 식이죠.  
-위 에제에서는 서버요청경로를 초기화한뒤, 사용자정보를 보내서 loginToekn을 초기화합니다.  
+위 에제에서는 서버 요청경로를 초기화한 뒤, 사용자 정보를 보내서 loginToekn을 초기화합니다.  
 그리고 `request`함수를 이용해서 `loginToken`의 정보를 기반으로 서버에 요청을 보낼 수 있습니다.
 
 
