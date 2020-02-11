@@ -86,12 +86,12 @@ SI프로젝트를 경험하면서 조금만 수정해도 실타래처럼 얽혀�
 
 ## 3.React
 - [JSX](./react/JSX.md) 
+- [Life Cycle](./react/lifeCycle.md)
+- [redux](./react/redux.md)
 - [react_redux](./react/react_redux.md)
 - [redux_action](./react/redux_action.md)
-- [redux_thunk](./react/redux_thunk.md)
-- [Life Cycle](./react/lifeCycle.md)
+- [redux_thunk](./react/react_thunk.md)
 - [Hooks](./react/hook.md)
-- [Redux](./react/redux.md)
 - [Server side rendering](./react/serverSideRendering.md)
 - [8Thing to Lean in ReactJS before using redux](./react/8ThingsToLeanInReactBeforUsingRedux.md)
 - [middleware](./react/middleware.md)

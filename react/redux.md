@@ -9,9 +9,11 @@ redux를 이해하기 위해서 몇가지 용어를 이해해야한다.
 
 
 ## 소개 
-Redux는 Javascript 어플리케이션에서 data-state와 UI-state를 관리해주는 도구입니다. 이는 상태적 데이터 관리가 시간이 흐름에 따라 복잡해질수 있는 Single Page Applicatoin에서 유용하게 사용됩니다.
+Redux는 Javascript 어플리케이션에서 data-state와 UI-state를 관리해주는 도구입니다. 
+이는 상태적 데이터 관리가 시간이 흐름에 따라 복잡해질수 있는 Single Page Applicatoin에서 유용하게 사용됩니다.
 
-React는 데이터흐름이 단방향으로 흐릅니다. 하지만 컴포넌트 갯수가 많아진다면 혹은 데이터를 교류할 컴포넌트들이 parent-child관계가 아니라면 이런 단방향 데이터 전달은 복잡해집니다.
+React는 데이터흐름이 단방향으로 흐릅니다.  
+하지만 컴포넌트 갯수가 많아진다면 혹은 데이터를 교류할 컴포넌트들이 부모-자식관계가 아니라면 이런 단방향 데이터 전달은 복잡해집니다.
 
 ![](../resource/img/react/childToParent.png)  
 물론 직계 부모 컴포넌트를 이용하여 데이터를 전달 하는 방법이 있지만 이런 방법은 코드를 복잡하게 만듭니다.  
@@ -43,7 +45,7 @@ Flux를 이용하면 시스템의 컴포넌트 간 데이터 흐름이 단방향
     Store는 애플리케이션의 상태나 논리를 포함한다. Store의 역할은 전통적인 MVC의 Model역할과 비슷하다. 하지만 다수 객체의 상태를 관리하는 MVC와 달리 단일 객체인스턴스로 관리한다. 또 Backbone 프레임워크의 컬렉션과도 다르다. ORM형식의 객체를 집합으로 관리하기보다 조금 더 단순하게 애플리케이션 내의 한 특정 도메인에 관한 애플리케이션의 상태를 관리한다.
 
 
-![](../resource/img/react/flux2.png);
+![](../resource/img/react/flux2.png)
 Dispatcher가 중첩되지 않게 처리해야합니다. 즉 어떤 Action을 Dispatcher를 통해 처리하는 동안 다른 Action이 동작하지 않아야합니다.
 
 <br><br><br>
@@ -55,6 +57,11 @@ Dispatcher가 중첩되지 않게 처리해야합니다. 즉 어떤 Action을 Di
 Redux는 어플리케이션의 state를 한개의 store에서 관리합니다. 모든 state가 한곳에 있기 때문에 이를 `Single Source of Truth`라고 부릅니다.  
 여기서 Flux와 차이가 있는데 Flux에서는 여러개의 store를 갖습니다. store의 데이터 구조는 개발자 나름입니다. 보통 nested된 구조로 이루어져있습니다(중첩구조)
 
+- Undo/Redo 구현이 간단해 집니다. store에 관리중인 상태값을 변경하면 되기 때문입니다.
+- 전체 상태값을 불러오기 쉬워집니다.
+- 디버깅이 쉬워집니다. 리덕스의 [Time Travel](https://camo.githubusercontent.com/47a3f427c9d2e0c763b74e33417b3001fe8604b6/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f662e636c2e6c792f6974656d732f3149335032323243334e3252314d3279314b33622f53637265656e2532305265636f7264696e67253230323031352d31322d3232253230617425323030372e3230253230504d2e6769663f763d3162363236376537)기능을 이용하면 디버깅이 쉽습니다.
+
+
 
 ### 2. State is read-only
     "The only way to mutate the state is to emit an action, an object describing what happend."
@@ -62,6 +69,7 @@ Redux는 어플리케이션의 state를 한개의 store에서 관리합니다. �
 ```js
 dispatch({type:'INCREASE'})
 ```
+상태 변경의 경로가 단순하므로 애플리케이션의 동작을 이해하기 쉽습니다. 
 
 
 ### 3. Chages are made with Pure Functoins
@@ -70,12 +78,29 @@ dispatch({type:'INCREASE'})
 
 세번째 원칙은 Reducer함수는 '순수함수'로 작성되어야 한다는 겁니다.  
 
-#### 순수함수
+- 발생한 액션을 순서대로 기억하고 있으며 언제든지 현재 상태를 만들어 낼 수 있습니다. 리플레이 기능을 쉽게 구현할 수 있습니다.
+- 단위테스트 코드를 작성하기 쉽습니다. 정해진 입력에는 항상 예상되는 출력을 주므로 테스트 코드 작성이 쉽습니다.
+
+#### 순수함수란?
 - 외부 네트워크 혹은 데이터베이스에 접근하지 않아야한다.
 - return 값은 오직 parameter값에만 의존해야한다.
 - 인수는 변경되지 않아야한다.
 - 같은 인수로 실행된 함수는 언제나 같은 결과를 반환해야한다.
 - 순수하지 않은 API 호출을 하지 말아야한다.
+
+## 어떤 데이터를 redux에서 관리해야할까?
+- 애플리케이션의 여러 곳에서 공유되는 데이터
+- 다른 페이지를 갔다가 돌아옸을 때 그 상태를 유지할 필요가 있는 데이터
+
+
+## Redux data flow
+![](../resource/img/react/reduxFlow.png)
+
+1. Action creators create object
+2. objects are dispatched to the store
+3. the store invokes reducders
+4. reducers generate new state
+5. listeners are notified of state update
 
 
 ## 개념
@@ -122,7 +147,7 @@ store.dispatch(액션생성함수)로 알린다.
 5. 상태값을 변화하면 구독중인 컴포넌트에게 알린다.
 (정확히는 컴포넌트를 리스너(랜더링하는 함수)를 스토어에 등록(구독)하고 상태값의 변화가 생겼을때 리스너를 실행시킨다.)
 
-
+<br><br>
 ## Redux QnA
 
 
@@ -225,6 +250,8 @@ component 내부에서는 UI에 관련된 상태를 저장하고 그외 여러 �
 
 
 ### REF
+- [flow.io](http://facebook.github.io/flux/)
+- [redux를 이해하자](https://medium.com/@ljs0705/redux%EB%A5%BC-%EC%9D%B4%ED%95%B4%ED%95%98%EC%9E%90-7c9e8de0ab7f)
 - [왜 redux를 써야할까](https://velog.io/@velopert/Redux-1-%EC%86%8C%EA%B0%9C-%EB%B0%8F-%EA%B0%9C%EB%85%90%EC%A0%95%EB%A6%AC-zxjlta8ywt)
 - [페이스북이Flux를채택한이유](https://blog.coderifleman.com/2015/06/19/mvc-does-not-scale-use-flux-instead/)
 - [MVC패턴의한계](https://taegon.kim/archives/5288)
