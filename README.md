@@ -62,6 +62,14 @@ SI프로젝트를 경험하면서 조금만 수정해도 실타래처럼 얽혀�
 - [same origin policy](./javascript/sameOriginPolicy.md)
 - [new](./javascript/new.md)
 - [Prototype Ingerit](./javascript/pattern/prototypeInherit.md)
+- [currying](./javascript/currying.md)
+- [DesignPattern-Adpter](./javascript/pattern/DesignPattern_Adapter.md)
+- [DesignPattern-Bilder](./javascript/pattern/DesignPattern_Bilder.md)
+- [DesignPattern-Module](./javascript/pattern/DesignPattern_Module.md)
+- [DesignPattern-Observer](./javascript/pattern/DesignPattern_Observer.md)
+- [DesignPattern-sigletone](./javascript/pattern/DesignPattern_SigleTon.md)
+- [DesignPattern-Factory](./javascript/pattern/DesignPattern_Factory.md)
+
 <br><br>
 
 
@@ -82,7 +90,7 @@ SI프로젝트를 경험하면서 조금만 수정해도 실타래처럼 얽혀�
 - [redux_action](./react/redux_action.md)
 - [redux_thunk](./react/redux_thunk.md)
 - [Life Cycle](./react/lifeCycle.md)
-- [Hook](./react/hook.md)
+- [Hooks](./react/hook.md)
 - [Redux](./react/redux.md)
 - [Server side rendering](./react/serverSideRendering.md)
 - [8Thing to Lean in ReactJS before using redux](./react/8ThingsToLeanInReactBeforUsingRedux.md)
@@ -94,6 +102,7 @@ SI프로젝트를 경험하면서 조금만 수정해도 실타래처럼 얽혀�
 - [express](./nodeJS/express.md)
 - [koa](./nodeJS/koa.md)
 - [gulp](./nodeJS/gulp.md)
+- [module](./nodeJS/module.md)
 <br><br>
 
 ## 5.HTML
