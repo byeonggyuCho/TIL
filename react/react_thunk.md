@@ -14,6 +14,96 @@ thunk를 통한 이점을 다음과 같습니다.
 - 동기와 비동기로직을 순차적으로 작업할 수 있습니다.
 - dispatch에 조건을 부여할 수 있습니다.
 - router transition
+- 컴포넌트, 액션 생성자 등에 사이드 이펙트를 일읠만한 소스를 미들웨어레벨로 이동시킬 수 있다.
+    - 다른 요소들이 순수하게 유지된다. 
+
+
+## Why redux-thunk is needed?
+
+### 1.Problem
+일반적인 액션 생성자에서는 비동기 통신을 할 방법이 없습니다.
+```js
+const asyncLogin = () =>
+    axios.get('/api/auth/me')
+    .then(res => res.data)
+    .then(user => {
+        // how do we use thi `user` object
+    })
+
+// somewhere in component
+sotore.dispatch(asyncLogin()) // nope; `asyncLogin()` is a promsie, not action
+```
+위 예제에서 보는 것처럼 액션생성자에서 비동기 로직을 작성하면 액션을 전달할 방법이 없습니다.  
+dispatch의 인자로 전달받은 프로미스를 redux가 처리할 방법이 없죠.
+
+### 2. First Thought: Call Async Directly
+비동기 핸들러에서 `store.dispatch`를 호출하면 어떨까요?
+
+```js
+// in an action creator moudle
+import store from '../store'
+
+const simpleLogin = user => ({ type: LOGIN, user })
+const asyncLogin = () => 
+    axios.get('/api/auth/me')
+    .then(res => res.data)
+    .then(user => {
+        store.dispatch(simpleLogin(user))
+    })
+
+// somewhere in component
+asyncLogin();
+```
+괜찮아 보일지 모르겠지만 몇가지 걸리는 것이 있습니다.  
+
+
+#### Con A: Inconsistent API
+이렇게 사용하게 되면 상황에 따라 호출해야하는 API가 달라집니다.  
+`store.disptach(syncActionCreator())` 혹은 `doSomeAsyncThing()`을 호출해야하게된 것이죠.  
+이렇게 사용하면 안되는 이유가 있습니다.
+
+1. 후자의 경우 store에 dispatch하는것이 불명확합니다.  
+한 눈에 Redux 액션을 파악할 수 없기때문에 앱의 데이터 흐름이 불투명해집니다.
+2. 이건 유지보수의 문제와 연결됩니다.  
+나중에 함수가 비동기에서 동기로 혹은 동기에서 비동기로 수정된 경우 이 함수가 사용된 컴포넌트를 찾아다니며 수정을 해야합니다.  
+
+우리가 원하는건 비동기 액션에서도 `store.dispatch(actionCreator())`를 사용하는 것입니다.
+
+
+#### Con B: Impurity
+`asyncLogin`함수는 순수함수가 아닙니다. 사이드 이펙트가 있죠.  
+물론 발견하고 결국 해결책을 찾긴 할겁니다.  하지만 컴포넌트에 있는 사이드 이펙트는 컴포넌트가 더 동작하기 어렵게 만듭니다.  
+예를들어 단위테스트에서 `axios`를 차단하거나 수정해야할 수도 있습니다. 그렇지 않으면 컴포넌트가 네트워크 호출을 수행합니다.  
+
+
+#### Con C: Tight Couping
+`asyncLogin` 함수는 `store`의 스코프에 단단히 연결되어 있기 때문에 재활용할 수 없다.  
+만약 이 액션 생성자를 서버사이드 렌더링에서 사용하는 것 처럼 2개 이상의 리덕스 스토어에서 사용하거나 
+mock처럼 스토어가 없는 곳에서 사용한다면 어떻게 해야할 까요?
+
+
+#### Better: Thunks
+네트워크 호출을 만드는 대신에 나중에 실행할 수 있는 함수를 반환합니다.  
+```js
+// in an action creator moudle
+import store from '../store' // still coupled (for now...)
+
+const simpleLogin = user => ({ type: LOGIN, user })
+
+const thunkedLogin = () =>         // action creator
+    () =>                          // return a thunk, whick when inked
+        axios.get('/api/auth/me')  // performs the actual effect     
+        .then(res => res.data)      
+        .then(user => {
+            store.dispatch(simpleLogin(user))
+        })
+
+// somewhere in component
+store.dispatch(thunkedLogin())  // dispatches the thunk to the store.
+
+// The thunk는 아직 호출되지 않는다. 
+```
+
 
 
 ## Motivation
@@ -208,6 +298,7 @@ export default connect((state) => {
 
 
 ## ref 
+- [thunk and saga](https://ideveloper2.tistory.com/53)
 - [understanding redux thunk](https://codeburst.io/understanding-redux-thunk-6dbae0241817)
 - [thunk and saga](https://medium.com/humanscape-tech/redux%EC%99%80-%EB%AF%B8%EB%93%A4%EC%9B%A8%EC%96%B4-thunk-saga-43bb012503e4)
 - [Thunk in redux : the Basic](https://medium.com/fullstack-academy/thunks-in-redux-the-basics-85e538a3fe60)
@@ -215,3 +306,4 @@ export default connect((state) => {
 - [Managing side effects in react + redux usin sagas](https://jaysoo.ca/2016/01/03/managing-processes-in-redux-using-sagas/)
 - [why using saga](https://orezytivarg.github.io/from-redux-thunk-to-sagas/)
 - [why do we need middleware for async flow in redux](https://stackoverflow.com/questions/34570758/why-do-we-need-middleware-for-async-flow-in-redux/34599594#34599594)
+- [thunk VS saga](https://velog.io/@dongwon2/Redux-Thunk-vs-Redux-Saga%EB%A5%BC-%EB%B9%84%EA%B5%90%ED%95%B4-%EB%B4%85%EC%8B%9C%EB%8B%A4-)
