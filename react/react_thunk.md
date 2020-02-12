@@ -103,6 +103,115 @@ store.dispatch(thunkedLogin())  // dispatches the thunk to the store.
 
 // The thunk는 아직 호출되지 않는다. 
 ```
+썬크를 사용함으로서 단독 API로 돌아왔으며 `thunkedLogin`이 순수함수가 되었다.
+호출되면 함수가 반환되고 즉각적인 부작용이 발생하지 않는다
+
+반환되는것이 액션객체가 아니라 thunk함수라는것이 의아할수 있습니다
+리덕스는 액션객체만 이해하니깐요. 또 여전히 결합도가 높은것같구요 
+
+맞습니다 thunk가 동작하기 위해선 몇가지 코드가 더 필요합니다.  
+값이 리덕스 스토어에 전달될때마다 먼저 미들웨어를 통과합니다.
+
+### Redux-thunk Middleware
+redux-thunk 미들웨어는 다음처럼 동작합니다
+```js
+actionOrThunk =>
+  typeof actionOrThunk === 'function'
+    ? actionOrThunk(dispatch, getState)
+    : passAlong(actionOrThunk);
+```
+- 일반 액션객체가 전달되면 redux-thunk는 그냥 전달합니다
+- 함수가 전달되면 함수에  스토어의 `dispatch`와 `getstate`을 전달하여 호출합니다. thunk를 리듀서에 전달ㄹ하지않습니다
+
+이제 액션생성자가 객체나 함수를 반환할 수 있습니다.
+ thunk가 미들웨어에 의해 실행되면 비동기 로직을 수행합니다.
+ 비동기로직이 완료되면 콜백 또는 핸들러가 액션을 스토어에 전달할수 있습니다
+따라서 thunk는 비동기 핸들러를 사용하여 정상적인 Redux 루프를 일시적으로 "피하도록" 한다.
+
+
+### Dependency Injection
+thunk를 사용하여 API를 통합하고 액션생성자가 순수하게 유지할수 있다는 것을 알았습니다
+그러나 여전히 특정 store를 사용하는 문제가 있습니다.
+redux-thunk 미들웨어는 의존성 주입(DI)이라는 한가지 해결책을 줍니다. 
+DI는 코드 결합도를 완화하는 방법인데요.  
+의존성을 pull in하는 대신에 코드에 의존성이 제공됩니다
+이런 역할의 역전은 제어역전보다 일반적인 개념의 예입니다.  
+
+Thunk는 일반적으로 파라미터가 없습니다. 추가 입력없이 수행 준비가 된상태죠.
+그러나 react-thunk는 이 규칙을 어기고 `dispatch`와 `getstate`를 전달합니다. 
+그러므로 thunked action 생성자의 기본 패턴에선 범위가 한정된 store가 필요없습니다.  
+`dispatch`와 `getstate`를 주입하고 있기때문에 store에 직접 접근할 필요가 없습니다.
+
+```js
+// in an action creator module:
+const simpleLogin = user => ({ type: LOGIN, user })
+
+// Look, no store import!
+
+const thunkedLogin = () =>     // action creator, when invoked…
+  dispatch =>                  // …returns thunk; when invoked with `dispatch`…
+    axios.get('/api/auth/me')  // …performs the actual effect.
+    .then(res => res.data)
+    .then(user => {
+      dispatch(simpleLogin(user))
+    })
+
+// somewhere in component:
+store.dispatch(thunkedLogin()) // dispatches the thunk to the store.
+
+// The thunk itself (`dispatch => axios.get…`) has not yet been called.
+// When it reaches the middleware, `redux-thunk` will intercept & invoke it,
+// passing in the store's `dispatch`.
+```
+
+어떻게 이게 동작할까요?  어디서 `dispatch`가 넘어오는 걸까요?  
+간단히 말하자면 `redux-thunk`미들웨어는 스토어에 접근할수 있기때문에 store에 있는 disaptch와 getstate를 전달할 수 있습니다 thunk가 실행될 때.  
+미들웨어는 thunk로 의존성이 주입되는 것을 책임지고 있습니다.
+액션 생성자가 수동으로 store를 탐색할 필요가 없습니다. 그래서 이 액션생성자는  다른 스토어들에 사용될수 있습니다.  
+
+
+
+<br>
+<br>
+
+#### getState
+`getState`가 사용되는 것을 못 봤는데 남용하기 쉽기 때문입니다.  
+많은 리덕스 앱에서 새로운 상태값을 결정하기위해 이전 상태값을 사용하는 것은 리듀서에서하는게 더 적절합니다.  
+
+
+## Why Thunk Middleware, and not Promise Middleware?  
+프로미스들은 자바스크립트에서 표준이되었으며 비동기적 값의 조합가능한 표현이다.  
+`redux-promise-middleware`와 `redux-promise`패키지는 프로미스나 프로미스가 체이닝된 액션 객체를 보낼 수 있다.  
+둘 다 좋은 기능을 가지고 있고 리덕스에서 비동기를 더 편하게 다룰 수 있다.
+그러나 둘다 불순물에 대한 문제는 다루지 않는다.  
+프로미스는 이미 초기화된 비동기 액션을 나타낸다.  
+
+
+## Native Promises Use
+리덕스에서 thunk없이 프로미스를 사용하려면 다음과 같을 것입니다.
+```js
+// in an action creator module:
+import store from '../store'
+
+const simpleLogin = user => ({ type: LOGIN, user })
+
+const promiseLogin = () =>  // action creator…
+  axios.get('/api/auth/me') // …returns a promise.
+  .then(res => res.data)
+  .then(user => {
+    store.dispatch(simpleLogin(user))
+  })
+
+// somewhere in component:
+store.dispatch(promiseLogin()) // Nope, still not good
+```
+
+
+
+
+
+
+
 
 
 
@@ -298,6 +407,7 @@ export default connect((state) => {
 
 
 ## ref 
+https://react.vlpt.us/redux-middleware/05-redux-thunk-with-promise.html
 - [thunk and saga](https://ideveloper2.tistory.com/53)
 - [understanding redux thunk](https://codeburst.io/understanding-redux-thunk-6dbae0241817)
 - [thunk and saga](https://medium.com/humanscape-tech/redux%EC%99%80-%EB%AF%B8%EB%93%A4%EC%9B%A8%EC%96%B4-thunk-saga-43bb012503e4)
