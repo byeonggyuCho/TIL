@@ -155,3 +155,5 @@ JSP가 서블릿을 기반으로 하고 있기 때문에 JSP의 동작방식을 
 </html>
 ```
 
+## ref
+https://linked2ev.github.io/devlog/2018/10/17/JSP-1.-What-JSP/

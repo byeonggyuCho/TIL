@@ -250,6 +250,7 @@ component 내부에서는 UI에 관련된 상태를 저장하고 그외 여러 �
 
 
 ### REF
+- [redux-kr](https://lunit.gitbook.io/redux-in-korean/)
 - [flow.io](http://facebook.github.io/flux/)
 - [redux를 이해하자](https://medium.com/@ljs0705/redux%EB%A5%BC-%EC%9D%B4%ED%95%B4%ED%95%98%EC%9E%90-7c9e8de0ab7f)
 - [왜 redux를 써야할까](https://velog.io/@velopert/Redux-1-%EC%86%8C%EA%B0%9C-%EB%B0%8F-%EA%B0%9C%EB%85%90%EC%A0%95%EB%A6%AC-zxjlta8ywt)

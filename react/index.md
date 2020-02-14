@@ -6,14 +6,22 @@ DOM의 상태관리를 최소화하고 기능과 사용자 인터페이스에 �
 
 - 참고 : https://velopert.com/3612
 
+## 연관 키워드
+- spa
+- Virtual dom
+- redux
+- Flux
+- mobile app
+- hybrid app
+- client side rendering
+
+
+
 ## 1. Virtual Dom
 브라우저의 엔진이 잦은 빈도의 Dom 랜더링을 원활하게 만들어주는 도구.  
 자바스크립트로 가상 돔을 만들고 변화가 필요한 곳에만  브라우저가 업데이트를 해주는 구조를 갖음으로서 작업을 최소화한다.  
 시시각각 변하는 웹애플리케이션을 브라우저 엔진으로 구현하기 위한 꼼수(?)라고 볼 수 있다.
 
-
-next js를 사용하는 이유
-리액트에 typescript를 적용할때 고려할것
 
 ## 2.redux
 FLUX패턴을 위한 상태관리 라이브러리  
@@ -27,8 +35,12 @@ SPA에서 로딩속도에 대한 이슈를 해결하기 위해서 등장
 ## 4.Hook
 
 
+## 국내 사용 기업
+- 쿠팡
+- 뱅크샐러드
+
+
 ## 앞으로 다뤄볼 주제
-- redux_thunk
 - hook
 - hot loader
 - next.js
