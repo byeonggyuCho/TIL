@@ -1,14 +1,19 @@
 # redux
 
-![](../resource/img/react/redux.png)
 
-FLUX 아키텍쳐를 편하게 사용할 수 있게 해주 상태관리 라이브러리.
+
+![](../resource/img/react/redux-logo2.png)
+
+FLUX 아키텍쳐를 편하게 사용할 수 있게 해주 상태관리 라이브러리.  
 그리고 react-redux는 리액트에서 redux를 쉽게 사용하기 위한 라이브러리다.  
 redux를 사용함으로서 기존의 구조에서 컴포넌트간 상태전달을 위해서 직계 부모를 거쳐 전달하는 상태관리의 단점을 극복할 수 있다.  
 redux를 이해하기 위해서 몇가지 용어를 이해해야한다.  
 
 
 ## 소개 
+
+![](../resource/img/react/redux.png)
+
 Redux는 Javascript 어플리케이션에서 data-state와 UI-state를 관리해주는 도구입니다. 
 이는 상태적 데이터 관리가 시간이 흐름에 따라 복잡해질수 있는 Single Page Applicatoin에서 유용하게 사용됩니다.
 
