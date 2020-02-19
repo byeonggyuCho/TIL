@@ -32,6 +32,7 @@ spa는 모던 웹의 큰 트탠드 중 하나다.
 
 
 ## REF
+- [a-netflix-web-performance-case-study](https://medium.com/dev-channel/a-netflix-web-performance-case-study-c0bcde26a9d9)
 https://isme2n.github.io/devlog/2017/05/19/about-spa/
 https://brownbears.tistory.com/406
 https://eastflag.co.kr/fullstack-spa_definition/

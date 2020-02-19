@@ -216,3 +216,8 @@ export default handleActions({
 }, initialState);
 ```
 
+## REF
+- [why-do-we-need-middleware-for-async-flow-in-redu](https://stackoverflow.com/questions/34570758/why-do-we-need-middleware-for-async-flow-in-redux/34599594#34599594)
+- [managing-processes-in-redux-using-sagas](https://jaysoo.ca/2016/01/03/managing-processes-in-redux-using-sagas/)
+- [Why-redux-saga/](https://gracefullight.dev/2017/12/06/Why-redux-saga/)
+- [Understanding Redux Thunk](https://codeburst.io/understanding-redux-thunk-6dbae0241817)

@@ -16,18 +16,31 @@
 ### 자바스크립트 모둘화
 - ES6의 모듈화문법, 웹팩의 모듈 번들링 이용
 
+### 자바스크립트 일원화
+- 프론트엔드 코드에 npm 패키지를 사용할 수 있습니다.
+
 ### HTTP 요청횟수 최적화
 - 리소스 압축을 통해 서버 요청횟수를 줄인다. 
 
 ### Dynamic Loading & Lazy Loading
+- 코드를 압축 또는 최적화할 수 있습니다.
 - 코드 스플리팅을 이용해 모듈을 원하는 타이밍에 로딩한다.
+- CommonsChunkPlugin 자동생성
+
+### NPM으로 JavaScript 리소스 일원화
+
+### Webpack-dev-server 활용한 개발 편의성 증대
+-  Webpack 설정을 통해 Front-end만의 개발용 Node.js 서버를 손쉽게 구축하도록 돕는다.
+- HMR (Hot Module Replacement)을 통해 수정된 사항을 브라우저에서 빠르게 확인할 수도 있다.(생산성 향상)
+- 실질적으로 물리적인 파일을 Build해내는 것이 아니라, Memory내에 Cache 한 결과를 라우팅하기 때문에 watch를 통해 변경사항을 매번 빌드하는 것에 비해 쾌적한 개발 환경을 구축
+
 
 ## 주요개념
 
 ### entry
 웹팩에서 모든 것은 모듈이다. 자바스크립트, 스타일시트, 이미지 등 모든 것들을 자바스크립트 모듈로 로딩해서 사용하도록한다. 
 
-![](../resource/img/webpack/webpack-dependency-graph.jpg)  
+![](../resource/img/react/webpack_bunddling.png)  
 위 그림처럼 자바스크립트가 로딩하는 모듈이 많아질 수록 모듈간의 의존성은 증가한다. 의존성 그래프의 시작점을 웹팩에서는 `엔트리(entry)`라고한다.  
 
 웹팩은 엔트리를 통해서 필요한 모듈을 로딩하고 하나의 파일로 묶는다.
@@ -243,7 +256,10 @@ UglifyJsPlugin과는 다르게 로더쪽에 설정을 추가했다. 기존 로�
 설정을 완료한 후 웹팩 실행결과 dist 폴더에는 bundle.js와 style.css파일이 생성되어 있을 것이다.
 
 
-### ref
+### REF
+- [WebpackTutorial_한글](https://github.com/AriaFallah/WebpackTutorial/tree/master/ko-arahansa/part1)
+- [(Webpack) 모듈? 번들링?](https://perfectacle.github.io/2016/11/18/Module-bundling-with-Webpck/)
+- [왜 webpack인가](https://dev.zzoman.com/2017/09/04/why-do-you-need-to-learn-about-webpack/)
 - [이해하기 쉬운 webpack](https://haviyj.tistory.com/17)
 - [웹팩의 기본개념](http://jeonghwan-kim.github.io/js/2017/05/15/webpack.html)
 - [웹팩 옵션](https://trustyoo86.github.io/webpack/2018/01/10/webpack-configuration.html)

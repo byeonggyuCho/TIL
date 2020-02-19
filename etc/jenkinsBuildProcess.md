@@ -129,6 +129,7 @@ Post-bild Actions는 빌드가 끝난 뒤에 이뤄지는 작업을 하는 곳�
 
 
 ### REF
+- [젠킨스 사용하여 자동 배포환경 만들기](https://zuminternet.github.io/JENKINS-BUILD/)
 - [Setting up jenkins to deploy heroku](https://lankydan.dev/2017/06/11/setting-up-jenkins-to-deploy-to-heroku)
 - [Automating our Heroku deployments from Jenkins](https://www.paulfurley.com/automating-heroku-deployments-from-jenkins/)
 - [Create An SSH Key](https://installfest.railsbridge.org/installfest/create_an_ssh_key#generate-key)
