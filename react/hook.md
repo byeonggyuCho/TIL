@@ -691,3 +691,4 @@ export default RefSample;
 - [리액트의 Hooks 완전 정복하기.](https://velog.io/@velopert/react-hooks)
 - [React의 새로운 패러다임 Hooks](https://velog.io/@vies00/React-Hooks)
 - [Hooks](https://ko.reactjs.org/docs/hooks-reference.html)
+- [React - Functional Component의 장점, Hook](https://boxfoxs.tistory.com/395)

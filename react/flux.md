@@ -11,8 +11,8 @@ Facebook이 MVC패턴의 양방향 데이터 바인딩 구조에서 야기될 �
 양방향 데이터 바인딩은 연속적인 갱신이 발생하고 객체 하나의 변경이 다른 객체를 변경하게 되어 실제 필요한 업데이트보다 더 많은 분량을 실행하게 된다.  
 어플리케이션의 규모가 커지면 데이터의 연속적인 갱신이 되는 상황에서는 사용자 상호작용의 결과가 어떤 변화를 만드는지 예측하는데 어려워진다.  
 
+그래서 데이터는 단방향으로만 흐르고, 새로운 데이터를 넣으면 처음부터 흐름이 다시 시작되는  아키텍처를 개발했다.  
 ![](../resource/img/react/flux.png) 
-그래서  데이터는 단방향으로만 흐르고, 새로운 데이터를 넣으면 처음부터 흐름이 다시 시작되는  아키텍처를 개발했다.  
 ![](../resource/img/react/flux2.png)
 
 
@@ -36,7 +36,7 @@ Facebook이 MVC패턴의 양방향 데이터 바인딩 구조에서 야기될 �
 
 ### Dispatcher
 디스패쳐는 기본적으로 콜백(callback)이 등록되어있는 곳이다. 디스패쳐는 액션을 보낼 필요가 있는 모든 스토어(store)를 가지고 있고, 액션 생성자로부터 액션이 넘어오면 여러 스토어에 액션을 보낸다.  
-이 처리는 동기적으로(synchronously) 실행된다. 만약 스토어들 사이에 의존성(dependency)이 있어서 하나를 다른 것보다 먼저 업데이트를 해야한다면, waitFor()를 사용해서 디스패쳐가 적절히 처리하도록 할 수 있다.  
+이 처리는 동기적으로(synchronously) 실행된다. 만약 스토어들 사이에 의존성(dependency)이 있어서 하나를 다른 것보다 먼저 업데이트를 해야한다면, `waitFor()`를 사용해서 디스패쳐가 적절히 처리하도록 할 수 있다.  
 
 flux의 디스패쳐는 액션 타입과는 관계없이 등록된 모든 스토어로 보내진다. 이말인 즉슨, 스토어가 특정 액션만 구독(subscribe)하지 않고 모든 액션을 일단 받은 뒤 처리할지 말지를 결정한다는 뜻이다.
 
@@ -80,6 +80,7 @@ Store는 어플리케이션의 상태와 상태 변화로직을 포함하고 있
 
 
 ### REF
+- [the-case-for-flux](https://medium.com/swlh/the-case-for-flux-379b7d1982c6)
 - [Flux overview-kor](https://haruair.github.io/flux/docs/overview.html)
 - [Flux.io](http://facebook.github.io/flux/docs/in-depth-overview)
 - [what-the-flux-lets-redux](https://blog.andyet.com/2015/08/06/what-the-flux-lets-redux/)
@@ -90,3 +91,4 @@ Store는 어플리케이션의 상태와 상태 변화로직을 포함하고 있
 - [Flux and MVC](https://beomy.tistory.com/44)
 - [redux_cartton_korean](http://bestalign.github.io/2015/10/26/cartoon-intro-to-redux/)
 - [redux 적용기](https://d2.naver.com/helloworld/1848131)
+- [actions-and-the-dispatcher](https://haruair.github.io/flux/docs/actions-and-the-dispatcher.html#content)

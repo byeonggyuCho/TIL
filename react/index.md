@@ -63,6 +63,7 @@ SPA에서 로딩속도에 대한 이슈를 해결하기 위해서 등장
 
 
 ## 리액트 커뮤니티
+- [doc-kr](https://reactjs-kr.firebaseapp.com/docs/thinking-in-react.html)
 - [docs](https://reactjs.org/docs/hello-world.html)
 - [tutorialspoint](https://www.tutorialspoint.com/reactjs)
 - [벨로퍼트와 함께하는 모던 리액트](https://react.vlpt.us/)
@@ -73,5 +74,6 @@ SPA에서 로딩속도에 대한 이슈를 해결하기 위해서 등장
 - [react-redux-starter-kit)](https://github.com/davezuko/react-redux-starter-kit)
 
 ## ref
+- [react Architecture](https://jbee.io/react/react-0-intro/)
 - [리액트는 어떻게 동작할까](https://d2.naver.com/helloworld/9297403)
 - [Thinking in React](https://reactjs.org/docs/thinking-in-react.html)

@@ -198,6 +198,13 @@ react-redux가 제공하는 함수이다. 컴포넌트가 애플리케이션 상
 스토어를 생성하고 무슨 리듀서를 사용할지 알려주며 뷰 레이어 바인딩과 뷰를 불러온다.  
 하지만 루트 컴포넌트는 애플리케이션을 초기화한 뒤로는 거의 하는 일이 없다. 화면을 갱신도 더는 신경 쓰지 않는다. 화면 갱신은 뷰 레이어 바인딩의 도움으로 아래의 컴포넌트들이 맡아서 처리한다.
 
+### 7.프리젠테이션 컴포넌트, 컨테이너 컴포넌트
+- 프리젠테이션 컴포넌트 : 뷰에 집중
+- 컨테이너 컴포넌트: 상태 관리 및 프리젠테이션 컴포넌트 관리 에 집중
+
+
+
+
 
 
 ## How to use Redux
@@ -217,7 +224,7 @@ Provider 컴포넌트는 기본적으로 컴포넌트를 업데이트하기 위�
 액션은 포맷이 바뀐 뒤 자동적으로 보내진다.
 
 ## Redux data flow
-![](../resource/img/react/ReduxDataFlow.png)
+![](../resource/img/react/redux-flow.png)
 
 1. 뷰가 액션을 요청한다. 액션 생성자가 포맷을 변환한 뒤 돌려준다.
 2. bindActionCreators()를 사용했면 자동으로 액션이 보내진다. 그게 아니라면 뷰가 직접 액션을 보낸다.  
@@ -336,6 +343,8 @@ component 내부에서는 UI에 관련된 상태를 저장하고 그외 여러 �
 
 
 ### REF
+- [리덕스 왜 쓸까](https://velopert.com/3528)
+- [리액트어뵤이 쓰는 리덕스](https://velog.io/@velopert/Redux-2-%EB%A6%AC%EC%95%A1%ED%8A%B8-%EC%97%86%EC%9D%B4-%EC%93%B0%EB%8A%94-%EB%A6%AC%EB%8D%95%EC%8A%A4-cijltabbd7)
 - [what-the-flux-lets-redux](https://blog.andyet.com/2015/08/06/what-the-flux-lets-redux/)
 - [redux-kr](https://lunit.gitbook.io/redux-in-korean/)
 - [redux를 이해하자](https://medium.com/@ljs0705/redux%EB%A5%BC-%EC%9D%B4%ED%95%B4%ED%95%98%EC%9E%90-7c9e8de0ab7f)

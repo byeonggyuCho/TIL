@@ -87,6 +87,7 @@ SI프로젝트를 경험하면서 조금만 수정해도 실타래처럼 얽혀�
 ## 3.React
 - [JSX](./react/JSX.md) 
 - [Life Cycle](./react/lifeCycle.md)
+- [flux](./react/flux.md)
 - [redux](./react/redux.md)
 - [react_redux](./react/react_redux.md)
 - [redux_action](./react/redux_action.md)
@@ -95,6 +96,7 @@ SI프로젝트를 경험하면서 조금만 수정해도 실타래처럼 얽혀�
 - [Server side rendering](./react/serverSideRendering.md)
 - [8Thing to Lean in ReactJS before using redux](./react/8ThingsToLeanInReactBeforUsingRedux.md)
 - [middleware](./react/middleware.md)
+- [why_does_we_need_redux_thunk](./react/why_does_we_need_redux_thunk.md)
 <br><br>
 
 ## 4.Node.js
@@ -236,6 +238,6 @@ SI프로젝트를 경험하면서 조금만 수정해도 실타래처럼 얽혀�
     - (이슈관리, JIRA,Confluence, 프로젝트 보드)
 13. Digital nomard
 14. Web Assembly
-15. GraphQL
+15. GraphQL, Apollo
 16. cavas, svg
 17. sass
