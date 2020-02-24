@@ -207,3 +207,6 @@ export default withRequest('https://jsonplaceholder.typicode.com/comments?postId
 
 ## Ref
 - [HOC](https://velopert.com/3537)
+- [higher-order-components](https://reactjs.org/docs/higher-order-components.html)
+- [리액트 HOC 집중 탐구](https://meetup.toast.com/posts/137)
+- [리액트 HOC 집중 탐구_2](https://meetup.toast.com/posts/144)
