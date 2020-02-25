@@ -85,17 +85,17 @@ SI프로젝트를 경험하면서 조금만 수정해도 실타래처럼 얽혀�
 
 
 ## 3.React
+- [Component](./react/component.md)
 - [JSX](./react/JSX.md) 
 - [Life Cycle](./react/lifeCycle.md)
 - [flux](./react/flux.md)
 - [redux](./react/redux.md)
-- [react_redux](./react/react_redux.md)
-- [redux_action](./react/redux_action.md)
-- [redux_thunk](./react/react_thunk.md)
+- [middleware](./react/middleware.md)
+- [redux-saga](./react/redux-saga.md)
+- [redux-thunk](./react/react_thunk.md)
 - [Hooks](./react/hook.md)
 - [Server side rendering](./react/serverSideRendering.md)
 - [8Thing to Lean in ReactJS before using redux](./react/8ThingsToLeanInReactBeforUsingRedux.md)
-- [middleware](./react/middleware.md)
 - [why_does_we_need_redux_thunk](./react/why_does_we_need_redux_thunk.md)
 <br><br>
 
@@ -211,11 +211,9 @@ SI프로젝트를 경험하면서 조금만 수정해도 실타래처럼 얽혀�
 2. Typescript
     - pattern
 3. React
-    - jest/ Enzyme
-    - redux-saga
-    - hooks
     - next.js
     - rx.js
+    - redux-observable
 4. open source
     - library development
 5. node.js

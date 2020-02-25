@@ -11,8 +11,16 @@ Facebook이 MVC패턴의 양방향 데이터 바인딩 구조에서 야기될 �
 양방향 데이터 바인딩은 연속적인 갱신이 발생하고 객체 하나의 변경이 다른 객체를 변경하게 되어 실제 필요한 업데이트보다 더 많은 분량을 실행하게 된다.  
 어플리케이션의 규모가 커지면 데이터의 연속적인 갱신이 되는 상황에서는 사용자 상호작용의 결과가 어떤 변화를 만드는지 예측하는데 어려워진다.  
 
+양방향 바인딩의 예를 들면... 
+페이스북에 댓글이달리면 
+- 타임라인에 추가
+- 알림창에 추가
+- 사이드바에 추가
+- 이에 따른 전체적인 화면 갱신
+
 그래서 데이터는 단방향으로만 흐르고, 새로운 데이터를 넣으면 처음부터 흐름이 다시 시작되는  아키텍처를 개발했다.  
 ![](../resource/img/react/flux.png) 
+이벤트 발생시
 ![](../resource/img/react/flux2.png)
 
 
@@ -80,6 +88,8 @@ Store는 어플리케이션의 상태와 상태 변화로직을 포함하고 있
 
 
 ### REF
+- [why redux](https://www.slideshare.net/dalinaum/redux-55650128)
+- [ FluxUtils](https://www.slideshare.net/UyeongJu/fluxutils)
 - [the-case-for-flux](https://medium.com/swlh/the-case-for-flux-379b7d1982c6)
 - [Flux overview-kor](https://haruair.github.io/flux/docs/overview.html)
 - [Flux.io](http://facebook.github.io/flux/docs/in-depth-overview)

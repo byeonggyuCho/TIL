@@ -17,6 +17,7 @@ thunk에서 못했던 작업들이 가능해졌기 때문입니다.
 8. 재사용이 가능해진다
 9. 더 작은 코드로 분할할 수 있다.
 10. 병렬처리
+11. 동기적 구조에서 오는 테스트의 용이성
 
 이 장점들을 종합하면 `사이드 이펙트 관리`라는 말로 정리 할 수 있습니다.  
 여기서 사이드 이펙트란 순수하지 않은 함수에서 발생하는 예상 밖의 동작을 말하는데 예를 들어 비동기 작업, 브라우저 캐시등이 있습니다.  함수가 일관된 결과를 보장하지 못하거나, 함수 외부 어디든지 조금이라도 영향을 주는 경우 모두 사이드 이펙트를 갖습니다.  
@@ -24,6 +25,12 @@ thunk에서 못했던 작업들이 가능해졌기 때문입니다.
 결과적으로 redux-saga도입하면 액션 생성자와 리듀서가 순수 함수 형태로 돌아갑니다.  
 Saga의 관심은 오로지 애플리케이션의 변수로 작용 할 여지가 있는 작업(사이드 이팩트)의 관리에 있습니다.
 ![](../resource/img/react/react-saga-flow.png)
+
+## redux-thunk의 한계
+- action에게 과도한 책임을 준다는 점
+- 그 책임으로 인해 action을 나타내는 코드를 이해하기 힘든 상태로 만든다
+
+리덕스 사가는 액션에 위임된 책임을 수행하여 action과 리듀에서 발생하는 사이드 이펙트를 제거한다.
 
 ## 용어
 1. effect  
@@ -93,6 +100,8 @@ export function* initAvailableDatesFlow() {
 
 
 # ref
+- [TDD-saga](https://www.vobour.com/00-redux-saga-)
+- [redux-saga-interview](https://survivejs.com/blog/redux-saga-interview/)
 - [saga-book-kor](https://mskims.github.io/redux-saga-in-korean/introduction/BeginnerTutorial.html)
 - [saga-docs](https://redux-saga.js.org/docs/introduction/BeginnerTutorial.html)
 - [Redux-Saga: 사이드 이펙트 관리](https://meetup.toast.com/posts/136)

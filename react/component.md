@@ -22,14 +22,14 @@
 - 가독성이 좋다
 
 
+## prop VS state
 
-## Baisic
+## 상태 관리를 어떻게 해야할까? 
+- 상태 전달
+1. 상태관리 모듈이 필요한 이유
+컴포넌트간 상태값 전달에 따른 의존성에 의해 복잡도가 증가하며 사이드 이펙트 발생
 
-### prop VS state
-
-### 상태 관리
-
-### 클래스 기반 컴포넌트 vs 함수형 컴포넌트
+## 클래스 기반 컴포넌트 vs 함수형 컴포넌트
 함수형 컴포넌트가 클래스 기반의 컴포넌트와 다른점은 무엇일까?  
 함수형 컴포넌트는 클래스 기반의 컴포넌트와 달리, state, Life cycle method(componetDidMount, shouldComponentUpdate 등등..)와 ref 콜백을 사용 할 수 없다(context는 사용 할 수 있다)  
 
@@ -42,6 +42,14 @@
 리액트는 왜 클래스 컴포넌트를 디자인했을까?  
 컴포넌트의 상태를 관리하거나 생명주기(Life Cycle)에 훅(Hook)을 걸어 원하는 시점에 특정 함수를 실행하려면 순수 함수만으로는 구현이 어려울 것이다.  
 그렇기 때문에 처음 리액트가 나왔을 때는 createClass 함수를 이용하여 컴포넌트를 생성하도록 API가 설계되었다. 또 기존 객제지향 개발자들에게 함수형 프로그래밍은 익숙하지 않기 때문에 좀더 익숙한 클래스 형태의 API를 제공한 것이다. 
+
+
+## 함수형을 쓸 때 고려 해야 하는 상황
+- 해당 컴포넌트는 자체 기능은 따로 없고 props 가 들어가면 뷰가 나온다
+
+
+## 함수형 컴포넌트 지향, 그럼 클래스형 컴포넌트는 언제 쓸까?
+- 라이프사이클 API가 필요 할 때
 
 
 
@@ -91,7 +99,7 @@ export default Enhance(MyComponent); // Enhanced component
 
 ### Presentational 컴포넌트
 - 컴포넌트의 뷰만 신경쓴다
-- DOM 마크업이 존재
+- render에 관련된 로직
 - render에 필요한 데이터는 존재한다고 가정.
 - UI를 위한 state가 존재할 수 있습니다.
 - 의존성 독립
@@ -99,9 +107,8 @@ export default Enhance(MyComponent); // Enhanced component
 ### Container 컴포넌트
 - 데이터를 다룬다
 - 동작을 설명한다.
-- DOM markup이 거의 없다
 - 스타일 코드가 없다
-- 데이터, 이벤트 컨테이너 컴포넌트를 제공
+- 데이터, 이벤트, 다른 컨테이너 컴포넌트를 제공
 
 
 
@@ -118,9 +125,7 @@ export default Enhance(MyComponent); // Enhanced component
 
 ### 3.props와 state를 어떻게 구분하여 사용하는지?
 1. prop:  
-props
-props는 컴포넌트에서 사용할 데이터 중 변경되지 않는 데이터를 다룰때 사용한다.
-컴포넌트 간에는 무조건 props를 통해서만 데이터를 주고받고 props는 컴포넌트 내부에서 변경되지 않습니다.
+컴포넌트 간에는 무조건 props를 통해서만 데이터를 주고받고 props는 컴포넌트 내부에서 변경되지 않는다.
 
 2. state
 컴포넌트에서 관리하는 상태 값으로 유동적인 데이터를 다룰 때, state 를 사용한다. 
@@ -128,6 +133,15 @@ props는 컴포넌트에서 사용할 데이터 중 변경되지 않는 데이�
 지금 컴포넌트에서 필요한 값이 props인지 state인지 판단하고 어느 Lifecycle과 관련이 있는지 이 값을 어떤 컴포넌트에 어떻게 넘겨줄지만 생각하여 코드를 작성하면 컴포넌트를 완성할 수 있다.
 
 ### 4. 왜 setState는 비동기인가?
+직접 `setState`대신 컴포넌트 객체를 수정하면 안되나?  
+해당 객체의 reference값을 기준으로 리랜더링이 이뤄지기 때문에 안된다. `setState`는 새로운 객체를 반환하여 변경 가능 성을 고지한다.  
+
+한가지 짚고 넘어가야 할것이 있다.  
+`setState`가 비동기 함수라는 점이다. 왜 그럴까?  
+**간단히 말하면 화면 갱신을 자연스럽게 하기 위함이다.**  
+동기함수를 가정해보면 state 변경이 많을수록 render는 모든 변경이 적용될 때까지 늦어지기 때문에 실제 화면이 부자연스럽게 동작하게 될 것이다. 즉 끊김 없는 원활한 UI/UX를 제공하기 위해 일정 수의 render가 수행되어야한다.
+
+
 
 ### 5. 고차 컴포넌트를 사용하는 이점이 뭔가?
 재활용성 확대
@@ -141,6 +155,10 @@ props는 컴포넌트에서 사용할 데이터 중 변경되지 않는 데이�
 ### 8. 클래스형 컴포넌트를 써야하만하는 구체적인 상황은?
 
 ### 9. 왜 함수형 컴포넌트를 쓸까?
+- 코드 재사용, 로직 및 부트스트랩 추상화
+- Render Highjacking
+- 상태 추상화 및 조작(manipulation)
+- props 조작(manipulation)
 
 ### 10. 컴포넌트를 최적화하려면?
 리랜더링 최소화
@@ -157,6 +175,9 @@ props는 컴포넌트에서 사용할 데이터 중 변경되지 않는 데이�
 
 
 ## ref
+- [ Higher Order Components 설명](https://www.vobour.com/%EC%83%81%EC%84%B8%ED%95%9C-%EB%A6%AC%EC%95%A1%ED%8A%B8-higher-order-components-%EC%84%A4%EB%AA%85-react)
+- [함수형 setState가 리액트(React)의 미래이다](https://www.vobour.com/%ED%95%A8%EC%88%98%ED%98%95-setstate%EA%B0%80-%EB%A6%AC%EC%95%A1%ED%8A%B8-react-%EC%9D%98-%EB%AF%B8%EB%9E%98%EC%9D%B4%EB%8B%A4-functiona)
+- [React - Functional Component의 장점](https://boxfoxs.tistory.com/395)
 - [리액트 HOC 집중 탐구](https://meetup.toast.com/posts/137)
 - [리액트 HOC 집중 탐구_2](https://meetup.toast.com/posts/144)
 - [react의-기본-컴포넌트를-알아보자](https://medium.com/little-big-programming/react%EC%9D%98-%EA%B8%B0%EB%B3%B8-%EC%BB%B4%ED%8F%AC%EB%84%8C%ED%8A%B8%EB%A5%BC-%EC%95%8C%EC%95%84%EB%B3%B4%EC%9E%90-92c923011818)

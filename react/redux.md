@@ -35,7 +35,7 @@ React Document에서 제시하는 조언은 다음과 같습니다.
 ![](../resource/img/react/fluxVSredux.jpeg)
 
 
-Dan Abramov는 Flux에서 몇가지 불편한점과 부족한 기능을 찾앗습니다
+Dan Abramov는 Flux에서 몇가지 불편한점과 부족한 기능을 찾았습니다
 1. hot reloading
 2. time travel debugging
 3. Undo/Redo 
@@ -343,6 +343,7 @@ component 내부에서는 UI에 관련된 상태를 저장하고 그외 여러 �
 
 
 ### REF
+- [why redux instead of Flux](https://www.slideshare.net/dalinaum/redux-55650128)
 - [리덕스 왜 쓸까](https://velopert.com/3528)
 - [리액트어뵤이 쓰는 리덕스](https://velog.io/@velopert/Redux-2-%EB%A6%AC%EC%95%A1%ED%8A%B8-%EC%97%86%EC%9D%B4-%EC%93%B0%EB%8A%94-%EB%A6%AC%EB%8D%95%EC%8A%A4-cijltabbd7)
 - [what-the-flux-lets-redux](https://blog.andyet.com/2015/08/06/what-the-flux-lets-redux/)

@@ -20,6 +20,7 @@
 - 리덕스 관련 테스트 코드를 작성 할 땐, 우리가 만든 액션이 디스패치 됐을 때 상태가 원하는 형태로 변경되는지를 테스팅 
 
 ## ref
+- [React로 TDD 쵸큼 맛보기](https://www.slideshare.net/jeokrang/react-tdd-76066004?next_slideshow=1)
 - [React + Redux 앱 테스트](https://velopert.com/3591)
 - [프론트엔드, 무엇을 테스트 할 것인가](https://jbee.io/react/testing-1-react-testing/)
 - [프론트엔드, 어떻게 테스트 할 것인가](https://jbee.io/react/testing-2-react-testing/)
