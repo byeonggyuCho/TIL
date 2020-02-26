@@ -3,15 +3,18 @@
 
 ## intro
 리액트는 함수형 프로그래밍을 지향한다.  
-함수형 프로그래밍의 관점에서 각 컴포넌트는 입력값으로 props를 받고, ReactElement 트리를 반환하는 순수 함수이다.  
+함수형 프로그래밍의 관점에서 컴포넌트는 입력값으로 props를 받고, React element tree를 반환하는 순수 함수라 볼 수 있다.  
 리액트 공식 문서에서는 컴포넌트를 이렇게 설명한다.  
 
     All React components must act like pure functions with respect to their props.
 
-컴포넌트는 순수함수이기 때문에 prop가 같다면 항상 같은 UI를 렌더링해야 한다.  
-또 UI의 관점에서 봤을 때 컴포넌트는 화면을 구성하는 독립된 모듈이다.  
-다른 화면에서 재사용이 가능하며 고차함수와 마찬가지로 고차 컴포넌트를 만들어 기능을 확장할 수 있다.  
+컴포넌트는 순수함수처럼 동작하기 prop가 같다면 항상 같은 UI를 렌더링해야 한다.  
+
 리액트 애플리케이션에서 UI는 개별적인 컴포넌트의 조합이다.  
+즉, 컴포넌트는 화면을 구성하는 독립된 모듈이다.  
+다른 화면에서 재사용이 가능하며 고차 함수와 마찬가지로 고차 컴포넌트를 만들어 기능을 확장할 수 있다.  
+ 
+리액트에서는 화면을 모듈 단위로 개발함으로서 유닛 단위로 테스트, 사고를 할 수 있다.
 
 
 ## 모듈이란?
@@ -200,6 +203,7 @@ this.setState({comment: 'Hello'});
 
 
 ## ref
+- [doc-component](https://reactjs-kr.firebaseapp.com/docs/components-and-props.html)
 - [higher-order-components](https://reactjs-kr.firebaseapp.com/docs/higher-order-components.html)
 - [웹 컴포넌트](https://reactjs-kr.firebaseapp.com/docs/web-components.html)
 - [ Higher Order Components 설명](https://www.vobour.com/%EC%83%81%EC%84%B8%ED%95%9C-%EB%A6%AC%EC%95%A1%ED%8A%B8-higher-order-components-%EC%84%A4%EB%AA%85-react)

@@ -70,7 +70,6 @@ SI프로젝트를 경험하면서 조금만 수정해도 실타래처럼 얽혀�
 - [DesignPattern-sigletone](./javascript/pattern/DesignPattern_SigleTon.md)
 - [DesignPattern-Factory](./javascript/pattern/DesignPattern_Factory.md)
 
-<br><br>
 
 
 ## 2.TypeScript
@@ -81,16 +80,18 @@ SI프로젝트를 경험하면서 조금만 수정해도 실타래처럼 얽혀�
 - [generics](./typescript/generics.md)
 - [generics](./typescript/generics.md)
 - [type Inference](./typescript/typeInference.md)
-- [type compatibility](./typescript/typeCompatibility.md)
+- [type compatibility](./typescript/typeCompatibility.md)  
+
 
 
 ## 3.React
 - [Component](./react/component.md)
+- [Higher Order Component](./react/HigherOrderComponent.md)
 - [JSX](./react/JSX.md) 
 - [Life Cycle](./react/lifeCycle.md)
 - [flux](./react/flux.md)
 - [redux](./react/redux.md)
-- [middleware](./react/middleware.md)
+- [Middleware](./react/middleware.md)
 - [redux-saga](./react/redux-saga.md)
 - [redux-thunk](./react/react_thunk.md)
 - [Hooks](./react/hook.md)
