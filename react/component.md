@@ -1,19 +1,39 @@
 # Component
 
-단방향 데이터 흐름
 
 ## intro
 리액트는 함수형 프로그래밍을 지향한다.  
-함수형 프로그래밍의 관점에서 각 컴포넌트는 입력값으로 props 를 받고, ReactElement 트리를 반환하는 순수 함수이다.  
+함수형 프로그래밍의 관점에서 각 컴포넌트는 입력값으로 props를 받고, ReactElement 트리를 반환하는 순수 함수이다.  
+리액트 공식 문서에서는 컴포넌트를 이렇게 설명한다.  
 
     All React components must act like pure functions with respect to their props.
 
-그렇기 때문에 컴포넌트는 State가 같다면 항상 같은 UI를 렌더링해야 한다.  
-독립된 모듈이기 때문에 다른 화면에서 재사용이 가능하며 고차함수와 마찬가지로 개별적인 컨포넌트를 조합하여 고차 컴포넌트를 만들어 기능을 확장할 수 있다.  
-결국 리액트 애플리케이션에서 UI는 개별적인 컴포넌트의 조합이다.  
+컴포넌트는 순수함수이기 때문에 prop가 같다면 항상 같은 UI를 렌더링해야 한다.  
+또 UI의 관점에서 봤을 때 컴포넌트는 화면을 구성하는 독립된 모듈이다.  
+다른 화면에서 재사용이 가능하며 고차함수와 마찬가지로 고차 컴포넌트를 만들어 기능을 확장할 수 있다.  
+리액트 애플리케이션에서 UI는 개별적인 컴포넌트의 조합이다.  
 
 
-## 특징
+## 모듈이란?
+앞서 컴포넌트를 UI를 구성하는 모듈이라고 설명했다.  
+모듈의 관점에서 컴포넌트를 생각해보면 특징을 공유하고 있음을 알 수 있다.  
+프로그래밍 언어에서 모듈이란, **프로그램을 하나의 기능을 수행하는 작은 단위로 나눈것.** 이라고 생각할 수 있다. 
+유지보수 관점에서 각각 독립적인 기능을 수행하는 모듈로 나누어 구성이 되어있다면 가독성이 훨신 좋다.  
+각각 모듈이 자기동작을 잘 수행히는지 테스트할 수 있기 때문이다. 모듈화 프로그래밍을 함으로서 얻을 수 있는 특징은 다음과 같다.  
+
+- 구성: 데이터와 함수들로 구성된다.
+- 재사용성: 재사용성이 높아진다.
+- 가독성: 하나의 기능을 수행하는 파일단위로 나누어 가독성이 좋아진다.
+- 테스트: 모듈별 유닛 테스트가 가능하다.
+- 생산성: 기능별로 나누어 개발이 가능함.  
+- 메모리관리: 필요한 모듈만 로딩하면 되기 때문에 메모리관리에 유리하다.
+
+이런 특징은 모두 리액트에서 컴포넌트와 일치한다.  
+리액트에서 **컴포넌트는 UI를 구성하며 독립적 기능을 수행하는 모듈이다.**
+
+
+
+## 컴포넌트의 특징
 ![](../resource/img/react/component-propAndState.png)
 - 특정 state, props에 따른 render 결과가 바뀌지 않는다.
 - 컴포넌트는 상태에 따른 가변적인 엘라먼트에 대한 정의다.
@@ -22,7 +42,15 @@
 - 가독성이 좋다
 
 
-## prop VS state
+
+## props와 state를 어떻게 구분하여 사용하는지?
+1. prop:  
+컴포넌트 간에는 무조건 props를 통해서만 데이터를 주고받고 props는 컴포넌트 내부에서 변경되지 않는다.
+
+2. state
+컴포넌트에서 관리하는 상태 값으로 유동적인 데이터를 다룰 때, state 를 사용한다. 
+
+지금 컴포넌트에서 필요한 값이 props인지 state인지 판단하고 어느 Lifecycle과 관련이 있는지 이 값을 어떤 컴포넌트에 어떻게 넘겨줄지만 생각하여 코드를 작성하면 컴포넌트를 완성할 수 있다.
 
 ## 상태 관리를 어떻게 해야할까? 
 - 상태 전달
@@ -91,16 +119,14 @@ export default Enhance(MyComponent); // Enhanced component
 
 ## Presentational and Container Components
 
-컴포넌트가 화면에 대한 정의를 넘어서 데이터 fetching까지 담당하게 되면 특수성이 부여되어 재사용성이 떨어진다.  
-또한 로직과 Lifecycle이 복잡해져 컴포넌트의 정의가 난해해진다.  
-
-이 패턴은 이러한 문제점을 해결하고 컴포넌트 테스트를 더욱 쉽게 한다.  
-핵심 아이디어는 한 컴포넌트 내에 존재하는 render와 관련된 로직과 데이터와 관련된 로직을 각각 Presentational 컴포넌트, Container 컴포넌트로 분리하는 것이다.  
+이 패턴은 한마디로 말해서 **관심사를 분리하는 방법**이다.  
+기존의 컴포넌트에서 데이터 로직이 추가되면서 재사용성이 떨어지고 로직과 Lifecycle이 복잡해져 컴포넌트의 정의가 난해해졌다.  
+컨테이너 컴포넌트가 데이터 관련 로직을 담당함으로서 프리젠테이셔널 컴포넌트는 뷰만 담당하게 되어 특수성을 분리했다.
+ 
 
 ### Presentational 컴포넌트
 - 컴포넌트의 뷰만 신경쓴다
 - render에 관련된 로직
-- render에 필요한 데이터는 존재한다고 가정.
 - UI를 위한 state가 존재할 수 있습니다.
 - 의존성 독립
 
@@ -115,26 +141,25 @@ export default Enhance(MyComponent); // Enhanced component
 ## Q&A
 
 ### 1. 컴포넌트란?
-컴포넌트는 상태값에 따른 가변적인 엘라먼트를 정의한 순수 함수이다.
+컴포넌트는 상태값에 따른 가변적인 엘리먼트를 정의한 순수 함수이다.
 
 ### 2. 컴포넌트 단위 개발의 이점은?
 1. 재사용성: 상태관리 로직을 포함하고 있어 재사용에 용이함
 2. 테스트: 독립된 모듈임으로 테스트에 용이함
 3. 가독성: 컴포넌트별 기능분리를 통해 가독성이 향상됨
+4. 메모리 관리: 필요한 부분만 로딩
 
-
-### 3.props와 state를 어떻게 구분하여 사용하는지?
-1. prop:  
-컴포넌트 간에는 무조건 props를 통해서만 데이터를 주고받고 props는 컴포넌트 내부에서 변경되지 않는다.
-
-2. state
-컴포넌트에서 관리하는 상태 값으로 유동적인 데이터를 다룰 때, state 를 사용한다. 
-
-지금 컴포넌트에서 필요한 값이 props인지 state인지 판단하고 어느 Lifecycle과 관련이 있는지 이 값을 어떤 컴포넌트에 어떻게 넘겨줄지만 생각하여 코드를 작성하면 컴포넌트를 완성할 수 있다.
-
-### 4. 왜 setState는 비동기인가?
+### 3. 왜 setState는 비동기인가?
 직접 `setState`대신 컴포넌트 객체를 수정하면 안되나?  
-해당 객체의 reference값을 기준으로 리랜더링이 이뤄지기 때문에 안된다. `setState`는 새로운 객체를 반환하여 변경 가능 성을 고지한다.  
+```js
+// Wrong
+this.state.comment = 'Hello';
+```
+해당 객체의 reference값을 기준으로 리랜더링이 이뤄지기 때문에 안된다. `setState`는 React는 현재 state와 제공한 객체를 병합하고 새로운 객체를 반환하여 변경 가능성을 고지한다.  
+```js
+// Correct
+this.setState({comment: 'Hello'});
+```
 
 한가지 짚고 넘어가야 할것이 있다.  
 `setState`가 비동기 함수라는 점이다. 왜 그럴까?  
@@ -144,7 +169,10 @@ export default Enhance(MyComponent); // Enhanced component
 
 
 ### 5. 고차 컴포넌트를 사용하는 이점이 뭔가?
-재활용성 확대
+- 코드 재사용, 로직 및 부트스트랩 추상화
+- Render Highjacking
+- 상태 추상화 및 조작(manipulation)
+- props 조작(manipulation)
 
 ### 6. 언제 고차 컴포넌트를 사용하는가?
 - 간단한 예를 든다면?
@@ -155,10 +183,7 @@ export default Enhance(MyComponent); // Enhanced component
 ### 8. 클래스형 컴포넌트를 써야하만하는 구체적인 상황은?
 
 ### 9. 왜 함수형 컴포넌트를 쓸까?
-- 코드 재사용, 로직 및 부트스트랩 추상화
-- Render Highjacking
-- 상태 추상화 및 조작(manipulation)
-- props 조작(manipulation)
+
 
 ### 10. 컴포넌트를 최적화하려면?
 리랜더링 최소화
@@ -175,6 +200,8 @@ export default Enhance(MyComponent); // Enhanced component
 
 
 ## ref
+- [higher-order-components](https://reactjs-kr.firebaseapp.com/docs/higher-order-components.html)
+- [웹 컴포넌트](https://reactjs-kr.firebaseapp.com/docs/web-components.html)
 - [ Higher Order Components 설명](https://www.vobour.com/%EC%83%81%EC%84%B8%ED%95%9C-%EB%A6%AC%EC%95%A1%ED%8A%B8-higher-order-components-%EC%84%A4%EB%AA%85-react)
 - [함수형 setState가 리액트(React)의 미래이다](https://www.vobour.com/%ED%95%A8%EC%88%98%ED%98%95-setstate%EA%B0%80-%EB%A6%AC%EC%95%A1%ED%8A%B8-react-%EC%9D%98-%EB%AF%B8%EB%9E%98%EC%9D%B4%EB%8B%A4-functiona)
 - [React - Functional Component의 장점](https://boxfoxs.tistory.com/395)
