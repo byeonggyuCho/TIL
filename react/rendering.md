@@ -3,7 +3,7 @@
 ## element
 element는 리액트 앱의 가장 작은 구성요소입니다.
 ```js
-const element = <h1>Hello, world</h1>;
+const element = <h1>Hello, wor5ld</h1>;
 ```
 Dom Element와 달리 React element는 순수한 객체이며 생성비용이 저렴합니다. React Dom은 react Element와 일치하도록 DOM을 업데이트합니다.  
 
