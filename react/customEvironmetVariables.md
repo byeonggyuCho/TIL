@@ -16,7 +16,6 @@ REACT_APP_PROXY_PORT=4000
 
 ```js
 process.env.NODE_ENV=product
-API_KEY=abcdf
 ```
 
 ## ref

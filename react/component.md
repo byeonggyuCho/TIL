@@ -199,7 +199,10 @@ this.setState({comment: 'Hello'});
 2. 컨테이너 컴포넌트
 
 
+### 12. pure component
+
 ## ref
+- [컴포넌트 제대로만들기](https://hyunseob.github.io/2019/06/02/react-component-the-right-way/)
 - [doc-component](https://reactjs-kr.firebaseapp.com/docs/components-and-props.html)
 - [higher-order-components](https://reactjs-kr.firebaseapp.com/docs/higher-order-components.html)
 - [웹 컴포넌트](https://reactjs-kr.firebaseapp.com/docs/web-components.html)
