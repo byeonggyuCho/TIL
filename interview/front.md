@@ -60,11 +60,35 @@
 자바스크립트에서 this에 대한 바인딩을 실행되는 곳에 따라 되는데 
 이를 실행 컨텍스트를 통해 설명할 수 있다.
 
+**구성**  
+1. Variable Object
+    - variable
+    - arguments:  
+        - Functional Context의 경우 한정
+    - 함수 선언문
+
+2. Scope Chain  
+스코프 체인은 실행 컨텍스트가 참조할 수 있는 변수, 함수 선언 등의 정보를 담고 있는 리스트를 가르킨다.  
+자바스크립트 엔진은 스코프 체인을 통해 렉시컬 스코프를 파악한다. 이 덕분에 상위 스코프를 참조할 수 있는 것이다.  
+`[[Scopes]]` 으로 표현되며, 배열로 저장한다.
+
+3. this value  
+this 프로퍼티는 this 값이 할당되는데 할당되는 값은 런타임에 함수가 실행되는 5가지 경우의 컨텍스트에 따라 결정된다.
+- global
+- functionInvocation
+- call,apply,bind
+- Construction
+- MethodInvocation
+
+
+
+**종류**  
 - 전역 컨텍스트
-- 함수 컨텍스트
-- eval컨텍스트
+-  Functional Context
+- eval 컨텍스트
 [참고](https://velog.io/@imacoolgirlyo/JS-%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%EC%9D%98-Hoisting-The-Execution-Context-%ED%98%B8%EC%9D%B4%EC%8A%A4%ED%8C%85-%EC%8B%A4%ED%96%89-%EC%BB%A8%ED%85%8D%EC%8A%A4%ED%8A%B8-6bjsmmlmgy)
 
+- https://medium.com/@pks2974/javascript-%EC%99%80-function-%ED%95%A8%EC%88%982-%EC%8B%A4%ED%96%89-%EC%BB%A8%ED%85%8D%EC%8A%A4%ED%8A%B8-execution-context-51d4037b7fdc
 ### Class 는 무엇이고, Prototype, fucntion의 ES5 스펙만으로 Class를 구현할수 있는가
 ### 자바스크립트에서 This는 몇가지로 추론 될수 있는가, 아는대로 말해달라.
 1. 기본값
