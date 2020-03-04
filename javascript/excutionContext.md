@@ -3,7 +3,7 @@
 
 ## Intro
 Execution Context란 뭘까?  
-간단히 말하자면 문맥이다. 여기서의 문맥이란 어떤 시점에 어떤 scope를 참조한다는 룰정도로 얘기할 수 있다.  
+간단히 말하자면 문맥이다. 여기서의 문맥이란 어떤 시점에 어떤 scope를 참조한다는 룰 정도로 얘기할 수 있다.  
 다음의 예제는 자바스크립트에서 context가 어떻게 만들어지는지 잘 보여준다.
 
 ``` js
@@ -18,8 +18,8 @@ function func2 () {
 say(); //global
 ```
 자바스크립트에서 Execution Context은 선언시점에 결정된다.  
-즉 위 예제에서 함수 func1이 참조하는 변수 scope은 전역변수이다.  
-다시 말해 func1의 스코프체인에는 func2의 컨텍스트가 포함되지 않는다.  
+즉 위 예제에서 함수 func1이 참조하는 변수 `scope`은 전역변수이다.  
+다시 말해 func1의 스코프 체인에는 func2의 컨텍스트가 포함되지 않는다.  
 지금부터 이러한 Context가 형성되는 과정에 대해서 자세히 알아본다.
 
 
@@ -369,3 +369,4 @@ scope의 범위는 선언시점에 생긴 context의 Scope Chain을 따른다.
 
 ## ref
 - [Javascript Execution context](https://poiemaweb.com/js-execution-context)
+- [Execution context](https://m.blog.naver.com/PostView.nhn?blogId=gi_balja&logNo=221261731281&proxyReferer=https%3A%2F%2Fwww.google.com%2F)

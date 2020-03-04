@@ -26,25 +26,22 @@ const test = (title, testCode) => {
 
 const isServiceTime = (day, hourOfDay) => {
 
-    const validDay = [0, 1, 2, 3, 4, 5, 6];
-    const validHour = [23, 0, 1, 2, 3];
-    const holliday = 6;
+    const businessDays = [0, 1, 2, 3, 4, 5];
+    const defaultBusinessHours = [23, 0, 1, 2, 3];    
+    const wednesdayBusinessHours = [22, 23, 0, 1, 2, 3]; 
+    const Wednesday = 2;
 
     const yesterday = day < 1 ? 6 : day - 1;
+    // 근무시작일
+    const businessDay = hourOfDay < 4 ? yesterday : day;
 
-    // 근무시작요일
-    const workDay = hourOfDay < 4 ? yesterday : day;
+    // 근무요일의 영업시간
+    const businessHours = businessDay === Wednesday 
+                            ? wednesdayBusinessHours
+                            : defaultBusinessHours
 
-
-    if (!validDay.includes(day)) {
-        return false;
-    } else if (!validHour.includes(hourOfDay)) {
-        return false;
-    } else if (workDay === holliday) {
-        return false;
-    } else {
-        return true
-    }
+    return businessDays.includes(businessDay) 
+            && businessHours.includes(hourOfDay)
 }
 
 
@@ -58,6 +55,9 @@ const isServiceTime = (day, hourOfDay) => {
  - 시간 0미만 또는 23초과를 입력시
 */
 
+  test('일요일 23시', function () {
+    expect(isServiceTime(6, 23)).toBe(false);
+  })
   
   test('월요일 23시', function () {
     expect(isServiceTime(0, 23)).toBe(true);
@@ -94,5 +94,4 @@ const isServiceTime = (day, hourOfDay) => {
   test('월요일 25시', function () {
     expect(isServiceTime(0, 25)).toBe(false);
   })
-
 ```

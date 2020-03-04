@@ -687,7 +687,16 @@ export default RefSample;
 렌더링과 관련되지 않은 값을 관리할 때만 이러한 방식으로 코드를 작성하는게 좋다.
 
 
+## 미지원 기능
+- getSnapshotBeforeUpdate
+- componentDidCatch
+
+## 유의점
+- 테스트 [참고](https://edykim.com/ko/post/react-hooks-whats-going-to-happen-to-my-tests/)
+
+
 ### REF
+- [hook에대한 고찰](https://ddwroom.tistory.com/75)
 - [hooks-state](https://ko.reactjs.org/docs/hooks-state.html)
 - [리액트의 Hooks 완전 정복하기.](https://velog.io/@velopert/react-hooks)
 - [React의 새로운 패러다임 Hooks](https://velog.io/@vies00/React-Hooks)
