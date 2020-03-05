@@ -48,16 +48,29 @@ SSR이라고 한다.
 SPA환경에서 SSR을 지원하는 이유는 빠른 초기랜더링과 검색 엔진 최적화를 위해 사용한다.
 
 ### OOP에 특징에 대해 설명해달라
+객체지향 프로그래밍
+
 ### 브라우저 랜더링 과정 설명해보라
-    - 돔 조작이 수정으로 이어지는 과정
+
+- html 파싱과정 
+통신을 통해 문서의 내용을 받아 온뒤 
+HTML 문서를 파싱하여 DOM tree를 만들고 병렬적으로 CSS 요소를 파싱하여 CSSOM를 만든다.  
+Dom과 CSSOM를 기반으로 렌더트리를 생성한다. 이때 화면에 불필요한 노드들은 렌더트리에서 빠집니다.  
+ 각 노드가 화면의 정확한 위치에 표시되도록 레이아웃을 계산하고 
+UI백엔드에서 렌더 트리의 각 노드를 그린다. 이 작업은 병렬적으로 이루어지는데 모든 HTML을 파싱하면서 배치와 페인트과정이 동시에 일어납니다. 
+
 
 - CSS float을 해제하지 않으면 안되는 이유
 - IE에서 가장 좋아하는 기능은 무엇인가요?
 - meta태그들
 
+
+
 ## JS
+
+### 이벤트 위임에 대해 설명하세요.
 ### Promise란 무엇이며 코드가 어떻게 구성되어있는가
-쉽게 말해 콜백을 유연하게 사용하기위한 패턴이다.  
+쉽게 말해 비동기 코드를 유연하게 사용하기 위한 패턴이다.  
 기존 콜백패턴에서 콜백헬처럼 가독성과 재활용성이 떨어지게 되는데 promise도입으로 이런 문제를 해결했다. 
 
 ```js
@@ -76,12 +89,55 @@ asyncFn('Hello').then((result)=>{
 })
 ```
 
+### JavaScript로 컴파일되는 언어로 JavaScript 코드를 작성하는 경우의 장단점은 무엇인가요?
+**장점**  
+1. 정적타입 사용가능
+2. 추가적인 기능을 제공받으면서 라이브러리를 사용하지않기 때문에 통일된 코드로 작성하면서 의존성을 극복할 수 있음
+**단점**  
+1. 템플릿 문법에 대한 러닝커브에 의한 생산성 하락
+2. 서브파티 라이브러리와 호완성문제
+3. IDE 지원이 미흡할 수 있음
+4. 빌드 컴파일 프로세스를 위한 초기 작업 환경셋팅이 필요함
 
 ### Promise와 Callback의 차이점은 무엇이며 각각의 장단점에 대해 설명해달라. 
-1. 프로미스의 이점
-2. 콜백패턴의 단점
-3. 프로미스의 한계
-4. 콜백을 싸야하는 경우.
+
+
+
+**프로미스**  
+1. 장점
+- Promise.all()을 사용하여 병렬 비동기 코드를 쉽게 작성할 수 있습니다.
+2. 딘점
+- ES2015를 지원하지 않는 이전 브라우저에서 이를 사용하기 위해서는 polyfill을 로드해야 합니다.
+
+**콜백패턴**
+1. 단점
+-  콜백헬
+```js
+step1(function(value1) {
+  step2(value1, function(value2) {
+    step3(value2, function(value3) {
+      step4(value3, function(value4) {
+        step5(value4, function(value5) {
+            // value5를 사용하는 처리
+        });
+      });
+    });
+  });
+});
+```
+- 에러 처리 한계
+```js
+try {
+  setTimeout(() => { throw new Error('Error!'); }, 1000);
+} catch (e) {
+  console.log('에러를 캐치하지 못한다..');
+  console.log(e);
+}
+```
+예외는 호출스택을 따라 호출자에게 전파되는데 실행이 종료되어 호출스택에서 빠지면 에러를 전달하지 못한다.
+
+
+
 
 ### 클로저는 무엇이며, 어떻게 그리고 왜 사용하는지 설명해보라.
 중첩함수 구조에서 외부함수가 외부함수의 로컬 변수를 참조하는 내부함수를 반환할 때,
@@ -96,6 +152,7 @@ execution contaxt에서 varialbe object는 arguments, variable, 함수 선언문
 **이점**  
 1. 모듈화
 2. 재사용성 
+
 
 ### 실행 컨텍스트(Execution Context)에 대해 설명해달라  
 
@@ -132,34 +189,110 @@ this 프로퍼티는 this 값이 할당되는데 할당되는 값은 런타임�
 - global context
 - Functional Context
 - eval 컨텍스트
-[참고](https://velog.io/@imacoolgirlyo/JS-%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%EC%9D%98-Hoisting-The-Execution-Context-%ED%98%B8%EC%9D%B4%EC%8A%A4%ED%8C%85-%EC%8B%A4%ED%96%89-%EC%BB%A8%ED%85%8D%EC%8A%A4%ED%8A%B8-6bjsmmlmgy)
-[참고2](https://m.blog.naver.com/PostView.nhn?blogId=gi_balja&logNo=221261731281&proxyReferer=https%3A%2F%2Fwww.google.com%2F)
 
-- https://medium.com/@pks2974/javascript-%EC%99%80-function-%ED%95%A8%EC%88%982-%EC%8B%A4%ED%96%89-%EC%BB%A8%ED%85%8D%EC%8A%A4%ED%8A%B8-execution-context-51d4037b7fdc
-### Class 는 무엇이고, Prototype, fucntion의 ES5 스펙만으로 Class를 구현할수 있는가?
 
+- [참고](https://velog.io/@imacoolgirlyo/JS-%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%EC%9D%98-Hoisting-The-Execution-Context-%ED%98%B8%EC%9D%B4%EC%8A%A4%ED%8C%85-%EC%8B%A4%ED%96%89-%EC%BB%A8%ED%85%8D%EC%8A%A4%ED%8A%B8-6bjsmmlmgy)
+- [참고2](https://m.blog.naver.com/PostView.nhn?blogId=gi_balja&logNo=221261731281&proxyReferer=https%3A%2F%2Fwww.google.com%2F)
+
+- [참고3](https://medium.com/@pks2974/javascript-%EC%99%80-function-%ED%95%A8%EC%88%982-%EC%8B%A4%ED%96%89-%EC%BB%A8%ED%85%8D%EC%8A%A4%ED%8A%B8-execution-context-51d4037b7fdc)
+
+
+### Class는 무엇이고, Prototype, fucntion의 ES5 스펙만으로 Class를 구현할수 있는가?
+
+
+### ajax란?
+비동기 웹 응용 프로그램을 만들기 위해 클라이언트 측에서 사용되는 웹 개발 기술의 집합입니다. Ajax를 사용하면 웹 애플리케이션은 기존 페이지의 화면 및 동작을 방해하지 않으면서 백그라운드에서 비동기적으로 서버로 데이터를 보내고 서버에서 데이터를 받아올 수 있습니다. Ajax는 프리젠테이션 레이어에서 데이터 교환 레이어를 분리함으로써, 웹페이지 및 확장 웹 애플리케이션이 전체 페이지를 다시 로드 할 필요 없이 동적으로 컨텐츠를 변경할 수 있도록 합니다. 
+
+### JSONP가 어떻게 동작하는지(그리고 Ajax와 어떻게 다른지)를 설명하세요.
+
+### curry 함수의 예를 들어 줄 수 있나요? 그리고 이 문법은 어떤 이점을 가지고 있나요?
+currying은 둘 이상의 매개 변수가 있는 함수가 여러 함수로 분리된 패턴으로, 직렬로 호출하면, 필요한 모든 매개 변수가 한 번에 하나씩 누적됩니다. 이 기법은 함수형 스타일로 작성된 코드를 읽고, 합성하기 더 쉬워진 경우 유용할 수 있습니다. 함수를 currying하려면, 하나의 함수로 시작하여, 하나의 매개 변수를 취하는 일련의 함수로 분리해야 합니다.
+
+
+```js
+function curry(fn) {
+  if (fn.length === 0) {
+    return fn
+  }
+
+  function _curried(depth, args) {
+    return function(newArgument) {
+      if (depth - 1 === 0) {
+        return fn(...args, newArgument)
+      }
+      return _curried(depth - 1, [...args, newArgument])
+    }
+  }
+
+  return _curried(fn.length, [])
+}
+
+function add(a, b) {
+  return a + b
+}
+
+var curriedAdd = curry(add)
+var addFive = curriedAdd(5)
+
+var result = [0, 1, 2, 3, 4, 5].map(addFive) // [5, 6, 7, 8, 9, 10]
+
+```
+### 생성자의 메서드에 화살표 문법을 사용하면 어떤 이점이 있나요?
+
+
+### event bubbling에 대해 설명하세요.
+DOM 요소에서 이벤트가 트리거되면 리스너가 연결되어 있는 경우 이벤트 처리를 시도한 다음, 해당 이벤트가 부모에게 bubbling되고 부모에서 같은 이벤트가 발생합니다. 
+이 bubbling은 요소의 최상단 부모요소인 document까지 계속적으로 발생시킵니다. 이벤트 bubbling은 이벤트 위임의 작동 메커니즘입니다.
+
+
+### ES6 클래스와 ES5 함수 생성자의 차이점은 무엇인가요?
+
+### 호이스팅에 대해 설명하세요.
+
+### 고차 함수(higher-order function)의 정의는 무엇인가요?
+고차 함수는 다른 함수를 매개 변수로 사용하여 데이터를 처리하거나, 결과로 함수를 반환하는 함수입니다. 
+고차 함수는 반복적으로 수행되는 어떤 연산을 추상화하기 위해 사용합니다. Array Api중 forEach, filter, reduce, map등이 있습니다
+이중 map은 고차 함수를 사용하여 배열의 각 항목을 변환하고, 변환된 데이터로 새로운 배열을 반환합니다. 
 
 ### 자바스크립트에서 This는 몇가지로 추론 될수 있는가, 아는대로 말해달라.
-1. 기본값
-- 전역객체  
-2. 메서드
-3. 이벤트 핸들러.
-4. arrow funtion
-5. bind, apply, call  
+자바스크립트에서 this는 실행 컨텍스트가 생기는 시점에 할당된다
+
+1. 생성자  
+함수를 호출할 때 new 키워드를 사용하는 경우, 함수 내부에 있는 this는 완전히 새로운 객체입니다.
+2. 명시적 할당  
+apply, call, bind가 함수의 호출/생성에 사용되는 경우, 함수 내의 this는 인수로 전달된 객체입니다.
+3. 메서드  
+obj.method()와 같이 함수를 메서드로 호출하는 경우, this는 함수가 프로퍼티인 객체입니다.
+4. 자유함수  
+수가 자유함수로 호출되는 경우, 즉, 위의 조건 없이 호출되는 경우 this는 전역 객체입니다. 
+브라우저에서는 window 객체입니다. 엄격 모드('use strict') 일 경우, this는 전역 객체 대신 undefined가 됩니다.
+
+5. 화살표 함수
+ 화살표 함수인 경우 위의 모든 규칙을 무시하고 생성된 시점에서 주변 스코프의 this값을 받습니다.
+
+
+### 프로토타입이 어떻게 동작하는가?
+ 모든 JavaScript 객체는 다른 객체에 대한 참조인 prototype 프로퍼티를 가지고 있습니다. 객체의 프로퍼티에 접근할 때, 해당 객체에 해당 프로퍼티가 없으면 JavaScript 엔진은 객체의 prototype과 prototype의 prototype등을 보고 프로퍼티 정의가 있을 때까지 찾고, 만약 객체의 프로퍼티에 접근할 때 해당 객체에 해당 프로퍼티가 없으면 프로토타입 체인 중 하나에 있거나 프로토타입 체인의 끝에 도달할 때까지 찾습니다.
 
 ### JWT
 - 왜 사용했는지
 - 토큰과 쿠키/세션 차이
 - JWT 토큰을 열어본 적 있는지
 
+
 ## 보안
 ### 보안은 서버쪽에서 많이 신경쓰고 있지만, 프론트엔드 개발에서 보안관련 이슈는 어떠한 것들이 있는가
 1. XSS
 
 ### Wireshark에 대해 알고 있는가
+
 ### 간단한 데이터를 클라이언트로만 관리 할수 있는가, 이와 관련해서 브라우저 에서 어떠한 것들을 지원하고 있는가, 예를 들면 소셜 로그인같은 것들에 대한 브라우저 종료시 발생하는 문제에 대응 경험이 있는가? 
 - localstorage
 - indexDB
+
+
+
+
 
 
 ## React
@@ -168,11 +301,16 @@ this 프로퍼티는 this 값이 할당되는데 할당되는 값은 런타임�
 리액트에서 사용하는 마크다운 문법을 말한다.  리액트 엘리먼트를 쉽게 표현하기 위한 방법이다.  
 JSX는 바벨등의 트랜스파일러를 이용해 js로 컴파일된다.
 ```jsx
-
+ ReactDOM.render(
+      <App/>,
+    document.getElementById('root')
+  )
 ```
 
 ```js
-
+ ReactDOM.render(
+    React.createElement(App)
+  , document.getElementById('root'));
 ```
 ### react의 장점과 단점은?
 **단점**  
@@ -188,21 +326,12 @@ JSX는 바벨등의 트랜스파일러를 이용해 js로 컴파일된다.
 ### DOM이 뭔지 설명해 보라.
 DOM(Document Object Model)은 웹 페이지에 대한 객체 모델 인터페이스입니다.  
 현재 브라우저에 표시된 화면 정보를 객체 포멧으로 표현되어 있으며 DOM API를 통해 수정및 겁근이 가능합니다
+[참고](https://wit.nts-corp.com/2019/02/14/5522)
 
-### 브라우저 렌더링
-
-Ref [참고](https://wit.nts-corp.com/2019/02/14/5522)
-
-###  가상돔(Virtual DOM) 개념은 무엇이며, DOM과의 차이점 가상돔의 개념이 사용되게된 배경은 무엇인가?
-Dom 구조를  자바스크립트로 표현한 렌더 트리를 말한다.  
-리액트에서는 개발자가 직접 DOM을 조작하는 대신에 가상돔을 조작하며 가상돔의 변경 내용을 리액트가 종합하여 한번에 실제 돔에 반영한다.  
-따라서 돔 조작에 대한 로직을 쓸 필요가 없으며 UI를 효율적으로 렌더링하도록 돕는다. 
-
-**장점**   
-- AST를 생성하여 처리를 함으로 같은 소스를 모바일에서도 사용 가능하다. 
-- 랜더링 비용을 줄일 수 있다. 
-- 돔 렌더링을 최소화하기 위한 전략
-- 가상돔을 사용함으로써 모든 노드의 업데이트 정보를 종합하여 단 한차레 DOM을 렌더링함으로 렌더링 비용이 줄어든다.
+### 가상돔(Virtual DOM) 개념은 무엇이며, DOM과의 차이점 가상돔의 개념이 사용되게된 배경은 무엇인가?
+가상돔은 DOM 구조를 설명하는 자바스크립트 구조체이다.  
+가상돔을 통한 DOM 조작의 이점은 렌더링 최적화를 라이브러리가 수행해준다는 것에 있다.  
+바뀐 부분을 비교하여 찾아내서 기존 내용을 지우고 바뀐 부분을 한번에 랜더링하여 리플로와 리페인트 비용을 절약하는 것이 핵심이다.  
 
 
 ### state lifting이란?  
@@ -255,7 +384,7 @@ Dom 구조를  자바스크립트로 표현한 렌더 트리를 말한다.
 3. 정접 타입을 적용하기 수월하다
 
 
-## 리액트는 왜 함수형 프로그래밍을 지향하는가?
+### 리액트는 왜 함수형 프로그래밍을 지향하는가?
 함수형 컴포넌트를 사용하면 컴포넌트를 간결하게 작성할 수 있으며, 개별 상태가 없으므로 이해하기 쉽고 예측이 쉬우며 테스트를 간단히 할 수 있다.  
 또한 라이프사이클을 사용하지 않으므로 불필요한 검사 및 메모리 할당을 줄일 수 있다.  
 따라서 React에서는 함수형 컴포넌트 컴포넌트를 많이 사용하고 클래스 컴포넌트는 적게 사용하는것을 권고한다.  
@@ -294,19 +423,21 @@ Dom 구조를  자바스크립트로 표현한 렌더 트리를 말한다.
 
 
 
-ReactCompositeComponent
+
 
 ## resume
 - https://github.com/rpf5573/about.me
 
 
 ## ref
+- https://velog.io/@chris/front-end-interview-handbook-js-2
+- https://velog.io/@chris/front-end-interview-handbook-js-3
 - https://github.com/JaeYeopHan/Interview_Question_for_Beginner/tree/master/FrontEnd
 - https://taegon.kim/archives/5770
 - https://blex.kr/@yoyounn18/%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C-%EC%A7%81%EA%B5%B0-%EC%9B%B9%EA%B0%9C%EB%B0%9C%EC%9E%90-%EB%A9%B4%EC%A0%91%EC%A7%88%EB%AC%B8-%EB%AA%A8%EC%9D%8C-%EB%8B%B5%EB%B3%80-%EB%8B%AC%EC%95%84%EB%B3%B4%EA%B8%B0
 - https://velog.io/@honeysuckle/%EC%8B%A0%EC%9E%85-%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C-%EB%A9%B4%EC%A0%91-%EC%A7%88%EB%AC%B8-%EB%AA%A8%EC%9D%8C
 
-https://velog.io/@tmmoond8/%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C-%EA%B0%9C%EB%B0%9C%EC%9E%90-%EC%9D%B8%ED%84%B0%EB%B7%B0-%ED%9B%84%EA%B8%B0-%EB%A9%B4%EC%A0%91-%EC%A7%88%EB%AC%B8-%EC%A0%95%EB%A6%AC-%EC%9E%91%EC%84%B1-%EC%A4%91
+- https://velog.io/@tmmoond8/%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C-%EA%B0%9C%EB%B0%9C%EC%9E%90-%EC%9D%B8%ED%84%B0%EB%B7%B0-%ED%9B%84%EA%B8%B0-%EB%A9%B4%EC%A0%91-%EC%A7%88%EB%AC%B8-%EC%A0%95%EB%A6%AC-%EC%9E%91%EC%84%B1-%EC%A4%91
 
 - https://yoon.site/react-node-js-fullstack-%EA%B0%9C%EB%B0%9C%EC%A7%81%EA%B5%B0-%EB%A9%B4%EC%A0%91-%ED%9B%84%EA%B8%B0/
 
