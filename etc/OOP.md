@@ -1,6 +1,69 @@
 # Object-Oriented Programming
 
 
+## intro
+객체 지향 프로그래밍은 컴퓨터 프로그램을 객체들의 모임으로 파악하고자 하는 프로그래밍 패러다임 중 하나다.  
+
+
+## 장점
+객체지향 프로글밍의 가장 중요한 특성은 강한 응집력과 약한 결합력을 지향한다는 것이다.  
+
+**응집력(cohesion)**  
+프로그램의 한 요소가 특정 목적을 위해 밀접하게 연관된 기능들이 모여서 구현되어 있고, 지나치게 많은 일을 하지 않으면 그것을 응집력이 높다고 표현한다.
+
+
+**결합력(coupling)**  
+프로그램 코드의 한 요소가 다른 것과 얼마나 강력하게 연결되어 있는지, 얼마나 의존적인지를 나타내는 정도. 결합력이 낮다는 것은 한 요소가 다른 요소들과 관계를 크게 맺고 있지 않은 상태를 의미한다.  
+
+
+## 구성요소  
+- 클래스  
+같은 종류의 짐단에 속하는 속성과 행위를 정의한 것.  다른 클래스와 독립적으로 디자인해야한다.  
+
+- 객체  
+클래스의 인스턴스 상위 클래스의 속성을 가지고 있으면서 개별적인 특성과 행위도 가지고 있다.  
+
+- 메서드  
+클래스로부터 생성된 객체를 사용하는 방법. 객체의 속성을 조작하는 데 사용된다. 
+
+
+## 특성
+
+### 캡슐화
+캡슐화는 객체 외부에서 직접 접근하지 못하게 막고, 함수를 통해서만 조작이 가능하게 하는 작업이다. 
+```js
+const Monster = (function(){
+
+	let count = 0;
+	const pool = [];
+
+	class Monster {
+		constructor(name){
+			this.name = name;
+
+			pool.push(this)
+		}
+		count++;
+		this.level = 1;
+		levelUp(){
+			this.level++;
+			console.log('level Up!')
+		}
+	}
+
+	return Monster
+})()
+
+let m1 = new Moster('name');
+```
+
+
+
+
+
+
+
+
 
 
 ## 1. SOLID
@@ -62,3 +125,7 @@ DI패턴을 구현하기위해서 인터페이스를 통해서 상속을 받는�
 상위 클래스인 인퍼터페이스를 매개체로 연결되어있기 때문이다.  
 
 
+
+
+## REF
+- [1](https://velog.io/@cyranocoding/%EA%B0%9D%EC%B2%B4-%EC%A7%80%ED%96%A5-%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8DOOP-Object-Oriented-Programming-%EA%B0%9C%EB%85%90-%EB%B0%8F-%ED%99%9C%EC%9A%A9-%EC%A0%95%EB%A6%AC-igjyooyc6c)
