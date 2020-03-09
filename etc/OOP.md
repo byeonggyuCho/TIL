@@ -1,6 +1,7 @@
 # Object-Oriented Programming
 
 
+<<<<<<< HEAD
 ## intro
 객체 지향 프로그래밍은 컴퓨터 프로그램을 객체들의 모임으로 파악하고자 하는 프로그래밍 패러다임 중 하나다.  
 
