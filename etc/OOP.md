@@ -57,7 +57,7 @@ OOP로 작성한 프로그램은 응집력과 결합력을 갖습니다.
 데이터를 절대로 외부에서 직접 접근을 하면 안되고 오로지 함수를 통해서만 접근해야하는데 이를 가능하게 해주는 것이 바로 캡슐화이다.  아래 예제에서는 `level`이라는 변수를 메서드를 통햐서만 접근 가능하다.
 
 ```js
-var  Monster = function({name, id}){
+var Monster = function({name, id}){
 
 	var level = 1;
 	this.name = name
@@ -70,6 +70,32 @@ var  Monster = function({name, id}){
 
 var m1 = new Monster({name:'pika',id:1});
 ```
+
+ES2019에 private라는 속성이 공식적으로 등록되었지만 그 이전 자바스크립트의 모든 변수는 public이다.  
+그래서 앞서 클로저를 이용한 변수 은닉으로 private를 연출했다.  
+자바스크립트의 상위호환 언어인 타입스크립트에서는 ES2019보다 직관적인 private 문법을 제공한다.  
+
+```ts
+class Monster {
+    private level: number;
+
+    constructor(theName:string, id:string) {
+		this.id = id;
+		this.name = theName; 
+		this.level = 1;
+	}
+
+	getLevel(){
+		return this.level
+	}
+}
+
+const m1 = new Monster("pika","0006");
+
+console.log(m1.level);
+console.log(m1.getLevel())
+```
+
 
 
 ### 추상화(Abstraction)

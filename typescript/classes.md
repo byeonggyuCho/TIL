@@ -136,7 +136,7 @@ new Animal("Cat").#name // #name속성은 클래스 밖에서 접근할 수 없�
 ```ts
 class Animal {
     private name: string;
-    constructor(theName:string) { thie.name = theName; }
+    constructor(theName:string) { this.name = theName; }
 }
 new Animal("Cat").name;
 ```
