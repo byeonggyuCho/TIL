@@ -49,11 +49,32 @@ Saga의 관심은 오로지 애플리케이션의 변수로 작용 할 여지가
 
 
 ## Effect
+
 ### Select
 state에서 필요한 데이터를 꺼낸다
 
 ### Put
-액션을 디스패치한다
+액션을 디스패치한다.
+```ts
+function* writePostSaga (){
+  try {
+    yield put({
+      type: WRITE_POST_REQUEST,
+      payload: post
+    })
+  } catch(e){
+    console.error(e.stack)
+    yield put({
+      type: WRITE_POST_FAILURE,
+      payload: e
+    })
+  }
+
+}
+
+```
+
+
 ### Task
 비동기 액션이 dispatch되는 것을 기다린다.
 ```js
@@ -61,8 +82,12 @@ yield take([ADD_CART, REMOVE_CART, CLEAR_CART]);
 const cart = yield select(selectCart);
 localStorage.setItem('cartCache', JSON.stringify(cart));
 ```
+
+
 ### call
 프로미스 완료를 기다린다
+
+
 ### fork
 다른 task를 실헹한다
 ```js
@@ -87,6 +112,22 @@ export function* initAvailableDatesFlow() {
 
 ### taskLatest
 액션 호출시에 같은 액션이 실행 중이면 그 액션은 파기되고 마지막 호출만 실행됩니다. POST, PUT, DELETE 같은 리소스 변경 메소드에 사용합니다.
+
+
+### all
+사가 함수를 동시에 실행한다.
+```ts
+function* rootSaga() {
+
+    yield console.log('[SYSTEM] rootSaga created')
+
+    yield all([
+        fork(baseSaga),
+        fork(editorSaga),
+        fork(postSaga),
+    ])
+}
+```
 
 
 ## 병렬 이펙트

@@ -201,7 +201,15 @@ this.setState({comment: 'Hello'});
 
 ### 12. pure component
 
+
+### 13. 클래스형 컴포넌트를 쓰는 이유
+- 퍼포먼스 최적화
+- Hooks로 아직 다루기 힘든 라이프 사이클
+- 지원범위에 의해 구버전 React를 사용해야하는 경우.
+
+
 ## ref
+- [presentaional-component-container-component](https://blueshw.github.io/2017/06/26/presentaional-component-container-component/)
 - [컴포넌트 제대로만들기](https://hyunseob.github.io/2019/06/02/react-component-the-right-way/)
 - [doc-component](https://reactjs-kr.firebaseapp.com/docs/components-and-props.html)
 - [higher-order-components](https://reactjs-kr.firebaseapp.com/docs/higher-order-components.html)

@@ -201,7 +201,6 @@ SI프로젝트를 경험하면서 조금만 수정해도 실타래처럼 얽혀�
 
 ## 관심분야
 1. javascript
-    - curring
     - Symbol
     - proxy
     - web worker
@@ -213,9 +212,13 @@ SI프로젝트를 경험하면서 조금만 수정해도 실타래처럼 얽혀�
     - next.js
     - rx.js
     - redux-observable
+    - with redux
+    - redux-saga
+    - 렌더링 최적화
 4. open source
     - library development
 5. node.js
+    - nextJS
 6. Test
     - TDD
 7. webpack
@@ -231,10 +234,12 @@ SI프로젝트를 경험하면서 조금만 수정해도 실타래처럼 얽혀�
     - 프로그래머 소통(코드)
     - 서비스 품질 개선
 11. Functional Programming
+    - fungter
 12. 협업습관 기르기
     - (이슈관리, JIRA,Confluence, 프로젝트 보드)
 13. Digital nomard
 14. Web Assembly
 15. GraphQL, Apollo
 16. cavas, svg
+    - d3 library
 17. sass
