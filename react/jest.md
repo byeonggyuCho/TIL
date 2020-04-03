@@ -1,5 +1,7 @@
 # Jest
 
+## TODO
+
 ## react component testing
 
 1. 특정 props에 따라 컴포넌트가 충돌없이 렌더링 되는지 확인

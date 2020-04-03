@@ -1,7 +1,10 @@
-# immutableJS
+# Immutable library
 
 ## intro
-불변성을 위해 사용하는 라이브러리 입니다. 
+- immer
+
+
+## TODO
 
 
 ## ref

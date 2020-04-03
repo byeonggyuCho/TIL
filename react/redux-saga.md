@@ -26,18 +26,156 @@ thunk에서 못했던 작업들이 가능해졌기 때문입니다.
 Saga의 관심은 오로지 애플리케이션의 변수로 작용 할 여지가 있는 작업(사이드 이팩트)의 관리에 있습니다.
 ![](../resource/img/react/react-saga-flow.png)
 
+
+## Redux에서 데이터 처리를 할때 고려할 점
+1. 어디서 통신처리를 적을 것인가?
+2. 어디로부터 통신처리를 불러올 것인가?
+3. 통신처리의 상태를 어떻게 가지게 할 것인가?   
+이 중 세번째 항목은 "loding..."메세지를 사용자에게 보여주기 위해 필요한 부분입니다. 
+즉 비동기 요청의 상태를 요청,성공,실패 등의 단계로 나누어 redux 상태를 변경해야합니다.  
+
+
 ## redux-thunk의 한계
 - action에게 과도한 책임을 준다는 점
 - 그 책임으로 인해 action을 나타내는 코드를 이해하기 힘든 상태로 만든다
 
-리덕스 사가는 액션에 위임된 책임을 수행하여 action과 리듀에서 발생하는 사이드 이펙트를 제거한다.
+리덕스 사가는 액션에 위임된 책임을 수행하여 action과 리듀에서 발생하는 사이드 이펙트를 제거한다.  
+보다 자세한 이해를 위해 같은 동작을 하는 로직을 redux-thunk와 redux-saga로 비교해보자.  
+
+**api.js**
+```js
+export function user(id) {
+  return fetch(`http://localhost:3000/users/${id}`)
+    .then(res => res.json())
+    .then(payload => ({ payload }))
+    .catch(error => ({ error }));
+}
+```
+
+**actions.js**
+```js
+export function fetchUser(id) {
+  return dispatch => {
+    dispatch(requestUser(id));
+    API.user(id).then(res => {
+      const { payload, error } = res;
+      if (payload && !error) {
+        dispatch(successUser(payload));
+      } else {
+        dispatch(failureUser(error));
+      }
+    });
+  };
+}
+```
+
+위 흐름을 보면 
+1. `fetchUser`함수의 반환값을 dispatch 한다.
+```js
+  dispatch(fetchUser());
+```
+2. `redux-thunk`는 dispatch로 전달받은 `fetchUser` 반환값을 실행한다.
+```js
+
+let fetchUser_result = dispatch => {
+    dispatch(requestUser(id));  // (1) REUEQST
+
+    API.user(id).then(res => {  // (2) API Call
+      const { payload, error } = res;
+      if (payload && !error) {
+        dispatch(successUser(payload)); // (3) SUCCESS
+      } else {
+        dispatch(failureUser(error));   // (4) FAILURE
+      }
+    })
+
+
+// redux-thunk에서....
+fetchUser_result(dispatch)
+```
+
+3. 통신을 요청하기 전에 action을 dispatch한다.  
+  - (1)파트
+4. API.user함수를 호출해서 통신을 요청한다.  
+  - (2)파트
+5. 완료되면 SUCCESS_USER 혹은 FAILURE_USER Action을 dispatch한다.
+
+
+여기서 `fectchUser`은 액션 생성자입니다. 그런데 redux-thunk에서는 액션 객체가 아닌 비동기 로직이 적힌 함수를 반환합니다.  
+Action Creator는 Action객체를 생성하는 역할인데 redux-thunk의 구조에서는 비동기로직을 품게 되었습니다.  
+이런 구조는 비동기 로직의 복잡도가 증가한 상황에서 상당히 위험할 수 있습니다.  
+이제 이런 상황을 redux-saga는 어떻게 해결하는지 알아보겠습니다.   
+
+**sagas.js**
+```js
+function* handleRequestUser() {
+  while (true) {
+    const action = yield take(REQUEST_USER);
+    const { payload, error } = yield call(API.user, action.payload);
+    if (payload && !error) {
+      yield put(successUser(payload));
+    } else {
+      yield put(failureUser(error));
+    }
+  }
+}
+
+export default function* rootSaga() {
+  yield fork(handleRequestUser);
+}
+```
+마찬가지로 흐름을 살펴보겠습니다. 
+1. `redux-saga`에서 rootSaga Task를 실행시킨다.
+2. `fork` Effect로 인해 handleRequestUser Task가 시작된다.
+3. `take` Effect로 REQUEST_USER Action이 dispatch되길 기다린다.
+4. 컴포넌트에서 REQUEST_USER Action을 dispatch한다.
+5. call Effect로 API.user 함수를 불러와서 통신처리의 완료를 기다린다.
+6. 통신이 완료된다.
+7. put Effect를 사용하여 SUCCESS_USER 혹은 FAILURE_USER Action을 dispatch한다.
+8. while 루프에 따라 3번으로 돌아간다.
+
+
+이 코드에서는 병행으로 동작하는 2개의 Task(rootSaga와 handleRequestUser)가 있습니다.  
+Task는 Redux의 Store가 작성 된 후, redux-saga의 Middleware가 기동 될 때 1번만 불러와집니다.  
+그리고 fork Effect을 사용하여 redux-saga에게 다른 Task를 기동할 것을 요청합니다.  
+앞서 설명한듯이, Task내에는 실제 처리를 행하지 않으므로, fork함수로부터 생성된 것은 단순한 오브젝트입니다. 
+
+
+
+```js
+console.log(fork(handleRequestUser));
+
+{
+  Symbol<IO>: true,
+  FORK: {
+    context: ...,
+    fn: <func>,
+    args: [...]
+  }
+}
+```
+이 객체는 task의 실행환경인 미들웨어로 넘겨져서 새로운 Task로써 기동시킵니다.  
+fork Effect는 지정한 Task의 완료를 기다리지 않습니다. 그러므로 yield는 곧 제어로 돌아옵니다. 
+하지만 `rootSaga` Task는 `handleRequestUser` Task의 기동 이외에 할 일이 없습니다. 그때문에 rootSaga Task내에는 fork를 사용하여 기동된 모든 Task가 종료 될 때까지 기다립니다. 이런 실행모델은 연쇄적인 Task의 취소를 구현하기위해 필요합니다.  
+이것은 부모 Task, 자식 Task, 손자 Task 3개에서, 부모가 자식을 Fork하고, 자식이 손자를 Fork 할 때 부모 Task를 취소하면 제대로 손자Task까지 취소를 알려주는 편리한 기능입니다. 만약 자식Task의 완료를 의도적으로 기다리고 싶지 않다면 spawn을 사용하여 Task를 기동하면 됩니다.  
+
+
+`handleRequestUser` Task를 기동시키면 금방 REQUEST_USER Action을 기다리기 위해 take Effect가 불러와집니다.  
+take Effect가 요청을 기다리기 때문에 비동기처리를 동기적으로 쓸 수있게 됩니다.  
+redux-saga에서는 Generator를 이용해 처리 흐름을 멈춥니다. 이러한 기능 덕분에 싱글 스레드인 javascript로 복수의 Task를 만들어
+각각 Action을 기다리거나 통신처리 결과를 기다려도 밀리지 않게 됩니다.  
+
+
+
+
 
 ## 용어
 1. effect  
 이펙트는 사가의 미들웨어가 실행할 명령들을 포함하고 있는 평범한 자바스크립트 객체이다.
 
 2. task  
-테스크는 백그라운드에서 실행되는 프로세스와 같다. 리덕스 사가 기반의 애플리케이션은 여러 테스크들을 병렬로 실행시킬 수 있다. fork 함수를 통해 이러한 테스크들을 생성할 수 있다.
+테스크는 백그라운드에서 실행되는 프로세스와 같다.  
+리덕스 사가 기반의 애플리케이션은 여러 테스크들을 병렬로 실행시킬 수 있다. fork 함수를 통해 이러한 테스크들을 생성할 수 있다.
 
 3. non-blocking  
 블로킹 호출은 Saga가 이펙트를 yield 하면 실행에 대한 결과를 기다렸다가 제네레이너 내부에서 다음의 명령어의 실행을 재개한다.
@@ -107,11 +245,83 @@ export function* initAvailableDatesFlow() {
 ### join 
 다른 task종료를 기다린다
 
-### taskEvery
+
+
+### Heller Effect
+
+saga에서 지원하는 Helper Effect에 대해서 알아보자.
+
+
+```js
+import { call, put } from 'redux-saga/effects'
+
+export function* fetchData(action) {
+   try {
+      const data = yield call(Api.fetchUser, action.payload.url)
+      yield put({type: "FETCH_SUCCEEDED", data})
+   } catch (error) {
+      yield put({type: "FETCH_FAILED", error})
+   }
+}
+```
+
+
+#### taskEvery
 모든 액션마다 실행된다
 
-### taskLatest
+```js
+function* takeEvery(pattern, saga, ...args) {
+  const task = yield fork(function* () {
+    while (true) {
+      const action = yield take(pattern)
+      yield fork(saga, ...args.concat(action))
+    }
+  })
+  return task
+}
+```
+이 구현체에서 알 수 있듯이 takeEvery는 여려개의 saga가 동시에 fork되게 합니다.
+
+
+```js
+import { takeEvery } from 'redux-saga/effects'
+
+function* watchFetchData() {
+  yield takeEvery('FETCH_REQUESTED', fetchData)
+}
+```
+
+#### taskLatest
 액션 호출시에 같은 액션이 실행 중이면 그 액션은 파기되고 마지막 호출만 실행됩니다. POST, PUT, DELETE 같은 리소스 변경 메소드에 사용합니다.
+어느 순간에도 단 하나의 태스크만 실행됩니다. 마지막으로 시작된 태스크가 되겠죠. 
+
+```js
+function* takeLatest(pattern, saga, ...args) {
+  const task = yield fork(function* () {
+    let lastTask
+    while (true) {
+      const action = yield take(pattern)
+      if (lastTask)
+        yield cancel(lastTask) // cancel is no-op if the task has already terminated
+
+      lastTask = yield fork(saga, ...args.concat(action))
+    }
+  })
+  return task
+}
+```
+`takeLatest`의 구현체를 살펴보겠습니다.  
+새로운 액션이 dispatch되면 자신을 제외한 이전 모든 fork된 태스크를 취소합니다.  
+따라서 가장 나중의 응답만 받을 수 있습니다.
+
+
+```js
+import { takeLatest } from 'redux-saga/effects'
+
+function* watchFetchData() {
+  yield takeLatest('FETCH_REQUESTED', fetchData)
+}
+```
 
 
 ### all
