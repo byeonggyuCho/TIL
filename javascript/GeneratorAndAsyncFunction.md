@@ -4,7 +4,7 @@
 
 여러개의 함수를 반환값 없이 중단 및 실행 시킬수 있는 제어구조.
 
-Generator를 이요한 Promise를 동기방식으로 연출할때 코루틴과 비슷한 형태로 로직을 짜야한다.
+Generator를 이용한 Promise를 동기방식으로 연출할때 코루틴과 비슷한 형태로 로직을 짜야한다.
 
 차이가 있다면 멈출때 돌아갈 위치를 직접 지저앟ㄹ 수 없고 단순히 호출자에게 제어권을 넘겨주게된다.
 ```js
@@ -144,30 +144,40 @@ function* orderCoffee(phoneNumber) {
     const result = yield orderByName(name, 'coffee');
     return result;
 }
+let iter = orderCoffee('010-5555-8888');
 ```
 만약 이런식으로 순차적으로 promise함수가 실행된다면 어떨까요? 
-이제 각 반환값을 id, email같은 변수에 저장하기 때문에 이전에 지적한 상황에 대응할 수 있고 각 프로미스함수도 수정하지 않아도 됩니다.
-
+이제 각 반환값을 id, email같은 변수에 저장하기 때문에 이전에 지적한 상황에 대응할 수 있고 각 프로미스함수도 수정하지 않아도 됩니다.  
+이제 문제는 이 코드를 실행하는 방법입니다.  
+`iter.next()`를 호출해서 제어권을 제너레이터로 넘겨야하는데 이 작업을 제너레이터가 종료될때 까지 반복해야합니다.  
 ```js
 let iter = orderCoffee('010-5555-8888');
 
-iter.next().value
-.then(result => 
-    iter.next(result).value
-    .then(result => 
-        iter.next(result).value 
-        // ...
-    )
-
-)
+iter.next().value.then({id} => {  // getIdByPhoneNumber
+  iter.next(id).value.then({email} => { // getEmailById
+     iter.next(email).value.then({name} => { // getNameByEmail
+       iter.next(name).value.then({order} => { // orderByName
+         console.log(order)
+       })
+     })
+  })
+})
+```
+대충 이런 모습이 됩니다.
+물론 매번 이렇게 사용할 수 없기 때문에 헬퍼함수가 필요해보입니다.  
+이터레이터가 끝나지 않았으면 `iter.next().value`가 반환하는 promise에 then메소드를 체인으로 `inter.next()`를 호출해서 제너레이터에 제어권을 넘기는 함수가 필요합니다.  
+여기서 제어권을 서로 넘긴다는 것에 주목을 해야합니다.  
 
 ```
-이 코드를 순차적으로 실행하기 위해선 이런 구조가 되어야하는데 헬퍼함수가 필요해보입니다.  
-이터레이터가 끝나지 않았으면 `next().value`로 반환되는 promise에 then메소드를 체인하는 식의 추상화 코드가 있으면
-깔끔해질 것같습니다.
+next(main) → promise(gen) → yield(gen) → then(main) →  // id 획득
+next(main) → promise(gen) → yield(gen) → then(main) → // email 획득
+```
+메인함수와 sub루틴 사이에서 제어권을 핑퐁하듯이 주고받고 있는 모습니다.  
+이것을 코루틴이라고 부릅니다. 코루틴은 여러개의 함수를 반환값 없이 중단 및 실행시킬 수 있는 제어구조를 말합니다.  
+이제 수동으로 코루틴을 실행하도록 했던 것을 자동으로 실행시키는 헬퍼함수를 만들어보겠습니다.  
 
 
-### 3. 프로미스와 제너레이터 조합하기.
+### 3. 헬퍼함수로 제너레이터 순차적으로 호출하기.
 ```js
 function run(generator, ...args) {
   const iter = generator(args);
@@ -213,10 +223,9 @@ function run(generator, ...args) {
 }
 ```
 
-
 모든 함수가 프로미스를 반환하도록 수정합니다.  
-next.value에 프로미스를 리턴하고 then메서드에서 재귀호출을 하는 스타일입니다. (A)
-프로미스와 제너레이터를 함께 사용해서 각각 함수에서 제너레이터를 신경쓰지 않고 외부에서 제어할 수 있습니다. 
+next.value에 프로미스를 리턴하고 then메서드에서 재귀호출을 하는 스타일입니다. (A)  
+프로미스와 제너레이터를 함께 사용해서 각각 함수에서 제너레이터를 신경쓰지 않고 외부에서 제어할 수 있습니다.  
 이제 제너레이터를 활용하여 비동기 코드를 동기식으로 작성할 수 있습니다.  
 
 프로미스와 제너레이터 조합에서 핵심은  yield를 호출해 멈춘 Generator를 Promise가 제어하는 것압니다.  
