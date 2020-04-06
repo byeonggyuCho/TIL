@@ -203,6 +203,6 @@ ret.value에 프로미스를 리턴하고 then메서드에서 재귀호출을 �
 - [ES6의 제너레이터를 사용한 비동기 프로그래밍](https://meetup.toast.com/posts/73)
 - [Promise와 Generator을 활용한 async programming](https://suhwan.dev/2018/04/18/JS-async-programming-with-promise-and-generator/)
 - [Async Generator 코루틴](https://medium.com/@jooyunghan/js-async-generator-%EC%BD%94%EB%A3%A8%ED%8B%B4-cabb4f5ffaff)
-- [Adapting Observable to Async Iteration in JavaScript](http₩s://medium.com/@jooyunghan/adapting-observable-to-async-iteration-in-javascript-2-b8df3c7f7260)
+- [Adapting Observable to Async Iteration in JavaScript](https://medium.com/@jooyunghan/adapting-observable-to-async-iteration-in-javascript-2-b8df3c7f7260)
 - [김정환블로그 - 제너레이터와 프로미스를 이용한 비동기 처리](http://jeonghwan-kim.github.io/2016/12/15/coroutine.html)
 - [A STUDY ON SOLVING CALLBACKS WITH JAVASCRIPT GENERATORS](https://jlongster.com/A-Study-on-Solving-Callbacks-with-JavaScript-Generators)
