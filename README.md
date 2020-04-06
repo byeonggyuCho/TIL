@@ -209,11 +209,9 @@ SI프로젝트를 경험하면서 조금만 수정해도 실타래처럼 얽혀�
 2. Typescript
     - pattern
 3. React
-    - next.js
     - rx.js
+    - next.js
     - redux-observable
-    - with redux
-    - redux-saga
     - 렌더링 최적화
 4. open source
     - library development
@@ -222,10 +220,11 @@ SI프로젝트를 경험하면서 조금만 수정해도 실타래처럼 얽혀�
 6. Test
     - TDD
 7. webpack
+    - code spliting
 8. Clean Code
 9. Optimizing
     - requestidlecallback
-    - pwa
+    - PWA
     - 렌더링
       - web workers
       - service workders
@@ -243,3 +242,5 @@ SI프로젝트를 경험하면서 조금만 수정해도 실타래처럼 얽혀�
 16. cavas, svg
     - d3 library
 17. sass
+18. 함수형프로그래밍
+    - ramda
