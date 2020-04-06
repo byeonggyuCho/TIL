@@ -44,9 +44,11 @@ console.log(myItr.next());  // {value:2, done:false}
 console.log(myItr.next());  // {value:3, done:false}
 console.log(myItr.next());  // {value:4, done:true}
 ```
-함수명 앞에 있는 *은 함수를 Generator로 만든다. yield키워드는 next()가 호출될 때 결과 Iterator가 리턴 해야하는 값을 리턴될 순서대로 지정합니다. 이 예제에서 생성된  Iterator는 next()메서드를 연속적으로 호출할 때 세가지 다른 값을 리턴합니다. Generator는 interator를 생성할 때 본것처럼 다른 샇ㅁ수와 똑같이 호출할 수 있습니다.
+함수명 앞에 있는 *은 함수를 Generator로 만든다. yield키워드는 next()가 호출될 때 결과 Iterator가 리턴 해야하는 값을 리턴될 순서대로 지정합니다. 
+이 예제에서 생성된  Iterator는 next()메서드를 연속적으로 호출할 때 세가지 다른 값을 리턴합니다. Generator는 iterator를 생성할 때 본것처럼 다른 함수와 똑같이 호출할 수 있습니다.
 
-Generator의 흥미로운 부분은 yield문 다음에 실행을 멈추는 것입니다. next()가 호출되면 실행되어 yield에서 호출자에 값을 전달하며 실행을 멈춘다. 다시 next()가 호출되면 아까 멈춘 위치에서 실행을 시작하여 다음 yield까지 실행되고 또 멈춘다. yield 키워드는 모든 값이나 표현식과 함께 사용할  수 있으므로 항목을 하나씩 나열하지 않고  Iterator에 항목을 추가하는 Generaotr함수를 작성할 수 있다. 예를 들면 for루프에 사용할 수 있다,.
+Generator의 흥미로운 부분은 yield문 다음에 실행을 멈추는 것입니다. next()가 호출되면 실행되어 yield에서 호출자에 값을 전달하며 실행을 멈춥니다.  
+다시 next()가 호출되면 아까 멈춘 위치에서 실행을 시작하여 다음 yield까지 실행되고 또 멈춥니다. yield 키워드는 모든 값이나 표현식과 함께 사용할 수 있으므로 항목을 하나씩 나열하지 않고  Iterator에 항목을 추가하는 Generaotr함수를 작성할 수 있다. 예를 들면 for루프에 사용할 수 있다.
 ```js
 function *createIterator(items) {
     for (let i = 0; i < items.length; i++) {
@@ -343,7 +345,8 @@ Iterator는 Generator를 이용하여 쉽게 만들고 기본 기능을 이용�
 
 
 ### Iterator에 파라미터 넘기기.
-Iterator의 `next()`메소드를 통해 값을 전달받거나 Generator의 `yield`를 사용하는 모습을 보여줬습니다. 그러나 `next()`메서드를 통해 Iterator에 파라미터를 전달할 수도 있ㅅ그빈다. 파라미터가 `next()`메서드에 전달되면, 그 파라미터는 Genrator내부의 `yield`문의 값이 됩니다. 이 기능은 비동기 프로그래과 같은 고급 기능에 중요합니다.
+Iterator의 `next()`메소드를 통해 값을 전달받거나 Generator의 `yield`를 사용하는 모습을 보여줬습니다. 그러나 `next()`메서드를 통해 Iterator에 파라미터를 전달할 수도 있습니다.  
+파라미터가 `next()`메서드에 전달되면, 그 파라미터는 Genrator내부의 `yield`문의 값이 됩니다. 이 기능은 비동기 프로그래과 같은 고급 기능에 중요합니다.
 
 ```js
 function *createIterator() {
@@ -357,6 +360,12 @@ console.log(iterator.next(4));          // "{ value: 6, done: false }"
 console.log(iterator.next(5));          // "{ value: 8, done: false }"
 console.log(iterator.next());           // "{ value: undefined, done: true }"
 ```
+혼돈하지 말아야할 것이 있습니다.  
+```js
+let first = yield 1;
+```
+과 같은 yield문이 있을때 first는 `yield 1;`의 반환값이 아닌 next메서드의 파라미터가 된다는 점입니다.  
+즉, generator의 구현부를 순차적으로 이해하기 위해서는 이전 next의 반환값을 다음 next의 파라미터로 넘겨야합니다.
 
 
 ### Generator의 Return문
@@ -487,7 +496,7 @@ function run (taskDef){
     // next() 호출을 계속하는 재귀함수
     function step() {
 
-        (!result.done) {
+        if (!result.done) {
             result = task.next();
             step();
         }
@@ -549,10 +558,10 @@ run(function*() {
 <br>
 
 ### 비동기 타스크 실행
-앞의 예제는 정적 데이터가 `yield`호출 사이에서 왔다 갔다했지만 비동기 프로세스를 기다르는 것은 약간 다릅니다. 타스크 러너는 콜백 및 그 사용법을 알아야합니다. 
-그리고 `yield`표현식은 값을 태스크 러너로 전달하기 때문에 어떤 함수 호출이라도 호출이 태스크 러너가 기다려야하는 비동기 연ㅇ산임을 나타내는 값을 리턴해야함을 의미합니다.
-
-다음은 값이 비동기 작업임을 알리는 한가지 방법입니다.
+앞의 예제는 정적 데이터가 `yield`호출 사이에서 왔다 갔다했지만 비동기 프로세스를 기다르는 것은 약간 다릅니다.  
+타스크 러너는 콜백 및 그 사용법을 알아야합니다. 즉 비동기방식이 Promise냐 callback패턴이냐에 따라선 task Runner의 로직이 달라져야합니다.  
+Promise의 경우 then절에서 next메서드를 호출해야하고 Callback패턴의 경우 callback함수에서 next메서드를 실행하는식으로 구현되어야합니다.  
+아래 예제는 콜백패턴을 통한 비동기호출을 Generator를 이용해 동기적으로 변경하는 예제입니다.
 ```js
 function fetchData() {
     return function innerFn(callback){
@@ -560,9 +569,10 @@ function fetchData() {
     }
 }
 ```
-이 예제의 목적을 위해, 태스크 러너에 의해 호출되는 모든 함수는 callback을 실행하는 함수(innerFn)를 리턴합니다. `fetchData()`함수는 콜백함수를 파라미터로 받아들이는 함수(innerFn)를 리턴합니다. innerFn이 호출되면, 콜백함수를 실행합니다. 콜백을 실행하는 것이 Iterator와 상호작용하도록 하기 위해 `callback`파라미터는 taskRunner에서 전달 받습니다.
-
-콜백실행이 Iterator와 상호작용하는걸 확인하기 위해 타스크러너로 `callback`파라미터를 전달해야합니다.  `featch Data()`함수는 동기식이지만,`setTimeout()`을 이용해서쉽게 비동기식으로 바꿀 수 있습니다.
+이 예제에서 태스크 러너에 의해 호출되는 모든 함수는 callback을 실행하는 함수(innerFn)를 리턴합니다.  
+`fetchData()`함수는 콜백함수를 파라미터로 받아들이는 함수(innerFn)를 리턴합니다. innerFn이 호출되면, 콜백함수를 실행합니다. 
+콜백에서 Iterator의 next메서드를 호출해야 하기때문에 `callback`파라미터는 taskRunner에서 전달 받아야합니다. (Iterator와 상호작용)
+`featch Data()`함수는 동기식이지만,`setTimeout()`을 이용해서쉽게 비동기식으로 바꿀 수 있습니다.
 
 ```js
 function fetchData(){
@@ -576,7 +586,9 @@ function fetchData(){
 이 버전의 `fetchData()`는 콜백을 호출하기 전에 50ms의 지연을 가져와 이 패턴이 동기 및 비동기 코드에서 똑같이 잘 동작함을 보여줍니다. `yield`를 사용하여 호출하려는 각 함수가 동일한 패턴을 따르는지 확인해야합니다.
 
 
-함수에 '이것이 비동기 프로세스'라는 사실을 전달하기 위해 *Task Runner*를 수정해야 합니다. `result.value`가 함수 일때 마다, *Task Runner*는 그 값을 `next()`메서드로 전달하는 대신에 실행할 것입니다.
+이제 전달받는 비동기함수의 형태에 맞추어  *Task Runner*를 수정해야 합니다.  
+`result.value`가 함수 일때 마다, *Task Runner*는 그 값을 `next()`메서드로 전달하는 대신에 실행할 것입니다.  
+이때 `result.value`의 인자로 next메서드를 실행할 콜백함수를 전달합니다. 
 
 ```js
 //Task Runner
@@ -621,15 +633,14 @@ function readFile(filename) {
 ```
 
 
-### ref
+### REF
 
 - [ECMAScript 6 Iterator와 Generator](https://infoscis.github.io/2018/01/31/ecmascript-6-iterators-and-generators/)
 - [Understanding ECMAScript 6](https://leanpub.com/understandinges6/read#leanpub-auto-promises-and-asynchronous-programming)
 - [제너레이터의 재미](https://medium.com/@jooyunghan/%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8-%EC%A0%9C%EB%84%88%EB%A0%88%EC%9D%B4%ED%84%B0%EC%9D%98-%EC%9E%AC%EB%AF%B8-246553cadfbd)
-- [https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols)
-- [http://hacks.mozilla.or.kr/2015/08/es6-in-depth-generators/](http://hacks.mozilla.or.kr/2015/08/es6-in-depth-generators/)
-- [http://hacks.mozilla.or.kr/2016/02/es6-in-depth-generators-continued/](http://hacks.mozilla.or.kr/2016/02/es6-in-depth-generators-continued/)
-- [http://hacks.mozilla.or.kr/2015/08/es6-in-depth-generators/](http://hacks.mozilla.or.kr/2015/08/es6-in-depth-generators/)
+- [Iteration protocols](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols)
+- [제너레이터](http://hacks.mozilla.or.kr/2015/08/es6-in-depth-generators/)
+- [제너레이터2](http://hacks.mozilla.or.kr/2016/02/es6-in-depth-generators-continued/)
 - [https://jlongster.com/A-Study-on-Solving-Callbacks-with-JavaScript-Generators](https://jlongster.com/A-Study-on-Solving-Callbacks-with-JavaScript-Generators)
 - [https://github.com/nhn/fe.javascript](https://github.com/nhn/fe.javascript)
 - [http://jeonghwan-kim.github.io/2016/12/15/coroutine.html](http://jeonghwan-kim.github.io/2016/12/15/coroutine.html)

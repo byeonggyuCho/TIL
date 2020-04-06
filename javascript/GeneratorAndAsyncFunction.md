@@ -150,19 +150,48 @@ function order(name, menu) {
 
 ### 3. 프로미스와 제너레이터 조합하기.
 ```js
-const iterator = orderCoffee('010-1010-1111');
-let ret;
+function run(generator, ...args) {
+  const iter = generator(args);
+  function resumeIter(prevRes) {
+    const next = iter.next(prevRes);
+    if (next.done) return Promise.resolve(next.value);
+    Promise.resolve(next.value)
+      .then(res => {
+        resumeIter(res);
+      });
+  }
 
-(function runNext(val) {
-    ret = iterator.next(val);
+  resumeIter();
+}
 
-    if (!ret.done) {
-        ret.value.then(runNext);
-    } else {
-        console.log('result : ', ret.value);
-    }
-})();
+run(orderCoffee,'010-1010-1111')
 ```
+위 `run`함수에는 문제가 있다.  
+에러처리 로직이 없고 여러개의 generator를 동시에 처리할 수 없으며 여러개의 Promise를 병렬적으로 실행시키지도 못한다.  
+아래는 위 로직을 조금 수정한 함수다.  
+
+```js
+function run(generator, ...args) {
+  const iter = generator(args)
+  function fulfilledHandler(res) {
+    const next = iter.next(res);
+    if (next.done) return Promise.resolve(next.value);
+    Promise.resolve(next.value)
+      .then(fulfilledHandler, rejectedHandler);
+  }
+
+  function rejectedHandler(err) {
+    const next = iter.throw(err);
+    if (next.done) return Promise.resolve(next.value);
+    Promise.resolve(next.value)
+      .then(fulfilledHandler, rejectedHandler);
+  }
+
+  return fulfilledHandler();
+}
+```
+
+
 모든 함수가 프로미스를 반환하도록 수정한다.
 
 ret.value에 프로미스를 리턴하고 then메서드에서 재귀호출을 하는 스타일이다.
@@ -171,9 +200,9 @@ ret.value에 프로미스를 리턴하고 then메서드에서 재귀호출을 �
 
 ## REF
 
-- [https://meetup.toast.com/posts/73](https://meetup.toast.com/posts/73)
-- [https://suhwan.dev/2018/04/18/JS-async-programming-with-promise-and-generator/](https://suhwan.dev/2018/04/18/JS-async-programming-with-promise-and-generator/)
-- [https://medium.com/@jooyunghan/js-async-generator-코루틴-cabb4f5ffaff](https://medium.com/@jooyunghan/js-async-generator-%EC%BD%94%EB%A3%A8%ED%8B%B4-cabb4f5ffaff)
-- [https://medium.com/@jooyunghan/adapting-observable-to-async-iteration-in-javascript-2-b8df3c7f7260](https://medium.com/@jooyunghan/adapting-observable-to-async-iteration-in-javascript-2-b8df3c7f7260)
-- [http://jeonghwan-kim.github.io/2016/12/15/coroutine.html](http://jeonghwan-kim.github.io/2016/12/15/coroutine.html)
-- [https://jlongster.com/A-Study-on-Solving-Callbacks-with-JavaScript-Generators](https://jlongster.com/A-Study-on-Solving-Callbacks-with-JavaScript-Generators)
+- [ES6의 제너레이터를 사용한 비동기 프로그래밍](https://meetup.toast.com/posts/73)
+- [Promise와 Generator을 활용한 async programming](https://suhwan.dev/2018/04/18/JS-async-programming-with-promise-and-generator/)
+- [Async Generator 코루틴](https://medium.com/@jooyunghan/js-async-generator-%EC%BD%94%EB%A3%A8%ED%8B%B4-cabb4f5ffaff)
+- [Adapting Observable to Async Iteration in JavaScript](http₩s://medium.com/@jooyunghan/adapting-observable-to-async-iteration-in-javascript-2-b8df3c7f7260)
+- [김정환블로그 - 제너레이터와 프로미스를 이용한 비동기 처리](http://jeonghwan-kim.github.io/2016/12/15/coroutine.html)
+- [A STUDY ON SOLVING CALLBACKS WITH JAVASCRIPT GENERATORS](https://jlongster.com/A-Study-on-Solving-Callbacks-with-JavaScript-Generators)
