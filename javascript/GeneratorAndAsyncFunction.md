@@ -103,58 +103,79 @@ function orderCoffee(phoneNumber, callback) {
 
 이런 패턴은 프로미스의 적용으로 상당 부분 완화되었다. 
 ```js
+const getIdByPhoneNumber = (phoneNumber) => new Promise(resolve => {
+    // ....
+  setTimeout(() => resolve({id: '0001'}), 1000);
+});
+const getEmailById = (id) => new Promise(resolve => {
+    // ....
+  setTimeout(() => resolve({email:'aaa@gmail.com'}), 1000);
+});
+const getNameByEmail = (email) => new Promise(resolve => {
+    // ....
+  setTimeout(() => resolve({name:'Peter'}), 1000);
+});
+const orderByName = (name) => new Promise(resolve => {
+  setTimeout(() => resolve({coffee: 1}), 1000);
+});
+
+
 function orderCoffee(phoneNumber) {
-    return getId(phoneNumber)
-        .then(id => getEmail(id))
-        .then(email => getName(email))
-        .then(name => order(name, 'coffee'));
+    return getIdByPhoneNumber(phoneNumber)
+        .then( getEmailById)
+        .then( getNameByEmail)
+        .then( orderByName);
 }
 ```
+이 형태가 아마도 Promise를 이용한 가장 깔끔한 코드일 것이다.  
+하지만 이런 형태에는 단점이 있는데 then chain에의 파라미터와 반환값이 연결되어야 한단다는 점에서 문제가 된다.  
+예를들면 getEmailById의 반환값을 orderByName에서 사용해야한다면 어떻게 해야할까?  
+orderCoffee 함수 외부에 변수를 두어 저장하거나 getNameByEmail의 반환값으로 전달해줘야한다.  
+이런 해결방법은 코드의 기능을 모호하게 만들기때문에 그닥 추천할만한 방법은 아니다.  
+여기서 하난계 더 나아가 프로미스에 제너레이터를 이용하면 보다 직관적이면서 활용도 높은 코드를 짤수 있다.  
+
+
 ### 2. 제너레이터 적용하기
 ```js
 function* orderCoffee(phoneNumber) {
-    const id = yield getId(phoneNumber);
-    const email = yield getEmail(id);
-    const name = yield getName(email);
-    const result = yield order(name, 'coffee');
+    const id = yield getIdByPhoneNumber(phoneNumber);
+    const email = yield getEmailById(id);
+    const name = yield getNameByEmail(email);
+    const result = yield orderByName(name, 'coffee');
     return result;
 }
-
-
-const iterator = orderCoffee('010-1234-1234');
-iterator.next();
-
-function getId(phoneNumber) {
-    // …
-    iterator.next(result);
-}
-
-function getEmail(id) {
-    // …
-    iterator.next(result);
-}
-
-function getName(email) {
-    // …
-    iterator.next(result);
-}
-
-function order(name, menu) {
-    // …
-    iterator.next(result);
-}
 ```
-비동기 함수의 작업 종료시점을 알기 위해 next()메서드를 호출해야한다. 
+만약 이런식으로 순차적으로 promise함수가 실행된다면 어떨까요? 
+이제 각 반환값을 id, email같은 변수에 저장하기 때문에 이전에 지적한 상황에 대응할 수 있고 각 프로미스함수도 수정하지 않아도 됩니다.
 
-이 방식은 제너레이터가 제어권을 잃어버린다. 
+```js
+let iter = orderCoffee('010-5555-8888');
+
+iter.next().value
+.then(result => 
+    iter.next(result).value
+    .then(result => 
+        iter.next(result).value 
+        // ...
+    )
+
+)
+
+```
+이 코드를 순차적으로 실행하기 위해선 이런 구조가 되어야하는데 헬퍼함수가 필요해보입니다.  
+이터레이터가 끝나지 않았으면 `next().value`로 반환되는 promise에 then메소드를 체인하는 식의 추상화 코드가 있으면
+깔끔해질 것같습니다.
+
 
 ### 3. 프로미스와 제너레이터 조합하기.
 ```js
 function run(generator, ...args) {
   const iter = generator(args);
+
   function resumeIter(prevRes) {
     const next = iter.next(prevRes);
     if (next.done) return Promise.resolve(next.value);
+
     Promise.resolve(next.value)
       .then(res => {
         resumeIter(res);
@@ -166,9 +187,10 @@ function run(generator, ...args) {
 
 run(orderCoffee,'010-1010-1111')
 ```
-위 `run`함수에는 문제가 있다.  
-에러처리 로직이 없고 여러개의 generator를 동시에 처리할 수 없으며 여러개의 Promise를 병렬적으로 실행시키지도 못한다.  
-아래는 위 로직을 조금 수정한 함수다.  
+이제 헬퍼함수를 통해 프로미스를 반환하는 이터레이터를 순차적으로 실행할 수 있습니다.  
+그러나 아직 `run`함수에는 문제가 있습니다.  
+에러처리 로직이 없고 여러개의 generator를 동시에 처리할 수 없으며 여러개의 Promise를 병렬적으로 실행시키지도 못합니다.  
+아래는 위 로직을 조금 수정한 함수입니다.  
 
 ```js
 function run(generator, ...args) {
@@ -177,7 +199,7 @@ function run(generator, ...args) {
     const next = iter.next(res);
     if (next.done) return Promise.resolve(next.value);
     Promise.resolve(next.value)
-      .then(fulfilledHandler, rejectedHandler);
+      .then(fulfilledHandler, rejectedHandler);         // (A)
   }
 
   function rejectedHandler(err) {
@@ -192,14 +214,16 @@ function run(generator, ...args) {
 ```
 
 
-모든 함수가 프로미스를 반환하도록 수정한다.
+모든 함수가 프로미스를 반환하도록 수정합니다.  
+next.value에 프로미스를 리턴하고 then메서드에서 재귀호출을 하는 스타일입니다. (A)
+프로미스와 제너레이터를 함께 사용해서 각각 함수에서 제너레이터를 신경쓰지 않고 외부에서 제어할 수 있습니다. 
+이제 제너레이터를 활용하여 비동기 코드를 동기식으로 작성할 수 있습니다.  
 
-ret.value에 프로미스를 리턴하고 then메서드에서 재귀호출을 하는 스타일이다.
+프로미스와 제너레이터 조합에서 핵심은  yield를 호출해 멈춘 Generator를 Promise가 제어하는 것압니다.  
 
-프로미스와 제너레이터를 함께 사용해서 각각 함수에서 제너레이터를 신경쓰지 않고 외부에서 제어할 수 있다. 이제 제너레이터를 활용하여 비동기 코드를 동기식으로 작성할 수 있다.
+
 
 ## REF
-
 - [ES6의 제너레이터를 사용한 비동기 프로그래밍](https://meetup.toast.com/posts/73)
 - [Promise와 Generator을 활용한 async programming](https://suhwan.dev/2018/04/18/JS-async-programming-with-promise-and-generator/)
 - [Async Generator 코루틴](https://medium.com/@jooyunghan/js-async-generator-%EC%BD%94%EB%A3%A8%ED%8B%B4-cabb4f5ffaff)
