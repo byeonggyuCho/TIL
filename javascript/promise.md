@@ -194,5 +194,7 @@ const forEachPromise = function(items){
 
 
 ### REF
+- [javascript leaning guid](https://helloworldjavascript.net/pages/285-async.html)
+- [What is Promise](https://velog.io/@cadenzah/What-is-a-Promise)
 - [infoscis.github.io](https://infoscis.github.io/2018/02/27/ecmascript-6-promises-and-asynchronous-programming/)
 - [Understanding EcmaScript](https://leanpub.com/understandinges6/read#leanpub-auto-promises-and-asynchronous-programming)

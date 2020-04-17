@@ -7,7 +7,8 @@ Node.js기반의 웹서버에서는 동시에 여러개의 HTTP요청을 처리�
 
 
 ![](/resource/img/javascript/browerEnv.png)  
-위 그림을 보면 비동기요청을하는 `XMLHttpRequest`나 `setTimeout`같은 함수들이 자바스크립트 엔진과는 별도로 Web API의 영역에 따로 분류되어 있습니다. `Event Loop`나 `Task Queue`같은 장치도 외부에 구성되어 있는걸 볼 수 있습니다. 
+위 그림을 보면 비동기요청을하는 `XMLHttpRequest`나 `setTimeout`같은 함수들이 자바스크립트 엔진과는 별도로 Web API의 영역에 따로 분류되어 있습니다. `Event Loop`나 `Task Queue`같은 장치도 외부에 구성되어 있는걸 볼 수 있습니다.  
+이처럼 자바스크립트 엔진에서 직접 처리하는 것이 아니라  API를 통해 브라우저에 위임을 합니다.  위임했던 일이 끝나면 Task Queue에 추가가 됩니다. `Event Loop`는 호출 스택이 비워질 때마다 `Task Queue`에서 가장 오래된 작업을 꺼내와서 해당 작업에 대한 콜백을 실행시킵니다. 
 이번엔 Node.js의 실행환경을 한번 보겠습니다.
 
 ![](/resource/img/javascript/nodeEnv.jpg)  
@@ -19,4 +20,5 @@ Node.js기반의 웹서버에서는 동시에 여러개의 HTTP요청을 처리�
 
 ## REF
 - [](https://meetup.toast.com/posts/89)
+- [자바스크립트의 비동기 처리](https://helloworldjavascript.net/pages/285-async.html)
 

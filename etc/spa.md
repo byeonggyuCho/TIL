@@ -12,6 +12,9 @@ spa는 모던 웹의 큰 트탠드 중 하나다.
 2. 사용자 경험 향상
     - 웹에서 데스크탑 애플리케이션같은 사용자 경험 제공가능
 
+3. 사용자와 인터랙션이 많은 모던 웹에서 서버 리소스를 줄이기 위해서 프론트사이드 랜더링을 함.
+
+
 
 
 ## 이점
@@ -19,6 +22,10 @@ spa는 모던 웹의 큰 트탠드 중 하나다.
 2. 정적자원 로딩 감소
 3. 화면간 빠른 전환
 
+
+## 단점
+1. 자바스크립트의 파일이 너무 커진다. 
+    - 코드 스플리팅을 이용해서 라우트별로 파을을 나눠서 트래픽과 로딩속도를 개선할 수 있다.
 
 
 ## 연관기술
@@ -32,6 +39,7 @@ spa는 모던 웹의 큰 트탠드 중 하나다.
 
 
 ## REF
+- [react-router](https://velopert.com/3417)
 - [a-netflix-web-performance-case-study](https://medium.com/dev-channel/a-netflix-web-performance-case-study-c0bcde26a9d9)
 https://isme2n.github.io/devlog/2017/05/19/about-spa/
 https://brownbears.tistory.com/406

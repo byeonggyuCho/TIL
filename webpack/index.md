@@ -8,7 +8,10 @@
 웹페이지에 필요한 CSS, Script등이 자원들을 받기 위해 서버에 요청하는 횟수를 줄이기 위해서 자원을 하나로 만들기로함!  
 또 최신 자바스크립트 문법을 구형 브라우저가 해석가능한 문법으로 변환하는 역할을 수행함.  
 이밖에 파일압축, 최적화를 할 수있어 초기 로딩속도가 빨라진다.  
-웹팩은 기본적으로 필요한 자원은 미리 로딩하는게 아니라 필요한 시점에 요청하자는 컨셉이다.
+웹팩은 기본적으로 필요한 자원은 미리 로딩하는게 아니라 필요한 시점에 요청하자는 컨셉이다.  
+
+브라우저 환경에서 모듈 번들링의 도입과정에 대해 잘 소개한 글이 있어 첨부한다.  
+[프론트엔드 개발환경의 이해](https://jeonghwan-kim.github.io/series/2019/12/10/frontend-dev-env-webpack-basic.html)
 
 
 ## 주요 기능
@@ -257,6 +260,7 @@ UglifyJsPlugin과는 다르게 로더쪽에 설정을 추가했다. 기존 로�
 
 
 ### REF
+- [Webpack-Basic](https://jeonghwan-kim.github.io/series/2019/12/10/frontend-dev-env-webpack-basic.html)
 - [WebpackTutorial_한글](https://github.com/AriaFallah/WebpackTutorial/tree/master/ko-arahansa/part1)
 - [(Webpack) 모듈? 번들링?](https://perfectacle.github.io/2016/11/18/Module-bundling-with-Webpck/)
 - [왜 webpack인가](https://dev.zzoman.com/2017/09/04/why-do-you-need-to-learn-about-webpack/)
