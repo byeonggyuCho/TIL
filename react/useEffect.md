@@ -27,8 +27,10 @@ Hook의 관점은 컴포넌트의 생명주기가 아니라 코드의 목적에 
 effect를 여러개 정의한 경우 선언순서에 따라 처리됩니다.
 
 ### 정리 
+- class형 컴포넌트는 작업을 언제 수행해야할까? 에 포커스
+- useEffect는 뭘 처리할까에 포커스
 - effect는 컴포넌트 랜더링 이후에 일어나는 로직을 정의한 함수
-- 랜더링 이후에 변형, 구독, 타이머, 로깅, 사이드 이팩트를 Effect를 정의하여 처리
+- 랜더링 이후에 데이터조회, 이벤트핸들러 등록, 돔 조작, 타이머, 로깅, 사이드 이팩트를 Effect를 정의하여 처리
 - 라이프 사이클 관점이 아니라 로직의 행위에 포커스를 두어 로직을 나눌 수 있다.
 
 
@@ -108,17 +110,123 @@ useEffect(() => {
 구독 배열을 빈값으로 넘기게되면 구독값이 없기 때문에 re-rendering시점에는 effect가 실행되지 않습니다.  
 
 
+- list of dependencies
+
 ## 리랜더링 시점에만 동작하는 로직이 필요하다면?
 class Component에서 componentDidMount, componentDidUpdate시점을 분리하여 리랜더링 시점에만 동작하는 코드를 작성할 수 있다.  
 
+## 참고
 
+1. ComponentDidMount
+
+```js
+// Class
+class Example extends React.Component {
+    componentDidMount() {
+        ...
+    }
+}
+
+// Hook
+const Example = () => {
+    useEffect(() => {
+        ...
+    }, []);
+}
+```
+
+2. ComponentWillUnmount
+```js
+// Class
+class Example extends React.Component {
+    componentWillUnmount() {
+        ...
+    }
+}
+
+// Hook
+const Example = () => {
+    useEffect(() => {
+        return () => {
+            ...
+        };
+    }, []);
+}
+
+```
+
+
+3. ComponentWillReceiveProps
+
+
+```js
+// Class
+class Example extends React.Component {
+    componentWillReceiveProps(nextProps) {
+        ...
+    }
+    or
+    UNSAFE_componentWillReceiveProps(nextProps) {
+        ...
+    }
+}
+
+// Hook
+const Example = (props) => {
+    const { value } = props;
+    useEffect(() => {
+        ...
+    }, [value]);
+}
+```
+
+
+4. ShouldComponentUpdate
+
+```js
+// Class
+class Example extends React.Component {
+    shouldComponentUpdate(nextProps) {
+        return nextProps.value !== this.props.value;
+    }
+}
+
+/* 
+class 컴포넌트의 shouldComponentUpdate() 메서드와 달리, areEqual 함수는 props들이 서로 같으면 true를 반환하고, props들이 서로 다르면 false를 반환합니다. 이것은 shouldComponentUpdate와 정반대의 동작입니다.
+ */
+// Hook
+const Example = React.memo(() => {
+    ...
+}, (prevProps, nextProps) => {
+    return nextProps.value === prevProps.value;
+})
+```
+
+5. ComponentDidUpdate
+```js
+// Class
+class Example extends React.Component {
+    componentDidUpdate(prevProps, prevState) {
+        ...
+    }
+}
+
+// Hook
+const Example = () => {
+    useEffect(() => {
+        ...
+    });
+}
+```
 
 ## 추가
 1. compoenentWillMount 시점, 렌더링 이전 시점에 대한 로직이 필요한경우에는?
-
+2. shouldComponentUpdate
 
 
 ## ref
 - [a-complete-guide-to-useeffect](https://rinae.dev/posts/a-complete-guide-to-useeffect-ko#tldr-too-long-didnt-read---%ec%9a%94%ec%95%bd) 
 - [useEffect](https://www.daleseo.com/react-hooks-use-effect/)
 - [whatIsDifferentUseEffectAndComponentDidUpdate](https://linguinecode.com/post/react-componentdidupdate-vs-useeffect) 
+- [참고](https://ko.reactjs.org/docs/hooks-faq.html#what-can-i-do-if-my-effect-dependencies-change-too-often)
+- [참고2](https://salgum1114.github.io/reactjs/2019-11-28-react-class-equivalents/)
