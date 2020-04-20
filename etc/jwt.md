@@ -1,4 +1,4 @@
-# JSON Web Toekn
+# JSON Web Token
 
 
 
