@@ -230,3 +230,5 @@ const Example = () => {
 - [whatIsDifferentUseEffectAndComponentDidUpdate](https://linguinecode.com/post/react-componentdidupdate-vs-useeffect) 
 - [참고](https://ko.reactjs.org/docs/hooks-faq.html#what-can-i-do-if-my-effect-dependencies-change-too-often)
 - [참고2](https://salgum1114.github.io/reactjs/2019-11-28-react-class-equivalents/)
+- [react-component-lifecycle-methods-vs-hooks](https://tsh.io/blog/react-component-lifecycle-methods-vs-hooks/)
+- [getting-started-with-react-useeffect](https://linguinecode.com/post/getting-started-with-react-useeffect)
