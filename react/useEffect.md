@@ -222,6 +222,7 @@ const Example = () => {
 ## 추가
 1. compoenentWillMount 시점, 렌더링 이전 시점에 대한 로직이 필요한경우에는?
 2. shouldComponentUpdate
+  - 컴포넌트 진입전에 상태값에 의해서 렌더링요소를 결정해야하는 경우.. classComponent에서는 이경우 compoenentWillMount를 사용한다. 
 
 
 ## ref
