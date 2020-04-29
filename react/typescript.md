@@ -6,6 +6,15 @@
 
 ## Component
 
+### useState 
+```jsx
+type Information = { name: string; description: string };
+const [info, setInformation] = useState<Information | null>(null);
+```
+useState를 사용하여 상태를 지정할때 제네릭을 이용해 이렇게 지정할 수 있습니다.  
+null을 허용하려면 유니온 타입을 사용하면 됩니다. 
+
+
 ### Presentinal Component
 ```tsx
 interface TagsProps {
