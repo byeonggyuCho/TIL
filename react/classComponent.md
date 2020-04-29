@@ -35,8 +35,10 @@ export default Hello;
 클래스형 컴포넌트는 `React.Component`를 상속받아 선업합니다.  
 이 클래스 안에 라이프사이클 메서드와 렌더함수가 선언되어 있습니다.  
 
-2. Render function  
-또 눈에 띄는 차이가 render함수인데 render함수가 JSX를 자바스크립트로 변환합니다.  
+2. Render method  
+이 메서드는 렌더링을 요청하는 라이프 사이클 메서드입니다.  
+![](../resource/img/react/classLifeCyle.png)  
+
 
 3. props
 props는 `this.props`를 통해 접근합니다.  
