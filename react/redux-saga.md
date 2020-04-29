@@ -57,6 +57,31 @@ Saga의 관심은 오로지 애플리케이션의 변수로 작용 할 여지가
 - watcher: 디스패치된(dispatched) 액션을 관찰하고 모든 액션에 대해 워커(worker)를 포크합니다.
 - worker: 액션을 처리하고 종료합니다.
 
+## Generator로 모니터링로직 만들기.
+```js
+function* watchGenerator() {
+    console.log('모니터링 시작!');
+    while(true) {
+        const action = yield;
+        if (action.type === 'HELLO') {
+            console.log('안녕하세요?');
+        }
+        if (action.type === 'BYE') {
+            console.log('안녕히가세요.');
+        }
+    }
+}
+
+const watch = watchGenerator();
+
+watch.next({type:'HELLO'})
+// 안녕하세요?
+watch.next({type:'BYE'})
+// 안녕히가세요
+```
+이런식으로 whatch함수를 만들어서 액션을 모니터링하는 로직을 만들 수 있습니다.  
+
+
 
 ## Effect
 
@@ -119,8 +144,7 @@ export function* initAvailableDatesFlow() {
 
 
 
-### Heller Effect
-
+### Helper Effect
 saga에서 지원하는 Helper Effect에 대해서 알아보자.
 
 

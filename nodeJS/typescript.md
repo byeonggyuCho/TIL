@@ -4,4 +4,4 @@
 - webpack 설정
 - nodemon 설정
 - ts-node
-- package.json 설정
+- package.json 설정``
