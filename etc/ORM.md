@@ -7,7 +7,6 @@ ORM(Object-relational mapping)을 단순하게 표현하면 객체와 관계와�
 이게 과연 무슨 말일까?  
 관계형 데이터베이스와 객체간의 구조적 이질성에 의한 연산비용을 최소화하기 위함이라 할 수 있다.  
 
-
 - ORM 프레임워크는 데이터베이스를 객체로 매핑함으로써 객체 간의 관계를 바탕으로 SQL을 자동으로 생성해준다.
 
 ## 장점
@@ -27,6 +26,10 @@ ORM(Object-relational mapping)을 단순하게 표현하면 객체와 관계와�
 
 ## Prisma
 Prisma는 DB와 GraphQL 사이를 이어주는 접착제이다.
+
+
+ORM에서 모든 DB를 지원할까?
+
 
 ## REF
 - https://velog.io/@cadenzah/series/GraphQL-Fundamentals-and-Advanced
