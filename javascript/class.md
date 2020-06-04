@@ -79,7 +79,8 @@ console.log(obj.hasOwnProperty('b'));   // true
 ```
 prototype chain에 의해 `a`프로퍼티를 참조하지만 `hasOwnProperty`를 통해 `obj`에 `a`프로퍼티가 없다는걸 확인할 수 있습니다. 
 이건 정확히 따지자면 상속이라고 보긴 어렵습니다. prototype chain에 의해 참조를 하고 있을 뿐이죠. 상속의 포인트는 소유권에 있습니다. 
-그럼 실제로 부모 클래스의 속성을 상속받기 위해선 어떻게 해야할까요? 자식 클래스에서 부모 클래스의 생성자함수를 그대로 차용하여 실행하기를 원한다면 다음과 같이 해야합니다.
+그럼 실제로 부모 클래스의 속성을 상속받기 위해선 어떻게 해야할까요?  
+자식 클래스에서 부모 클래스의 생성자함수를 그대로 차용하여 실행하기를 원한다면 다음과 같이 해야합니다.
 
 ```js
 function Parent(){
@@ -259,7 +260,7 @@ Child.superClass.constructor.method();  // super static method
 
 ### 2) 생성자 함수.
 
-ES5의 static method 및 method는 그 자체로 함수이기 때문에 별개의 생성자함수를 사용할 수 없습니다.
+ES5의 static method 및 method는 그 자체로 함수이기 때문에 별개의 생성자함수를 사용할 수 있습니다.
 ```js
 var methodObj = new ES5Parent.prototype.method();
 var staticObj = new ES5Parent.staticMethod();

@@ -1,3 +1,309 @@
+
+## JS
+
+
+###  프로미스가 뭐예요?
+자바스크립트에서 비동기 처리를 다루기 위한 패턴입니다.
+promise.all을 이용해 병렬 비동기 로직을 쉽게 작성할 수 있고 then과 catch를 이용하여 비동기 호출 체인에서 예외처리를 콜백패턴보다 쉽게 할 수있습니다.
+
+
+```js
+function asyncFn (msg) {
+
+    return new Promise(resolve, reject) {
+
+        setTimeout(function(){
+            resolve(msg)
+        },1000)
+    }
+}
+
+asyncFn('Hello').then((result)=>{
+    console.log(result,"World")
+})
+```
+
+### promise.all을 쓰는 상황을 코드로 보여주세요
+
+promise.all은 비동기처리를 병렬적으로 실행하여 모든 프로미스가 resolve되는 시점을 잡을 수 있습니다. 
+복수의 URL에 동시에 요청을 보내고, 다운로드가 모두 완료된 후에 콘텐츠를 처리할 때 promise.all을 사용할 수 있습니다.
+
+```js
+let names = ['iliakan', 'remy', 'jeresig'];
+
+let requests = names.map(name => fetch(`https://api.github.com/users/${name}`));
+
+Promise.all(requests)
+  .then(responses => {
+    // 모든 응답이 성공적으로 이행되었습니다.
+    for(let response of responses) {
+      alert(`${response.url}: ${response.status}`); // 모든 url의 응답코드가 200입니다.
+    }
+
+    return responses;
+  })
+  // 응답 메시지가 담긴 배열을 response.json()로 매핑해, 내용을 읽습니다.
+  .then(responses => Promise.all(responses.map(r => r.json())))
+  // JSON 형태의 응답 메시지는 파싱 되어 배열 'users'에 저장됩니다.
+  .then(users => users.forEach(user => alert(user.name)));
+```
+
+
+### Promise와 Callback의 차이점은 무엇이며 각각의 장단점에 대해 설명해달라. 
+
+
+
+**프로미스**  
+1. 장점
+- Promise.all()을 사용하여 병렬 비동기 코드를 쉽게 작성할 수 있습니다.
+2. 딘점
+- ES2015를 지원하지 않는 이전 브라우저에서 이를 사용하기 위해서는 polyfill을 로드해야 합니다.
+
+**콜백패턴**
+1. 단점
+-  콜백헬
+```js
+step1(function(value1) {
+  step2(value1, function(value2) {
+    step3(value2, function(value3) {
+      step4(value3, function(value4) {
+        step5(value4, function(value5) {
+            // value5를 사용하는 처리
+        });
+      });
+    });
+  });
+});
+```
+- 에러 처리 한계
+```js
+try {
+  setTimeout(() => { throw new Error('Error!'); }, 1000);
+} catch (e) {
+  console.log('에러를 캐치하지 못한다..');
+  console.log(e);
+}
+```
+예외는 호출스택을 따라 호출자에게 전파되는데 실행이 종료되어 호출스택에서 빠지면 에러를 전달하지 못한다.
+
+
+
+
+###  비동기가 뭐예요?
+특정 코드의 연산이 끝날 때까지 코드의 실행을 멈추지 않고 다음 코드를 먼저 실행하는 것을 말합니다.  
+비동기 코드의 연산이 끝난 시점에 처리해야하는 로직은 콜백, 프로미스, async/await으로 처리합니다.
+
+
+### 자바스크립트에서는 왜 비동기 처리로 처리해야하나요?
+자바스크립트 엔진이 싱글 스레드이기 때문에 동시에 여러가지 일을 처리하기위해선 이벤트 루프를 이용한 비동기 처리를 해야합니다.
+
+
+
+### 클로저 뭐에요?
+중첩 함수구조에서 외부함수가 내부함수를 반환할때, 외부함수의 실행 컨텍스트(구체적으로는 context variable object)는 내부함수의 스코프체인에 의해 참조되어 사라지지 않습니다.  
+이때 외부함수의 실행컨텍스트를 클로저라고 합니다.
+즉 중첩 함수구조에서 내부함수가 참조하는 외부함수의 실행 컨텍스트가 클로저입니다.  
+실행컨텍스트에서 varialbe object는 arguments, variable, 함수 선언문으로 구성되는데 이 모두 클로저의 대상이다.  
+
+호출이 끝난 context는 execution stack에서 사라진다.  
+하지만 다른 context에서 해당 context의 variable object를 참조중이라면 해당 varible object는 garbage collection의 대상이 되지 않기때문에 계속 참조할 수 있다.  다시말해 스코프체인으로 참조중인 객체가 있다면 메모리에 유지되는것이다.
+
+- [참고](https://medium.com/@pks2974/javascript-%EC%99%80-function-%ED%95%A8%EC%88%982-%EC%8B%A4%ED%96%89-%EC%BB%A8%ED%85%8D%EC%8A%A4%ED%8A%B8-execution-context-51d4037b7fdc)
+
+### 클로저는 언제쓰나요?
+자바스크립트에는 private 변수를 선언할 수 없는데 클로저를 이용하면 데이터를 캡슐화 할 수 있습니다.  
+
+
+### Class는 무엇인가? ES5 스펙으로 Class를 구현할수 있는가?
+prototype 기반 문법을 객체지향으로 표현하기 위한 방법이다.
+이런 면에서 Class 문법을 문법설탕라고 할 수 있겠으나 몇가지 차이점이 존재한다.
+ 
+
+1. ES6에서 class의 method는 일반함수가 아니기 때문에 new 연산자로 생성자 함수처럼 사용할 수 없다.
+```js
+class Parent {
+  static staticMethod() {
+    this.s = 11;
+    return 'static method';
+  }
+  method() {
+    this.m = 12;
+    return 'method';
+  }
+}
+
+var p1 = new Parent.prototype.method(); // VM216:1 Uncaught TypeError: fn is not a constructor
+```
+2. staticMehtod를 상속하기 복잡해진다.
+3. class문법은 호이스팅이 안된다.
+```js
+// ES6
+const es6 = new ES6();
+class ES6 {
+  constructor() {
+    this.a = 1;
+  }
+}
+console.log(es6);  // Uncaught ReferenceError
+```
+4. class문법은 블록스코프에 영향을 받는다.
+```js
+class A {
+  constructor(){ this.a = 1; }
+}
+{
+  class A {
+    constructor(){ this.a = 2; }
+  }
+  console.log(new A());    // A {a: 2}
+}
+console.log(new A());      // A {a: 1}
+```
+
+### 이벤트 위임에 대해 설명하세요.
+
+
+### JavaScript로 컴파일되는 언어로 JavaScript 코드를 작성하는 경우의 장단점은 무엇인가요?
+**장점**  
+1. 정적타입 사용가능
+2. 추가적인 기능을 제공받으면서 라이브러리를 사용하지않기 때문에 통일된 코드로 작성하면서 의존성을 극복할 수 있음
+**단점**  
+1. 템플릿 문법에 대한 러닝커브에 의한 생산성 하락
+2. 서브파티 라이브러리와 호완성문제
+3. IDE 지원이 미흡할 수 있음
+4. 빌드 컴파일 프로세스를 위한 초기 작업 환경셋팅이 필요함
+
+
+
+### 실행 컨텍스트(Execution Context)에 대해 설명해달라  
+
+코드가 실행되기 위한 환경으로 변수객체, 함수선언, 스코프, this로 구성된다.  
+
+풀어서 말하자면 자바스크립트 엔진이 코드를 실행하기 위한 정보를 의미힌다. 즉 코드의 실행문맥이다.  
+문맥에 따라 코드의 결과값이 달라진다. 그렇기에 코드의 문맥을 알고있어야 정확한 결과를 낼 수 있다.
+자바스크립트 엔진은 실행 컨텍스트를 물리적 객체의 형태로 관리한다. 
+
+
+**구성**  
+1. Variable Object
+    - variable: 로컬 지역변수
+    - arguments:  
+        - Functional Context 한정
+    - 함수 선언문
+
+2. Scope Chain  
+스코프 체인은 실행 컨텍스트가 참조할 수 있는 변수, 함수 선언 등의 정보를 담고 있는 리스트를 가르킨다.  
+자바스크립트 엔진은 스코프 체인을 통해 렉시컬 스코프를 파악한다. 이 덕분에 상위 스코프를 참조할 수 있는 것이다.  
+`[[Scopes]]` 으로 표현되며, 배열로 저장한다.
+
+3. this value  
+this 프로퍼티는 this 값이 할당되는데 할당되는 값은 런타임에 함수가 실행되는 5가지 경우의 컨텍스트에 따라 결정된다.
+- global: 전역객체가 this
+- functionInvocation: 
+- call,apply,bind: 명시적 할당되는 객체가 this
+- Construction: new에 의해 생성된 객체가 this
+- MethodInvocation : 메소드를 포함하는 객체가 this.
+
+
+
+**종류**  
+- global context
+- Functional Context
+- eval 컨텍스트
+
+
+- [참고](https://velog.io/@imacoolgirlyo/JS-%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%EC%9D%98-Hoisting-The-Execution-Context-%ED%98%B8%EC%9D%B4%EC%8A%A4%ED%8C%85-%EC%8B%A4%ED%96%89-%EC%BB%A8%ED%85%8D%EC%8A%A4%ED%8A%B8-6bjsmmlmgy)
+- [참고2](https://m.blog.naver.com/PostView.nhn?blogId=gi_balja&logNo=221261731281&proxyReferer=https%3A%2F%2Fwww.google.com%2F)
+
+- [참고3](https://medium.com/@pks2974/javascript-%EC%99%80-function-%ED%95%A8%EC%88%982-%EC%8B%A4%ED%96%89-%EC%BB%A8%ED%85%8D%EC%8A%A4%ED%8A%B8-execution-context-51d4037b7fdc)
+
+
+
+### ajax란?
+비동기 웹 응용 프로그램을 만들기 위해 클라이언트 측에서 사용되는 웹 개발 기술의 집합입니다. Ajax를 사용하면 웹 애플리케이션은 기존 페이지의 화면 및 동작을 방해하지 않으면서 백그라운드에서 비동기적으로 서버로 데이터를 보내고 서버에서 데이터를 받아올 수 있습니다. Ajax는 프리젠테이션 레이어에서 데이터 교환 레이어를 분리함으로써, 웹페이지 및 확장 웹 애플리케이션이 전체 페이지를 다시 로드 할 필요 없이 동적으로 컨텐츠를 변경할 수 있도록 합니다. 
+
+### JSONP가 어떻게 동작하는지(그리고 Ajax와 어떻게 다른지)를 설명하세요.
+
+### curry 함수의 예를 들어 줄 수 있나요? 그리고 이 문법은 어떤 이점을 가지고 있나요?
+currying은 둘 이상의 매개 변수가 있는 함수가 여러 함수로 분리된 패턴으로, 직렬로 호출하면, 필요한 모든 매개 변수가 한 번에 하나씩 누적됩니다. 이 기법은 함수형 스타일로 작성된 코드를 읽고, 합성하기 더 쉬워진 경우 유용할 수 있습니다. 함수를 currying하려면, 하나의 함수로 시작하여, 하나의 매개 변수를 취하는 일련의 함수로 분리해야 합니다.
+
+
+```js
+function curry(fn) {
+  if (fn.length === 0) {
+    return fn
+  }
+
+  function _curried(depth, args) {
+    return function(newArgument) {
+      if (depth - 1 === 0) {
+        return fn(...args, newArgument)
+      }
+      return _curried(depth - 1, [...args, newArgument])
+    }
+  }
+
+  return _curried(fn.length, [])
+}
+
+function add(a, b) {
+  return a + b
+}
+
+var curriedAdd = curry(add)
+var addFive = curriedAdd(5)
+
+var result = [0, 1, 2, 3, 4, 5].map(addFive) // [5, 6, 7, 8, 9, 10]
+
+```
+### 생성자의 메서드에 화살표 문법을 사용하면 어떤 이점이 있나요?
+this 바인딩을 별도로 처리하지 않아도 됩니다.  
+화살표함수의 경우 상위 스코프의 this를 참조하기 때문입니다.  
+
+
+### event bubbling에 대해 설명하세요.
+DOM 요소에서 이벤트가 트리거되면 리스너가 연결되어 있는 경우 이벤트 처리를 시도한 다음, 해당 이벤트가 부모에게 bubbling되고 부모에서 같은 이벤트가 발생합니다. 
+이 bubbling은 요소의 최상단 부모요소인 document까지 계속적으로 발생시킵니다. 이벤트 bubbling은 이벤트 위임의 작동 메커니즘입니다.
+
+
+### ES6 클래스와 ES5 함수 생성자의 차이점은 무엇인가요?
+
+### 호이스팅에 대해 설명하세요.
+
+### 고차 함수(higher-order function)의 정의는 무엇인가요?
+고차 함수는 다른 함수를 매개 변수로 사용하여 데이터를 처리하거나, 결과로 함수를 반환하는 함수입니다. 
+고차 함수는 반복적으로 수행되는 어떤 연산을 추상화하기 위해 사용합니다. Array Api중 forEach, filter, reduce, map등이 있습니다
+이중 map은 고차 함수를 사용하여 배열의 각 항목을 변환하고, 변환된 데이터로 새로운 배열을 반환합니다. 
+
+### 자바스크립트에서 This는 몇가지로 추론 될수 있는가, 아는대로 말해달라.
+자바스크립트에서 this는 실행 컨텍스트가 생기는 시점에 할당된다
+
+1. 생성자  
+함수를 호출할 때 new 키워드를 사용하는 경우, 함수 내부에 있는 this는 완전히 새로운 객체입니다.
+2. 명시적 할당  
+apply, call, bind가 함수의 호출/생성에 사용되는 경우, 함수 내의 this는 인수로 전달된 객체입니다.
+3. 메서드  
+obj.method()와 같이 함수를 메서드로 호출하는 경우, this는 함수가 프로퍼티인 객체입니다.
+4. 자유함수  
+수가 자유함수로 호출되는 경우, 즉, 위의 조건 없이 호출되는 경우 this는 전역 객체입니다. 
+브라우저에서는 window 객체입니다. 엄격 모드('use strict') 일 경우, this는 전역 객체 대신 undefined가 됩니다.
+
+5. 화살표 함수
+ 화살표 함수인 경우 위의 모든 규칙을 무시하고 생성된 시점에서 주변 스코프의 this값을 받습니다.
+
+
+### 프로토타입이 어떻게 동작하는가?
+ 모든 JavaScript 객체는 다른 객체에 대한 참조인 prototype 프로퍼티를 가지고 있습니다. 객체의 프로퍼티에 접근할 때, 해당 객체에 해당 프로퍼티가 없으면 JavaScript 엔진은 객체의 prototype과 prototype의 prototype등을 보고 프로퍼티 정의가 있을 때까지 찾고, 만약 객체의 프로퍼티에 접근할 때 해당 객체에 해당 프로퍼티가 없으면 프로토타입 체인 중 하나에 있거나 프로토타입 체인의 끝에 도달할 때까지 찾습니다.
+
+### JWT
+- 왜 사용했는지
+- 토큰과 쿠키/세션 차이
+- JWT 토큰을 열어본 적 있는지
+
+
+
+
+
 ##  What is the value of foo.x and why?
 ```js
 var foo = {n: 1};

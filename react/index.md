@@ -74,6 +74,7 @@ SPA에서 로딩속도에 대한 이슈를 해결하기 위해서 등장
 - [react-redux-starter-kit)](https://github.com/davezuko/react-redux-starter-kit)
 
 ## ref
+- [react와 angular비교 ](https://www.popit.kr/%EB%B2%88%EC%97%AD%EA%B8%80-react-vs-angular-%EB%91%98-%EC%A4%91-%EC%96%B4%EB%96%A4-%EA%B2%83%EC%9D%B4-%EB%8B%B9%EC%8B%A0%EC%9D%98-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8%EC%97%90-%EC%95%8C%EB%A7%9E/)
 - [react Architecture](https://jbee.io/react/react-0-intro/)
 - [리액트는 어떻게 동작할까](https://d2.naver.com/helloworld/9297403)
 - [Thinking in React](https://reactjs.org/docs/thinking-in-react.html)
