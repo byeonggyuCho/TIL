@@ -31,11 +31,10 @@
 - 별도의 backends서비스가 있기때문에 다른 인터페이스에 자유로움
 
 
-
-
+ELK Stack
 
 ## REF
-- [](https://sarc.io/index.php/cloud/1984-cdp-bff)
-- [](https://brunch.co.kr/@springboot/38)
+- [1](https://sarc.io/index.php/cloud/1984-cdp-bff)
+- [2](https://brunch.co.kr/@springboot/38)
 - [BFF을 선택한 이유.](https://medium.com/@giljae/back-end-for-front-end-pattern-bff-4b73f29858d6)
-- [](https://docs.microsoft.com/ko-kr/dotnet/architecture/microservices/architect-microservice-container-applications/direct-client-to-microservice-communication-versus-the-api-gateway-pattern)
+- [3](https://docs.microsoft.com/ko-kr/dotnet/architecture/microservices/architect-microservice-container-applications/direct-client-to-microservice-communication-versus-the-api-gateway-pattern)

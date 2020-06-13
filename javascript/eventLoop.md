@@ -21,4 +21,4 @@ Node.js기반의 웹서버에서는 동시에 여러개의 HTTP요청을 처리�
 ## REF
 - [](https://meetup.toast.com/posts/89)
 - [자바스크립트의 비동기 처리](https://helloworldjavascript.net/pages/285-async.html)
-
+- [자바스크립트의 비동기 처리2](http://sculove.github.io/blog/2018/01/18/javascriptflow/)
