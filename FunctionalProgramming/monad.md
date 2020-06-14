@@ -12,5 +12,6 @@
 
 
 ## REF 
+- [monad](https://biz.chosun.com/site/data/html_dir/2018/07/24/2018072401981.html)
 - [Javascript in Moand](https://curiosity-driven.org/monads-in-javascript)
 - [Ramda and Lodash](https://engineering.huiseoul.com/%EB%9E%8C%EB%8B%A4-ramda-%EC%99%80-%EB%A1%9C%EB%8B%A4%EC%8B%9C-lodash-%EA%B7%B8%EB%A6%AC%EA%B3%A0-%ED%95%A8%EC%88%98%ED%98%95-%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D-709ef969c9a5)

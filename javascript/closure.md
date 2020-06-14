@@ -69,3 +69,199 @@ for (var i = 0; i < 5; i++) {
 - private member : 매개변수가 아닌 외부함수에서 선언된 변수(i.g) name
 - inner function : (i.g) greeting
 - outer  function : (i.g) Person
+
+## 예제
+
+
+### 1. 카운터
+
+1. 객체 리터럴 방식
+```js
+    var counter = {
+        _count: 0,
+         count: function() {
+            return this._count += 1;
+        }
+    }
+
+    console.log(counter.count()); // 1
+    console.log(counter.count()); // 2
+```
+
+
+2. 생성자 함수 방식.
+```js
+    function Counter(){
+        this._count = 0;
+    }
+
+    Counter.prototype.count = function() {
+        return this._count += 1;
+    };
+
+    var counter = new Counter();
+    var counter2 = new Counter();
+
+    console.log(counter.count()) //1
+    console.log(counter.count()) //2
+    console.log(counter2.count()) //1
+```
+
+3. 클로저를 이용한 카운터
+```js
+  var counter = (function() {
+      var _count = 0;
+
+      return function() {
+          return _count += 1;
+      };
+  })();
+
+  console.log(counter());
+  console.log(counter());
+```
+
+```js
+    function counterFactory() {
+        var _count = 0;
+
+        return function() {
+            _count += 1;
+
+          return _count;
+       };
+    }
+
+    var counter = counterFactory();
+    var counter2 = counterFactory();
+
+    console.log(counter()); //1
+    console.log(counter()); //2
+    console.log(counter2()); //1
+
+
+  var counter = counterFactory();
+
+    var app = {
+        counter: counter
+    };
+
+    var app2 = {
+        counter: counter
+    };
+
+    console.log(app.counter()); //1
+    console.log(app.counter()); //2
+
+    console.log(app2.counter()); //3
+```
+- 내부 변수(_count)를 은닉화 했다
+
+
+4. 커링을 이용한 카운터
+
+```js
+    function counterFactoryMaker(incValue) {
+        return function factory(initValue) {
+            var _count = initValue;
+
+            return function counter() {
+                return _count += incValue;
+            };
+        };
+    }
+
+    var counterFactory = counterFactoryMaker(2);
+    var counter = counterFactory(0);
+    var counter2 = counterFactory(1);
+
+    console.log(counter()); // 2
+    console.log(counter()); // 4
+
+    console.log(counter2()); // 3
+    console.log(counter2()); // 5
+```
+
+5. 객체와 클로저를 혼영한 카운터(모듈패턴)
+```js
+    function counterFactory2() {
+        var _count = 0;
+
+        function count(value) {
+            _count = value || _count;
+
+            return _count;
+        }
+
+        return {
+            count: count,
+            inc: function() {
+                return count(count() + 1);
+            },
+            dec: function() {
+                return count(count() - 1);
+            }
+        };
+    }
+
+    var counter = counterFactory2();
+
+    console.log(counter.inc());
+    console.log(counter.inc());
+    console.log(counter.dec());
+```
+
+```js
+   function counterFactory2Ext() {
+        var counter = counterFactory2();
+        var count = counter.count;
+
+        counter.inc = function() {
+            return count(count() + 2);
+        };
+
+        return counter;
+    }
+
+    var counterExt = counterFactory2Ext();
+
+    console.log(counterExt.inc()); // 2
+    console.log(counterExt.inc()); // 4
+    console.log(counterExt.inc()); // 6
+    console.log(counterExt.dec()); // 5
+```
+
+6. 생성자함수와 함께쓴 클로저
+```js
+    function Counter() {
+        var _count = 0;
+
+        this.count = function(value) {
+            _count = value || _count;
+            return _count;
+        }
+    }
+
+    Counter.prototype.inc = function() {
+        var count = this.count;
+
+        return count(count() + 1);
+    };
+
+    Counter.prototype.dec = function() {
+        var count = this.count;
+
+        return count(count() - 1);
+    };
+
+    var counter = new Counter();
+
+    console.log(counter.inc()); // 1
+    console.log(counter.inc()); // 2
+    console.log(counter.inc()); // 3
+```
+
+
+## REF
+- [closure](https://blog.shiren.dev/2016-06-27-%ED%81%B4%EB%A1%9C%EC%A0%80,-%EA%B7%B8%EB%A6%AC%EA%B3%A0-%EC%BA%A1%EC%8A%90%ED%99%94%EC%99%80-%EC%9D%80%EB%8B%89%ED%99%94/)
+- [스코프와 클로져 by toast](https://meetup.toast.com/posts/86)

@@ -293,3 +293,4 @@ x속성은 A객체에 종속된다.
 - [javascript protptype](https://medium.com/@bluesh55/javascript-prototype-%EC%9D%B4%ED%95%B4%ED%95%98%EA%B8%B0-f8e67c286b67)
 - [zeroCho](https://www.zerocho.com/category/JavaScript/post/573c2acf91575c17008ad2fc)
 - [what is Object prototype](http://insanehong.kr/post/javascript-prototype/)
+- [쉽게 이해하는 프로토타입  체인](https://blog.shiren.dev/2017-02-21-%EC%89%BD%EA%B2%8C-%EC%9D%B4%ED%95%B4%ED%95%98%EB%8A%94-%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8-%ED%94%84%EB%A1%9C%ED%86%A0%ED%83%80%EC%9E%85-%EC%B2%B4%EC%9D%B8/)

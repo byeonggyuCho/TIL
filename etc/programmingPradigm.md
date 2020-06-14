@@ -305,6 +305,7 @@ function add (arr) {
 
 
 ## REF
+- [모나드란?](https://biz.chosun.com/site/data/html_dir/2018/07/24/2018072401981.html)
 - [절차적프로그래밍](https://dhhwang89.tistory.com/62)
 - [프로그래밍의 패러다임](https://ko.wikipedia.org/wiki/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D_%ED%8C%A8%EB%9F%AC%EB%8B%A4%EC%9E%84)
 - [함수형 프로그래밍이란 무엇인가](https://sungjk.github.io/2017/07/17/fp.html)

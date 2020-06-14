@@ -73,3 +73,7 @@ Rx.Observable.fromPromise(getJSON('/students'))
     );
 ```
 
+
+## REF
+- [rxJS](https://hyunseob.github.io/2016/10/09/understanding-reactive-programming-and-rxjs/)
+- [poiemaweb](https://poiemaweb.com/angular-rxjs)
