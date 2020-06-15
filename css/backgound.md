@@ -1,5 +1,4 @@
 
-
 ## background-repeat;
 배경 이미지를 수직과 수평을 반복한다.  
 - repeat-x: 배경 이미지를 수평으로 반복
