@@ -1,8 +1,7 @@
 # Meta Data
 
 ## Link
+
 ## Style
 
-## MIME
-
-## 
+## MIME Type
