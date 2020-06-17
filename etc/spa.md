@@ -39,13 +39,15 @@ spa는 모던 웹의 큰 트탠드 중 하나다.
 
 
 ## REF
+
+- [JS로 SPA만들어보기 ](https://medium.com/better-programming/js-vanilla-script-spa-1b29b43ea475)
 - [react-router](https://velopert.com/3417)
 - [a-netflix-web-performance-case-study](https://medium.com/dev-channel/a-netflix-web-performance-case-study-c0bcde26a9d9)
-https://isme2n.github.io/devlog/2017/05/19/about-spa/
-https://brownbears.tistory.com/406
-https://eastflag.co.kr/fullstack-spa_definition/
-https://code.i-harness.com/ko-kr/q/14d96a6
-todomvc.com
-https://9105lgm.tistory.com/127
-https://techaffinity.com/blog/single-page-application-angular/
-https://www.slideshare.net/chandruaskutty/single-page-application-and-framework
+- [1](https://isme2n.github.io/devlog/2017/05/19/about-spa/)
+- [2](https://brownbears.tistory.com/406)
+- [3](https://eastflag.co.kr/fullstack-spa_definition/)
+- [4](https://code.i-harness.com/ko-kr/q/14d96a6)
+- [5](todomvc.com)
+- [6](https://9105lgm.tistory.com/127)
+- [7](https://techaffinity.com/blog/single-page-application-angular/)
+- [8](https://www.slideshare.net/chandruaskutty/single-page-application-and-framework)

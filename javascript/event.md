@@ -3,10 +3,22 @@
 ## intro
 
 ![](../resource/img/javascript/eventDelegation.png)
+이벤트 흐름도
+
+이벤트는 3가지 단계가 있다.
+
+1. capture단계
+2. target 단계
+3. bubbling단계
+
+이벤트 흐름은 캡처링부터 시작하여 버블링으로 종료한다.  
+다시말해 이벤트가 발생했을 때 캡처링과 버블링은 순차적으로 발생한다.
 
 
 ## 1.Evnet Bubbling
 이벤트 버블링은 특정 화면 요소에서 이벤트가 발생했을 때 해당 이벤트가 더 상위의 화면 요소들로 전달되어 가는 특성
+- 한 요소에 이벤트가 발생하면, 이 요소에 할당된 핸들러가 동작하고, 이어서 부모 요소의 핸들러가 동작합니다. 가장 최상단의 조상 요소를 만날 때까지 이 과정이 반복되면서 요소 각각에 할당된 핸들러가 동작합니다.
+
 - 브라우저는 특정 화면 요소에서 이벤트가 발생했을 때 그 이벤트를 최상위에 있는 화면 요소까지 이벤트를 전파시킵니다.
 - 버블링을 막지 않을 경우에 최종적으로 document까지 전달된다.
 
@@ -35,6 +47,8 @@ function logEvent(event) {
 
 ## 2.Event capturing
 
+	자식 요소에서 발생한 이벤트가 부모 요소부터 시작하여 이벤트를 발생시킨 자식 요소까지 도달하는 것을 캡처링이라 한다
+
 ```html
 <body>
 	<div class="one">
@@ -62,7 +76,8 @@ function logEvent(event) {
 
 
 ```
-addEventListener에 옵션 객체를 전달하여 이벤트 탐색방향이 capture임을 이 경우 thee를 클릭하더라도 결과가
+addEventListener에 옵션 객체를 전달하여 이벤트 탐색방향이 capture임  
+이 경우 thee를 클릭하더라도 결과가
 ```js
 // one
 // two
@@ -73,9 +88,17 @@ addEventListener에 옵션 객체를 전달하여 이벤트 탐색방향이 capt
 
 
 ## 3.stopPropagation
-해당 이벤트가 전파되는것을 막는다.  
 
-### 1. evnet Bubbling
+![](../resource/img/javascript/eventDelegation.png)
+이벤트 전파 흐름에서 해당 이벤트가 다음요소로 전파되는것을 막는다.  
+
+1. capturing 단계에서 실행
+	- 다음 자식요소로 전파하는것을 막음.
+2. bubbling 단계에서 실행.
+	- 다음 부모요소로 전파하는것을 막음.
+
+
+### 1. Evnet Bubbling
 이벤트를 전파하지 않고 클릭한 요소의 이벤트만 발생시킨다.  
 
 ```js
@@ -92,7 +115,7 @@ function logEvent(event) {
 ```
 
 ### 2. evnet capture
-클릭한 요소의 최상의 요소에만 이벤트를 동작시키고 하위 요소로 이벤트를 전달하지 않는다.  
+클릭한 요소의 최상위 요소에만 이벤트를 동작시키고 하위 요소로 이벤트를 전달하지 않는다.  
 
 ```js
 // 이벤트 캡쳐 예제
@@ -189,14 +212,34 @@ event.stopPropagation()은 위쪽으로 일어나는 버블링은 막아주지�
 
 버블링을 멈추고, 요소에 할당된 다른 핸들러의 동작도 막으려면 event.stopImmediatePropagation()을 사용해야 합니다. 이 메서드를 사용하면 요소에 할당된 특정 이벤트를 처리하는 핸들러 모두가 동작하지 않습니다.
 
-## event.target
-- 이벤트를 발생시킨 최초 타깃(target) 요소
+## Event.target
+- 이벤트를 발생시킨 최초 타깃(target) 요소, 시발점.
 - event.target은 실제로 이벤트가 시작된 ‘타깃’ 요소입니다. 버블링이 진행되어도 변하지 않습니다.
 - this(event.crrentTarget)는 ‘현재’ 요소로, 현재 실행 중인 핸들러가 할당된 요소를 참조합니다.
 
+## Event.currentTarget
+	이벤트에 바인딩된 DOM 요소를 가리킨다. 즉, addEventListener 앞에 기술된 객체를 가리킨다.
 
-## preventDefault
 
+
+## Event.preventDefault
+을 submit하거나 링크를 클릭하면 다른 페이지로 이동하게 된다. 이와 같이 요소가 가지고 있는 기본 동작을 중단시키기 위한 메소드가 preventDefault()이다.
+```html
+<!DOCTYPE html>
+<html>
+<body>
+  <a href="http://www.google.com">go</a>
+  <script>
+  document.querySelector('a').addEventListener('click', function (e) {
+    console.log(e.target, e.target.nodeName);
+
+    // a 요소의 기본 동작을 중단한다.
+    e.preventDefault();
+  });
+  </script>
+</body>
+</html>
+```
 
 ## CSS를 이용한 이벤트 제어
 
@@ -212,6 +255,7 @@ event.stopPropagation()은 위쪽으로 일어나는 버블링은 막아주지�
 
 
 ## REF 
+- [이벤트 흐름](https://poiemaweb.com/js-event)
 - [버블링과 캡쳐링](https://ko.javascript.info/bubbling-and-capturing)
 - [이벤트 버블](https://joshua1988.github.io/web-development/javascript/event-propagation-delegation/)
 - [How to prevent evnet Bubbling?](https://programmingsummaries.tistory.com/313?category=485241)

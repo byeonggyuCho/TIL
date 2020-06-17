@@ -368,5 +368,6 @@ scope의 범위는 선언시점에 생긴 context의 Scope Chain을 따른다.
 
 
 ## ref
+- [활성객체 생성 시각적 확인](https://ui.dev/javascript-visualizer/)
 - [Javascript Execution context](https://poiemaweb.com/js-execution-context)
 - [Execution context](https://m.blog.naver.com/PostView.nhn?blogId=gi_balja&logNo=221261731281&proxyReferer=https%3A%2F%2Fwww.google.com%2F)

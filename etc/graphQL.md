@@ -91,6 +91,7 @@
 
 
 ## ref
+- [왜 쓸까](https://www.slideshare.net/Kivol/graphql-in-action-rest)
 - [GraghQL이란](https://jonnung.dev/graphql/2019/07/23/graphql-getting-started/)
 - [GraphQL 개념잡기](https://tech.kakao.com/2019/08/01/graphql-basic/)
 - [GraphQL과 Relay: 웹 애플리케이션 개발의 미래](https://blog.sapzil.org/2015/05/15/graphql-and-relay/)
@@ -98,4 +99,5 @@
 - [GraphQL을 쓰는 이유](https://analogcoding.tistory.com/174)
 - [GraphQL이 REST보다 나은점](https://velog.io/@cadenzah/graphql-02-better-rest)
 - [GrapghQL과 REST API](https://www.holaxprogramming.com/2018/01/20/graphql-vs-restful-api/)
-- [Thinking of GraghQL] (https://blog.cometkim.kr/posts/thinking-in-graphql-ko/)
+- [Thinking of GraghQL](https://blog.cometkim.kr/posts/thinking-in-graphql-ko/)
+- [graghQL](https://dkant.net/2019/07/01/01-graphql/)
