@@ -1,12 +1,29 @@
 # Class : How to different between ES5 function and ES6 Classes?
 
-## Info
-Class 문법은 prototype 상속과 어떻게 다른가? 단지 prototype 상속의 `Syntatic Sugar`일까? 지금부터 차이를 알아보자.
 
-## 한줄 요약.
+## TL;DR
 - 문법적 사용범위에 제약을 둬서 코드가 모호해지는 상황을 예방한다.
 - 객체간의 상속관계가 복잡한 프로그램을 설계시 Class 문법의 차이가 극명해진다.
     - 좀 더 유연한 상속관계를 표현할 수 있다.
+
+
+**기능** | **ES5** | **ES6** 
+:---:|:---:|:---:
+ constructor를 함수로 실행| O |  X
+ spuerClass의 constructor 호출| X(유사 연출) |  O
+ method 상속 | O | O
+ methods를 생성자함수로 싱행| O |  X
+ static methods:상속 | O | X
+ stric method를 생성자함수로 실행 | O  |  X
+ methods:superClass의메소드호출| X(유사 연출) | O 
+ hoisting | O  |  O
+ TDZ | X  | O
+
+ 
+## Info
+Class 문법은 prototype 상속과 어떻게 다른가? 단지 prototype 상속의 `Syntatic Sugar`일까? 지금부터 차이를 알아보자.
+
+  
 
 
 ## Constructor

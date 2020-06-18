@@ -1,5 +1,9 @@
-
 # Cross-Origin Resource Sharing, CORS
+
+
+## TL;DR
+다른 도메인에 요청을 하기 위해선 서버에서 허용을 한뒤, 클라이언트가 헤더를 통해 접근권한을 확인한다. 
+
 
 
 ![](/resource/img/network/CORS.png)
@@ -49,7 +53,7 @@ preflight요청은 실제로 요청하려는 경로와 같은 URL에 대해 OPTI
 
 
 
-## 2.HTTP 요청헤더
+## 2.HTTP 요청헤더 (클라이언트)
 
 ### 1. Origin
 요청이 초기화 된곳에서 서버를 가리키는 URL 서버이름만 포함한다.
@@ -58,12 +62,12 @@ preflight요청은 실제로 요청하려는 경로와 같은 URL에 대해 OPTI
 실제 요청이 일어나는 경우 어떤 HTTP 메서드가 사용될 것인지 서버에 알리기 위해 사전 전달시 사용
 
 ### 3.Access-Control-Request-Headers
-실제 요청이 일어나는 경우 어떤 HTTP 헤더가 사용될것인지 서버에 알리기 위해 사전 전달 요청시 사용
+실제 요청이 일어나는 경우 어떤 HTTP 헤더가 사용될 것인지 서버에 알리기 위해 사전 전달 요청시 사용
       
 
 
 
-## 3.HTTP 응답헤더
+## 3.HTTP 응답헤더 (서버)
 
 ### 1. Access-Control-Allow-Origin
 요청을 허용하는 출처, *이면 모든 곳에 공개되어있음을 의미한다.

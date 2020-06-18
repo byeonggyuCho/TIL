@@ -1029,7 +1029,6 @@ function secondFunc() {
 
 
 
-
 ## What are the differences between ES6 class and ES5 function constructors?
 
 **기능** | **ES5** | **ES6** 

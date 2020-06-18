@@ -241,6 +241,13 @@ event.stopPropagation()은 위쪽으로 일어나는 버블링은 막아주지�
 </html>
 ```
 
+##  preventDefault & stopPropagation
+기본 동작의 중단과 버블링 또는 캡처링의 중단을 동시에 실시하는 방법은 아래와 같다.
+```js	
+return false;
+```
+
+
 ## CSS를 이용한 이벤트 제어
 
 ```css
