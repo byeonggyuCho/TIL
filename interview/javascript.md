@@ -117,6 +117,20 @@ try {
 ### Class는 무엇인가? ES5 스펙으로 Class를 구현할수 있는가?
 prototype 기반 문법을 객체지향으로 표현하기 위한 방법이다.
 이런 면에서 Class 문법을 문법설탕라고 할 수 있겠으나 몇가지 차이점이 존재한다.
+
+
+
+**기능** | **ES5** | **ES6** 
+:---:|:---:|:---:
+ constructor를 함수로 실행| O |  X
+ spuerClass의 constructor 호출| X(유사 연출) |  O
+ method 상속 | O | O
+ methods를 생성자함수로 싱행| O |  X
+ static methods:상속 | O | X
+ stric method를 생성자함수로 실행 | O  |  X
+ methods:superClass의메소드호출| X(유사 연출) | O 
+ hoisting | O  |  O
+ TDZ | X  | O
  
 
 1. ES6에서 class의 method는 일반함수가 아니기 때문에 new 연산자로 생성자 함수처럼 사용할 수 없다.
@@ -161,6 +175,12 @@ console.log(new A());      // A {a: 1}
 ```
 
 ### 이벤트 위임에 대해 설명하세요.
+이벤트 위임(Event Delegation)은 다수의 자식 요소에 각각 이벤트 핸들러를 바인딩하는 대신 하나의 부모 요소에 이벤트 핸들러를 바인딩하는 방법이다
+
+- 자식요소를 동적으로 추가하는 경우
+- 자식요소가 많은 경우.
+- 이벤트를 자식요소에 할당하지 않고부모 요소로 위임함.
+- 버블링을 통해 부모요소에서 핸들러가 실행되도록 유도.
 
 
 ### JavaScript로 컴파일되는 언어로 JavaScript 코드를 작성하는 경우의 장단점은 무엇인가요?
@@ -345,6 +365,7 @@ const promise = new Promise((reslove, reject) => {
 ## Why do you need a promsie?
 `promise`문법은 비동기 연산을 다룬다. Callback 패턴에 대한 대안으로 사용되며 callback Hell을 줄이고 클린코드를 작성할 수 있게 도와준다.
 
+- 단점 요청을 취소할 수 없다.
 
 ## Why do you need callbacks?
 자바스크립트 엔진이 single Thread 환경에서 Event-driven방식으로 실행되기 때문에 callback은 반드시 필요하다.
@@ -414,6 +435,7 @@ new Promise(function(resolve, reject) {
 2. 단점  
 - 코드가 약간 복잡하다.
 - ES6를 지원하는 환경아 아니라면 polyfill이 필요하다.
+- 요청 취소가 안된다.
 
 
 ## What is strict mode? 

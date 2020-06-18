@@ -5,6 +5,28 @@
 자바스크립트 비동기(asynchronous code)에 사용되는 객체  
 
 
+## intro
+```js
+doSomething().then( () => doSomethingElse());
+
+doSomething().then(() => {
+  doSomethingElse();
+});
+
+doSomething().then(doSomethingElse());
+
+doSomething().then(doSomethingElse);
+```
+
+첫번째는 `doSomethingElse`의 반환값이 Promise value로 전달된다.  
+두번째는 `doSomethingElse`이 실행되고 반환값은 null이다.  
+세번째는 `doSomethingElse`이 함수를 반환하고 반환된 함수가 then 메서드의 콜백으로 실행된다.  
+네번째는 `doSomethingElse`가 실행되며 매개변수로 `doSomething`의 결과값이 전달된다.  
+
+이 포스팅은 위 스닛코드를 이해하는 과정을 다룬다.  
+
+
+
 ## 등장배경
 단일 스레드의 Event Loop개념을 기반으로 으로 하는 JavaScript엔진에서 작업순서를 제어하기 위해 비동기 프로그래밍을 도입습니다.
 Promise는 비동기 프로그맹을 좀 더 깔끔하게 사용할 수있는 패턴입니다.
