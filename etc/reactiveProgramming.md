@@ -3,11 +3,12 @@
 
 
 ## intro
-- 데이터 스트림의 변화에 반응하는 행위를 정의하는 형태로 작성하는 것을 반응형 프로그래밍이라 한다
+- 데이터 스트림의 변화에대한 반응을 정의하는 형태로 작성하는 것을 반응형 프로그래밍이라 한다
 - RP는 “모든것이 스트림이다”라는 접근 방식에서 출발한다. 
     - 모든 것을 스트림으로 취급하며 스트림을 구독하고 필요한경우에 가공한다.
 - 인터렉티브한 UI를 단순화하기 위해서 고안되었다.
     - MVC패턴에서 모델이 변경되면 그에따라 뷰가 변경되고 뷰가 변경되면 모델에 바로 반영되도록 하기 위함.
+- 리액티브 프로그래밍은 정적/동적 데이터 흐름의 변화에 곧바로 반응하는 프로그램을 만드는 것
 
 
 RP는 프로그래밍을 데이터 흐름과 그 변화를 알려주는 통지로 바라보는 관점이다.
@@ -134,8 +135,18 @@ subject.setMessage('😀');
 - Rx는 observable 컬렉션들을 이용해 비동기와 이벤트 기반의 프로그램을 작성하기 위한 라이브러리다.
 - ReactiveX 는 Observer 패턴, Iterator 패턴, 함수형 프로그래밍을 조합하여 제공한다.
 - Observable 시퀀스와 표현력있는 쿼리 연산자를 사용하는 비동기적, 이벤트 기반의 프로그램을 구성하기 위한 라이브러리의 집합
-- 비동기 데이털르 처리하는 데 있어서 장점을 갖는다. 
+- 비동기 데이터를 처리하는 데 있어서 장점을 갖는다. 
 - 생성하고 조합하고 구독한다.
+
+**구성**  
+1. Observable  
+Observable은 데이터 스트림이다. 하나의 스레드에서 다른 스레드로 전달 할 데이터를 압축한다, 주기적으로 똔느 설정에 따라 생명주기동안 한 번만 데이터를 방출한다.
+2. Observers  
+Observers는 Observable에 의해 방출된 데이터 스트림을 소비한다. Observers는 Observable을 구독하고 Observable이 방출하는 데이터를 수신할 수 있다.  
+3. Schedulers  
+Schedulers는 Observable과 Observers에게 그들이 실행 되어야 할 스레드를 알려주는 Rx 구성요소이다.  
+
+
 
 
 
@@ -145,9 +156,8 @@ subject.setMessage('😀');
 반응형 프로그래밍은 비동기를 처리하는 하나의 대안이며 다음의 특징을 갖는다.
 
 ### 1. 데이터 처리를 일관되게 할 수 있다.
-비동기로 처리하는 데이터는 서버 통신결과, 이벤트 콜백 등 유형이 다향하며 유형에 따른 처리방법도 제각각이다.   
+비동기로 처리하는 데이터는 서버 통신결과, 이벤트 콜백 등 유형이 다양하며 유형에 따른 처리방법도 제각각이다.   
 반응형 프로그맹은 동기/비동기 관계없이 데이터를 생산하는 것을 일관된 형식의 observable로 만들어고 이를 구독하여 일관되게 처리할 수 있다.
-
 
 ### 2. 요청을 취소할 수 있다.
 이 단점은 promise패턴의 단점이다.  
@@ -156,6 +166,7 @@ subject.setMessage('😀');
 ### 3. 연속성을 갖는 데이터를 처리할 수 있다.
 데이터 스트림을 다루기 때문에 연속적인 데이터를 다루기 쉽다.
 
+  
 
 
 
@@ -289,12 +300,14 @@ subject.complete();
 - map: map 오퍼레이터는 옵저버블이 방출한 데이터를 인자로 전달받는 콜백 함수를 실행하고 그 결과값으로 이루어진 새로운 옵저버블을 반환한다.
 - filter: filter 오퍼레이터는 옵저버블이 방출한 데이터를 인자로 전달받는 필터 함수를 실행하여 그 결과값이 true인 값만을 추출한 새로운 옵저버블을 반환한다
 - combine: 여러 observable 조합하는 역할
-- **mash**
-- **split**
-- **merge**
+- **filter**: 옵저버블이 방출한 데이터를 인자로 전달받는 필터 함수를 실행하여 그 결과값이 true인 값만을 추출한 새로운 옵저버블을 반환한다. Array.prototype.filter와 유사하게 동작한다.
+- **map**: 옵저버블이 방출한 데이터를 인자로 전달받는 콜백 함수를 실행하고 그 결과값으로 이루어진 새로운 옵저버블을 반환한다. Array.prototype.map과 유사하게 동작한다.
 - **from**: from 오퍼레이터는 배열과 같은 이터러블(Iterable)을 인자로 전달받아 옵저버블을 생성한다.
 - **switchMap**:  switchMap 오퍼레이터는 옵저버블을 받아서 새로운 옵저버블을 생성한다. 
 - **debounceTime**:  debounceTime 오퍼레이터는 옵저버블이 방출하는 데이터를 수신하는 시간을 지연시킨다.
+- **mash**
+- **split**
+- **merge**
 
 ![](../resource/img/javascript/switchMap.png)
 
@@ -571,6 +584,7 @@ Rx.Observable
 
 
 ## ref
+- [Reactive Programming과 RxJs](https://velog.io/@fepanbr/Reactive-Programming%EA%B3%BC-RxJs)
 - [rxjs](https://blog.shiren.dev/2017-01-03-RxJS%EC%99%80-%ED%95%A8%EA%BB%98%ED%95%98%EB%8A%94-%ED%95%A8%EC%88%98%ED%98%95-%EB%A6%AC%EC%95%A1%ED%8B%B0%EB%B8%8C-%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D/)
 - [rxjs in angular](https://poiemaweb.com/angular-rxjs)
 - [rxjs란](https://velog.io/@dvmflstm/RxJS-Practice)

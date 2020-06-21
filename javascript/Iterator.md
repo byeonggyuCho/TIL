@@ -1,5 +1,52 @@
 # Iterator
 
+
+## TL;DR
+    이터레이터 프로토콜은 next 메소드를 소유하며 next 메소드를 호출하면 이터러블을 순회하며 value, done 프로퍼티를 갖는 이터레이터 리절트 객체를 반환하는 것이다. 이 규약을 준수한 객체가 이터레이터이다.
+
+
+
+
+## 이터레이션 프로토콜
+     이터레이션 프로토콜(iteration protocol)은 데이터 컬렉션을 순회하기 위한 프로토콜(미리 약속된 규칙)이다    
+
+### 1. 이터러블 프로토콜
+    - Array, String, Map, Set, Arguments, TypeArray
+    - Symbol.iterator 메소드를 구현하거나 프로토타입 체인에 의해 상속한 객체
+    - Symbol.iterator 메소드는 이터레이터
+    - 이터러블은 for…of 문에서 순회할 수 있으며 Spread 문법의 대상으로 사용할 수 있다.
+```js
+const array = [1, 2, 3];
+
+// 배열은 Symbol.iterator 메소드를 소유한다.
+// 따라서 배열은 이터러블 프로토콜을 준수한 이터러블이다.
+console.log(Symbol.iterator in array); // true
+
+// 이터러블 프로토콜을 준수한 배열은 for...of 문에서 순회 가능하다.
+for (const item of array) {
+  console.log(item);
+}
+```
+
+이터러블 객체를  Symbol.iterator를 이용하여 이터레이터로 만들 수 있습니다.
+```js
+// 배열은 이터러블 프로토콜을 준수한 이터러블이다.
+const array = [1, 2, 3];
+
+// Symbol.iterator 메소드는 이터레이터를 반환한다.
+const iterator = array[Symbol.iterator]();
+
+// 이터레이터 프로토콜을 준수한 이터레이터는 next 메소드를 갖는다.
+console.log('next' in iterator); // true
+
+```
+
+
+### 2. 이테레이터 프로토콜
+    - 이터레이터
+
+
+## intro
 반복을 위해 설계된 특정 인터페이스가 있는 객체이다. 
 
 Iterator는 컬렉션 내부 위치에 대한 내부 포인터를 유지하고 next()메서드를 호출할 때마다 다음 값을 반환합니다.
@@ -40,7 +87,7 @@ myIterable[Symbol.iterator] = function* () {
 };
 [...myIterable]; // [1, 2, 3]
 ```
-## 3. Iterable을 허용하는 내장   API
+## 3. Iterable을 허용하는 내장 API
 
 - Map([iterable])
 - WeakMap([iterable])
@@ -112,12 +159,8 @@ console.log(gen.next().value); // 'ya'
 console.log(gen.next().done);  // true
 ```
 ## REF
-
+- [poiemaweb](https://poiemaweb.com/es6-iteration-for-of)
 - [https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Iteration_protocols](https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Iteration_protocols)
-
-
 - [https://github.com/qodot/wiki/blob/master/js/es6-iterator.md](https://github.com/qodot/wiki/blob/master/js/es6-iterator.md)
-
 - [http://hacks.mozilla.or.kr/2015/08/es6-in-depth-generators/](http://hacks.mozilla.or.kr/2015/08/es6-in-depth-generators/)
-
 - [http://hacks.mozilla.or.kr/2016/02/es6-in-depth-generators-continued/](http://hacks.mozilla.or.kr/2016/02/es6-in-depth-generators-continued/)
