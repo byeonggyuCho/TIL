@@ -87,6 +87,7 @@ SI프로젝트를 경험하면서 조금만 수정해도 실타래처럼 얽혀�
 ## 3.React
 - [Component](./react/component.md)
 - [Higher Order Component](./react/HigherOrderComponent.md)
+- [Key Property](./react/key.md)
 - [JSX](./react/JSX.md) 
 - [Life Cycle](./react/lifeCycle.md)
 - [flux](./react/flux.md)
@@ -94,7 +95,12 @@ SI프로젝트를 경험하면서 조금만 수정해도 실타래처럼 얽혀�
 - [Middleware](./react/middleware.md)
 - [redux-saga](./react/redux-saga.md)
 - [redux-thunk](./react/react_thunk.md)
+- [Styled Component](./react/styledComponent.md)
+- [SetState](./react/setState.md)
+- [Typescript with redux](./react/typescript.md)
 - [Hooks](./react/hook.md)
+- [Optimization](./react/optimization.md)
+- [Pure Component](./react/pureComponent.md)
 - [Server side rendering](./react/serverSideRendering.md)
 - [8Thing to Lean in ReactJS before using redux](./react/8ThingsToLeanInReactBeforUsingRedux.md)
 - [why_does_we_need_redux_thunk](./react/why_does_we_need_redux_thunk.md)
@@ -108,8 +114,9 @@ SI프로젝트를 경험하면서 조금만 수정해도 실타래처럼 얽혀�
 - [module](./nodeJS/module.md)
 <br><br>
 
-## 5.HTML
+## 5.HTML/CSS
 - [web Storage](./html/webStorage.md)
+- [Flex](./css/flex.md)
 <br><br>
 
 ## 6.Linux
@@ -191,6 +198,7 @@ SI프로젝트를 경험하면서 조금만 수정해도 실타래처럼 얽혀�
 - [React](./interview/react.md)
 
 ## ETC
+- [Reactive Programming](./etc/reactiveProgramming.md)
 - [webpack](./webpack/index.md)
 - [What is Jenkins?](./etc/jenkins.md)
 - [How to link Project in Jenkins](./etc/jenkinsLinkProject.md)
@@ -200,13 +208,11 @@ SI프로젝트를 경험하면서 조금만 수정해도 실타래처럼 얽혀�
 ## 설계
 - 왜 이런 라이브러리를 사용했나?
     - 유사기능을 하는 다른 라이브러의 사용을 고려해보진 않았나?
-    - 이 라이브러리가 내부적으로 어떻게 구현되어있는지 이해하고 있나?
 - 왜 이런 구조를 설계했나?
-- 이 방식의 문제점에 대해 알고있나?
+- 이 구조의 문제점에 대해 알고있나?
 - 이렇게 로직을 짠 이유가 무엇인가?
 - 최적화를 위해 어떤 노력을 했나? 어떤 부분을 고민했나?
     - 랜더링 최적화.
-- 이 구조의 단점은 무엇인가?
 - 현재 방법외에 다른 방법을 고민해본 것이 있는가?
 - 이런 방식의 접근방법은 어떻게 생각하는가?
 
@@ -221,7 +227,6 @@ SI프로젝트를 경험하면서 조금만 수정해도 실타래처럼 얽혀�
 2. Typescript
     - pattern
 3. React
-    - RX.js
     - redux-observable
     - next.js
     - 렌더링 최적화
@@ -229,8 +234,9 @@ SI프로젝트를 경험하면서 조금만 수정해도 실타래처럼 얽혀�
     - library development
 5. node.js
     - nextJS
+    - socket.io
 6. Test
-    - TDD
+    - Jest/Enzyme 기반 TDD
 7. webpack
     - code spliting
 8. Clean Code
@@ -240,14 +246,15 @@ SI프로젝트를 경험하면서 조금만 수정해도 실타래처럼 얽혀�
     - 렌더링
       - web workers
       - service workders
-10. 커뮤니케이션
+10. Soft Skill
     - UX를 고려한 설계
     - 프로그래머 소통(코드)
     - 서비스 품질 개선
 11. Functional Programming
     - fungter
+    - 모나드
     - Ramda.js
-12. 협업습관 기르기
+12. 협업습관 Tools
     - (이슈관리, JIRA,Confluence, 프로젝트 보드)
 13. Digital nomard
 14. Web Assembly
@@ -256,3 +263,5 @@ SI프로젝트를 경험하면서 조금만 수정해도 실타래처럼 얽혀�
     - cavas, svg
     - d3 library
 17. sass
+18. Kubernetes
+19. Doker

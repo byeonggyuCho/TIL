@@ -442,7 +442,8 @@ export const FeatureDesc = styled.div`
 
 ## Ref
 - [1.styled-components 소개](https://blog.nerdfactory.ai/2019/10/25/react-styled-components.html)
-- [Css-In-JS에 관해 알아야할 모든것](https://d0gf00t.tistory.com/22)
+- [2.Css-In-JS에 관해 알아야할 모든것](https://d0gf00t.tistory.com/22)
+- [3.styled-components선택한 이유](https://analogcoding.tistory.com/181)
 - [Css-In-Js를 선택하는 이유](https://d0gf00t.tistory.com/22)
 - [styled-components 소개2](https://hudi.kr/styled-components-%EC%8A%A4%ED%83%80%EC%9D%BC%EC%9D%84-%ED%92%88%EC%9D%80-%EC%BB%B4%ED%8F%AC%EB%84%8C%ED%8A%B8/)
 - [styled-component를 쓰는 이유](https://analogcoding.tistory.com/181)

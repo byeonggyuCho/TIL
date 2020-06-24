@@ -78,6 +78,9 @@ let userName: string = "cater";
     - 정적타입언어는 시스템 복잡도가 증가하는 대규모 프로젝트에서 큰 이점을 갖는다.
     - 타입체크를 기반으로 컴파일단계에서 버그를 찾아내어 생산성에 기여한다.
     - [To type or not to type:Quantifying Detectable Bug in Javascript](http://earlbarr.com/publications/typestudy.pdf)
+9. 빌드 결과물 최적화
+    - 타입 체크 기능을 통해 유효성검사를 하기때문에 자바스크립트로 유효성검사를 하는 로직이 사라진다.
+    - 결과적으로 빌드된 코드가 줄어든다.
 
 ## 도입시 고려해볼만한점 
 
