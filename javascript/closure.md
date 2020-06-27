@@ -1,5 +1,8 @@
 # Closure
 
+## TL;DR
+    중첩함수 구조에서 내부함수가 참조하고 있는 렉시컬 스코프를 클로저를 의미합니다.  
+
 클로저란 함수 실행이 종료되더라도 함수의 지역 변수 및 변수 스코프 객체의 체인 관계를 유지할 수 있는 구조를 말한다.  
 외부함수의 실행 컨텍스트에서 내부함수가 참조중인 변수의 그룹을 closure라고한다.  
 즉 closure의 기본은 내부에 함수를 선언하는 것이다.  
@@ -263,5 +266,6 @@ for (var i = 0; i < 5; i++) {
 
 
 ## REF
+- [간단하게 클로져 정리](https://thisblogfor.me/javascript/closure/)
 - [closure](https://blog.shiren.dev/2016-06-27-%ED%81%B4%EB%A1%9C%EC%A0%80,-%EA%B7%B8%EB%A6%AC%EA%B3%A0-%EC%BA%A1%EC%8A%90%ED%99%94%EC%99%80-%EC%9D%80%EB%8B%89%ED%99%94/)
 - [스코프와 클로져 by toast](https://meetup.toast.com/posts/86)

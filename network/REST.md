@@ -1,8 +1,6 @@
 
 # REST
 
-
-
 ## intro
 웹의 장점을 최대한 활용할 수 있는 네트워크 기반의 아키텍쳐,Representational safe transfer (REST)
 
@@ -118,9 +116,6 @@ REST 서버는 다중 계층으로 구성될 수 있으며 보안, 로드 밸런
 
 
 ### 2. 자원에 대한 행위는 HTTP Method(GET, POST, PUT, DELETE)로 표현한다.
-
-
-
 
 
 ## REST API 서버 설계
@@ -262,6 +257,7 @@ URL은 Uniform Resource Locator로 인터넷 상 자원의 위치를 의미합�
 
 
 #### ref
+- [rest에 대한 간단 정리](https://im-developer.tistory.com/168?category=828401)
 - [graghQL과 REST](https://www.holaxprogramming.com/2018/01/20/graphql-vs-restful-api/)
 - [rest](https://mangkyu.tistory.com/46)
 - https://bcho.tistory.com/955?category=252770

@@ -1,3 +1,48 @@
+# margin
+	 요소의 외부 여백을 지정한다.  
+
+
+## 속성값
+| 값 | 의미 | 기본값 |
+|------|:----:|:-------: |
+| `단위`| `px`, `em`, `cm`등 단위로 지정		|  `0` |
+| `auto`| 브라우저 너비를 계산					| 1024px 이하 |
+| `%`   | 부모 요소의 너비에 대한 비율로 지정	| 768px 이하 |
+
+```
+margin: 위 우 아래 좌;
+margin: 위 [좌, 우] 좌;
+margin: [위, 아래] [좌, 우];
+margin: [위, 아래, 좌, 우];
+```
+
+
+```html
+<div class="parent">
+	<div class="child"></div>
+</div>
+```
+```css
+.parent {
+	width: 400px;
+	height: 200px;
+	border: 4px solid red;
+	display:relative;
+}
+
+.child {
+	width: 100px;
+	height: 100px;
+	border: 4px solid;
+	margin: 50%
+}
+```
+
+- %를 margin값을 입력할 경우 부모요소의 가로너비가 %의 기준이 된다. 
+
+
+
+
 ## margin 중복 (곂쳐짐)
 - 형제 요소의 위아래는 중복됨
 	-> 절대값이 더 큰 쪽으로 결정된다.

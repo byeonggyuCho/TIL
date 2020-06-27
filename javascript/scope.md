@@ -101,5 +101,6 @@ p1('c')
 
 
 ### REF
+- [scope에 대한 간단 정리](https://thisblogfor.me/javascript/scope/)
 - [javascript Basic](http://insanehong.kr/post/javascript-scope/)
 - [scope](https://www.bsidesoft.com/?p=320)

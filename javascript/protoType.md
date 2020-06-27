@@ -289,6 +289,7 @@ x속성은 A객체에 종속된다.
 
 
 ### REF
+- [쉬운 설명](https://im-developer.tistory.com/98)
 - [insanehong](http://insanehong.kr/post/javascript-prototype/)
 - [javascript protptype](https://medium.com/@bluesh55/javascript-prototype-%EC%9D%B4%ED%95%B4%ED%95%98%EA%B8%B0-f8e67c286b67)
 - [zeroCho](https://www.zerocho.com/category/JavaScript/post/573c2acf91575c17008ad2fc)

@@ -1,16 +1,14 @@
 # window.onerror
 
 클라이언트 사이드의 에러를 서버에서 확인하는 손쉬운 방법을 소개합니다.  
-
 window.onerror는 글로벌 try...catch문처럼 동작하면서 예외를 잡을 수 있습니다.
-
 window 객체의 onerror 이벤트에 콜백함수를 할당하면 됩니다.
 ```js
 window.onerror = function(msg, url, lineNO, columnNo, error){
-//error report
+  //error report
 
-return false;
-}
+  return false;
+  }
 ```
 
 에러가 발생했을 때 콜백함수에 다음 매개변수가 전달됩니다.
@@ -35,6 +33,7 @@ return false;
 
 
 <br><br>
+
 ## 2. try/catch를 이용하여 stack 속성 획득하기.
 
 window.onerror를 통해 에러를 캣치할 수 있지만 디버깅에 가장 중요한 error stack을 알 수없다.
@@ -120,22 +119,15 @@ log it tor a file or store it in a database
 
 ### 고려사항
 
-1.window.onerror 는 콘솔에서 바로 실행되지 않는다.
-
-setTimeout을 통해 실행된다.
-
+1. window.onerror 는 콘솔에서 바로 실행되지 않는다.
+  - setTimeout을 통해 실행된다.
 2. 다른 라이브러리에서 window.onerror를 사용하는것을 어떻게 해결할것인지?
-
 3. window.onerror는 같은 context를 갖지 않는다.
-
 4. 서버에 배포된 파일이 minifed됐으면 lineNumber를 찾을 수 없다.
-
-- Error: 'a'is undefined Script : build.js Line:3
-
+  - Error: 'a'is undefined Script : build.js Line:3
 5. error 객체에 stack property를 표시하기 위해선 어떻게 해야할까?
-
-- 라이브러리 (i.g. stacktrace.js)
-- helper method (i.g invoke)
+  - 라이브러리 (i.g. stacktrace.js)
+  - helper method (i.g invoke)
 
 
 ## REF

@@ -251,6 +251,8 @@ DI패턴을 구현하기위해서 인터페이스를 통해서 상속을 받는�
 
 
 ## REF
+- [OOP with javscript](https://velog.io/@yejinh/%EA%B0%9D%EC%B2%B4-%EC%A7%80%ED%96%A5-%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D)
 - [1](https://velog.io/@cyranocoding/%EA%B0%9D%EC%B2%B4-%EC%A7%80%ED%96%A5-%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8DOOP-Object-Oriented-Programming-%EA%B0%9C%EB%85%90-%EB%B0%8F-%ED%99%9C%EC%9A%A9-%EC%A0%95%EB%A6%AC-igjyooyc6c)
 - [알고보면 재미있는 OOP](https://evan-moon.github.io/2019/08/24/what-is-object-oriented-programming/)
 - [객체지향프로그래밍](https://developerdk.tistory.com/4)
+- [OOP를 빨리 잊을수록 여러분에게 좋습니다.](https://rinae.dev/posts/the-faster-you-unlearn-oop-the-better-for-you-and-your-software-kr)
