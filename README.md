@@ -193,10 +193,6 @@ SI프로젝트를 경험하면서 조금만 수정해도 실타래처럼 얽혀�
 - [Clustering](./network/Clustering.md)
 
 
-## Interview
-- [Javascript](./interview/javascript.md)
-- [React](./interview/react.md)
-
 ## ETC
 - [Reactive Programming](./etc/reactiveProgramming.md)
 - [webpack](./webpack/index.md)
@@ -237,6 +233,7 @@ SI프로젝트를 경험하면서 조금만 수정해도 실타래처럼 얽혀�
     - socket.io
 6. Test
     - Jest/Enzyme 기반 TDD
+    - Cypress를 통한 E2E 테스트
 7. webpack
     - code spliting
 8. Clean Code
@@ -261,7 +258,11 @@ SI프로젝트를 경험하면서 조금만 수정해도 실타래처럼 얽혀�
 15. GraphQL, Apollo
 16. 데이터 시각화
     - cavas, svg
-    - d3 library
+    - d3 
+    - Threejs 
 17. sass
 18. Kubernetes
 19. Doker
+20. StoryBook
+21. React-native
+    - React Native

@@ -305,6 +305,7 @@ function add (arr) {
 
 
 ## REF
+- [프포그래밍 패러다임 간단정리](https://blog.metafor.kr/141)
 - [명령형vs선언형](http://codenugget.co/2015/03/05/declarative-vs-imperative-programming-web.html)
 - [모나드란?](https://biz.chosun.com/site/data/html_dir/2018/07/24/2018072401981.html)
 - [절차적프로그래밍](https://dhhwang89.tistory.com/62)
