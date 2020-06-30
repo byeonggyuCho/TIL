@@ -2,8 +2,12 @@
 
 
 ## TL;DR
-다른 도메인에 요청을 하기 위해선 서버에서 허용을 한뒤, 클라이언트가 헤더를 통해 접근권한을 확인한다. 
-
+- 다른 도메인에 요청을 하기 위해선 서버에서 허용을 한뒤, 클라이언트가 헤더를 통해 접근권한을 확인한다. 
+- 서버는 same origin policy를 관리하지 않는다.
+- 단 서버에서 origin을 확인해서 브라우저가 요청을 허용하도록 할 수 있다.
+- 브라우저는 내가 아무것도 하지 않아도 cross origin request라면 origin헤더를 붙혀준다.
+- 이 정책은 브라우저 단에서 실행한다. 브라우저가 same origin policy를 무시하는 브라우저라면 cors여부와 상과없이 잘 동작한다.
+- 브라우저에서 하는 기능이므로 브라우저를 이요하지 않으면 당연히 same origin policy를 신경쓸 필요가 없다.
 
 
 ![](/resource/img/network/CORS.png)
@@ -115,6 +119,13 @@ Access-Control-Allow-Headers: Origin,Accept,X-Requested-With, Content-TypemAcces
 
 
 ## 예제
+CORS는 4가지 경우가 있다.
+1. Simple Request: 도메인 확인절차가 없는 간단한 요청.
+2. Preflight Request: 도메인 확인을 하는 요청
+3. Credential Request
+4. Non-Credential Request
+
+
 
 ### 1. Simple requests
 preflight를 요청하지 않는 경우이다.
@@ -122,11 +133,11 @@ preflight를 요청하지 않는 경우이다.
 이 케이스에는 제약사항이 따른다.
 
 1. HTTP method는 GET, HEAD, POST만 사용 가능하다.
-2. Content-Type
+2. Content-Type은 다음만 허용한다.
     - application/x-www-form-urlencoded
     - multipart/form-data
     - text/plain
-3. 추가적으로 설정 가능한 헤더는 다음과 같다
+3. 추가적으로 설정 가능한 헤더는 다음과 같다 이외의 헤더는 허용하지 않는다.
     - Accept
     - Accept-Language
     - Content-Language
@@ -237,6 +248,7 @@ function callOtherDomain(){
     }
 }
 ```
+
 이 예제에서는 Content-Type을 application/xml으로 한 것과 X-PINGOTHER라는 커스텀 헤더를 사용했기때문에
 preflighted request를 보낸다는 점을 주목하자.
 (식별되지 않은 요청임으로 확인절차를 거쳐야한다)
@@ -245,6 +257,7 @@ preflighted request를 보낸다는 점을 주목하자.
 ![](/resource/img/network/cors_ex2.png)
 
 preflight
+
 ```
 OPTIONS /resources/post-here/ HTTP/1.1
 Host: bar.other
@@ -347,6 +360,7 @@ Access-Control-Max-Age: 86400
 ​
 
 ### ref
+- [CORS-정리깔끔](https://kamang-it.tistory.com/entry/Web%EB%8F%99%EC%9D%BC-%EC%B6%9C%EC%B2%98-%EC%A0%95%EC%B1%85-CORS-%EB%8F%84%EB%8C%80%EC%B2%B4-%EB%AD%98%EA%B9%8C)
 - https://brunch.co.kr/@adrenalinee31/1
 - https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS
 - https://ooz.co.kr/232

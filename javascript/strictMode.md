@@ -1,10 +1,11 @@
-## 엄격모드(strict mode)
+# 엄격모드(strict mode)
 - 문법과 런타임 동작 모두 검사
 - 실수를 에러로 변화
 - 변수 사용 단순화
 - eval, arguments의  단순화
 - 가기 es버전에서 정의될 문법을 금지한다.
 
+## 규칙
 1. 선언하지 않은 변수를 사용할 수 없다.
 2. 읽기 전용객체에 쓰는것이 불가능하다.
 (Object.defineProperties()를 통해 읽기전용 속성을 만들 수 있다.)
@@ -34,8 +35,31 @@
 이 경우 함수기준 엄격모드를 고려해라.  
 
 
-## this 바인딩
-1. call
-2. apply
-3. bind
 
+
+
+## this
+
+
+### 함수에서 사용
+```js
+function foo() {
+  // 함수-레벨 strict mode 문법
+  'use strict';
+  console.log('function',this)
+}
+// function undefined
+```
+
+### 메서드에서 사용
+```js
+var obj ={
+    say: function(){
+
+    'use strict'
+
+    console.log('Method',this)
+    }
+}
+// Method {say: ƒ}
+```
