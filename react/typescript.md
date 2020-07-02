@@ -224,6 +224,7 @@ const auth = createReducer<StateAuth, AuthAction>(initialState,
 
 
 ## Ref
+- [typescript hooks에 적용하기](https://levelup.gitconnected.com/usetypescript-a-complete-guide-to-react-hooks-and-typescript-db1858d1fb9c)
 - [type check](https://ko.reactjs.org/docs/static-type-checking.html)
 - [ts-react-redux-turoial](https://github.com/velopert/ts-react-redux-tutorial)
 - [Typescript-pro-tips](https://medium.com/@martin_hotell/10-typescript-pro-tips-patterns-with-or-without-react-5799488d6680#78b9)

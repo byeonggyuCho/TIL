@@ -22,14 +22,16 @@ CI(Continuous Integration) Server를 이용해
 ![](/resource/img/jenkins/Jenkins_SourceCodeManagement2.png)  
 
 
-우리는 2개의 깃허브 레포지토리를 등록해야하는데 
-소스데이터를 pull할 형상관리서버(github)의 레포지토리와 빌드 산출물을 push할 웹 서버(heroku)레포지토리를 등록해야한다. 
+우리는 2개의 깃허브 레포지토리를 등록해야한다. 
+1. 형상 관리서버 : pull할 형상관리서버(github) 레포지토리
+2. 배포서버: 빌드 산출물을 push할 웹 서버(heroku) 레포지토리  
+
 여기서 Name을 등록해야 `Post actions Build`에서 레포지토리 이름을 입력할 수 있다.
 
 등록 방법은 간단하다.
 `Repository URL`에 레포지토리의 경로를 넣어준 뒤 
-Credentials에서 레포지토리에 대한 인증방법을 입력해주면 끝이다.
-깃허브의 경우 계정과 아이디를 입력하면 되지만 헤로쿠의 경우 살짝 복잡하다.  
+Credentials에서 레포지토리에 대한 인증방법을 입력해주면 된다.
+github의 경우 계정과 아이디를 입력하면 되지만 heroku의 경우 살짝 복잡하다.  
 
 Heroku의 경우 `SSH key`가 필요한데 키를 얻기 위해선 몇가지 설치가 필요하다. 
 
@@ -113,7 +115,6 @@ Post-bild Actions는 빌드가 끝난 뒤에 이뤄지는 작업을 하는 곳�
 헤로쿠에 배포하기 위해 `Add Post build Action`을 클릭한뒤 `Git Publisher`를 클릭한다.
 
 1. 빌드가 실패할 경우를 대비하기 위해 `Push Only if Build Succeeds`를 체크한다. 
-
 2. `Bransh`항목에서 타겟 레포지토리를 등록해준다.
 3. `Target remote name`이란 항목은 `Source Code ManageMent`에 등록한 이름을 넣어주면 된다.
 

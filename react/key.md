@@ -9,7 +9,7 @@
 
 ## intro
 
-    “key”는 엘리먼트의 배열을 만들 때 포함해야 하는 특별한 문자열입니다. 
+    key는 엘리먼트의 배열을 만들 때 포함해야 하는 특별한 문자열입니다. 
     key는 React가 어떤 항목을 변경, 추가 혹은 삭제할지 식별하는 것을 돕습니다. 
     엘리먼트들을 안정적으로 식별할 수 있도록 배열 내의 엘리먼트에 key를 제공해야 합니다.
 
@@ -111,4 +111,4 @@ const articleList = articles.map(article => (
 
 ## REF
 - [index를 key로 사용하는것이 안티패턴인 이유](https://medium.com/@robinpokorny/index-as-a-key-is-an-anti-pattern-e0349aece318)
-- [index를 key에 매핑하면 안되는이유-kor](https://medium.com/sjk5766/react-%EB%B0%B0%EC%97%B4%EC%9D%98-index%EB%A5%BC-key%EB%A1%9C-%EC%93%B0%EB%A9%B4-%EC%95%88%EB%90%98%EB%8A%94-%EC%9D%B4%EC%9C%A0-3ce48b3a18fb
+- [index를 key에 매핑하면 안되는이유-kor](https://medium.com/sjk5766/react-%EB%B0%B0%EC%97%B4%EC%9D%98-index%EB%A5%BC-key%EB%A1%9C-%EC%93%B0%EB%A9%B4-%EC%95%88%EB%90%98%EB%8A%94-%EC%9D%B4%EC%9C%A0-3ce48b3a18fb)

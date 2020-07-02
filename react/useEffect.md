@@ -16,7 +16,7 @@
 ## sideEffect란?
 React 컴포넌트가 화면에 렌더링된 이후에 비동기로 처리되어야 하는 부수적인 효과들을 흔히 Side Effect라고 일컽습니다.  
 대표적인 예로 어떤 데이터를 가져오기 위해서 외부 API를 호출하는 경우, 일단 화면에 렌더링할 수 있는 것은 먼저 렌더링하고 실제 데이터는 비동기로 가져오는 것이 권장됩니다.  
-초기렌더링을 보장함으로써 연동하는 API가 응답이 늦어지거나 응답이 없을 경우에도 영향을 최소화 시킬 수 있어서 사용자 경험 측면에서 유리하기 때문입니다.
+초기 렌더링을 보장함으로써 연동하는 API가 응답이 늦어지거나 응답이 없을 경우에도 영향을 최소화 시킬 수 있어서 사용자 경험 측면에서 유리하기 때문입니다.
 
 
 ## useEffect에서 Effect란?
@@ -95,7 +95,7 @@ componentDidUpdate(prevProps, prevState) {
   }
 }
 ```
-useEffect는 해당 effect를 발생시킬 값을 구독하여 그 값이 변할때만 effect를 실행시키도록 할 수 있다.  
+useEffect는 해당 effect를 발생시킬 값을 구독하여 그 값이 변할 때만 effect를 실행시키도록 할 수 있다.  
 ```js
 useEffect(() => {
   document.title = `You clicked ${count} times`;

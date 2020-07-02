@@ -183,6 +183,11 @@ new Promise(resolve => resolve(p))와 Promise.resolve(p)의 차이는 <br/>
 
 
 ### 2. Promise.all
+- 비동기 코드를 병렬처리할 수 있다.  
+
+
+### 3. Promise.race
+- 실사용 예를 들어봐라.
 
 
 
@@ -212,6 +217,8 @@ const forEachPromise = function(items){
   },Promise.resolve())
 }
 ```
+
+
 
 
 

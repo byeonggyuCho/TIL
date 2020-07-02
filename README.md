@@ -2,7 +2,8 @@
 - one day one commit.
 
 ## Intro
-프로그래머로서 성장의 기록을 이곳에 남긴다. 어느 개발자 블로그에서 봤던 이 말이 참 와닿는다.  
+프로그래머로서 성장의 기록을 이곳에 남긴다.  
+어느 개발자 블로그에서 봤던 이 말이 참 와닿는다.  
 
     배운 것을 기록할 것!  
     기록하는 과정은 기록의 가치 이상으로 의미있다.  
@@ -59,6 +60,7 @@ SI프로젝트를 경험하면서 조금만 수정해도 실타래처럼 얽혀�
 - [promise](./javascript/promise.md)
 - [strictMode](./javascript/strictMode.md)
 - [this](./javascript/this.md)
+- [Temporal Dead Zone](./javascript/TDZ.md)
 - [runtime Evironment](./javascript/runtimeEnvironment.md)
 - [requestAnimationFrame](./javascript/requestAnimationFrame.md)
 - [new](./javascript/new.md)
@@ -83,7 +85,6 @@ SI프로젝트를 경험하면서 조금만 수정해도 실타래처럼 얽혀�
 - [type compatibility](./typescript/typeCompatibility.md)  
 
 
-
 ## 3.React
 - [component](./react/component.md)
 - [css in js](./react/CssInJs.md)
@@ -97,8 +98,8 @@ SI프로젝트를 경험하면서 조금만 수정해도 실타래처럼 얽혀�
 - [rendering](./react/rendering.md)
 - [redux](./react/redux.md)
 - [use Hooks In Redux](./react/useHooksInRedux.md)
-- [redux-saga](./react/redux-saga.md)
 - [redux-thunk](./react/react_thunk.md)
+- [redux-saga](./react/redux-saga.md)
 - [Styled Component](./react/styledComponent.md)
 - [SetState](./react/setState.md)
 - [Life Cycle](./react/lifeCycle.md)
@@ -109,8 +110,9 @@ SI프로젝트를 경험하면서 조금만 수정해도 실타래처럼 얽혀�
 - [Pure Component](./react/pureComponent.md)
 - [Server side rendering](./react/serverSideRendering.md)
 - [8Thing to Lean in ReactJS before using redux](./react/8ThingsToLeanInReactBeforUsingRedux.md)
-- [why_does_we_need_redux_thunk](./react/why_does_we_need_redux_thunk.md)
-<br><br>
+- [why does we need redux thunk?](./react/why_does_we_need_redux_thunk.md)
+- [why hooks?](./react/whyHooks.md)
+
 
 ## 4.Node.js
 - [intro](./nodeJS/index.md)
@@ -118,24 +120,24 @@ SI프로젝트를 경험하면서 조금만 수정해도 실타래처럼 얽혀�
 - [koa](./nodeJS/koa.md)
 - [gulp](./nodeJS/gulp.md)
 - [module](./nodeJS/module.md)
-<br><br>
+
 
 ## 5.HTML/CSS
 - [web Storage](./html/webStorage.md)
 - [Flex](./css/flex.md)
-<br><br>
+
 
 ## 6.Linux
 - [Why Lisux is Better for Developer](./linux/WhyLinuxIsBetterForDeveloper.md)
-<br><br>
+
 
 ## 7.NetWork
-- [web Application server](./network/webApplicationServer.md)
+- [Web Application Server](./network/webApplicationServer.md)
 - [CORS](./network/CORS.md)
 - [same origin policy](./javascript/sameOriginPolicy.md)
 - [REST API](./network/REST.md)
 - [Clustering](./network/Clustering.md)
-<br><br>
+
 
 
 ## 8.Java
@@ -148,7 +150,7 @@ SI프로젝트를 경험하면서 조금만 수정해도 실타래처럼 얽혀�
 - [garbageCollection](./java/garbageCollectio.md)
 - [Maven](./etc/maven.md)
 - [Thread](./java/thread.md)
-<br><br>
+
 
 ## 9.Spring
 - [Annotaion](./spring/annotation.md)
@@ -159,12 +161,9 @@ SI프로젝트를 경험하면서 조금만 수정해도 실타래처럼 얽혀�
 - [bean](./spring/bean.md)
 
 
-
-<br><br><br>
-
+---------------------------------------
 
 ## DataBase
-
 
 ### 1.Oracle
 - [dataBasePlanning](./db/oracle/dataBasePlanning.md)
@@ -183,89 +182,97 @@ SI프로젝트를 경험하면서 조금만 수정해도 실타래처럼 얽혀�
 - [transaction](./db/oracle/transaction.md)
 - [trigger](./db/oracle/trigger.md)
 - [view](./db/oracle/view.md)
-<br><br>
 
 
 ### 2.Mysql
 - [install](./db/mysql/install.md)
-<br><br>
+
 
 ### 3.MongoDB
 - [intro](./db/mongoDB/index.md)
 
-<br><br><br>
 
+---------------------------------
 
-## ETC
-- [Reactive Programming](./etc/reactiveProgramming.md)
+## Tools
+
+### Webapck
 - [webpack](./webpack/index.md)
+
+### Jenkins
 - [What is Jenkins?](./etc/jenkins.md)
 - [How to link Project in Jenkins](./etc/jenkinsLinkProject.md)
 - [How to write Build Process in Jenkins](./etc/jenkinsBuildProcess.md)
 
+## ETC
+- [Reactive Programming](./etc/reactiveProgramming.md)
+
 
 ## 설계
-- 왜 이런 라이브러리를 사용했나?
-    - 유사기능을 하는 다른 라이브러의 사용을 고려해보진 않았나?
-- 왜 이런 구조를 설계했나?
-- 이 구조의 문제점에 대해 알고있나?
-- 이렇게 로직을 짠 이유가 무엇인가?
-- 최적화를 위해 어떤 노력을 했나? 어떤 부분을 고민했나?
-    - 랜더링 최적화.
-- 현재 방법외에 다른 방법을 고민해본 것이 있는가?
-- 이런 방식의 접근방법은 어떻게 생각하는가?
+1. 어떤 도구를 사용할 것인가?
+    - 유사 라이브러리중 선택한 이유
+    - 명확한 도입 목적
+2. 패턴과 구조의 장단점에 대한 이해
+    - 맹목적으로 사용중인 패턴이나 구조가 있지는 않은지?
+    - 장단점에 대해 이해하고 있는지?
+3. 최적화.
+    - 최적화를 위해 어떤 부분을 고민했는지?
+    - 어떻게 해야 더 컴팩트한 앱을 만들 수 있는지?
+4. 대안
+    - 다른 선택을 고민해본 적 있는지?(plane B)
+    - 이런 방식의 접근방법은 어떻게 생각하는가?
 
 
 ## 관심분야
-1. javascript
-    - Symbol
-    - proxy
+1. Javascript
+    - requestidlecallback
     - web worker
-    - Shared Array Buffer (ES7)
+    - Symbol
     - Atomics (ES7)
+    - proxy
+    - Shared Array Buffer (ES7)
 2. Typescript
     - pattern
 3. React
     - redux-observable
     - next.js
     - 렌더링 최적화
-4. open source
-    - library development
-5. node.js
-    - nextJS
-    - socket.io
-6. Test
+4. Mobile App
+    - React-native
+    - web view
+5. 데이터 시각화
+    - cavas, svg
+    - d3 
+    - Threejs 
+6. Webpack
+    - code spliting
+7. Test
     - Jest/Enzyme 기반 TDD
     - Cypress를 통한 E2E 테스트
-7. webpack
-    - code spliting
-8. Clean Code
-9. Optimizing
-    - requestidlecallback
+8. open source
+    - library development
+9. node.js
+    - nextJS
+    - socket.io
+10. Clean Code
+11. Optimizing
     - PWA
     - 렌더링
       - web workers
       - service workders
-10. Soft Skill
+12. Soft Skill
     - UX를 고려한 설계
     - 프로그래머 소통(코드)
     - 서비스 품질 개선
-11. Functional Programming
+13. Functional Programming
     - fungter
     - 모나드
     - Ramda.js
-12. 협업습관 Tools
-    - (이슈관리, JIRA,Confluence, 프로젝트 보드)
-13. Digital nomard
-14. Web Assembly
-15. GraphQL, Apollo
-16. 데이터 시각화
-    - cavas, svg
-    - d3 
-    - Threejs 
+14. 협업 Tools
+    - (이슈관리, JIRA, Confluence, 프로젝트 보드)
+15. Web Assembly
+16. GraphQL, Apollo
 17. sass
 18. Kubernetes
 19. Doker
 20. StoryBook
-21. React-native
-    - React Native
