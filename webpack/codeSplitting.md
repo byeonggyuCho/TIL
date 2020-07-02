@@ -61,6 +61,7 @@ const MainComponent = () => (
 
 
 ## ref
+- [react-code-splitting](https://velog.io/@velopert/react-code-splitting)
 - https://velopert.com/3421
 - https://velog.io/@velopert/react-code-splitting
 - https://medium.com/humanscape-tech/react%EC%97%90%EC%84%9C-%ED%95%B4%EB%B3%B4%EB%8A%94-%EC%BD%94%EB%93%9C-%EC%8A%A4%ED%94%8C%EB%A6%AC%ED%8C%85-code-splitting-56c9c7a1baa4

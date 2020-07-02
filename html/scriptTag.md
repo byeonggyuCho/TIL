@@ -12,13 +12,17 @@
 ## 로딩순서 제어하기
 
 ### 1. async
-![](../resource\img\html\script-asnyc.png)
+![](../resource/img/html/script-asnyc.png)
 - script 로드가 비동기로 이뤄져서 domparsing이 멈추지 않는다.
 - script 로드가 끝나면 실행을 하는데 이때는 dom parsing이 멈춘다.
 - script 태그를 만나도 html parsing이 중단되지 않습니다. script 로드와 html parsing이 함께 이루어지다가 script 로드가 끝나면 script가 실행되는 시점에 html parsing이 잠시 중단되고 실행이 끝나면 html parsing이 재개됩니다.
 
+```html
+<script async src="script.js">
+```
+
 ### 2. defer
-![](../resource\img\html\script-defer.png)
+![](../resource/img/html/script-defer.png)
 - script로드 시점을 dom parsing이후로 미룬다.
 - script 태그를 만나도 script 로드의 시작부터 끝까지 html parsing이 중단되지 않으며 html parsing이 끝나고 난 뒤에야 script가 실행됩니다.
 - dom parsing을 중단하지 않고 parsing이 완료된 뒤에 script로드를 한다.

@@ -19,15 +19,15 @@
 
 **재조정**  
 - 리액트 엔진이 가상돔과 실제돔을 비교하는 과정.  
-- React가 어떤 컴포넌트를 업데이트할 지 안할 지 여부를 결정하는 알고리즘적 방법론
-
-출처: https://im-developer.tistory.com/198 [Code Playground]
-![](../resource/img/react/should-component-update.png)
+- React가 어떤 컴포넌트를 업데이트할 지 안할 지 여부를 결정하는 알고리즘적 방법론  
+[출처](https://im-developer.tistory.com/198)  
+![](../resource/img/react/should-component-update.png)  
 - SCU: shouldComponentUpdate의 반환값
 - vDOMEq: 가상돔과 실제 돔이 동일한지?
 
 **불변성**  
 ![](../resource/img/react/giphy.gif)  
+
 ```js
 { a: 10 } === { a: 10 } // false
 ```

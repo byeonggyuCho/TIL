@@ -183,16 +183,90 @@ new Promise(resolve => resolve(p))와 Promise.resolve(p)의 차이는 <br/>
 
 
 ### 2. Promise.all
+- 주어진 이터러블 객체의 프로미스가 모두 이루어질 때 프로미스를 반환하는 메서드
 - 비동기 코드를 병렬처리할 수 있다.  
+- 프로미스중 하나라도 reject가 발생하면 reject프로미스르 반환한다.
+- Promise.all은 AND 조건이다. 즉 모두 성공할때 resolve값을 반환한다. 하나라도 실패하면 Reject를 반환한다.
+
+```js
+Promise.all([
+  fetch('/template.html'),
+  fetch('/style.css'),
+  fetch('/data.json')
+]).then(render); // render 메서드는 fetch 결과 전부가 있어야 제대로 동작합니다.
+```
 
 
-### 3. Promise.race
+### 3. Promise.allSettled
+- 모든 프로미스가 처리될 때까지 기다린다. 
+- 배열을 반환하며 다음과 같은 요소를 갖는다.
+
+```js
+// 응답성공
+{status:"fulfilled", value:result}
+
+// 응답실패
+{status:"rejected", reason:error}
+
+```
+
+```js
+let urls = [
+  'https://api.github.com/users/iliakan',
+  'https://api.github.com/users/remy',
+  'https://no-such-url'
+];
+
+Promise.allSettled(urls.map(url => fetch(url)))
+  .then(results => { 
+    results.forEach((result, num) => {
+      if (result.status == "fulfilled") {
+        alert(`${urls[num]}: ${result.value.status}`);
+      }
+      if (result.status == "rejected") {
+        alert(`${urls[num]}: ${result.reason}`);
+      }
+    });
+  });
+```
+
+**Promise.allSettled의 폴리필**  
+```js
+if(!Promise.allSettled) {
+  Promise.allSettled = function(promises) {
+    return Promise.all(promises.map(p => Promise.resolve(p).then(value => ({
+      state: 'fulfilled',
+      value
+    }), reason => ({
+      state: 'rejected',
+      reason
+    }))));
+  };
+}
+```
+
+
+
+### 4. Promise.race
+- 가장 먼저 처리되는 프라미스의 결과(혹은 에러)를 반환합니다.
+```js
+let promise = Promise.race(iterable);
+```
 - 실사용 예를 들어봐라.
 
+```js
+
+Promise.race([
+  new Promise((resolve, reject) => setTimeout(() => resolve(1), 1000)),
+  new Promise((resolve, reject) => setTimeout(() => reject(new Error("에러 발생!")), 2000)),
+  new Promise((resolve, reject) => setTimeout(() => resolve(3), 3000))
+]).then(alert); // 1
+```
 
 
 
-### Example
+
+### Example Promise Advance
 
 #### 1.비동기 호출 루프돌리기.
 ```js
@@ -218,6 +292,87 @@ const forEachPromise = function(items){
 }
 ```
 
+#### 2.재시도 로직.
+- 서버 요청이 실패 했을 때 재시도를 하는 로직을 구현해보자..
+
+```js
+const fetchUsers = async (userId) => {
+  const response = await fetch('https://jsonplaceholder.typicode.com/users/');
+  // const response = await fetch('https://jsonplaceholder.typicode.com/users/wrong-url');
+  if (response.ok) {
+    return response.json();
+  } else {
+    throw response;
+  }
+}
+
+const retry = (func, params = [], maxRetriesCount = 5, interval = 500) => new Promise((resolve, reject) => {
+  func(...params)
+    .then((response) => resolve(response))
+    .catch((err) => {
+      if (maxRetriesCount === 0) {
+        reject(err); 
+        return;
+      }
+      setTimeout(() => {
+        console.log('retry!');
+        retry(func, params, maxRetriesCount - 1).then(resolve, reject);
+      }, interval);
+   });
+});
+
+(async function(){
+  try {
+    const users = await retry(fetchUsers);
+    document.write(JSON.stringify(users));
+    console.log('response', users);
+  } catch(err) {
+    console.log('error:', err);
+  }
+})();
+
+```
+
+
+#### 3. 타임아웃 구현하기
+**Promise.race**를 이용하면 타입아웃을 구현할 수 있습니다.
+```js
+const timeout = new Promise((resolve, reject) => {
+  const id = setTimeout(() => {
+    clearTimeout(id);
+    reject('timeout!');
+  }, 500);
+});
+
+const promise = new Promise((resolve, reject) => {
+  const id = setTimeout(() => {
+    clearTimeout(id);
+    resolve('response!');
+  }, 700);
+});
+
+Promise.race([promise, timeout]).then(response => {
+  console.log(response);
+}).catch(err => {
+  console.log(err) //timeout!
+});
+```
+
+#### 4.비동기 병렬처리.
+![](../javascript/promissAll.png)
+```js
+ 
+  Promise.all(
+    fetch('https://jsonplaceholder.typicode.com/users/1').then(res => res.json()),
+    fetch('https://jsonplaceholder.typicode.com/users/2').then(res => res.json()),
+    fetch('https://jsonplaceholder.typicode.com/users/3').then(res => res.json()),
+  ).then(([user1, user2, user3]) => {
+    console.log('user1:', user1);
+    console.log('user2:', user2);
+    console.log('user3:', user3);
+  });
+
+```
 
 
 
