@@ -262,6 +262,7 @@ return false;
 
 
 ## REF 
+- [이벤트 위임](https://ko.javascript.info/event-delegation)
 - [이벤트 흐름](https://poiemaweb.com/js-event)
 - [버블링과 캡쳐링](https://ko.javascript.info/bubbling-and-capturing)
 - [이벤트 버블](https://joshua1988.github.io/web-development/javascript/event-propagation-delegation/)

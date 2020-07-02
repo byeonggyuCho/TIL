@@ -1,0 +1,3 @@
+# Lecical Scope
+
+## TODO

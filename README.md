@@ -49,16 +49,17 @@ SI프로젝트를 경험하면서 조금만 수정해도 실타래처럼 얽혀�
 - [excution Context](./javascript/excutionContext.md)
 - [function](./javascript/function.md)
 - [Generator](./javascript/Generator.md)
-- [scope](./javascript/scope.md)
-- [server send evnet](./javascript/severSendEvnet.md)
-- [spead](./javascript/spread.md)
-- [set map](./javascript/SET-MAP.md)
 - [Iterater](./javascript/Iterator.md)
 - [json](./javascript/json.md)
 - [ptototype](./javascript/protoType.md)
 - [object](./javascript/object.md)
 - [promise](./javascript/promise.md)
+- [scope](./javascript/scope.md)
+- [server send evnet](./javascript/severSendEvnet.md)
+- [spead](./javascript/spread.md)
+- [set map](./javascript/SET-MAP.md)
 - [strictMode](./javascript/strictMode.md)
+- [statement](./javascript/statement.md)
 - [this](./javascript/this.md)
 - [Temporal Dead Zone](./javascript/TDZ.md)
 - [runtime Evironment](./javascript/runtimeEnvironment.md)
@@ -77,10 +78,11 @@ SI프로젝트를 경험하면서 조금만 수정해도 실타래처럼 얽혀�
 ## 2.TypeScript
 - [basic type](./typescript/basicType.md)
 - [classes](./typescript/classes.md)
-- [functions](./typescript/functions.md)
+- [Functions](./typescript/Functions.md)
 - [interface](./typescript/interface.md)
 - [generics](./typescript/generics.md)
-- [generics](./typescript/generics.md)
+- [Mix In](./typescript/mixIn.md)
+- [Mapped Type](./typescript/mappedType.md)
 - [type Inference](./typescript/typeInference.md)
 - [type compatibility](./typescript/typeCompatibility.md)  
 
@@ -97,7 +99,7 @@ SI프로젝트를 경험하면서 조금만 수정해도 실타래처럼 얽혀�
 - [middleware](./react/middleware.md)
 - [rendering](./react/rendering.md)
 - [redux](./react/redux.md)
-- [use Hooks In Redux](./react/useHooksInRedux.md)
+- [redux with Hooks](./react/useHooksInRedux.md)
 - [redux-thunk](./react/react_thunk.md)
 - [redux-saga](./react/redux-saga.md)
 - [Styled Component](./react/styledComponent.md)
@@ -226,6 +228,7 @@ SI프로젝트를 경험하면서 조금만 수정해도 실타래처럼 얽혀�
 ## 관심분야
 1. Javascript
     - requestidlecallback
+    - Requestidlecallback
     - web worker
     - Symbol
     - Atomics (ES7)

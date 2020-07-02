@@ -1,5 +1,11 @@
 #  prototype
 
+## TL;DR
+- prototype 속성: prototype object를 참조하는 HOST Object의 속성
+- `__proto`__ : Host Object의 prototype object를 참조하는 Host Object의 인스턴스의 속성
+- prototype Object: 함수를 정의할 때 생성된다. constructor Object에 함수의 초기정보가 담겨있다.
+- Host Object: 생성자 함수, prototype 속성을 가지고 있다.
+
 
 ## Intro
 
@@ -39,13 +45,16 @@ Person.prototype.nose = 1;
 var kim  = new Person();
 ```
 
-![__proto__](/resource/img/javascript/prototype.png)    
+![__proto__](../resource/img/javascript/prototype.png)    
 위 예제에서 `prototype Property`를 통해 `Prototype Object`에 `eyes`와 `nose`를 추가했습니다.
 
 
-![__proto__](/resource/img/javascript/prototype1.png)  
+![__proto__](../resource/img/javascript/prototype1.png)  
 
-생성된 함수객체는 `prototype property`를 통해 `Prototype Object`에 접근할 수 있습니다.  
+생성된 함수객체(Host Object)는 `prototype property`를 통해 `Prototype Object`에 접근할 수 있습니다.  
+```js
+Person.prototype
+```
 `Prototype Object`는 `counstructor`와 `__proto__`를 기본속성으로 가지고 있다.
 - `counstructor` : Prototype Object와 같이 생성되었던 함수를 가리키고 있습니다.
 - `__proto__` : `Prototype Linke`입니다.
@@ -99,6 +108,8 @@ var A = function () {
          //do something
     };
 };
+var a = new A();
+console.log(a.x)
 
 //#예제 2.
 var A = function () { };
@@ -106,18 +117,19 @@ A.prototype.x = function () {
     //do something
 };
 ```
-`this.x`는 Host Object A의 속성이고, A.prototype.x는 `prototype Object`에 등록된 속성이다.  
+`this.x`는 Host Object를 new 생성자로 생성한 객체(인스턴스)의 속성이고, 
+A.prototype.x는 `prototype Object`에 등록된 속성이다.  
 
 
 ```js
 //#예제 1 : 함수객체의 속성등록.
 var A = function () {
-    this.x = function () {
+    this.x = function () {          // (1)
          console.log('orign');
     };
 };
 
-A.x = function() {
+A.x = function() {              // (2)
     console.log('changed');
 };
 
@@ -125,7 +137,14 @@ var B = new A();
 var C = new A();
 B.x(); //orign
 C.x(); //orign
+
 ```
+여기서 origin이 나온 이유는 변수 탐색과정에서 생성자 함수의 속성으로 등록된 `(1)x`가 나온것이다.  
+`A.x`는 함수객체의 속성이 된다. 함수도 객체임으로 속성을 등록할 수 있다.  
+(참고:: Function.prototype의 속성을 한번 알아보자)  
+
+
+
 
 ```js
 //#예제 2: 생성자함수의 속성추가와 프로토타입 함수 등록 비교.
@@ -143,9 +162,10 @@ C.x(); //changed
 ```
 
 
-
-
-위 예제에서 B,C를 생성하기 위한 객체 원형 프로토타입은 A다. 여기서 중요한 것은 B,C는 A를 프로토타입으로 사용하기 위해서 A의 `Prototype Object`를 사용한다. 그리고 이 `Prototype Object`는 A(Host Object)가 생성될 당시의 정보만 가진다. 따라서 에제1에서 x 호출결과가 hello가 된다. B,C는 `Prototype Object`를 참조하기 때문이다. 예제2에서는 `prototype property`로 `Prototype Oeject`에 접근해 수정했기 때문에 world가 된것을 알 수 있다.
+위 예제에서 B,C를 생성하기 위한 객체 원형 프로토타입은 A다.  
+여기서 중요한 것은 B,C는 A를 프로토타입으로 사용하기 위해서 A의 `Prototype Object`를 사용한다.   
+그리고 이 `Prototype Object`는 A(Host Object)가 생성될 당시의 정보만 가진다. 따라서 에제1에서 x 호출결과가 orign가 된다. B,C는 `Prototype Object`를 참조하기 때문이다.  
+예제2에서는 `prototype property`로 `Prototype Oeject`에 접근해서 속성 x를 추가했기 때문에 changed가 된것을 알 수 있다.
 
 ![](/resource/img/javascript/prototypeExample.png)
 이 도식에서 볼 수 있듯이 객체 B,C는 `__proto__`(프로토타입링크)를 통해 A의 `Prototype Oject`를 참조하고 있다.  
@@ -205,12 +225,9 @@ console.log(too.read());
 
 
 
-
-
-
-
 ### Prototype Property
-	모든 함수 객체의 Contructor는 prototype이란 프로퍼티를 가지고 있다. 이 prototype프로퍼티는 객체가 생성될 당시 만들어지는 객체 자신의 원형이될 prototype객체를 가리킨다. 즉 자신을 만든 원형이 아닌 자신을 통해 만들어질 객체들이 원형으로 사용할 객체를 말한다. prototype object는 default로 empty Object를 가리킨다.
+	모든 함수 객체의 Contructor는 prototype이란 프로퍼티를 가지고 있다. 이 prototype Property는 객체가 생성될 당시 만들어지는 객체로 자신의 원형이될 prototype Object를 가리킨다. 즉 자신(Host Object)을 만든 원형이 아닌 자신(Host Object)을 통해 만들어질 객체(Instance)들이 원형으로 사용할 객체를 말한다. prototype object는 default로 empty Object를 가리킨다.  
+    Instance들은 __proto__를 통해 Prototype Object에 접근할 수 있다.
 
 
 자바스크립트의 모든 객체는 생성과 동시에 자기 자신이 생성될 당시의 정보를 가진 `Prototype Object`라는 객체를 복사해서 생성한다. 프로토타입이 객체를 만들어내기 위한 원형이라면 `Prototype Object`는 자기 자신의 분신이며 자신을 원형으로 만들어질 다른 객체가 참조할 프로토타입이다. 즉 객체 자신을 이용할 다른 객체들이 프로토타입으로 사용할 객체가 `Prototype Object`인 것이다. 위에서 언급한 `__proto__`에 대한 link는 상위에서 물려받은 객체의 프로토타입에 대한 정보이이다.
