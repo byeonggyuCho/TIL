@@ -237,45 +237,50 @@ SI프로젝트를 경험하면서 조금만 수정해도 실타래처럼 얽혀�
 2. Typescript
     - pattern
 3. React
-    - redux-observable
-    - next.js
+    - next.js (SSR)
     - 렌더링 최적화
+    - 아토믹 디자인
+    - redux-observable
 4. Mobile App
     - React-native
     - web view
-5. 데이터 시각화
+5. Style
+    - sass
+    - Matarial UI
+6. 데이터 시각화
     - cavas, svg
     - d3 
     - Threejs 
-6. Webpack
+7. Webpack
+    - SSR
     - code spliting
-7. Test
+8. Test
     - Jest/Enzyme 기반 TDD
     - Cypress를 통한 E2E 테스트
-8. open source
+9. open source
     - library development
-9. node.js
+10. node.js
     - nextJS
     - socket.io
-10. Clean Code
-11. Optimizing
+11. Clean Code
+12. Optimizing
     - PWA
     - 렌더링
       - web workers
       - service workders
-12. Soft Skill
+13. Soft Skill
     - UX를 고려한 설계
     - 프로그래머 소통(코드)
     - 서비스 품질 개선
-13. Functional Programming
+14. Functional Programming
     - fungter
     - 모나드
     - Ramda.js
-14. 협업 Tools
+15. 협업 Tools
     - (이슈관리, JIRA, Confluence, 프로젝트 보드)
-15. Web Assembly
-16. GraphQL, Apollo
-17. sass
+16. Web Assembly
+17. GraphQL, Apollo
+
 18. Kubernetes
 19. Doker
 20. StoryBook
