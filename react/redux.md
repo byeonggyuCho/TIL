@@ -350,6 +350,7 @@ component 내부에서는 UI에 관련된 상태를 저장하고 그외 여러 �
 
 ### REF
 
+- [flux대비 이점](https://www.it-swarm.dev/ko/javascript/redux%EB%A5%BC-facebook-flux%EC%97%90%EC%84%9C-%EC%82%AC%EC%9A%A9%ED%95%98%EB%8A%94-%EC%9D%B4%EC%9C%A0%EB%8A%94-%EB%AC%B4%EC%97%87%EC%9E%85%EB%8B%88%EA%B9%8C/1055658177/)
 - [그래서 리덕스 왜 쓰는건데?](https://medium.com/@wooder2050/%EB%A6%AC%EB%8D%95%EC%8A%A4-redux-%EB%8A%94-%EC%99%9C-%EC%93%B0%EB%8A%94-%EA%B1%B4%EB%8D%B0-2eaafce30f27)
 - [why redux instead of Flux](https://www.slideshare.net/dalinaum/redux-55650128)
 - [리덕스 왜 쓸까](https://velopert.com/3528)

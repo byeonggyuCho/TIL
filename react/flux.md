@@ -112,6 +112,7 @@ Store는 어플리케이션의 상태와 상태 변화로직을 포함하고 있
 
 ### REF
 
+- [flux와 mvc비교](https://dogbirdfoot.tistory.com/14)
 - [flux시작하기](https://kkak10.gitbooks.io/flux/index.html)
 - [Singletons Suck ](https://www.rea-group.com/blog/singletons-suck-aka-flux-to-redux/)
 - [why redux](https://www.slideshare.net/dalinaum/redux-55650128)
