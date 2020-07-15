@@ -95,7 +95,7 @@ flex-direction과 flex-wrap의 단축 속성이다.
 
 ### 1.2 flex-direction
 
-![](../resource\img\css\flex_direction.png)
+![](../resource/img/css/flex_direction.png)
 
 - 주 축을 설정한다.
 - row: items를 수평축으로 표시한다.(수평정렬)
@@ -105,14 +105,14 @@ flex-direction과 flex-wrap의 단축 속성이다.
 
 #### 주 축(main-axis)과 교차 축(cross-axis)
 
-![](../resource\img\css\flex_direction2.png)
+![](../resource/img/css/flex_direction2.png)
 row는 items를 수평축으로 표시하므로 이때는 주 축이 수평이며 교차 축은 수직이된다.
 column은 items를 수직축으로 표시하므로 주 축은 수직이며 교차 축은 수평이 된다.  
 즉 방향에 따라 주 축과 교차 축이 달라진다.
 
 #### 시작점 (flex-start)과 끝점(flex)
 
-![](../resource\img\css\flex_direction3.png)
+![](../resource/img/css/flex_direction3.png)
 주 축이나 교차 축의 시작하는 지점과 끝나는 지점을 지칭한다.  
 flex-direction에 따라 시작점과 끝점이 달라진다.  
 상,하, 좌,우 중 시작점을 기점으로 그 반대가 끝점이라 생각하면 된다.
@@ -124,7 +124,14 @@ flex-direction에 따라 시작점과 끝점이 달라진다.
 
 ### 1.3 flex-wrap
 
-items의 여러 줄 묶음(줄 바꿈)을 설정한다.
+![](../resource/img/css/flex-wrap.png)
+
+- items의 여러 줄 묶음(줄 바꿈)을 설정한다.
+- flex는 기본값이 nowrap으로 모든 인덱스를 컨테이너 안에서 한줄로 표시한다. 여러줄로 표현이 필요한 경우 이 속성을 수정해야한다.
+- 한줄로 표현이 되기 때문에 모든 요소의 Width값의 합이 컨테이너의 너비보다 클경우 비율에 맞게 줄어든다.
+- `flex-wrap:wrap;`을 해야지 컨테이너 너비가 좁을 경우 개행된다.
+
+**속성**
 
 - nowrap: 한줄로 표시, 묶지 않음
 - wrap: 여러 줄로 묶음
@@ -192,11 +199,12 @@ items의 여러 줄 묶음(줄 바꿈)을 설정한다.
 
 ### 1.5 align-content
 
-![](../resource\img\css\align-content.png)
+![](../resource/img/css/align-content.png)
 
-교차축의 정렬 방법을 설정한다.  
-주의할 점은 flex-wrap 속성을 통해 items가 여러 줄이고 여백이 있을 경우만 사용할 수 있다.  
-Items가 한줄일 경우 align-items 속성을 사용
+교차축에서 items의 정렬 방법을 설정한다.
+
+- `align-content`은 교차축의 시작지점과 끝지점을 기준으로 사고한다.
+- 여러줄이면서 컨테이너의 높이가 고정되어 여백 아이템간의 여백이 있는 상황에서 사용된다.
 
 - strecth: Container의 교차 축을 채우기 위해 Items를 늘린다.
 - flex-start: Items를 시작점으로 정렬한다.
@@ -236,17 +244,20 @@ Items가 한줄일 경우 align-items 속성을 사용
 
 ### 1.6 align-items
 
+![](../resource/img/css/align-items.png)
 교차 축에서 items의 정렬 방법을 설정한다.  
 items가 한 줄일 경우 많이 사용된다.
 
-주의할 점은 Items가 flex-wrap을 통해 여러 줄일 경우에는 align-content 속성이 우선한다.  
-따라서 align-items를 사용하려면 align-content 속성을 기본값으로 설정해야한다.
+- 각 줄이 시작 지점과 끝지점이 다르다는 것을 주의한다.
+- A요소와 F요소의 시작점과 끝지점이 다르다.
+- 아이템이 한줄일 경우에는 `align-content`속성이 적용된다.
+- baseline은 문제의 아랫부분을 기준으로 요소를 정렬한다.
 
-- stretch : Container의 교차 축을 채우기 위해 items를 늘림
-- flex-start: Items를 각 줄의 시작점으로 정렬
-- flex-end: Items를 각 줄의 끝점으로 정렬
-- center: Items를 가운데 정렬
-- baseline: Items를 문자 기준선에서 정렬
+* stretch : Container의 교차 축을 채우기 위해 items를 늘림
+* flex-start: Items를 각 줄의 시작점으로 정렬
+* flex-end: Items를 각 줄의 끝점으로 정렬
+* center: Items를 가운데 정렬
+* baseline: Items를 문자 기준선에서 정렬
 
 ```html
 <div class="container">
@@ -276,6 +287,8 @@ items가 한 줄일 경우 많이 사용된다.
   border: 4px dashed red;
   border-radius: 10px;
   font-size: 30px;
+
+  /* 내부 텍스트 중앙정렬 */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -285,6 +298,9 @@ items가 한 줄일 경우 많이 사용된다.
     font-size: 50px;
 } */
 ```
+
+- 아이템 내부의 텍스트를 중앙에 정렬하는 방법
+- 아이템을 플랙시블박스로 만들고 jsutify-content와 align-items를 적용함
 
 ---
 
@@ -339,6 +355,9 @@ HTML 구조와 상관없이 순서를 변경할 수 있어 유용하다.
 
 ### 2.2 flex-grow
 
+![](../resource/img/css/flex-grow1.png)
+![](../resource/img/css/flex-grow2.png)
+
 Flex item의 증가 너비 비율을 설정  
 숫자가 크면 더 많은 너비를 가진다.
 Item이 가변 넘비가 아니거나 값이 0일 경우 효과가 없다.  
@@ -347,6 +366,11 @@ Item이 가변 넘비가 아니거나 값이 0일 경우 효과가 없다.
 - 이 속성에서 전체의 비율은 가용가능한 너비가 된다.
 - 만약 다른 요소에 width값이고정 수치로 지정되어있다면 이 너비는 최소값으로 보존된다.
 - 가변값 설정을 통해 반응형웹에 사용할 수 있는 속성.
+- 이때 비율은 전체너비를 기준으로 하여 계산된다.
+- 계산된 너비는 최대너비로 적용된다 이 말은 다른 요소에 의해 최대너비만큼 요소를 늘리지 못할 경우에 계산된 너비보다 작아질 수 있다는 얘기다.
+- 요소간의 비율을 설정할때 사용하는 속성이다.
+- 이때 요소간 Width값이 고정되어있으면 flex-grow로 정확한 비율을 나눠지지 않는다.
+- 사이드바를 쉽게 구현할 수 있다.
 
 ```html
 <div class="container">
@@ -376,23 +400,71 @@ Item이 가변 넘비가 아니거나 값이 0일 경우 효과가 없다.
 .item2 {
   flex-grow: 1;
 }
+.item3 {
+  width: 100px;
+}
+```
+
+**사이드바 예제**
+
+- 가변역역, 고정영역 만들기.
+- 가변영역에 flex-grow를 설정하면된다.
+- 고정영역에는 고정 너비를 지정한다.
+
+```html
+<div class="container">
+  <div class="item item1">A</div>
+  <div class="item item2">B</div>
+</div>
+```
+
+```css
+.container {
+  border: 4px solid;
+  display: flex;
+}
+
+.container .item {
+  height: 100px;
+  background: tomato;
+  border: 4px dashed red;
+  border-radius: 10px;
+}
+
+.item1 {
+  flex-grow: 1;
+}
+
 .item2 {
   width: 100px;
 }
 ```
 
+item2는 고정된 너비를 보장받고 item1는 가변영역으로 나머지 모든 공간을 할당받는다.  
+고정영역과 가변영역을 설정하기 쉽다.
+
 ### 2.3 flex-shrink
+
+![](../resource/img/css/flex-shrink.png)
 
 Flex item의 감소 너비 비율을 설정  
 숫자가 크면 더 많은 너비가 감소한다.  
 item이 가변 너비가 아니거나, 값이 0일 경우 효과가 없다.
 
+- 아이템이 고정너비를 가지고 있을 때 감소가 되는 값을 계산해야한다.
+
 ### 2.4 flex-basis
+
+![](../resource/img/css/flex-basis.png)
 
 Flex item의 기본 너비 설정  
 ITEM의 (공간 배분 전) 기본 너비를 설정한다.  
 값이 auto일 경우 width, height 등의 속성으로 Item의 너비를 설정할 수 있다.  
 하지만 단위 값이 주어질 겨우 설정할 수 없다.
+
+- flex-basis가 auto이면 컨텐츠의 너비가 보존된다.
+- flex-basis를 0으로 설정하면 컨텐츠의 너비상관없이 flex-grow에 설정한 비율이 적용된다.
+- flex-grow를 지정할때 기본너비를 설정할 수 있다.
 
 - auto: 가변 Item같은 너비
 - 단위: px, em,cm등 단위로 지정한다.
@@ -500,7 +572,7 @@ align-items는 Container 내 모든 Items의 정렬 방법을 설정한다.
 
 .container .item7 {
   align-self: stretch;
-  height: auto;
+  height: auto;w
 }
 ```
 
