@@ -1,3 +1,14 @@
+# S3 연동
+
+1. AWS IAM 발급
+2. Github Secret 설정
+3. Github Actions 설정
+4. 잘 되나 테스트해보기
+
+![](../resource/img/git/gitActionFlow.png)
+
+# build pipeline
+
 # Fass
 
 # S3
@@ -5,6 +16,10 @@
 # 프로비저닝
 
 # 서버리스
+
+- 내부적으로 CloudFormation을 사용하여 API gateway에서 api변동사항을 더욱 쉽게 반영해줄 수 있다.
+
+# 방법
 
 ## 1.lamda 함수를 정의한다
 
