@@ -171,7 +171,33 @@ webpack-dev-server: 애플리케이션 개발 서버를 제공한다.
 
 ## webpack.IgnorePlugin
 
+## webpack.EnvironmentPlugin
+
+환경변수를 전달해준다.
+
+```js
+return {
+  plugins: [
+    new HTMLWeebPackPlugin({
+      template: "./src/index.html",
+      filename: "./index.html",
+    }),
+
+    // 여기 아래부분의 두개의 플러그인 인데요.
+    // DefinePlugin으로 'process.env.API_URL'를 process.env.API_URL 이라는 환경변수를 정의하고
+    new webpack.DefinePlugin({
+      "process.env.API_URL": JSON.stringify(process.env.API_URL),
+    }),
+    // EnvironmentPlugin 이 뒤에 []에 해당하는 환경변수를 클라이언트로 전달해 준답니다.
+    new webpack.EnvironmentPlugin(["API_URL"]),
+  ],
+};
+```
+
 ## webpack.DefinePlugin
+
+- 빌드 타임에 결정되는 환경 변수를 어플리케이션에 주입하기 위함.
+  빈 객체를 넘겨도 process.env.NODE_ENV는 웹팩의 mode로 들어감.
 
 ## InterpolateHtmlPlugin
 
@@ -186,11 +212,6 @@ webpack-dev-server: 애플리케이션 개발 서버를 제공한다.
 ## CleanWebpackPlugin
 
 - build시 마다 dist 청소해주기
-
-## DefinePlugin
-
-- 빌드 타임에 결정되는 환경 변수를 어플리케이션에 주입하기 위함.
-  빈 객체를 넘겨도 process.env.NODE_ENV는 웹팩의 mode로 들어감.
 
 ## UglifyJsPlugin
 
