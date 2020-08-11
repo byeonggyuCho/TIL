@@ -15,6 +15,15 @@ node express로 만들어진 webserver다.
 - 빠른 개발 및 협업을 위해 프론트엔드와 백엔드 분리 개발
 - 프록시 서버로 이용가능하여 백엔드 서버와 연동이 쉬움
 
+## json-server
+
+- https://react.vlpt.us/redux-middleware/08-json-server.html
+
+```
+$ yarn global add json-server
+$ json-server ./data.json --port 4000
+```
+
 ## 개발서버 설치
 
 ```
@@ -31,6 +40,9 @@ webpack-dev-server-dev
 - 벡엔드 서버에 CORS 설정
 
 ## proxy 설정
+
+- https://react.vlpt.us/redux-middleware/09-cors-and-proxy.html
+- https://zuminternet.github.io/ZUM-Webpack-dev-proxy-part2/
 
 ## 옵션 설명
 

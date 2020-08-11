@@ -240,7 +240,7 @@ SI프로젝트를 경험하면서 조금만 수정해도 실타래처럼 얽혀�
 2. Typescript
    - pattern
 3. React
-   - next.js (SSR)
+   - `next.js` (SSR)
    - Material-UI
    - 렌더링 최적화
    - 아토믹 디자인
