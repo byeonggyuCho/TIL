@@ -1,7 +1,5 @@
 # Jest
 
-## TODO
-
 ## react component testing
 
 1. 특정 props에 따라 컴포넌트가 충돌없이 렌더링 되는지 확인
@@ -33,6 +31,18 @@ package.json에 아래 설정을 추가한다.
     }
   }
 ```
+
+## 옵션
+
+![configuring](https://jestjs.io/docs/en/configuration)
+
+### coverage
+
+```
+jest --watch --coverage
+```
+
+istanbul를 이용한 커버리지 츠겅.
 
 ## 함수
 
@@ -93,11 +103,44 @@ expect(spyFn).toBeCalledWith(2, 3);
 expect(result).toBe(5);
 ```
 
-## Ref
+### 반복가능한 테스트코드
 
-- [jest-gitBooks](https://jestjs.io/docs/en/using-matchers)
+```js
+const userChangeCases = [{
+  name: 'Test1',
+  props: { toLowercase: true },
+  value: 'testPre',
+  result: 'testpre'
+}];
+const props = {
+  onDataChange: jest.fn()
+};
+describe('Testing TextComponent', () => {
+  let wrapper = null;
+  beforeEach(() => {
+    wrapper = mount(<TextComponent {...props} />);
+  });
+  describe('On Change Cases', () => {
+    userChangeCases.forEach(item => {
+      test(item.name, () => {
+        wrapper.setProps(item.props);
+        const input = wrapper.find('input');
+        input.simulate('change',
+          { target: { value: item.value } });
+        expect(props.onDataChange).
+          toBeCalledWith(item.resultValue);
+    });
+  });
+});
+```
+
+## REF
+
+- [DOC-Jest](https://jestjs.io/docs/en/expect.html)
+- [GitBooks-Jest](https://jestjs.io/docs/en/using-matchers)
+- [jest-mocking](https://www.daleseo.com/jest-mock-modules/)
+- [jest-비동기 테스트](https://www.daleseo.com/jest-async/)
 - [jest-fn-spy-on](https://www.daleseo.com/jest-fn-spy-on/)
 - [How to test axios in Jest](robinwieruch.de/axios-jest)
 - [벨로퍼트-비동기테스트](https://velog.io/@velopert/react-testing-library-%EC%9D%98-%EB%B9%84%EB%8F%99%EA%B8%B0%EC%9E%91%EC%97%85%EC%9D%84-%EC%9C%84%ED%95%9C-%ED%85%8C%EC%8A%A4%ED%8A%B8)
 - [react-testing](https://velopert.com/3587)
-- [jest-document](https://jestjs.io/docs/en/expect.html)

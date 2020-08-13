@@ -33,6 +33,13 @@ Saga는 기본적으로 비동기 액션을 모니터링하는 Watcher Saga와 �
 미들웨어는 (Worker) Saga가 반환하는 Promise나 단순 Object를 핸들링 할 수 있다.  
 쉽게 말해 미들웨어 내부에서 프로미스를 처리하여 단순 객체를 반환하며 이 객체만 테스트하면된다.
 
+```js
+put({ type: "INCREMENT" }); // => { PUT: {type: 'INCREMENT'} }
+call(delay, 1000); // => { CALL: {fn: delay, args: [1000]}}
+```
+
+각 이펙트가 반환하는 자바스크립트 객체의 형태가 일치하는 지 테스트하면 된다.
+
 ## 무엇을 테스트하나?
 
 ## redux-saga-test-plan
@@ -66,17 +73,62 @@ describe("Sudoku Saga test", () => {
 });
 ```
 
+## redux-saga를 reducer와 함께 테스트하기
+
+```js
+import { put } from "redux-saga/effects";
+import { expectSaga } from "redux-saga-test-plan";
+
+const initialDog = {
+  name: "Tucker",
+  age: 11,
+};
+
+function reducer(state = initialDog, action) {
+  if (action.type === "HAVE_BIRTHDAY") {
+    return {
+      ...state,
+      age: state.age + 1,
+    };
+  }
+
+  return state;
+}
+
+function* saga() {
+  yield put({ type: "HAVE_BIRTHDAY" });
+}
+
+it("handles reducers and store state", () => {
+  return expectSaga(saga)
+    .withReducer(reducer)
+
+    .hasFinalState({
+      name: "Tucker",
+      age: 12, // <-- age changes in store state
+    })
+
+    .run();
+});
+```
+
+### redux-saga-test-plan의 장점
+
+- 리듀서와 함께 테스트할 수 있다.
+- 내장된 목킹함수를 제공한다.
+- 해당 이펙트가 정상적으로 실행되는지 테스트한다.
+- 확인하고 싶은 이펙트만 선택적으로 테스트가 가능하다
+
 ## ref
 
-- https://nukeguys.github.io/dev/redux-saga-test/
+- [docs-Testing](https://redux-saga.js.org/docs/advanced/Testing.html)
+- [gitbook-redux-saga-test-plan](http://redux-saga-test-plan.jeremyfairbank.com/)
+- [tool없이 saga테스트하기](https://nukeguys.github.io/dev/redux-saga-test/)
+- [Redux-saga 테스트 코드 작성하기](https://medium.com/@sangboaklee/redux-saga-%ED%85%8C%EC%8A%A4%ED%8A%B8-%EC%BD%94%EB%93%9C-%EC%9E%91%EC%84%B1%ED%95%98%EA%B8%B0-1fc13f7fd279)
 - [git-redux-saga-test-plan](https://github.com/jfairbank/redux-saga-test-plan)
 - [redux-saga-test-plan-tutorials](https://ui.toast.com/weekly-pick/ko_20180514/)
-- [redux-saga-test-plan](http://redux-saga-test-plan.jeremyfairbank.com/)
-- [docs-Testing](https://redux-saga.js.org/docs/advanced/Testing.html)
 - [Redux-Saga](https://www.vobour.com/00-redux-saga-)
-- [Redux-saga 테스트 코드 작성하기](https://medium.com/@sangboaklee/redux-saga-%ED%85%8C%EC%8A%A4%ED%8A%B8-%EC%BD%94%EB%93%9C-%EC%9E%91%EC%84%B1%ED%95%98%EA%B8%B0-1fc13f7fd279)
 - [testing-3-react-testing](https://jbee.io/react/testing-3-react-testing/)
 - [evaluating-redux-saga-test-libraries](https://blog.scottlogic.com/2018/01/16/evaluating-redux-saga-test-libraries.html)
 - [redux-saga-test-plan](https://ui.toast.com/weekly-pick/ko_20180514/)
-
-* cs 처리 자동화 & 시각화
+- [왜 saga는 테스트하기 쉬운가?](https://mskims.github.io/redux-saga-in-korean/introduction/BeginnerTutorial.html)
