@@ -7,32 +7,47 @@
 3. 특정 DOM이벤트르 시뮬레이트하여 원하는 변화가 제대로 발생하는지 확인.
 4. 렌더링 결과물을 이미지로 저장하여 픽셀을 하나하나 확인해서 모두 일치하는 지 확인.
 
-## package.json
+## 옵션
 
-package.json에 아래 설정을 추가한다.  
-상세한 설정은 jest 공식 페이지를 알아보자.
+json파일이나 js파일 혹은 package.json에서 설정할 수 있다.
 
 ```json
-"jest": {
+// jest.config.json
+{
+  "transform": {
+    "^.+\\.ts$": "ts-jest"
+  },
+  "testRegex": "\\.test\\.ts$",
+  "moduleFileExtensions": ["ts", "tsx", "js", "json"],
+  "globals": {
+    "ts-jest": {
+      "diagnostics": true
+    }
+  }
+}
+```
+
+package.json에서는 `jest`라는 키워드에 설정을 넣는다.
+
+```json
+// package.json
+{
+  "jest": {
     "transform": {
       "^.+\\.ts$": "ts-jest"
     },
     "testRegex": "\\.test\\.ts$",
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js",
-      "json"
-    ],
+    "moduleFileExtensions": ["ts", "tsx", "js", "json"],
     "globals": {
       "ts-jest": {
         "diagnostics": true
       }
     }
   }
+}
 ```
 
-## 옵션
+###
 
 ![configuring](https://jestjs.io/docs/en/configuration)
 
