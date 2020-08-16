@@ -7,6 +7,16 @@
 3. 특정 DOM이벤트르 시뮬레이트하여 원하는 변화가 제대로 발생하는지 확인.
 4. 렌더링 결과물을 이미지로 저장하여 픽셀을 하나하나 확인해서 모두 일치하는 지 확인.
 
+## mocking을 하는 이유
+
+1. 프로젝트의 규모가 켜져서 한 번에 실행해야 할 테스트 케이스가 많이지면 이러한 작은 속도 저하들이 모여 큰 이슈가 될 수 있으며, CI/CD 파이프라인의 일부로 테스트가 자동화되어 자주 실행되야 한다면 더 큰 문제가 될 수 있습니다.
+
+2. 테스트 자체를 위한 코드보다 데이터베이스와 연결을 맺고 트랜잭션을 생성하고 쿼리를 전송하는 코드가 더 길어질 수 있습니다. 즉, 배보다 배꼽이 더 커질 수 있습니다.
+
+3. 만약 테스트 실행 순간 일시적으로 데이터베이스가 오프라인 작업 중이었다면 해당 테스트는 실패하게 됩니다. 따라서 테스트가 인프라 환경에 영향을 받게됩니다. (non-deterministic)
+
+4. 테스트가 종료 직 후, 데이터베이스에서 변경 데이터를 직접 원복하거나 트렌잭션을 rollback 해줘야 하는데 상당히 번거로운 작업이 될 수 있습니다.
+
 ## 옵션
 
 json파일이나 js파일 혹은 package.json에서 설정할 수 있다.
@@ -57,9 +67,32 @@ package.json에서는 `jest`라는 키워드에 설정을 넣는다.
 jest --watch --coverage
 ```
 
+항목 설명
+
+- Statements(Stmts) 각 구문의 실행을 확인
+- Branches If, Switch 같은 조건문의 각 분기 실행을 확인
+- Functions(Funcs) 각 함수 호출을 확인
+- Lines 각 라인의 실행을 확인(Statements와 비슷)
+- Uncovered Line 테스트를 통해 실행되지 않은 코드 라인을 표시
+
 istanbul를 이용한 커버리지 츠겅.
 
+### runInBand
+
+### detectOpenHandles
+
+열려있는 리소스를 모두 닫아준다.
+
+### forceExit
+
+테스트가 끝나면 강제종료를 한다.
+
 ## 함수
+
+### 전후처리
+
+beforeAll과 afterAll은 선언된 describe 범위 안에서 전후 동작하며,
+beforeEach와 afterEach는 선언된 describe 범위 안에서 각 test 단위 전후로 동작합니다.
 
 ### describe
 
@@ -151,6 +184,7 @@ describe('Testing TextComponent', () => {
 
 ## REF
 
+- [JEST-한글](https://heropy.blog/2020/05/20/vue-test-with-jest/)
 - [DOC-Jest](https://jestjs.io/docs/en/expect.html)
 - [GitBooks-Jest](https://jestjs.io/docs/en/using-matchers)
 - [jest-mocking](https://www.daleseo.com/jest-mock-modules/)

@@ -305,6 +305,7 @@ test("can render with redux with custom store", () => {
 - [DOC-testing-library](https://testing-library.com/docs/recipes)
 - [GIT-react-testing-library](https://github.com/testing-library/react-testing-library)
 - [벨로퍼트-react-testing-library 를 사용한 리액트 컴포넌트 테스트](https://velog.io/@velopert/react-testing-library)
+- [벨로퍼트-react-testing-library 비동기 처리](https://velog.io/@velopert/react-testing-library-%EC%9D%98-%EB%B9%84%EB%8F%99%EA%B8%B0%EC%9E%91%EC%97%85%EC%9D%84-%EC%9C%84%ED%95%9C-%ED%85%8C%EC%8A%A4%ED%8A%B8)
 - [React Testing Library로 TDD개발환경 구축하기](https://medium.com/@benjaminwoojang/react-testing-library%EB%A1%9C-tdd%EA%B0%9C%EB%B0%9C%ED%99%98%EA%B2%BD-%EA%B5%AC%EC%B6%95%ED%95%98%EA%B8%B0-26e55fe33e01)
 - [REACT TESTING EXAMPLES](https://react-testing-examples.com/jest-rtl/)
 - [How to Write Functional Tests in React](https://blog.echobind.com/writing-functional-tests-with-react-testing-library-part-1-470870ee1a6)
