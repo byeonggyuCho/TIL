@@ -113,9 +113,11 @@ SI프로젝트를 경험하면서 조금만 수정해도 실타래처럼 얽혀�
 - [Pure Component](./react/pureComponent.md)
 - [Server side rendering](./react/serverSideRendering.md)
 - [8Thing to Lean in ReactJS before using redux](./react/8ThingsToLeanInReactBeforUsingRedux.md)
+- [Virtual Dom](./react/virtualDom.md)
 - [why Redux?](./react/whyRedux.md)
 - [why Hooks?](./react/whyHooks.md)
 - [why redux-thunk?](./react/why_does_we_need_redux_thunk.md)
+- [redux-saga test](./react/test/Redux-sagaTest.md)
 
 ## 4.Node.js
 
