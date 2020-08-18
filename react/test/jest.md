@@ -63,9 +63,7 @@ package.json에서는 `jest`라는 키워드에 설정을 넣는다.
 }
 ```
 
-###
-
-![configuring](https://jestjs.io/docs/en/configuration)
+[DOC-jest configuration](https://jestjs.io/docs/en/configuration)
 
 ### coverage
 
