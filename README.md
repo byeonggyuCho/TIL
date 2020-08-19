@@ -10,15 +10,15 @@
     배운 것을 기록할 것!
     기록하는 과정은 기록의 가치 이상으로 의미있다.
 
-확실히 내가 편하게 사용하는 단어와 표현으로 바꾸어 정리하는 작업이 '내 지식이다.'라는 느낌을 받게 하는 것 같다.  
-SI프로젝트를 경험하면서 조금만 수정해도 실타래처럼 얽혀버리는 스파게티 소스를 겪으며 보기쉽고 견고한 프로그래밍에 대해 관심을 갖게되어 정리하기 시작했다.  
+내가 편하게 사용하는 단어와 표현으로 바꾸어 정리하는 작업은 '내 지식이다.'라는 느낌들게 한다.
+SI프로젝트를 경험하면서 조금만 수정해도 실타래처럼 얽혀버리는 스파게티 소스를 수정하며 보기쉽고 견고한 프로그래밍에 대해 관심을 갖게되어 정리하기 시작했다.  
 기술을 탐독하며 이런 것들을 고민했다.
 
 - 왜 스파게티 소스가 발생하는가?
 - 왜 코드가 장황해지는가?
 - 구조 설계는 어떻게 해야하는가?
 - 어떻게 해야 유지보수하기 쉬운 코드를 작성할 수 있는가?
-- 어떻게 해야 재사용가능하면서 독립적은 모듈을 작성할 수 있는가?
+- 어떻게 해야 재사용가능하면서 독립적은 코드를 작성할 수 있는가?
 - 커뮤니케이션 비용이 적은 코드는 어떤 코드인가?
 - side effect를 줄이기 위해 기업에서 어떤 기술을 채택하는가?
 - 왜 이 기술이 탄생했는가?
@@ -92,7 +92,7 @@ SI프로젝트를 경험하면서 조금만 수정해도 실타래처럼 얽혀�
 - [component](./react/component.md)
 - [css in js](./react/CssInJs.md)
 - [event binding](./react/eventBinding.md)
-- [higher Order Component](./react/HigherOrderComponent.md)
+- [Higher Order Component](./react/HigherOrderComponent.md)
 - [Key Property](./react/key.md)
 - [JSX](./react/JSX.md)
 - [flux](./react/flux.md)
@@ -113,9 +113,11 @@ SI프로젝트를 경험하면서 조금만 수정해도 실타래처럼 얽혀�
 - [Pure Component](./react/pureComponent.md)
 - [Server side rendering](./react/serverSideRendering.md)
 - [8Thing to Lean in ReactJS before using redux](./react/8ThingsToLeanInReactBeforUsingRedux.md)
-- [why does we need redux thunk?](./react/why_does_we_need_redux_thunk.md)
-- [why hooks?](./react/whyHooks.md)
+- [Virtual Dom](./react/virtualDom.md)
 - [why Redux?](./react/whyRedux.md)
+- [why Hooks?](./react/whyHooks.md)
+- [why redux-thunk?](./react/why_does_we_need_redux_thunk.md)
+- [redux-saga test](./react/test/Redux-sagaTest.md)
 
 ## 4.Node.js
 
@@ -161,7 +163,7 @@ SI프로젝트를 경험하면서 조금만 수정해도 실타래처럼 얽혀�
 - [Spring MVC](./spring/springMVC.md)
 - [DI](./spring/DI.md)
 - [AOP](./spring/AOP.md)
-- [bean](./spring/bean.md)
+- [Bean](./spring/bean.md)
 
 ---
 
@@ -210,6 +212,7 @@ SI프로젝트를 경험하면서 조금만 수정해도 실타래처럼 얽혀�
 
 ## ETC
 
+- [Front-end Test Strategy](./react/FrontendTestStrategy.md)
 - [Reactive Programming](./etc/reactiveProgramming.md)
 
 ## 설계
@@ -223,6 +226,7 @@ SI프로젝트를 경험하면서 조금만 수정해도 실타래처럼 얽혀�
 3. 최적화.
    - 최적화를 위해 어떤 부분을 고민했는지?
    - 어떻게 해야 더 컴팩트한 앱을 만들 수 있는지?
+   - 번들링 최적화를 위해 번들을 어떻게 나눌 것인지?
 4. 대안
    - 다른 선택을 고민해본 적 있는지?(plane B)
    - 이런 방식의 접근방법은 어떻게 생각하는가?
@@ -230,27 +234,24 @@ SI프로젝트를 경험하면서 조금만 수정해도 실타래처럼 얽혀�
 ## 관심분야
 
 1. Javascript
-   - requestidlecallback
    - Requestidlecallback
-   - web worker
+   - Web worker
    - Symbol
    - Atomics (ES7)
-   - proxy
+   - Proxy
    - Shared Array Buffer (ES7)
 2. Typescript
    - pattern
 3. React
    - `next.js` (SSR)
-   - Material-UI
-   - 렌더링 최적화
+   - ~~Material-UI~~
    - 아토믹 디자인
    - redux-observable
 4. Mobile App
    - React-native
-   - web view
+   - Web View
 5. Style
-   - sass
-   - Matarial UI
+   - ~~Scss~~
 6. 데이터 시각화
    - cavas, svg
    - d3
@@ -259,16 +260,16 @@ SI프로젝트를 경험하면서 조금만 수정해도 실타래처럼 얽혀�
    - SSR
    - code spliting
 8. Test
-   - Jest/Enzyme 기반 TDD
+   - ~~Jest/Enzyme 기반 TDD~~
    - Cypress를 통한 E2E 테스트
 9. open source
    - library development
 10. node.js
-    - nextJS
     - socket.io
 11. Clean Code
 12. Optimizing
     - PWA
+    - 빌드 최적화
     - 렌더링
       - web workers
       - service workders
@@ -284,7 +285,6 @@ SI프로젝트를 경험하면서 조금만 수정해도 실타래처럼 얽혀�
     - (이슈관리, JIRA, Confluence, 프로젝트 보드)
 16. Web Assembly
 17. GraphQL, Apollo
-
 18. Kubernetes
 19. Doker
 20. StoryBook

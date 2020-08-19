@@ -139,6 +139,7 @@ dispatch({ type: "INCREASE" });
 
 Flux에대해서 학습했다고 가정하고 차이에 중점을 두어 설명한다.
 ![](../resource/img/react/ReduxVsFlux.JPG)
+![](../resource/img/react/redux2.gif)
 
 ### 1.Action creators
 

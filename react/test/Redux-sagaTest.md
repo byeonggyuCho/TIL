@@ -1,4 +1,4 @@
-# Redux-saga 테스트 코드 작성하기
+# Redux-Saga 테스트 코드 작성하기
 
 ## saga-test
 
