@@ -25,18 +25,11 @@
 
 Applitools, Chromatic
 
-### 비지니스 로직테스트
-
-- custom hooks
-- middleware
-- selector
-- reducer
-
 ## E2E Test
 
 cypress, testcafe, nightwatch
 
-## REF
+## REF()
 
 - [ReactTesting](https://jbee.io/react/testing-0-react-testing-intro/)
 - [(벨로퍼트) Redux테스트](https://velopert.com/3591)

@@ -57,8 +57,6 @@ package.json에서는 `jest`라는 키워드에 설정을 넣는다.
 }
 ```
 
-###
-
 ![configuring](https://jestjs.io/docs/en/configuration)
 
 ### coverage
@@ -151,7 +149,7 @@ expect(spyFn).toBeCalledWith(2, 3);
 expect(result).toBe(5);
 ```
 
-### 반복가능한 테스트코드
+### 전/후처리
 
 ```js
 const userChangeCases = [{
