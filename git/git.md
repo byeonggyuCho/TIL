@@ -199,19 +199,19 @@ $ git pull origin master
 
 ---
 
-## 롤백, 작업 관리.
+## 롤백, 작업 관리
 
 1. LOG
 
-```
-$ git log
-```
+   ```planetext
+   $git log
+   ```
 
 2. AMEND
 
-```
-$ git commit -- amend
-```
+   ```planetext
+   $git commit -- amend
+   ```
 
 커밋내용 되돌리기.
 
@@ -233,8 +233,8 @@ $ git commit -- amend
   - Github, Gitlab 같은 원격 저장소인 remote repository가 있습니다.
 - Staging Area
   - 실제 저장하기 전에 임시로 보관하는 임시저장소
-- .git directory - 내가 작업한 프로젝트가 저장되는 저장소.  
-   - 네트워크가 연결되어있지않아도 작업을 할 수 있다.
+- .git directory - 내가 작업한 프로젝트가 저장되는 저장소.
+  - 네트워크가 연결되어있지않아도 작업을 할 수 있다.
 
 ### 2.협업
 
@@ -249,12 +249,22 @@ $ git commit -- amend
    - 지금 작업하고 있는 branch
 
 3. merge
+
    - 2개의 branch에서 작업한 다른 내용을 하나로 합치는 것을 말하며, 현재 브랜치를 기준으로 병합됩니다.
    - 만약 두 branch가 같은 파일의 같은 곳을 수정했다면, 충돌( merge conflict )이 발생해서 이를 해결해야 합니다.
    - 해당 이슈 관계자들이 상의하여 수동으로 충돌을 해결해줘야 합니다.
 
-4) fetch
+4. fetch
+
    - 서버에서 가지고오는것. 가지고와서 저장만한다.
+
+5. reset
+   로컬에 있는 파일을 덮어쓰려는 경우에 사용한다.
+
+```planetext
+$git fetch --all
+$git reset --hard origin/<branch_name>
+```
 
 # 다뤄볼 주제
 
@@ -262,7 +272,7 @@ $ git commit -- amend
 - gitIgnore
 - 롤백.
 
-```
+```planetext
 $ git config -- global user.name "CaterJo"
 $ git config -- global user.email kin7729@gamil.com
 ```
