@@ -31,3 +31,7 @@ const foo = (param) => {
 
 foo();
 ```
+
+## REF
+
+- [JAVASCRIPT.INFO](https://ko.javascript.info/try-catch)
