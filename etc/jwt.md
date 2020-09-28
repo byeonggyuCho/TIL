@@ -384,15 +384,17 @@ JSON 웹 토큰의 사용을 권장하는 몇 가지 이유는 다음과 같다.
 
 ## REF
 
+- [toast](https://meetup.toast.com/posts/239)
 - [JWT 이해](https://backend-intro.vlpt.us/4/)
 - [JWT](https://velopert.com/2389)
 - [JWT기반 인증](https://velopert.com/2350)
 - [보다 제사한 정보..](http://www.opennaru.com/opennaru-blog/jwt-json-web-token/)
 - [조대협블로그-1](https://bcho.tistory.com/999)
 - [조대협블로그-2](https://bcho.tistory.com/1000)
-- https://diokun.wordpress.com/2017/04/07/%EC%95%88%EC%A0%84%ED%95%9C-jwt-%EC%9B%B9%EC%84%9C%EB%B9%84%EC%8A%A4-%EC%82%AC%EC%9A%A9%EC%9E%90-%EC%9D%B8%EC%A6%9D-%EA%B5%AC%ED%98%84%ED%95%98%EA%B8%B0/
-- https://velog.io/@ehdrms2034/Access-Token-%EC%A0%80%EC%9E%A5-%EC%9C%84%EC%B9%98%EC%97%90-%EB%8C%80%ED%95%9C-%EA%B3%A0%EC%B0%B0
-  https://blog.aliencube.org/ko/2015/02/12/can-json-web-token-jwt-alter-session-object/
+- [Access Token 저장 위치에 대한 고찰](https://velog.io/@ehdrms2034/Access-Token-%EC%A0%80%EC%9E%A5-%EC%9C%84%EC%B9%98%EC%97%90-%EB%8C%80%ED%95%9C-%EA%B3%A0%EC%B0%B0)
+- [안전한 JWT 웹서비스 사용자 인증 구현하기](https://diokun.wordpress.com/2017/04/07/%EC%95%88%EC%A0%84%ED%95%9C-jwt-%EC%9B%B9%EC%84%9C%EB%B9%84%EC%8A%A4-%EC%82%AC%EC%9A%A9%EC%9E%90-%EC%9D%B8%EC%A6%9D-%EA%B5%AC%ED%98%84%ED%95%98%EA%B8%B0/)
+- [SON Web Token(JWT)으로 Session 객체를 대체할 수 있을까?](https://blog.aliencube.org/ko/2015/02/12/can-json-web-token-jwt-alter-session-object/)
   https://idlecomputer.tistory.com/242
-  https://diokun.wordpress.com/2017/04/07/%EC%95%88%EC%A0%84%ED%95%9C-jwt-%EC%9B%B9%EC%84%9C%EB%B9%84%EC%8A%A4-%EC%82%AC%EC%9A%A9%EC%9E%90-%EC%9D%B8%EC%A6%9D-%EA%B5%AC%ED%98%84%ED%95%98%EA%B8%B0/
-  https://nesoy.github.io/articles/2020-03/JWT
+
+- [안전한 JWT 웹서비스 사용자 인증 구현하기](https://diokun.wordpress.com/2017/04/07/%EC%95%88%EC%A0%84%ED%95%9C-jwt-%EC%9B%B9%EC%84%9C%EB%B9%84%EC%8A%A4-%EC%82%AC%EC%9A%A9%EC%9E%90-%EC%9D%B8%EC%A6%9D-%EA%B5%AC%ED%98%84%ED%95%98%EA%B8%B0/)
+- [JWT에 대해](https://nesoy.github.io/articles/2020-03/JWT)

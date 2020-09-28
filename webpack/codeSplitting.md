@@ -67,10 +67,13 @@ const MainComponent = () => (
 - babel-plugin-syntax-dynamic-import
 - SplitChunksPlugin
 
-## ref
+## REF
+
+- [간단1](https://medium.com/@simsimjae/%EC%BB%B4%ED%8F%AC%EB%84%8C%ED%8A%B8-%EB%A0%88%EB%B2%A8%EC%97%90%EC%84%9C-%EC%9B%B9%ED%8C%A9%EC%9C%BC%EB%A1%9C-%EC%BD%94%EB%93%9C-%EC%8A%A4%ED%94%8C%EB%A6%AC%ED%8C%85%ED%95%98%EA%B8%B0-cf34fe3a51c1)
+- [공식문서](https://velog.io/@odini/Code-Splitting%EC%BD%94%EB%93%9C-%EC%8A%A4%ED%94%8C%EB%A6%BF%ED%8C%85)
 
 - [DOC](https://webpack.js.org/guides/code-splitting/)
-- [react-code-splitting](https://velog.io/@velopert/react-code-splitting)
+- [VELOG-react-code-splitting](https://velog.io/@velopert/react-code-splitting)
 - https://velopert.com/3421
 - https://velog.io/@velopert/react-code-splitting
 - [React에서 해보는 코드 스플리팅](https://medium.com/humanscape-tech/react%EC%97%90%EC%84%9C-%ED%95%B4%EB%B3%B4%EB%8A%94-%EC%BD%94%EB%93%9C-%EC%8A%A4%ED%94%8C%EB%A6%AC%ED%8C%85-code-splitting-56c9c7a1baa4)
