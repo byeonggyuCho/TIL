@@ -1,5 +1,6 @@
 ## REF
 
+- [웹폰트 최적화2](https://velog.io/@vnthf/%EC%9B%B9%ED%8F%B0%ED%8A%B8-%EC%B5%9C%EC%A0%81%ED%99%94-%ED%95%98%EA%B8%B0)
 - [웹폰트 설명](https://enterkey.tistory.com/362)
 - [웹폰트 최적화](https://velog.io/@racoon/%EC%9B%B9-%ED%8F%B0%ED%8A%B8-%EC%B5%9C%EC%A0%81%ED%99%94)
 - [웹폰트 최적화 전략](https://medium.com/@hyunalee419/feconf-korea-%EC%9B%B9%ED%8F%B0%ED%8A%B8%EC%9D%98-%EC%82%AC%EC%9A%A9%EA%B3%BC-%EC%B5%9C%EC%A0%81%ED%99%94-%EC%9D%B4%EC%83%81%EC%A7%84-58c210fa77c4)
