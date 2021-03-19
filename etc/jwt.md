@@ -382,6 +382,17 @@ JSON 웹 토큰의 사용을 권장하는 몇 가지 이유는 다음과 같다.
 
 예제에서는 이해를 위해 직접 base64인코딩을 하거나 해싱을 했지만 실제 JWT서비스를 이용할 떄는 이런 작업을 알아서 해줍니다.
 
+## 보안은 어떻게 뚫리나?
+
+### XSS
+
+해커가 클라이언트 브라우저에 자바스크립트를 삽입해서 실행하는 공격이다.  
+해커가 토큰을 탈취하거나 로그인되어있는 브라우저에 코드를 실행하여 사용자인 척 행세할 수 있다.
+
+### CSRF
+
+해커가 클라이언트 브라우저에 저장된 유저 인증정보를 서버로 보내면 다른 사이트에서 사용자만 가능한 요청을 할 수 있다.
+
 ## REF
 
 - [JWT 이해](https://backend-intro.vlpt.us/4/)
@@ -390,9 +401,9 @@ JSON 웹 토큰의 사용을 권장하는 몇 가지 이유는 다음과 같다.
 - [보다 제사한 정보..](http://www.opennaru.com/opennaru-blog/jwt-json-web-token/)
 - [조대협블로그-1](https://bcho.tistory.com/999)
 - [조대협블로그-2](https://bcho.tistory.com/1000)
-- https://diokun.wordpress.com/2017/04/07/%EC%95%88%EC%A0%84%ED%95%9C-jwt-%EC%9B%B9%EC%84%9C%EB%B9%84%EC%8A%A4-%EC%82%AC%EC%9A%A9%EC%9E%90-%EC%9D%B8%EC%A6%9D-%EA%B5%AC%ED%98%84%ED%95%98%EA%B8%B0/
-- https://velog.io/@ehdrms2034/Access-Token-%EC%A0%80%EC%9E%A5-%EC%9C%84%EC%B9%98%EC%97%90-%EB%8C%80%ED%95%9C-%EA%B3%A0%EC%B0%B0
-  https://blog.aliencube.org/ko/2015/02/12/can-json-web-token-jwt-alter-session-object/
-  https://idlecomputer.tistory.com/242
-  https://diokun.wordpress.com/2017/04/07/%EC%95%88%EC%A0%84%ED%95%9C-jwt-%EC%9B%B9%EC%84%9C%EB%B9%84%EC%8A%A4-%EC%82%AC%EC%9A%A9%EC%9E%90-%EC%9D%B8%EC%A6%9D-%EA%B5%AC%ED%98%84%ED%95%98%EA%B8%B0/
-  https://nesoy.github.io/articles/2020-03/JWT
+- [안전한 JWT 웹 서비스 인증 구현하기](https://diokun.wordpress.com/2017/04/07/%EC%95%88%EC%A0%84%ED%95%9C-jwt-%EC%9B%B9%EC%84%9C%EB%B9%84%EC%8A%A4-%EC%82%AC%EC%9A%A9%EC%9E%90-%EC%9D%B8%EC%A6%9D-%EA%B5%AC%ED%98%84%ED%95%98%EA%B8%B0/)
+- [ACCESS Token 저장위치에 대한 고찰](https://velog.io/@ehdrms2034/Access-Token-%EC%A0%80%EC%9E%A5-%EC%9C%84%EC%B9%98%EC%97%90-%EB%8C%80%ED%95%9C-%EA%B3%A0%EC%B0%B0)
+
+- https://blog.aliencube.org/ko/2015/02/12/can-json-web-token-jwt-alter-session-object/
+- https://idlecomputer.tistory.com/242
+- https://nesoy.github.io/articles/2020-03/JWT

@@ -1,5 +1,8 @@
-# import 'react-app-polyfill/ie9';
+# React for IE9
 
+```js
+import 'react-app-polyfill/ie9';
+```
 ## 1.react-app-polyfill
 
 1. react-app-polyfill
