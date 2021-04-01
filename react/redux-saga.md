@@ -2,26 +2,31 @@
 
 ![](../resource/img/react/Redux-Saga-Logo-Landscape.png)
 
+## 간단 정리
+
+- redux-saga는 액션에 대한 이벤트 리스너이다.
+- saga의 이팩트 함수를 통해 task를 반환하며 saga는 task의 실행환경이 된다.
+
 ## Intro
 
 왜 saga를 써야 할까요?  
 saga는 쉽게 말해 쉽게 말해 이벤트 리스너라고 할 수 있습니다.  
-액션을 모니터링하다가 액션이 발생하면 액션에 따라 자바스크립트를 실행하거나 다른액션을 디스패치하는 등의 방식으로 동작합니다.
-
-지금 thunk를 사용하고 있더라도 saga를 써야하는 이유는 충분합니다.
-thunk에서 못했던 작업들이 가능해졌기 때문입니다.
+액션을 모니터링하다가 액션이 발생하면 액션에 따라 자바스크립트를 실행하거나 다른 액션을 디스패치하는 등의 방식으로 동작합니다.
 
 1. 비동기 작업을 할 때 기존 요청을 취소 처리 할 수 있습니다.
-2. 특정액션이 발생 했을때 이에 따라 다른 액션이 디스패치되게끔 하거나 자바스크립트 코드를 실행할 수 잇습니다.
-3. 웹소켓을 사용하는 경우 Channel이라는 기능을 사용하여 더욱 효율적으로 코드관리를 할수 있습니다.
+2. 특정 액션이 발생했을 때 이에 따라 다른 액션이 디스패치 되게끔 하거나 자바스크립트 코드를 실행할 수 있습니다.
+3. 웹소켓을 사용하는 경우 Channel이라는 기능을 사용하여  
+   더욱 효율적으로 코드관리를 할수 있습니다.
 4. API 요청을 실패했을 때 재요청하는 작업을 할수 있습니다.
-5. 순차적 액션 dispatch
-6. Action을 모아서 dispatch하고 싶다.
-7. 다른 프레임워크, 라이브러리와 잘 어울리게 하고 싶다
-8. 재사용이 가능해진다
-9. 더 작은 코드로 분할할 수 있다.
-10. 병렬처리
-11. 동기적 구조에서 오는 테스트의 용이성
+5. Action을 모아서 dispatch하고 싶다.
+6. 다른 프레임워크, 라이브러리와 잘 어울리게 하고 싶다
+7. 재사용이 가능해진다
+8. 더 작은 코드로 분할할 수 있다.
+9. 병렬처리
+10. 동기적 구조에서 오는 테스트의 용이성
+11. retry로직 구현이 쉽다.
+12. 서로 다른 컴포넌트에서 N번 액션을 디스패치했을 경우 비동기로직을 실행해야하는 경우
+13. dispatch되는 매개변수가 다시 순수 객체형태로 돌아간다. 이 점은 redux 미들웨어 연계시 유연함을 제공한다. thunk를 사용하면 가장 첫번째 미들웨어가 redux-thunk가 되어야하고 다른 미들웨어를 redux-thunk앞에 배치할 수 없게 된다.
 
 이 장점들을 종합하면 `사이드 이펙트 관리`라는 말로 정리 할 수 있습니다.  
 여기서 사이드 이펙트란 순수하지 않은 함수에서 발생하는 예상 밖의 동작을 말하는데 예를 들어 비동기 작업, 브라우저 캐시등이 있습니다.  
@@ -29,20 +34,16 @@ thunk에서 못했던 작업들이 가능해졌기 때문입니다.
 이런 사이드 이펙트에 대한 관리를 redux-saga에 몰아줌으로서 다른 부분들은 순수한 형태로 유지 할 수 있습니다.  
 결과적으로 redux-saga도입하면 액션 생성자와 리듀서가 순수 함수 형태로 돌아갑니다.  
 Saga의 관심은 오로지 애플리케이션의 변수로 작용 할 여지가 있는 작업(사이드 이팩트)의 관리에 있습니다.
+
 ![](../resource/img/react/react-saga-flow.png)
 
 ## Redux에서 데이터 처리를 할 때 고려할 점
 
-1. 어디서 통신처리를 적을 것인가?
+1. 어디서 통신처리 작성할 것인가?
 2. 어디로부터 통신처리를 불러올 것인가?
 3. 통신처리의 상태를 어떻게 가지게 할 것인가?  
    이 중 세번째 항목은 "loding..."메세지를 사용자에게 보여주기 위해 필요한 부분입니다.
    즉 비동기 요청의 상태를 요청,성공,실패 등의 단계로 나누어 redux 상태를 변경해야합니다.
-
-## redux-thunk의 한계
-
-- action에게 과도한 책임을 준다는 점
-- 그 책임으로 인해 action을 나타내는 코드를 이해하기 힘든 상태로 만든다
 
 ## 용어
 
@@ -62,7 +63,9 @@ Saga의 관심은 오로지 애플리케이션의 변수로 작용 할 여지가
 - watcher: 디스패치된(dispatched) 액션을 관찰하고 모든 액션에 대해 워커(worker)를 포크합니다.
 - worker: 액션을 처리하고 종료합니다.
 
-## Generator로 모니터링로직 만들기
+---
+
+## Generator로 모니터링 로직 만들기
 
 ```js
 function* watchGenerator() {
@@ -88,11 +91,19 @@ watch.next({ type: "BYE" });
 
 이런식으로 whatch함수를 만들어서 액션을 모니터링하는 로직을 만들 수 있습니다.
 
+---
+
+## Flow
+
+![](../resource/img/react/saga-flow.jpeg)
+
+---
+
 ## Effect
 
 ### Select
 
-state에서 필요한 데이터를 꺼낸다
+store에서 필요한 데이터를 꺼낸다
 
 ### Put
 
@@ -239,15 +250,127 @@ function* rootSaga() {
 }
 ```
 
-## 병렬 이펙트
+## thunk와 saga비교
 
-## Flow
+> 1. saga는 액션을 모니터링한다.
+> 2. saga는 action channing 상황에서 독립적인 코드를 작석할 수 있다.
 
-![](../resource/img/react/saga-flow.jpeg)
+### 1. 액션 모니터링
 
-## Q&A
+이 점을 이용하여 애플리케이션에서 발생하는 비동기요청의 에러핸들링을 공통화 할 수 있다.
 
-# ref
+thunk는함수를 dispatch하고 redux-thunk가 전달받은 함수에
+diapatch와 getSate를 매개변수로 전달하여 실행한다.
+
+```ts
+export const fetchCarsThunk = () => ( dispatch, getState ) => {
+    dispatch({ type: FETCH_CARS_BEGIN });
+    return axios
+      .get(`/cars`)
+      .then(res =>
+         dispatch({ type: FETCH_CARS_SUCCESS, payload: res.data })
+      )
+      .catch(err =>
+         dispatch({ type: FETCH_CARS_FAILURE, payload: err }));
+    };
+}
+
+dispatch(fetchCars());
+```
+
+```ts
+export const fetchCarsSaga = function*(){
+
+   yield put({ type: FETCH_CARS_BEGIN });
+    try {
+      const res =  yield axios.get(`/cars`);
+      yield put({ type: FETCH_CARS_SUCCESS, payload: res.data })
+    } catch (err){
+      yield put({ type: FETCH_CARS_FAILURE, payload: err }));
+    }
+}
+
+// {type: 'FETCH_CARS_BEGIN'}
+dispatch(fetchCars.reuest());
+
+```
+
+### 2. 액션 체이닝
+
+```js
+// 지명으로 유저검색
+const searchByLocationThunk = (id) => (dispatch) => {
+  dispatch(requestSearchByLocation(id));
+  axios.searchByLocation(id).then((res) => {
+    const { payload, error } = res;
+    if (payload && !error) {
+      dispatch(successSearchByLocation(payload));
+    } else {
+      dispatch(failureSearchByLocation(error));
+    }
+  });
+};
+
+// 사용자 조회
+const fetchUserThunk = (id) => (dispatch) => {
+  dispatch(requestUser(id));
+  axios.user(id).then((res) => {
+    const { payload, error } = res;
+    if (payload && !error) {
+      dispatch(successUser(payload));
+
+      // 액션 체인: 지역명으로 유저를 검색
+      dispatch(searchByLocationThunk(id));
+    } else {
+      dispatch(failureUser(error));
+    }
+  });
+};
+```
+
+액션 체이닝이 필요한 경우 redux-thunk에서는 위와 같은 처리가 필요하다.  
+무엇보다 이 로직이 아쉬운 점은 `fetchUser`함수에서 `searchByLocation` 유저 검색을 실행한다는 점이다. 직접 연계되는 action을 dipatch해야하는 것이 thunk의 구조적 한계다.
+
+반면 액션 발행을 감지하는 redux-saga에서는 단일책임원칙을 준수하며 완전히 코드를 분리할 수 있다.
+
+```js
+// 지명으로 유저검색
+const SearchByLocationSaga = function* () {
+  while (true) {
+    const action = yield take(SUCCESS_USER);
+    const { payload, error } = yield call(
+      API.searchByLocation,
+      action.payload.location
+    );
+    if (payload && !error) {
+      yield put(successSearchByLocation(payload));
+    } else {
+      yield put(failureSearchByLocation(error));
+    }
+  }
+};
+
+// 사용자 조회
+const fetchUserSaga = function* () {
+  while (true) {
+    const action = yield take(REQUEST_USER);
+    const { payload, error } = yield call(API.user, action.payload);
+    if (payload && !error) {
+      yield put(successUser(payload));
+    } else {
+      yield put(failureUser(error));
+    }
+  }
+};
+
+export default function* rootSaga() {
+  yield fork(fetchUserSaga);
+  // 액션 체이닝
+  yield fork(SearchByLocationSaga);
+}
+```
+
+# REF
 
 - [DOC-saga](https://redux-saga.js.org/docs/introduction/BeginnerTutorial.html)
 - [GIT-BOOK-kor](https://mskims.github.io/redux-saga-in-korean/introduction/BeginnerTutorial.html)
